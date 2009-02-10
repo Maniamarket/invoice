@@ -59,10 +59,9 @@ class UserController extends Controller {
             $role = $this->getRole($type_user);
             if ( $user = $model->signup($role,$id_t )) {
                 $user->status = 10;
-                $user->save();
-                if (Yii::$app->getUser()->login($user)) {
+                if( $user->save() ) {
                     $setting->load(Yii::$app->request->post());
-                    $setting->user_id = Yii::$app->getUser()->id;
+                    $setting->user_id = $user->id;
                     $setting->def_lang_id = 1;
                     $setting->bank_code = 'no';
                     $setting->account_number = 'no';
