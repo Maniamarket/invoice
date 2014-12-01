@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1
--- Время создания: Дек 01 2014 г., 19:34
+-- Время создания: Дек 01 2014 г., 21:23
 -- Версия сервера: 5.6.13-log
 -- Версия PHP: 5.4.17
 
@@ -179,11 +179,9 @@ INSERT INTO `service` (`id`, `name`) VALUES
 
 CREATE TABLE IF NOT EXISTS `surtax` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `from` decimal(12,2) NOT NULL,
-  `to` decimal(12,2) NOT NULL,
-  `percent` int(3) NOT NULL,
+  `percent` decimal(5,2) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
@@ -240,7 +238,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `bank_code` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `account_number` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `credit` int(11) NOT NULL DEFAULT '0',
-  `vat_id` int(11) NOT NULL DEFAULT '0',
+  `def_vat_id` int(11) NOT NULL DEFAULT '0',
   `def_company_id` int(11) NOT NULL,
   `def_lang_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
@@ -250,7 +248,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- Дамп данных таблицы `user`
 --
 
-INSERT INTO `user` (`id`, `user_id`, `password`, `name`, `register_date`, `last_login`, `is_on`, `role`, `admin_id`, `manager_id`, `country`, `city`, `street`, `post_index`, `phone`, `web_site`, `mail`, `vat_number`, `activity`, `resp_person`, `bank_code`, `account_number`, `credit`, `vat_id`, `def_company_id`, `def_lang_id`) VALUES
+INSERT INTO `user` (`id`, `user_id`, `password`, `name`, `register_date`, `last_login`, `is_on`, `role`, `admin_id`, `manager_id`, `country`, `city`, `street`, `post_index`, `phone`, `web_site`, `mail`, `vat_number`, `activity`, `resp_person`, `bank_code`, `account_number`, `credit`, `def_vat_id`, `def_company_id`, `def_lang_id`) VALUES
 (1, 'root', '202cb962ac59075b964b07152d234b70', 'Root Root', '2014-10-22 18:52:16', '2014-10-22 18:52:16', 1, 1, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0, 0),
 (2, 'client', '202cb962ac59075b964b07152d234b70', 'Client Client', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 5, 2, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0, 0),
 (3, 'user', '202cb962ac59075b964b07152d234b70', 'User User', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 4, 3, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', 0, 0, 0, 0),
