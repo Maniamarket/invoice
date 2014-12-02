@@ -1,27 +1,15 @@
 <?php
+/* @var $this SiteController */
+/* @var $error array */
 
-use yii\helpers\Html;
-
-/* @var $this yii\web\View */
-/* @var $name string */
-/* @var $message string */
-/* @var $exception Exception */
-
-$this->title = $name;
+$this->pageTitle=Yii::app()->name . ' - Error';
+$this->breadcrumbs=array(
+	'Error',
+);
 ?>
-<div class="site-error">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+<h2>Error <?php echo $code; ?></h2>
 
-    <div class="alert alert-danger">
-        <?= nl2br(Html::encode($message)) ?>
-    </div>
-
-    <p>
-        The above error occurred while the Web server was processing your request.
-    </p>
-    <p>
-        Please contact us if you think this is a server error. Thank you.
-    </p>
-
+<div class="error">
+<?php echo CHtml::encode($message); ?>
 </div>

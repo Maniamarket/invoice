@@ -1,0 +1,6 @@
+.invoice {    
+    background-image: url("../images/xmark.png");
+    background-repeat: no-repeat;
+    width: 512px;
+    height: 512px;
+}

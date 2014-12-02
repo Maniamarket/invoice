@@ -6,7 +6,31 @@ $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'name' => 'Biling',
+//    'defaultController' => 'site/login',
+/*    'view' => [
+        'theme' => [
+            'pathMap' => [
+                '@app/views' => '@app/themes/classic',
+                '@app/modules' => '@app/themes/classic/modules'
+            ],
+            'baseUrl' => '@web/themes/classic',
+        ],
+    ],*/
     'components' => [
+        'language'=>'ru-RU',
+        'i18n' => [
+            'translations' => [
+                '*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@app/messages',
+                    'sourceLanguage' => 'en',
+                    'fileMap' => [
+                        //'main' => 'main.php',
+                    ],
+                ],
+            ],
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'shfhgjfh637yghhgfbhgghjhn',
@@ -14,6 +38,10 @@ $config = [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        'authManager' => [
+            'class' => 'yii\rbac\PhpManager',
+            'defaultRoles' => ['SUPERADMIN', 'ADMIN', 'MANAGER', 'USER'],
+            ],
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,

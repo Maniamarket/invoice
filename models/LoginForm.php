@@ -71,6 +71,7 @@ class LoginForm extends Model
     {
         if ($this->_user === false) {
             $this->_user = User::findByUsername($this->username);
+//            $this->_user = User::find()->where(['name' => $this->username])->one();
         }
 
         return $this->_user;

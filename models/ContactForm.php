@@ -1,64 +1,48 @@
 <?php
 
-namespace app\models;
-
-use Yii;
-use yii\base\Model;
-
 /**
- * ContactForm is the model behind the contact form.
+ * ContactForm class.
+ * ContactForm is the data structure for keeping
+ * contact form data. It is used by the 'contact' action of 'SiteController'.
  */
-class ContactForm extends Model
+class ContactForm extends CFormModel
 {
-    public $name;
-    public $email;
-    public $subject;
-    public $body;
-    public $verifyCode;
+	public $name;
+	public $email;
+	public $subject;
+	public $body;
+	public $verifyCode;
 
-    /**
-     * @return array the validation rules.
-     */
-    public function rules()
-    {
-        return [
-            // name, email, subject and body are required
-            [['name', 'email', 'subject', 'body'], 'required'],
-            // email has to be a valid email address
-            ['email', 'email'],
-            // verifyCode needs to be entered correctly
-            ['verifyCode', 'captcha'],
-        ];
-    }
+	/**
+	 * Declares the validation rules.
+	 */
+	public function rules()
+	{
+		return array(
+			// name, email, subject and body are required
+			array('name, email, subject, body', 'required'),
+			// email has to be a valid email address
+			array('email', 'email'),
+			// verifyCode needs to be entered correctly
+			array('verifyCode', 'captcha', 'allowEmpty'=>!CCaptcha::checkRequirements()),
+		);
+	}
 
-    /**
-     * @return array customized attribute labels
-     */
-    public function attributeLabels()
-    {
-        return [
-            'verifyCode' => 'Verification Code',
-        ];
-    }
-
-    /**
-     * Sends an email to the specified email address using the information collected by this model.
-     * @param  string  $email the target email address
-     * @return boolean whether the model passes validation
-     */
-    public function contact($email)
-    {
-        if ($this->validate()) {
-            Yii::$app->mailer->compose()
-                ->setTo($email)
-                ->setFrom([$this->email => $this->name])
-                ->setSubject($this->subject)
-                ->setTextBody($this->body)
-                ->send();
-
-            return true;
-        } else {
-            return false;
-        }
-    }
+	/**
+	 * Declares customized attribute labels.
+	 * If not declared here, an attribute would have a label that is
+	 * the same as its name with the first letter in upper case.
+	 */
+	public function attributeLabels()
+	{
+		return array(
+			
+			'name' => Yii::t('lang','Name'),
+			'email' => Yii::t('lang','Email'),
+			'subject' => Yii::t('lang','Subject'),
+			'body' => Yii::t('lang','Body'),
+			'verifyCode'=>Yii::t('lang','verifyCode'),			
+			
+		);
+	}
 }
