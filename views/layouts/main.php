@@ -5,6 +5,7 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
+use app\components\LanguageSelector;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -34,6 +35,15 @@ AppAsset::register($this);
                 'class' => 'navbar-inverse navbar-fixed-top',
             ],
         ]);
+        ?>
+        <div  id="language-selector" style="float:right; margin:5px;">
+            <?= LanguageSelector::widget([]) ?>
+		    <?php
+
+		    //$this->widget('application.components.widgets.LanguageSelector');
+		    ?>
+        </div>
+        <?php
         echo Nav::widget([
             'options' => ['class' => 'navbar-nav navbar-right'],
             'items' => [
@@ -52,8 +62,7 @@ AppAsset::register($this);
                         'linkOptions' => ['data-method' => 'post']],
             ],
         ]);
-        NavBar::end();
-        ?>
+        NavBar::end();  ?>
 
         <div class="container">
             <?= Breadcrumbs::widget([

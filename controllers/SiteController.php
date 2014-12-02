@@ -8,6 +8,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+//use app\components\LanguageSelector;
 
 class SiteController extends Controller
 {
@@ -46,7 +47,28 @@ class SiteController extends Controller
         }
     }*/
 
-    /**
+    public function __construct($id, $module = null, $config = []) {
+        parent::__construct($id, $module);
+        // If there is a post-request, redirect the application to the provided url of the selected language
+        if (isset($_POST['language'])) {
+            $lang = $_POST['language'];
+            $MultilangReturnUrl = $_POST[$lang];
+            $this->redirect($MultilangReturnUrl);
+        }
+// Set the application language if provided by GET, session or cookie
+        if (isset($_GET['language'])) {
+            Yii::$app->language = $_GET['language'];
+            Yii::$app->user->setState('language', $_GET['language']);
+            $cookie = new HttpCookie('language', $_GET['language']);
+            $cookie->expire = time() + (60 * 60 * 24 * 365); // (1 year)
+            Yii::$app->request->cookies['language'] = $cookie;
+        } /*else if (Yii::$app->user->hasState('language'))
+            Yii::$app->language = Yii::$app->user->getState('language');*/
+        else if (isset(Yii::$app->request->cookies['language']))
+            Yii::$app->language = Yii::$app->request->cookies['language']->value;
+    }
+
+/**
      * This is the default 'index' action that is invoked
      * when an action is not explicitly requested by users.
      */

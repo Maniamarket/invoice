@@ -89,3 +89,10 @@ a.desc:after {
     padding: 10px 20px;
     margin: 0 0 15px 0;
 }
+
+#language-select {
+    line-height: 40px;
+}
+#language-select a {
+    padding-left: 8px;
+}
