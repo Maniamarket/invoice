@@ -82,8 +82,8 @@ class SiteController extends Controller
      * This is the action to handle external exceptions.
      */
     public function actionError() {
-	if ($error = Yii::app()->errorHandler->error) {
-	    if (Yii::app()->request->isAjaxRequest)
+	if ($error = Yii::$app->errorHandler->error) {
+	    if (Yii::$app->request->isAjax)
 		echo $error['message'];
 	    else
             return $this->render('error', $error);

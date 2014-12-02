@@ -29,7 +29,7 @@ class Company extends ActiveRecord {
 	return array(
 	    array('name', 'required'),
 	    array('name', 'string', 'max' => 255),
-//	    array('logo', 'file', 'types' => 'jpg,jpeg,png,gif'),
+	    array('logo', 'file', 'extensions' => ['jpg','jpeg','png','gif']),
 	    // The following rule is used by search().
 	    // @todo Please remove those attributes that should not be searched.
 	    array('id, name', 'safe', 'on' => 'search'),

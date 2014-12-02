@@ -19,6 +19,8 @@ $this->params['breadcrumbs'][]= $model->name;
 ?>
 
 <?php echo Html::a('Список компаний', Url::toRoute('index'),['class'=>'btn-lg btn btn-primary']) ?>
+<?php echo Html::a('Создать', Url::toRoute('create'),['class'=>'btn-lg btn btn-success']) ?>
+<?php echo Html::a('Обновить', Url::toRoute(['update','id'=>$model->id]),['class'=>'btn-lg btn btn-success']) ?>
 
 <h1>View Company #<?php echo $model->id; ?></h1>
 

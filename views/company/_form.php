@@ -6,7 +6,7 @@ use yii\bootstrap\ActiveForm;
 /* @var $form CActiveForm */
 ?>
 
-<div class="form">
+<div class="form col-sm-5">
 
 <?php $form = ActiveForm::begin([
 	'id'=>'company-form',
@@ -15,7 +15,7 @@ use yii\bootstrap\ActiveForm;
 	// There is a call to performAjaxValidation() commented in generated controller code.
 	// See class documentation of CActiveForm for details on this.
 	'enableAjaxValidation'=>false,
- /*   'fieldConfig' => [
+/*    'fieldConfig' => [
         'template' => "{label}\n{beginWrapper}\n{input}\n{hint}\n{error}\n{endWrapper}",
         'horizontalCssClasses' => [
             'label' => 'col-sm-4',
@@ -25,7 +25,7 @@ use yii\bootstrap\ActiveForm;
             'hint' => '',
         ],
     ],*/
-//	'htmlOptions'=>array('enctype'=>'multipart/form-data'),
+	'options'=>['enctype'=>'multipart/form-data', 'role'=>'form'],
 ]); ?>
 
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
@@ -33,28 +33,18 @@ use yii\bootstrap\ActiveForm;
 	<?php echo $form->errorSummary($model); ?>
 
 	<div class="form-group">
-      <?php
-        echo $form->field($model, 'name', [
-        'inputOptions' => [
-        'placeholder' => $model->getAttributeLabel('name'),
-        ],
-        ])->label(false);
-      ?>
+        <?= $form->field($model, 'name') ?>
 	</div>
     <div class="form-group">
-        <?php
-        echo $form->field($model, 'logo', [
-            'inputOptions' => [
-                'placeholder' => $model->getAttributeLabel('logo'),
-            ],
-        ])->label(false);
-        ?>
+        <label>Логотип</label>
+        <?php echo Html::activeFileInput($model,'logo') ?>
     </div>
     <div class="form-group">
         <?php
         echo $form->field($model, 'country', [
             'inputOptions' => [
                 'placeholder' => $model->getAttributeLabel('country'),
+                'class' => 'form-control',
             ],
         ])->label(false);
         ?>
@@ -142,7 +132,7 @@ use yii\bootstrap\ActiveForm;
     </div>
 
 	<div class="row buttons">
-		<?php echo Html::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+		<?php echo Html::submitButton($model->isNewRecord ? 'Create' : 'Save',['class'=>'btn btn-success']); ?>
 	</div>
 
     <?php ActiveForm::end(); ?>

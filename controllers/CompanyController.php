@@ -8,6 +8,7 @@ use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 use app\models\Company;
 use yii\web\Request;
+use yii\web\UploadedFile;
 
 class CompanyController extends Controller {
 
@@ -43,26 +44,32 @@ class CompanyController extends Controller {
      */
     public function actionCreate() {
 	$model = new Company;
+    $dir = Yii::getAlias('@web/images');
+    $uploaded = false;
 
 	// Uncomment the following line if AJAX validation is needed
 	// $this->performAjaxValidation($model);
 
 	if (Yii::$app->request->isPost) {
 	   
-	   //print_r($_FILES);	   
+//	   print_r($_FILES);
 	   $model->attributes = $_POST['Company'];
 	   //$model->logo = $_FILES;
 	   //echo '<pre>'; print_r($model->attributes); 
-	   $model->logo = CUploadedFile::getInstance($model,'logo');
+//	   $model->logo = CUploadedFile::getInstance($model,'logo');
 	   //print_r($model->logo->tempName); exit;
 	   
 	  //print_r($model->attributes); exit;
+        $file = UploadedFile::getInstance($model,'logo');
 	    if ($model->save()) {
-		$model->logo->saveAs(Yii::app()->basePath . '/../www/images/logo/' . $model->logo);
+            if ($file)
+                $uploaded = $file->saveAs('images/'.$file->name);
+
+//		$model->logo->saveAs(Yii::app()->basePath . '/../www/images/logo/' . $model->logo);
 		
-		$image = Yii::$app->image->load(Yii::app()->basePath . '/../www/images/logo/' . $model->logo);
-		$image->resize(200, 200);
-		$image->save();
+//		$image = Yii::$app->image->load(Yii::app()->basePath . '/../www/images/logo/' . $model->logo);
+//		$image->resize(200, 200);
+//		$image->save();
 		
 		
 		$this->redirect(array('view', 'id' => $model->id));
@@ -71,6 +78,7 @@ class CompanyController extends Controller {
 
 	return $this->render('create', array(
 	    'model' => $model,
+        'uploaded' => $uploaded,
 	));
     }
 
@@ -91,7 +99,7 @@ class CompanyController extends Controller {
 		$this->redirect(array('view', 'id' => $model->id));
 	}
 
-	$this->render('update', array(
+	return $this->render('update', array(
 	    'model' => $model,
 	));
     }
