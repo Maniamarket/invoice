@@ -10,6 +10,7 @@ return array(
     
     ////main menu 
     'Home' => 'Главная',
+    'Users' => 'Пользователи',
     'Clients' => 'Клиенты',
     'Invoice' => 'Счет-фактура',
     'Companies' => 'Компании',

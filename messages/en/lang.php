@@ -10,6 +10,7 @@ return array(
     
     ////main menu 
     'Home' => 'Home',
+    'Users' => 'Users',
     'Clients' => 'Clients',
     'Invoice' => 'Invoice',
     'Companies' => 'Companies',
