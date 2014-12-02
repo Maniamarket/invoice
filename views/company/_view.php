@@ -5,7 +5,6 @@ use yii\helpers\Html;
 ?>
 
 
-vfbghn
 <div class="view">
 
     <b><?php echo Html::encode($model->getAttributeLabel('id')); ?>:</b>

@@ -1,4 +1,12 @@
 <?php
+namespace app\controllers;
+
+use Yii;
+use yii\filters\AccessControl;
+use yii\web\Controller;
+use yii\filters\VerbFilter;
+use yii\data\ActiveDataProvider;
+use app\models\Service;
 
 class ServiceController extends Controller
 {
@@ -6,7 +14,7 @@ class ServiceController extends Controller
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
-	public $layout='//layouts/column2';
+	//public $layout='//layouts/column2';
 
 	/**
 	 * @return array action filters
@@ -122,8 +130,14 @@ class ServiceController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Service');
-		$this->render('index',array(
+            $dataProvider = new ActiveDataProvider([
+                'query' => Service::find(),
+                'pagination' => [
+                    'pageSize' => 20,
+                ],
+            ]);
+
+            return $this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
 	}

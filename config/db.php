@@ -2,8 +2,8 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=logistic_biling',
-    'username' => 'logistic_biling',
-    'password' => '9k@#u32n@m1ce2',
+    'dsn' => 'mysql:host=localhost;dbname=invoice',
+    'username' => 'invoice',
+    'password' => 'invoice',
     'charset' => 'utf8',
 ];
