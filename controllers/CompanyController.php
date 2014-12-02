@@ -69,7 +69,7 @@ class CompanyController extends Controller {
 	    }
 	}
 
-	$this->render('create', array(
+	return $this->render('create', array(
 	    'model' => $model,
 	));
     }

@@ -1,18 +1,23 @@
 <?php
+use yii\widgets\Menu;
+use yii\widgets\Breadcrumbs;
+use yii\web\View;
 /* @var $this ServiceController */
 /* @var $model Service */
 
-$this->breadcrumbs=array(
-	'Services'=>array('index'),
-	'Create',
-);
+$this->title=Yii::$app->name . ' - Services';
+$this->params['breadcrumbs'][] = ['label'=>$this->title,'url'=>['index']];
 
-$this->menu=array(
-	array('label'=>'List Service', 'url'=>array('index')),
-	array('label'=>'Manage Service', 'url'=>array('admin')),
-);
+$this->title=Yii::$app->name . ' - Create';
+$this->params['breadcrumbs'][] = $this->title;
+
+echo Menu::widget([
+        'items' => [
+	['label'=>'List Service', 'url'=>array('index')],
+	['label'=>'Manage Service', 'url'=>array('admin')],
+]]);
 ?>
 
 <h1>Create Service</h1>
 
-<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php  echo $this->context->renderPartial('_form', ['model'=>$model]); ?>

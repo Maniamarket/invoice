@@ -74,17 +74,12 @@ class ServiceController extends Controller
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Service']))
-		{
-			$model->attributes=$_POST['Service'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
-
-		$this->render('create',array(
-			'model'=>$model,
-		));
+                 if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                        return $this->redirect(['view', 'id' => $model->id]);
+                 } else 
+                        return $this->render('create', [
+                            'model' => $model,
+                        ]);
 	}
 
 	/**
@@ -166,7 +161,7 @@ class ServiceController extends Controller
 	 */
 	public function loadModel($id)
 	{
-		$model=Service::model()->findByPk($id);
+		$model=Service::find($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;

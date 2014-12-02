@@ -13,4 +13,4 @@ $this->params['breadcrumbs'][]= 'Create';
 
 <h1>Create Company</h1>
 
-<?php $this->context->renderPartial('_form', array('model'=>$model)); ?>
+<?php echo $this->context->renderPartial('_form', array('model'=>$model)); ?>

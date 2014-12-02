@@ -1,5 +1,7 @@
 <?php
 use yii\widgets\ListView;
+use yii\widgets\Menu;
+
 
 /* @var $this ServiceController */
 /* @var $dataProvider CActiveDataProvider */
@@ -7,10 +9,11 @@ use yii\widgets\ListView;
 $this->title=Yii::$app->name . ' - Services';
 $this->params['breadcrumbs'][] = $this->title;
 
-/*$this->menu=array(
-	array('label'=>'Create Service', 'url'=>array('create')),
-	array('label'=>'Manage Service', 'url'=>array('admin')),
-);*/
+echo Menu::widget([
+        'items' => [
+	['label'=>'Create Service', 'url'=>array('create')],
+	['label'=>'Manage Service', 'url'=>array('admin')],
+]]);
 ?>
 
 <h1><?php echo Yii::t('lang', 'ServiceHeaderText'); ?></h1>
