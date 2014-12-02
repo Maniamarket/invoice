@@ -1,4 +1,12 @@
 <?php
+namespace app\controllers;
+
+use Yii;
+use yii\filters\AccessControl;
+use yii\web\Controller;
+use yii\filters\VerbFilter;
+use yii\data\ActiveDataProvider;
+use app\models\Company;
 
 class CompanyController extends Controller {
 
@@ -6,7 +14,7 @@ class CompanyController extends Controller {
      * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
      * using two-column layout. See 'protected/views/layouts/column2.php'.
      */
-    public $layout = '//layouts/column2';
+//    public $layout = '//layouts/column2';
 
     /**
      * @return array action filters
@@ -104,8 +112,15 @@ class CompanyController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
-	$dataProvider = new CActiveDataProvider('Company');
-	$this->render('index', array(
+        $dataProvider = new ActiveDataProvider([
+            'query' => Company::find(),
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+        ]);
+//     print_r($dataProvider);
+//	$dataProvider = new CActiveDataProvider('Company');
+	return $this->render('index', array(
 	    'dataProvider' => $dataProvider,
 	));
     }

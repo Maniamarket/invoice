@@ -1,4 +1,8 @@
 <?php
+namespace app\models;
+
+use Yii;
+use \yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "company".
@@ -7,12 +11,12 @@
  * @property integer $id
  * @property string $name
  */
-class Company extends CActiveRecord {
+class Company extends ActiveRecord {
 
     /**
      * @return string the associated database table name
      */
-    public function tableName() {
+    public static function tableName() {
 	return 'company';
     }
 
