@@ -85,7 +85,7 @@ class Company extends ActiveRecord {
 	$criteria = new CDbCriteria;
 
 	$criteria->compare('id', $this->id);
-	$criteria->compare('name', $this->name, true);
+    $criteria->compare('name', $this->name, true);
 
 	return new CActiveDataProvider($this, array(
 	    'criteria' => $criteria,

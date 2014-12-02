@@ -1,18 +1,16 @@
 <?php
+use yii\helpers\Html;
+use yii\helpers\Url;
 /* @var $this CompanyController */
 /* @var $model Company */
 
-$this->breadcrumbs=array(
-	'Companies'=>array('index'),
-	'Create',
-);
-
-$this->menu=array(
-	array('label'=>'List Company', 'url'=>array('index')),
-	array('label'=>'Manage Company', 'url'=>array('admin')),
-);
+$this->title=Yii::$app->name . ' - Create Company';
+$this->params['breadcrumbs'][]= ['label'=>'Companies', 'url'=>['index']];
+$this->params['breadcrumbs'][]= 'Create';
 ?>
+
+<?php echo Html::a('Список компаний', Url::toRoute('index'),['class'=>'btn-lg btn btn-primary']) ?>
 
 <h1>Create Company</h1>
 
-<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php $this->context->renderPartial('_form', array('model'=>$model)); ?>

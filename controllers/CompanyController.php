@@ -7,6 +7,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 use app\models\Company;
+use yii\web\Request;
 
 class CompanyController extends Controller {
 
@@ -31,9 +32,9 @@ class CompanyController extends Controller {
      * @param integer $id the ID of the model to be displayed
      */
     public function actionView($id) {
-	$this->render('view', array(
-	    'model' => $this->loadModel($id),
-	));
+        return $this->render('view', array(
+            'model' => $this->loadModel($id),
+        ));
     }
 
     /**
@@ -46,7 +47,7 @@ class CompanyController extends Controller {
 	// Uncomment the following line if AJAX validation is needed
 	// $this->performAjaxValidation($model);
 
-	if (Yii::app()->request->isPostRequest) {
+	if (Yii::$app->request->isPost) {
 	   
 	   //print_r($_FILES);	   
 	   $model->attributes = $_POST['Company'];
@@ -59,7 +60,7 @@ class CompanyController extends Controller {
 	    if ($model->save()) {
 		$model->logo->saveAs(Yii::app()->basePath . '/../www/images/logo/' . $model->logo);
 		
-		$image = Yii::app()->image->load(Yii::app()->basePath . '/../www/images/logo/' . $model->logo);
+		$image = Yii::$app->image->load(Yii::app()->basePath . '/../www/images/logo/' . $model->logo);
 		$image->resize(200, 200);
 		$image->save();
 		
@@ -118,11 +119,9 @@ class CompanyController extends Controller {
                 'pageSize' => 20,
             ],
         ]);
-//     print_r($dataProvider);
-//	$dataProvider = new CActiveDataProvider('Company');
-	return $this->render('index', array(
-	    'dataProvider' => $dataProvider,
-	));
+        return $this->render('index', array(
+            'dataProvider' => $dataProvider,
+        ));
     }
 
     /**
@@ -147,9 +146,12 @@ class CompanyController extends Controller {
      * @throws CHttpException
      */
     public function loadModel($id) {
-	$model = Company::model()->findByPk($id);
+//        $model = new Company();
+        $model = Company::find()
+            ->where(['id' => $id])
+            ->one();
 	if ($model === null)
-	    throw new CHttpException(404, 'The requested page does not exist.');
+	    throw new HttpException(404, 'The requested page does not exist.');
 	return $model;
     }
 
