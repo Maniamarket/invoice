@@ -1,21 +1,16 @@
 <?php
-/* @var $this ServiceController */
-/* @var $model Service */
+use yii\helpers\Html;
+use yii\helpers\Url;
+/* @var $this CompanyController */
+/* @var $model Company */
 
-$this->breadcrumbs=array(
-	'Services'=>array('index'),
-	$model->name=>array('view','id'=>$model->id),
-	'Update',
-);
-
-$this->menu=array(
-	array('label'=>'List Service', 'url'=>array('index')),
-	array('label'=>'Create Service', 'url'=>array('create')),
-	array('label'=>'View Service', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage Service', 'url'=>array('admin')),
-);
+$this->title=Yii::$app->name . ' - Update Service';
+$this->params['breadcrumbs'][]= ['label'=>'Services', 'url'=>['index']];
+$this->params['breadcrumbs'][]= 'Update';
 ?>
+
+<?php echo Html::a('Список услуг', Url::toRoute('index'),['class'=>'btn-lg btn btn-primary']) ?>
 
 <h1>Update Service <?php echo $model->id; ?></h1>
 
-<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php echo $this->context->renderPartial('_form', ['model'=>$model]); ?>

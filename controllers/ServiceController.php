@@ -7,6 +7,8 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 use app\models\Service;
+use yii\web\Request;
+
 
 class ServiceController extends Controller
 {
@@ -75,7 +77,7 @@ class ServiceController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
                  if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                        return $this->redirect(['view', 'id' => $model->id]);
+                        return $this->redirect(['index']);
                  } else 
                         return $this->render('create', [
                             'model' => $model,
@@ -94,16 +96,12 @@ class ServiceController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Service']))
-		{
-			$model->attributes=$_POST['Service'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
-
-		$this->render('update',array(
-			'model'=>$model,
-		));
+		   if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                        return $this->redirect(['index']);
+                 } else 
+                        return $this->render('update', [
+                            'model' => $model,
+                        ]);
 	}
 
 	/**
@@ -117,7 +115,7 @@ class ServiceController extends Controller
 
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
 	}
 
 	/**
@@ -128,13 +126,11 @@ class ServiceController extends Controller
             $dataProvider = new ActiveDataProvider([
                 'query' => Service::find(),
                 'pagination' => [
-                    'pageSize' => 20,
+                    'pageSize' => 4,
                 ],
             ]);
-
-            return $this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
+            if( FALSE ) return $this->render('index',array( 'dataProvider'=>$dataProvider, ));
+            else  return $this->render('index_adm',array( 'dataProvider'=>$dataProvider, ));
 	}
 
 	/**
@@ -161,7 +157,9 @@ class ServiceController extends Controller
 	 */
 	public function loadModel($id)
 	{
-		$model=Service::find($id);
+		$model=Service::find()
+                        ->where(['id' => $id])
+                        ->one();
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
