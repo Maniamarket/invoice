@@ -1,4 +1,13 @@
 <?php
+namespace app\controllers;
+
+use Yii;
+use yii\filters\AccessControl;
+use yii\web\Controller;
+use yii\filters\VerbFilter;
+use yii\data\ActiveDataProvider;
+use app\models\Vat;
+use yii\web\Request;
 
 class VatController extends Controller
 {
@@ -6,7 +15,7 @@ class VatController extends Controller
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
-	public $layout='//layouts/column2';
+	//public $layout='//layouts/column2';
 
 	/**
 	 * @return array action filters
@@ -96,10 +105,14 @@ class VatController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Vat');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
+            $dataProvider = new ActiveDataProvider([
+                'query' => Vat::find(),
+                'pagination' => [
+                    'pageSize' => 10,
+                ],
+            ]);
+            if( TRUE ) return $this->render('index',array( 'dataProvider'=>$dataProvider, ));
+            else  return $this->render('index_adm',array( 'dataProvider'=>$dataProvider, ));
 	}
 
 	/**

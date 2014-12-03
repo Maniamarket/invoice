@@ -6,7 +6,7 @@ class TaxController extends Controller
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
-	public $layout='//layouts/column2';
+	//public $layout='//layouts/column2';
 
 	/**
 	 * @return array action filters
@@ -96,10 +96,14 @@ class TaxController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Tax');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
+            $dataProvider = new ActiveDataProvider([
+                'query' => Service::find(),
+                'pagination' => [
+                    'pageSize' => 10,
+                ],
+            ]);
+            if( FALSE ) return $this->render('index',array( 'dataProvider'=>$dataProvider, ));
+            else  return $this->render('index_adm',array( 'dataProvider'=>$dataProvider, ));
 	}
 
 	/**
