@@ -55,6 +55,7 @@ AppAsset::register($this);
                 ['label' => Yii::t('lang', 'Services'), 'url' => ['/service/index'], 'visible' => !Yii::$app->user->isGuest],
                 ['label' => Yii::t('lang', 'Taxes'), 'url' => ['/tax/index'], 'visible' => !Yii::$app->user->isGuest],
                 ['label' => Yii::t('lang', 'Settings'), 'url' => ['/setting/update'], 'visible' => !Yii::$app->user->isGuest],
+                ['label' => Yii::t('lang', 'Register'), 'url' => ['/site/signup'], 'visible' => Yii::$app->user->isGuest],
                 Yii::$app->user->isGuest ?
                     ['label' => 'Login', 'url' => ['/site/login']] :
                     ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',

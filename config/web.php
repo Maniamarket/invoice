@@ -41,6 +41,9 @@ $config = [
         'authManager' => [
             'class' => 'yii\rbac\PhpManager',
             'defaultRoles' => ['SUPERADMIN', 'ADMIN', 'MANAGER', 'USER'],
+            'itemFile' => '@app/components/rbac/items.php',
+            'assignmentFile' => '@app/components/rbac/assignments.php',
+            'ruleFile' => '@app/components/rbac/rules.php'
             ],
         'user' => [
             'identityClass' => 'app\models\User',
