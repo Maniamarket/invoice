@@ -1,18 +1,23 @@
 <?php
-/* @var $this InvoiceController */
-/* @var $model Invoice */
 
-$this->breadcrumbs=array(
-	'Invoices'=>array('index'),
-	'Create',
-);
+use yii\helpers\Html;
 
-$this->menu=array(
-	array('label'=>'List Invoice', 'url'=>array('index')),
-	array('label'=>'Manage Invoice', 'url'=>array('admin')),
-);
+
+/* @var $this yii\web\View */
+/* @var $model app\models\Invoice */
+
+$this->title = Yii::t('app', 'Create {modelClass}', [
+    'modelClass' => 'Invoice',
+]);
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Invoices'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
+<div class="invoice-create">
 
-<h1><?php echo Yii::t('lang','InvoiceHeaderCreateText'); ?></h1>
+    <h1><?= Html::encode($this->title) ?></h1>
 
-<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+    <?= $this->render('_form', [
+        'model' => $model,
+    ]) ?>
+
+</div>
