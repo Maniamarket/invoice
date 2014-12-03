@@ -50,6 +50,12 @@ class RbacController extends Controller
         $admin->ruleName = $rule->name;
         $auth->add($admin);
         $auth->addChild($admin, $moder);
+        //Добавляем потомков
+        $sadmin = $auth->createRole('superadmin');
+        $sadmin->description = 'Суперадминистратор';
+        $sadmin->ruleName = $rule->name;
+        $auth->add($sadmin);
+        $auth->addChild($sadmin, $admin);
 
 /*        $authManager = Yii::$app->authManager;
 
