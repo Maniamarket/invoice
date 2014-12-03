@@ -26,4 +26,12 @@ return [
             'manager',
         ],
     ],
+    'superadmin' => [
+        'type' => 1,
+        'description' => 'Суперадминистратор',
+        'ruleName' => 'userRole',
+        'children' => [
+            'admin',
+        ],
+    ],
 ];

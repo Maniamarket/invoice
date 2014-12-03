@@ -1,20 +1,16 @@
 <?php
-/* @var $this SettingController */
-/* @var $dataProvider CActiveDataProvider */
+use yii\widgets\ListView;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
-$this->breadcrumbs=array(
-	'Settings',
-);
+$this->title=Yii::$app->name . ' - Settings';
+$this->params['breadcrumbs'][] = $this->title;
 
-$this->menu=array(
-	array('label'=>'Create Setting', 'url'=>array('create')),
-	array('label'=>'Manage Setting', 'url'=>array('admin')),
-);
 ?>
 
-<h1>Settings</h1>
+<h1><?php echo Yii::t('lang', 'Settings'); ?></h1>
 
-<?php $this->widget('zii.widgets.CListView', array(
+<?php  echo ListView::widget([
 	'dataProvider'=>$dataProvider,
 	'itemView'=>'_view',
-)); ?>
+]); ?>

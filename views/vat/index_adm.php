@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <table class="table table-striped">
     <tr>
         <th>ID</th>
-        <th>Name</th>
+        <th>Percent</th>
     </tr>
 <?php echo ListView::widget([
 	'dataProvider'=>$dataProvider,

@@ -1,17 +1,8 @@
 <?php
-/* @var $this VatController */
-/* @var $data Vat */
+use yii\helpers\Html;
 ?>
 
-<div class="view">
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('id')); ?>:</b>
-	<?php echo CHtml::link(CHtml::encode($data->id), array('view', 'id'=>$data->id)); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('percent')); ?>:</b>
-	<?php echo CHtml::encode($data->percent); ?>
-	<br />
-
-
-</div>
+<tr>
+    <td><?php echo Html::encode($model->id); ?></td>
+    <td><?php echo Html::encode($model->percent); ?></td>
+</tr>

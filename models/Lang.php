@@ -5,23 +5,21 @@ use Yii;
 use \yii\db\ActiveRecord;
 
 /**
- * This is the model class for table "tax".
+ * This is the model class for table "vat".
  *
- * The followings are the available columns in table 'tax':
+ * The followings are the available columns in table 'vat':
  * @property integer $id
- * @property integer $from
- * @property integer $to
- * @property double $manager
- * @property double $admin
+ * @property string $name
+ * @property integer $percent
  */
-class Tax extends ActiveRecord
+class Lang extends ActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public static function tableName()
 	{
-		return 'surtax';
+		return 'lang';
 	}
 
 	/**
@@ -32,12 +30,11 @@ class Tax extends ActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('from, to, manager, admin', 'required'),
-			array('from, to', 'numerical', 'integerOnly'=>true),
-			array('manager, admin', 'numerical'),
+			['name', 'required'],
+			['name', 'string', 'max'=>100],
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, from, to, manager, admin', 'safe', 'on'=>'search'),
+			
 		);
 	}
 
@@ -58,11 +55,8 @@ class Tax extends ActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'from' => 'From',
-			'to' => 'To',
-			'manager' => 'Manager(%)',
-			'admin' => 'Administrator(%)',
+			'id' => 'ID',			
+			'name' => 'Name',
 		);
 	}
 
@@ -84,11 +78,8 @@ class Tax extends ActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('from',$this->from);
-		$criteria->compare('to',$this->to);
-		$criteria->compare('manager',$this->manager);
-		$criteria->compare('admin',$this->admin);
+		$criteria->compare('id',$this->id);		
+		$criteria->compare('percent',$this->percent);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -99,7 +90,7 @@ class Tax extends ActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Tax the static model class
+	 * @return Vat the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

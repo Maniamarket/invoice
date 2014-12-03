@@ -12,22 +12,25 @@ use yii\web\UploadedFile;
 
 class CompanyController extends Controller {
 
-    /**
-     * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
-     * using two-column layout. See 'protected/views/layouts/column2.php'.
-     */
-//    public $layout = '//layouts/column2';
-
-    /**
-     * @return array action filters
-     */
-    public function filters() {
-	return array(
-	    'accessControl', // perform access control for CRUD operations
-	    'postOnly + delete', // we only allow deletion via POST request
-	);
-    }
-
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions'=>['login','error'],
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'allow' => true,
+                        'roles' => ['admin'],
+                    ],
+                ],
+            ],
+    ];
+}
     /**
      * Displays a particular model.
      * @param integer $id the ID of the model to be displayed
@@ -140,6 +143,10 @@ class CompanyController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
+/*        if (Yii::$app->user->can('admin'))  // "admin" является названием роли которое было создано через API "authManger"-а.
+            echo 'Hello, Admin!';
+        else echo 'fatal';*/
+
         $dataProvider = new ActiveDataProvider([
             'query' => Company::find(),
             'pagination' => [

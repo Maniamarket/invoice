@@ -1,4 +1,14 @@
 <?php
+namespace app\controllers;
+
+use Yii;
+use yii\filters\AccessControl;
+use yii\web\Controller;
+use yii\filters\VerbFilter;
+use yii\data\ActiveDataProvider;
+use yii\web\Request;
+use yii\web\HttpException;
+use app\models\Setting;
 
 class SettingController extends Controller {
 
@@ -6,7 +16,7 @@ class SettingController extends Controller {
      * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
      * using two-column layout. See 'protected/views/layouts/column2.php'.
      */
-    public $layout = '//layouts/column2';
+   // public $layout = '//layouts/column2';
 
     /**
      * @return array action filters
@@ -67,25 +77,17 @@ class SettingController extends Controller {
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id the ID of the model to be updated
      */
-    public function actionUpdate() {
-	$model = $this->loadModel(Yii::app()->user->id);
-
+    public function actionUpdate()
+    {
+        $model = $this->loadModel(Yii::$app->user->id);
 	// Uncomment the following line if AJAX validation is needed
 	// $this->performAjaxValidation($model);
 
-	if (isset($_POST['Setting'])) {
-	    $model->attributes = $_POST['Setting'];
-	    $model->setAttribute('role', $_POST['Setting']['role']);
-	    if ($model->save()) {
-		User::model()->updateByPk(Yii::app()->user->id, array(
-		    'role' => $model->role));
-		$this->redirect(array('update'));
-	    }
-	}
-
-	$this->render('update', array(
-	    'model' => $model,
-	));
+	if ($model->load(Yii::$app->request->post()) && $model->save()) 
+         {  
+            return $this->redirect(['site/index']);   
+         }
+        else  return $this->render('update', ['model' => $model,]);
     }
 
     /**
@@ -105,10 +107,11 @@ class SettingController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
-	$dataProvider = new CActiveDataProvider('Setting');
-	$this->render('index', array(
-	    'dataProvider' => $dataProvider,
-	));
+        $id = Yii::$app->user->id;
+	$dataProvider = new ActiveDataProvider([
+                'query' => Setting::find()->where(['user_id' => $id]),
+            ]);
+        return $this->render('index',array( 'dataProvider'=>$dataProvider, ));
     }
 
     /**
@@ -125,18 +128,14 @@ class SettingController extends Controller {
 	));
     }
 
-    /**
-     * Returns the data model based on the primary key given in the GET variable.
-     * If the data model is not found, an HTTP exception will be raised.
-     * @param integer $id the ID of the model to be loaded
-     * @return Setting the loaded model
-     * @throws CHttpException
-     */
+    
     public function loadModel($id) {
-	$model = Setting::model()->findByPk($id);
-	if ($model === null)
-	    throw new CHttpException(404, 'The requested page does not exist.');
-	return $model;
+	$model= Setting::find()
+                        ->where(['user_id' => $id])
+                        ->one();
+        if($model===null)
+                throw new HttpException(404,'The requested page does not exist.');
+        return $model;
     }
 
     /**

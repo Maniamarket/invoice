@@ -9,13 +9,22 @@ namespace app\commands;
 
 use Yii;
 use yii\console\Controller;
+use yii\rbac\DbManager;
 use app\components\rbac\UserRoleRule;
+//use app\rbac\UserGroupRule;
 
 class RbacController extends Controller
 {
     public function actionInit()
     {
+/*        $r=new DbManager;
+        $r->init();
+        $user = $r->createRole('user');
+        $r->add($user);*/
+
         $auth = Yii::$app->authManager;
+//        $auth = new DbManager;
+//        $auth->init();
         $auth->removeAll(); //удаляем старые данные
         //Создадим для примера права для доступа к админке
         $dashboard = $auth->createPermission('dashboard');
@@ -41,6 +50,13 @@ class RbacController extends Controller
         $admin->ruleName = $rule->name;
         $auth->add($admin);
         $auth->addChild($admin, $moder);
+        //Добавляем потомков
+        $sadmin = $auth->createRole('superadmin');
+        $sadmin->description = 'Суперадминистратор';
+        $sadmin->ruleName = $rule->name;
+        $auth->add($sadmin);
+        $auth->addChild($sadmin, $admin);
+
 /*        $authManager = Yii::$app->authManager;
 
         // Create roles
@@ -72,7 +88,7 @@ class RbacController extends Controller
 
 
         // Add rule, based on UserExt->group === $user->group
-        $userGroupRule = new UserRoleRule();
+        $userGroupRule = new UserGroupRule();
         $authManager->add($userGroupRule);
 
         // Add rule "UserGroupRule" in roles
