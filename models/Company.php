@@ -13,6 +13,7 @@ use \yii\db\ActiveRecord;
  */
 class Company extends ActiveRecord {
 
+    public $file;
     /**
      * @return string the associated database table name
      */
@@ -29,7 +30,7 @@ class Company extends ActiveRecord {
 	return array(
 	    array('name', 'required'),
 	    array('name', 'string', 'max' => 255),
-	    array('logo', 'file', 'extensions' => ['jpg','jpeg','png','gif']),
+	    array('file', 'file', 'extensions' => ['jpg','jpeg','png','gif']),
 	    // The following rule is used by search().
 	    // @todo Please remove those attributes that should not be searched.
 	    array('id, name', 'safe', 'on' => 'search'),

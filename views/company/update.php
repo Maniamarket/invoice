@@ -13,4 +13,4 @@ $this->params['breadcrumbs'][]= 'Update';
 
 <h1>Update Company <?php echo $model->id; ?></h1>
 
-<?php echo $this->context->renderPartial('_form', array('model'=>$model)); ?>
+<?php echo $this->context->renderPartial('_form', ['model'=>$model, 'uploaded'=>$uploaded]); ?>

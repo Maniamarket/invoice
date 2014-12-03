@@ -44,7 +44,7 @@ class CompanyController extends Controller {
      */
     public function actionCreate() {
 	$model = new Company;
-    $dir = Yii::getAlias('@web/images');
+//    $dir = Yii::getAlias('@web/images');
     $uploaded = false;
 
 	// Uncomment the following line if AJAX validation is needed
@@ -60,10 +60,12 @@ class CompanyController extends Controller {
 	   //print_r($model->logo->tempName); exit;
 	   
 	  //print_r($model->attributes); exit;
-        $file = UploadedFile::getInstance($model,'logo');
+        $file = UploadedFile::getInstance($model,'file');
+        if ($file)
+            $model->logo = $file->name;
 	    if ($model->save()) {
             if ($file)
-                $uploaded = $file->saveAs('images/'.$file->name);
+                $uploaded = $file->saveAs('images/companies/'.$file->name);
 
 //		$model->logo->saveAs(Yii::app()->basePath . '/../www/images/logo/' . $model->logo);
 		
@@ -89,18 +91,26 @@ class CompanyController extends Controller {
      */
     public function actionUpdate($id) {
 	$model = $this->loadModel($id);
+    $uploaded = false;
 
 	// Uncomment the following line if AJAX validation is needed
 	// $this->performAjaxValidation($model);
 
 	if (isset($_POST['Company'])) {
+        $file = UploadedFile::getInstance($model,'file');
+        if ($file)
+            $model->logo = $file->name;
 	    $model->attributes = $_POST['Company'];
-	    if ($model->save())
-		$this->redirect(array('view', 'id' => $model->id));
+	    if ($model->save()) {
+            if ($file)
+                $uploaded = $file->saveAs('images/companies/'.$file->name);
+            $this->redirect(array('view', 'id' => $model->id));
+        }
 	}
 
 	return $this->render('update', array(
 	    'model' => $model,
+        'uploaded' => $uploaded,
 	));
     }
 
@@ -114,7 +124,7 @@ class CompanyController extends Controller {
 
 	// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 	if (!isset($_GET['ajax']))
-	    $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+	    $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
     }
 
     /**

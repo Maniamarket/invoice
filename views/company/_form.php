@@ -37,7 +37,7 @@ use yii\bootstrap\ActiveForm;
 	</div>
     <div class="form-group">
         <label>Логотип</label>
-        <?php echo Html::activeFileInput($model,'logo') ?>
+        <?php echo Html::activeFileInput($model,'file') ?>
     </div>
     <div class="form-group">
         <?php
