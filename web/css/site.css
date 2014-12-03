@@ -101,3 +101,7 @@ a.desc:after {
     max-width: 150px;
     height: auto;
 }
+
+.remove-btn{
+    cursor: pointer;
+}

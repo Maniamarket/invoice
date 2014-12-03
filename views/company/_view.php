@@ -9,11 +9,12 @@ use yii\helpers\Html;
     <td>
         <?php echo Html::a(Html::encode($model->id), ['view', 'id'=>$model->id]); ?>
         &nbsp;
+        <span class="pull-right">
         <?php echo Html::a('<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>',
             ['update', 'id'=>$model->id],['title'=>'Update']); ?>
         &nbsp;
-        <?php echo Html::a('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>',
-            ['delete', 'id'=>$model->id],['title'=>'Delete', 'onclick'=>'return confirm("Вы действительно хотите удалить?");']); ?>
+        <?php echo '<a class="remove-btn" data-rmid="'.$model->id.'" data-rmu="'.yii\helpers\Url::toRoute('company/remove').'" data-message="Ві уверены, что хотите удалить компанию '.$model->name.'"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>'; ?>
+            </span>
     </td>
     <td><?php echo Html::encode($model->name); ?></td>
     <td><?php echo Html::img(Yii::$app->params['imagePath'].'companies/'.$model->logo,['alt'=>'company','class'=>'logo150']); ?></td>
