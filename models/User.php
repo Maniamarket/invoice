@@ -57,6 +57,10 @@ class User extends ActiveRecord implements IdentityInterface
 
             ['role', 'default', 'value' => self::ROLE_USER],
             ['role', 'in', 'range' => [self::ROLE_USER]],
+
+            [['email','username'], 'required'],
+            [['email','username'], 'unique'],
+            ['email','email'],
         ];
     }
 
@@ -118,7 +122,7 @@ class User extends ActiveRecord implements IdentityInterface
         }
         $expire = Yii::$app->params['user.passwordResetTokenExpire'];
         $parts = explode('_', $token);
-        $timestamp = (int) end($parts);
+        $timestamp = (int)end($parts);
         return $timestamp + $expire >= time();
     }
 
@@ -189,5 +193,26 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+
+    public function getStatusLabel($status = '')
+    {
+        $status = (empty($status)) ? $this->role : $status;
+        switch ($status) {
+            case 10:
+                return ['success', 'user'];
+            default:
+                return ['danger', 'error'];
+        }
+    }
+
+    public function getRolesList()
+    {
+        return array(self::ROLE_USER => 'User');
+    }
+
+    public function getStatusList()
+    {
+       return array(self::STATUS_ACTIVE => 'Active', self::STATUS_DELETED => 'Deleted');
     }
 }
