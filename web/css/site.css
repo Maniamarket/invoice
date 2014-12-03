@@ -96,3 +96,8 @@ a.desc:after {
 #language-select a {
     padding-left: 8px;
 }
+
+.logo150{
+    max-width: 150px;
+    height: auto;
+}
