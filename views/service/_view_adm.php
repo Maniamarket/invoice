@@ -15,12 +15,13 @@ $view_element_td = 'td_service_id'.$model->id;
             echo Html::a('save',Url::toRoute(['service/update','id'=>$model->id]),
             [
              'title' => Yii::t('yii', 'Save'),
+             'class' => 'btn btn-primary btn-xs',
              'onclick'=>"{  var name = $('#".$view_element_td." ').val();
                $.ajax({
                url  : '".$url."',
                type :'POST',
                data: {'name': name},
-               success  : function(response) { $('#".$view_element_td."').empty().html(response);   }
+               success  : function(response) { $('#".$view_element_td."').empty().html(response).focus();   }
              })}; return false; ",
            ]);
        ?>

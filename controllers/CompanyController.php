@@ -20,8 +20,8 @@ class CompanyController extends Controller {
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions'=>['login','error'],
-                        'roles' => ['?'],
+                        'actions'=>['index','view'],
+                        'roles' => ['@'],
                     ],
                     [
                         'allow' => true,

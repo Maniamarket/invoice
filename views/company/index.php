@@ -16,7 +16,11 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <h1>Companies</h1>
-<?php echo Html::a('Создать', Url::toRoute('create'),['class'=>'btn-lg btn btn-success']) ?>
+<?php
+if (\Yii::$app->user->can('superadmin')) {
+    echo Html::a('Создать', Url::toRoute('create'),['class'=>'btn-lg btn btn-success']);
+ }
+?>
 <table class="table table-striped">
     <tr>
         <th>ID</th>

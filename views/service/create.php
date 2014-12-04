@@ -1,4 +1,6 @@
 <?php
+use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\Menu;
 use yii\widgets\Breadcrumbs;
 use yii\web\View;
@@ -10,13 +12,8 @@ $this->params['breadcrumbs'][] = ['label'=>$this->title,'url'=>['index']];
 
 $this->title=Yii::$app->name . ' - Create';
 $this->params['breadcrumbs'][] = $this->title;
-
-echo Menu::widget([
-        'items' => [
-	['label'=>'List Service', 'url'=>array('index')],
-	['label'=>'Manage Service', 'url'=>array('admin')],
-]]);
 ?>
+<?php echo Html::a('Список сервисов', Url::toRoute('index'),['class'=>'btn-lg btn btn-primary']) ?>
 
 <h1>Create Service</h1>
 
