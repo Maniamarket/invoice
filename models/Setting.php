@@ -35,7 +35,7 @@ class Setting extends ActiveRecord {
 	return array(
 	    [['def_company_id','bank_code', 'account_number','def_lang_id'], 'required'],
 	    [['def_vat_id','post_index'], 'integer'],
-            [['bank_code', 'account_number','country','city','street','phone','web_site','name'], 'filter', 'filter' => 'trim'],
+        [['bank_code', 'account_number','country','city','street','phone','web_site','name'], 'filter', 'filter' => 'trim'],
 	    [['bank_code', 'account_number','country','city','street','phone','web_site','name'], 'string', 'max' => 100],
 	    // The following rule is used by search().
 	    // @todo Please remove those attributes that should not be searched.

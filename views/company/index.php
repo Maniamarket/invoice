@@ -27,6 +27,7 @@ if (\Yii::$app->user->can('superadmin')) {
         <th>Name</th>
         <th>Logo</th>
         <th>Country</th>
+        <th>City</th>
         <th>Street</th>
         <th>Post Index</th>
         <th>Phone</th>

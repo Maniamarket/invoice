@@ -23,15 +23,25 @@ $this->params['breadcrumbs'][]= $model->name;
 if (\Yii::$app->user->can('superadmin')) {
     echo Html::a('Создать', Url::toRoute('create'),['class'=>'btn-lg btn btn-success']);
     echo Html::a('Обновить', Url::toRoute(['update','id'=>$model->id]),['class'=>'btn-lg btn btn-success']);
+    echo Html::a('Удалить',
+    ['delete', 'id'=>$model->id],['class'=>'btn-lg btn btn-danger', 'onclick'=>'return confirm("Вы действительно хотите удалить?");']);
 }
 ?>
 <h1>View Company #<?php echo $model->id; ?></h1>
-
 <?php echo DetailView::widget([
 	'model'=>$model,
 	'attributes'=>[
 		'id',
-		'name',
+        'name',
+        'country',
+        'street',
+        'post_index',
+        'phone',
+        'web_site',
+        'mail',
+        'vat_number',
+        'activity',
+        'resp_person',
 	],
 ]); ?>
 
