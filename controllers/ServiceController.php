@@ -81,17 +81,29 @@ class ServiceController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
-		$model=$this->loadModel($id);
+		//$model=$this->loadModel($id);
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
+                if( Yii::$app->request->isAjax)
+                {      
+                    $model=$this->loadModel($id);
+                    $post = Yii::$app->request->post();
+                    $model->name= $post['name'];
+//                    $model->load(Yii::$app->request->post());
+                    $model->save();
+  //                  var_dump($post);
+    //                   $id = 1;//$post['Service']['id'];
+                      echo $model->name;
 
-		   if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                        return $this->redirect(['index']);
+                }
+		   /*if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                     
+                      //  return $this->redirect(['index']);
                  } else 
                         return $this->render('update', [
                             'model' => $model,
-                        ]);
+                        ]);*/
 	}
 
 	/**

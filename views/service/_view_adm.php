@@ -3,14 +3,26 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 $view_element = 'service_id'.$model->id;
+$view_element_td = 'td_service_id'.$model->id;
 ?>
 
 <tr id="<?php echo Html::encode($view_element); ?>">
     <td><?php echo Html::encode($model->id); ?></td>
-    <td><?php echo Html::encode($model->name); ?></td>
+    <td><?php echo Html::textInput('name', $model->name, ['id'=>$view_element_td]); ?></td>
     <td>
-       <?php  echo Html::a('<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>',
-            ['update', 'id'=>$model->id],['title'=>'Update']); 
+       <?php 
+            $url = Url::toRoute(['service/update','id'=>$model->id]);
+            echo Html::a('save',Url::toRoute(['service/update','id'=>$model->id]),
+            [
+             'title' => Yii::t('yii', 'Save'),
+             'onclick'=>"{  var name = $('#".$view_element_td." ').val();
+               $.ajax({
+               url  : '".$url."',
+               type :'POST',
+               data: {'name': name},
+               success  : function(response) { $('#".$view_element_td."').empty().html(response);   }
+             })}; return false; ",
+           ]);
        ?>
       &nbsp;
       <?php  
