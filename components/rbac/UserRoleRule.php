@@ -10,9 +10,15 @@ class UserRoleRule extends Rule
     public function execute($user, $item, $params)
     {
         //Получаем массив пользователя из базы
-        $user = ArrayHelper::getValue($params, 'user', User::findOne($user));
+/*        $user = ArrayHelper::getValue($params, 'user', User::findOne($user));
         if ($user) {
-            $role = $user->role; //Значение из поля role базы данных
+            $role = $user->role; //Значение из поля role базы данных*/
+        if (!\Yii::$app->user->isGuest) {
+            $role = \Yii::$app->user->identity->role;
+            echo ' $role='.$role;
+//            return  !Yii::$app->user->isGuest;
+
+            print_r($item);
             if ($item->name === 'superadmin') {
                 return $role == User::ROLE_SUPERADMIN;
             } elseif ($item->name === 'admin') {

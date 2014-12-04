@@ -13,7 +13,7 @@ use yii\helpers\Html;
         <?php echo Html::a('<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>',
             ['update', 'id'=>$model->id],['title'=>'Update']); ?>
         &nbsp;
-        <?php echo '<a class="remove-btn" data-rmid="'.$model->id.'" data-rmu="'.yii\helpers\Url::toRoute('company/remove').'" data-message="Ві уверены, что хотите удалить компанию '.$model->name.'"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>'; ?>
+        <?php echo '<a class="remove-btn" data-rmid="'.$model->id.'" data-rmu="'.yii\helpers\Url::toRoute('company/remove').'" data-message="Вы уверены, что хотите удалить компанию '.$model->name.'?"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>'; ?>
             </span>
     </td>
     <td><?php echo Html::encode($model->name); ?></td>

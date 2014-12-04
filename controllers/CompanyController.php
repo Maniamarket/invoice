@@ -143,9 +143,9 @@ class CompanyController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
-/*        if (Yii::$app->user->can('admin'))  // "admin" является названием роли которое было создано через API "authManger"-а.
+        if (Yii::$app->user->can('admin'))  // "admin" является названием роли которое было создано через API "authManger"-а.
             echo 'Hello, Admin!';
-        else echo 'fatal';*/
+        else echo 'fatal';
 
         $dataProvider = new ActiveDataProvider([
             'query' => Company::find(),

@@ -1,35 +1,30 @@
 <?php
 return [
-    'dashboard' => [
-        'type' => 2,
-        'description' => 'Админ панель',
-    ],
     'user' => [
         'type' => 1,
-        'description' => 'Пользователь',
-        'ruleName' => 'userRole',
+        'description' => 'User',
+        'ruleName' => 'group',
     ],
     'manager' => [
         'type' => 1,
-        'description' => 'Менеджер',
-        'ruleName' => 'userRole',
+        'description' => 'Manager',
+        'ruleName' => 'group',
         'children' => [
             'user',
-            'dashboard',
         ],
     ],
     'admin' => [
         'type' => 1,
-        'description' => 'Администратор',
-        'ruleName' => 'userRole',
+        'description' => 'Admin',
+        'ruleName' => 'group',
         'children' => [
             'manager',
         ],
     ],
     'superadmin' => [
         'type' => 1,
-        'description' => 'Суперадминистратор',
-        'ruleName' => 'userRole',
+        'description' => 'Superadmin',
+        'ruleName' => 'group',
         'children' => [
             'admin',
         ],

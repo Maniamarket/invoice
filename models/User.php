@@ -6,6 +6,7 @@ use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+use yii\helpers\ArrayHelper;
 
 /**
  * User model
@@ -24,12 +25,13 @@ use yii\web\IdentityInterface;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-    const STATUS_DELETED = 0;
+    const STATUS_INACTIVE = 0;
+    const STATUS_BANNED = 5;
     const STATUS_ACTIVE = 10;
-    const ROLE_USER = 10;
-    const ROLE_MANAGER = 20;
-    const ROLE_ADMIN = 30;
-    const ROLE_SUPERADMIN = 40;
+    const ROLE_USER = 'user';
+    const ROLE_MANAGER = 'manager';
+    const ROLE_ADMIN = 'admin';
+    const ROLE_SUPERADMIN = 'superadmin';
 
     /**
      * @inheritdoc
@@ -56,10 +58,10 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+            ['status', 'in', 'range' => array_keys(self::getStatusArray())],
 
             ['role', 'default', 'value' => self::ROLE_USER],
-            ['role', 'in', 'range' => [self::ROLE_USER]],
+            ['role', 'in', 'range' => array_keys(self::getRoleArray())],
 
             [['email','username'], 'required'],
             [['email','username'], 'unique'],
@@ -198,6 +200,7 @@ class User extends ActiveRecord implements IdentityInterface
         $this->password_reset_token = null;
     }
 
+    /*Todo удалить, если не используется */
     public function getStatusLabel($status = '')
     {
         $status = (empty($status)) ? $this->role : $status;
@@ -209,13 +212,61 @@ class User extends ActiveRecord implements IdentityInterface
         }
     }
 
+    /*Todo удалить, если не используется */
     public function getRolesList()
     {
         return array(self::ROLE_USER => 'User');
     }
 
+    /*Todo удалить, если не используется */
     public function getStatusList()
     {
-       return array(self::STATUS_ACTIVE => 'Active', self::STATUS_DELETED => 'Deleted');
+       return array(self::STATUS_ACTIVE => 'Active', self::STATUS_INACTIVE => 'Inactive', self::STATUS_BANNED => 'Banned');
+    }
+
+    /**
+     * @return string Model status.
+     */
+    public function getStatus()
+    {
+        if ($this->_status === null) {
+            $statuses = self::getStatusArray();
+            $this->_status = $statuses[$this->status_id];
+        }
+        return $this->_status;
+    }
+    /**
+     * @return array Status array.
+     */
+    public static function getStatusArray()
+    {
+        return [
+            self::STATUS_ACTIVE => Yii::t('users', 'STATUS_ACTIVE'),
+            self::STATUS_INACTIVE => Yii::t('users', 'STATUS_INACTIVE'),
+            self::STATUS_BANNED => Yii::t('users', 'STATUS_BANNED')
+        ];
+    }
+    /**
+     * @return array Role array.
+     */
+    public static function getRoleArray()
+    {
+        return ArrayHelper::map(Yii::$app->authManager->getRoles(), 'name', 'description');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        // установка роли пользователя
+        $auth = Yii::$app->authManager;
+        $name = $this->role ? $this->role : self::ROLE_USER;
+        $role = $auth->getRole($name);
+        if (!$insert) {
+            $auth->revokeAll($this->id);
+        }
+        $auth->assign($role, $this->id);
     }
 }

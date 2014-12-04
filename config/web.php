@@ -39,25 +39,15 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'authManager' => [
-            'class' => 'yii\rbac\PhpManager',
-//            'authFile' => '@app/config/rbac.php'
-
-            'defaultRoles' => ['superadmin', 'admin', 'manager', 'user','quest'],
-/*            'itemFile' => '@app/components/rbac/items.php',
-            'assignmentFile' => '@app/components/rbac/assignments.php',
-            'ruleFile' => '@app/components/rbac/rules.php'*/
+//            'class' => 'yii\rbac\PhpManager',
+            'class' => 'yii\rbac\DBManager',
+            'defaultRoles' => [
+                'user',
+                'manager',
+                'admin',
+                'superadmin'
             ],
- /*       'authManager' => [
-            'class' => \Zelenin\yii\modules\Rbac\components\DbManager::className(),
-            'itemFile' => '@common/config/rbac/items.php',
-            'assignmentFile' => '@common/config/rbac/assignments.php',
-            'ruleFile' => '@common/config/rbac/rules.php',
-            'defaultRole' => 'user',
-            'roleParam' => 'role', // User model attribute
-            // optional
-            'enableCaching' => false,
-            'cachingDuration' => 60
-        ],*/
+            ],
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,

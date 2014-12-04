@@ -84,7 +84,7 @@ AppAsset::register($this);
 <?php $this->endBody() ?>
 </body>
 </html>
-<?
+<?php
 $this->registerJsFile(Yii::getAlias('@web/js/app.js'),[\yii\web\View::POS_READY]);
 ?>
 <?php $this->endPage() ?>
