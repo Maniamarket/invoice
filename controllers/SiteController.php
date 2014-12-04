@@ -122,6 +122,13 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
                 if (Yii::$app->getUser()->login($user)) {
+                    $model = new \app\models\Setting();
+                    $model->user_id = Yii::$app->getUser()->id;
+                    $model->def_company_id = 0;
+                    $model->def_lang_id = 0;
+                    $model->bank_code = 'no';
+                    $model->account_number = 'no';
+                    $model->save();
                     return $this->goHome();
                 }
             }

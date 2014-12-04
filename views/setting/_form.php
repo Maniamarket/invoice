@@ -43,6 +43,11 @@ use yii\helpers\BaseHtml;
     </div>
 
     <div class="row">
+            <?php echo $form->field($model, 'name')->textInput()->hint('You family, name, ')->label('fio') ; ?>
+            <?php echo Html::error($model, 'name'); ?>
+    </div>
+
+    <div class="row">
             <?php echo $form->field($model, 'account_number')->textInput()->hint('account_number')->label('account_number') ; ?>
             <?php echo Html::error($model, 'account_number'); ?>
     </div>
