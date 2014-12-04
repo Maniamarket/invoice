@@ -40,14 +40,14 @@ $config = [
         ],
         'authManager' => [
 //            'class' => 'yii\rbac\PhpManager',
-            'class' => 'yii\rbac\DBManager',
+            'class' => 'yii\rbac\DbManager',
             'defaultRoles' => [
                 'user',
                 'manager',
                 'admin',
                 'superadmin'
             ],
-            ],
+        ],
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
