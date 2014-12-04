@@ -12,49 +12,25 @@ use yii\web\Request;
 
 class ServiceController extends Controller
 {
-	/**
-	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
-	 * using two-column layout. See 'protected/views/layouts/column2.php'.
-	 */
-	//public $layout='//layouts/column2';
-
-	/**
-	 * @return array action filters
-	 */
-	public function filters()
-	{
-		return array(
-			'accessControl', // perform access control for CRUD operations
-			'postOnly + delete', // we only allow deletion via POST request
-		);
-	}
-
-	/**
-	 * Specifies the access control rules.
-	 * This method is used by the 'accessControl' filter.
-	 * @return array access control rules
-	 */
-	public function accessRules()
-	{
-		return array(
-			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index'),
-				'users'=>array('*'),
-			),
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
-				'users'=>array('@'),
-			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
-				'users'=>array('admin'),
-			),
-			array('deny',  // deny all users
-				'users'=>array('*'),
-			),
-		);
-	}
-
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions'=>['index'],
+                        'roles' => ['@'],
+                    ],
+                    [
+                        'allow' => true,
+                        'roles' => ['superadmin'],
+                    ],
+                ],
+            ],
+    ];
+}
 	
 	/**
 	 * Creates a new model.
@@ -81,29 +57,15 @@ class ServiceController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
-		//$model=$this->loadModel($id);
-
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
                 if( Yii::$app->request->isAjax)
                 {      
                     $model=$this->loadModel($id);
                     $post = Yii::$app->request->post();
                     $model->name= $post['name'];
-//                    $model->load(Yii::$app->request->post());
                     $model->save();
-  //                  var_dump($post);
-    //                   $id = 1;//$post['Service']['id'];
-                      echo $model->name;
+                    echo $model->name;
 
                 }
-		   /*if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                     
-                      //  return $this->redirect(['index']);
-                 } else 
-                        return $this->render('update', [
-                            'model' => $model,
-                        ]);*/
 	}
 
 	/**
@@ -131,52 +93,18 @@ class ServiceController extends Controller
                     'pageSize' => 10,
                 ],
             ]);
-            if( FALSE ) return $this->render('index',array( 'dataProvider'=>$dataProvider, ));
-            else  return $this->render('index_adm',array( 'dataProvider'=>$dataProvider, ));
+            if( yii::$app->user->identity->role==='superadmin' ) return $this->render('index_adm',array( 'dataProvider'=>$dataProvider, ));
+            else  return $this->render('index',array( 'dataProvider'=>$dataProvider, ));
+ 
 	}
 
-	/**
-	 * Manages all models.
-	 */
-	public function actionAdmin()
-	{
-		$model=new Service('search');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Service']))
-			$model->attributes=$_GET['Service'];
-
-		$this->render('admin',array(
-			'model'=>$model,
-		));
-	}
-
-	/**
-	 * Returns the data model based on the primary key given in the GET variable.
-	 * If the data model is not found, an HTTP exception will be raised.
-	 * @param integer $id the ID of the model to be loaded
-	 * @return Service the loaded model
-	 * @throws CHttpException
-	 */
 	public function loadModel($id)
 	{
-		$model=Service::find()
-                        ->where(['id' => $id])
-                        ->one();
-		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
-		return $model;
+            $model=Service::find()->where(['id' => $id])->one();
+            
+            if($model===null) throw new CHttpException(404,'The requested page does not exist.');
+            
+            return $model;
 	}
 
-	/**
-	 * Performs the AJAX validation.
-	 * @param Service $model the model to be validated
-	 */
-	protected function performAjaxValidation($model)
-	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='service-form')
-		{
-			echo CActiveForm::validate($model);
-			Yii::app()->end();
-		}
-	}
 }
