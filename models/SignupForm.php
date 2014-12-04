@@ -49,6 +49,11 @@ class SignupForm extends Model
             $user->setPassword($this->password);
             $user->generateAuthKey();
             $user->save();
+            Yii::$app->mailer->compose('welcome', ['user' => $user])
+                ->setFrom('no-reply@site.ru')
+                ->setTo($user->email)
+                ->setSubject('Welcome')
+                ->send();
             return $user;
         }
 
