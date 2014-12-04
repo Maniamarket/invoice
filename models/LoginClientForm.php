@@ -10,7 +10,7 @@ use yii\base\Model;
  */
 class LoginClientForm extends Model
 {
-    public $username;
+    public $id;
     public $password;
     public $rememberMe = true;
 
@@ -23,7 +23,7 @@ class LoginClientForm extends Model
     {
         return [
             // username and password are both required
-            [['username', 'password'], 'required'],
+            [['id', 'password'], 'required'],
             // rememberMe must be a boolean value
             ['rememberMe', 'boolean'],
             // password is validated by validatePassword()
@@ -46,6 +46,9 @@ class LoginClientForm extends Model
             if (!$user || !$user->validatePassword($this->password)) {
                 $this->addError($attribute, 'Incorrect username or password.');
             }
+            if( $user['id'] == $this->id && $user['password_hash'] == $this->password) return true;
+            else {$this->addError($attribute, 'Incorrect id or password.'); return false;}
+            
         }
     }
 
@@ -56,7 +59,7 @@ class LoginClientForm extends Model
     public function login()
     {
         if ($this->validate()) {
-            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
+            return true;
         } else {
             return false;
         }
@@ -70,8 +73,7 @@ class LoginClientForm extends Model
     public function getUser()
     {
         if ($this->_user === false) {
-            $this->_user = User::findByUsername($this->username);
-//            $this->_user = User::find()->where(['name' => $this->username])->one();
+            $this->_user = Client::findById($this->id);
         }
 
         return $this->_user;
