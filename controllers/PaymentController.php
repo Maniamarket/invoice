@@ -6,11 +6,11 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
-use app\models\Lang;
+use app\models\Payment;
 use yii\web\Request;
 
 
-class LangController extends Controller
+class PaymentController extends Controller
 {
     public function behaviors()
     {
@@ -38,7 +38,7 @@ class LangController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Lang;
+		$model=new Payment;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -75,7 +75,7 @@ class LangController extends Controller
 	public function actionIndex()
 	{
             $dataProvider = new ActiveDataProvider([
-                'query' => Lang::find(),
+                'query' => Payment::find(),
                 'pagination' => [
                     'pageSize' => 10,
                 ],
@@ -86,7 +86,7 @@ class LangController extends Controller
 
 	public function loadModel($id)
 	{
-            $model=Lang::find()->where(['id' => $id])->one();
+            $model=Payment::find()->where(['id' => $id])->one();
             
             if($model===null) throw new CHttpException(404,'The requested page does not exist.');
             
