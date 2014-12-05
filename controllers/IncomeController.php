@@ -47,25 +47,16 @@ class IncomeController extends Controller
                         return $this->render('create', [ 'model' => $model, ]);
 	}
 
-	/**
-	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 * @param integer $id the ID of the model to be updated
-	 */
+	
 	public function actionUpdate($id)
 	{
-            	$model = $this->loadModel($id);
-               	if (isset($_POST['Company'])) {
-            $file = UploadedFile::getInstance($model,'file');
-            if ($file)
-                $model->logo = $file->name;
-                $model->attributes = $_POST['Company'];
-                if ($model->save()) {
-                if ($file)
-                    $uploaded = $file->saveAs('images/companies/'.$file->name);
-                $this->redirect(array('view', 'id' => $model->id));
+           $model = $this->loadModel($id);
+           if ($model->load(Yii::$app->request->post()) && $model->save() ) 
+            {
+           //  $model->validate();  var_dump($model->errors); exit();
+                $this->redirect(array('index'));
             }
-                }
+           else  return $this->render('update', [ 'model' => $model, ]);
         }        
 
 	public function actionDelete($id)
