@@ -7,21 +7,21 @@ use yii\helpers\Url;
 /* @var $this ServiceController */
 /* @var $dataProvider CActiveDataProvider */
 
-$this->title=Yii::$app->name . ' - My Client';
+$this->title=Yii::$app->name . ' - My Invoice';
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 
-<h1><?php echo Yii::t('lang', 'My Client'); ?></h1>
+<h1><?php echo Yii::t('lang', 'Invoice'); ?></h1>
 
 <table class="table table-striped">
     <tr>
         <th>ID</th>
-        <th>Name</th>
+        <th>Client_id</th>
     </tr>
 <?php echo ListView::widget([
 	'dataProvider'=>$dataProvider,
-	'itemView'=>'_view',
+	'itemView'=>'_invoice',
 ]); ?>
 </table>
 

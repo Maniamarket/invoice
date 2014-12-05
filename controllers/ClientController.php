@@ -71,7 +71,19 @@ class ClientController extends Controller
 
         return $this->goHome();
     }
+    
+    
+    public function actionIndex() {
+        $dataProvider = new ActiveDataProvider([
+            'query' => Client::find()->where(['user_id'=>  Yii::$app->user->id]),
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+        ]);
+        return $this->render('index', array('dataProvider' => $dataProvider, ));
+    }
 
+    
     public function actionInvoice()
     {
         $client_id = $this->isClient();
@@ -82,7 +94,7 @@ class ClientController extends Controller
                     'pageSize' => 10,
                 ],
             ]);
-        return $this->render('index',array( 'dataProvider'=>$dataProvider, ));
+        return $this->render('invoice',array( 'dataProvider'=>$dataProvider, ));
     }
 
     public function actionUpdate()

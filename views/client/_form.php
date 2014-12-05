@@ -33,6 +33,11 @@ use yii\helpers\BaseHtml;
     </div>
 
     <div class="form-group">
+            <?php echo $form->field($model, 'email')->textInput()->hint('email')->label('email') ; ?>
+            <?php echo Html::error($model, 'email'); ?>
+    </div>
+
+    <div class="form-group">
             <?php echo $form->field($model, 'country')->textInput()->hint('country')->label('country') ; ?>
             <?php echo Html::error($model, 'country'); ?>
     </div>
