@@ -49,7 +49,7 @@ AppAsset::register($this);
             'items' => [
                 ['label' => Yii::t('lang', 'Invoice'), 'url' => ['/client/invoice'], 'visible' => $this->context->isClient()],
                 ['label' => Yii::t('lang', 'Settings'), 'url' => ['/client/update'], 'visible' => $this->context->isClient()],
-                Yii::$app->user->isGuest ?
+                !$this->context->isClient() ?
                     ['label' => 'Login', 'url' => ['/client/login']] :
                     ['label' => 'Logout',
                         'url' => ['/client/logout'],

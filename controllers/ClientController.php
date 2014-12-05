@@ -31,9 +31,16 @@ class ClientController extends Controller
                 'only' => ['logout', 'login'],
                 'rules' => [
                     [
-                        'actions' => ['logout', 'login'],
+                        'actions' => ['login'],
                         'allow' => true,
                         'roles' => ['?'],
+                    ],
+                    [
+                        'actions' => ['logout','special-callback'],
+                        'allow' => true,
+                        'matchCallback' => function ($rule, $action) {
+                                return $this->isClient();
+                            }
                     ],
                 ],
             ],
@@ -98,6 +105,14 @@ class ClientController extends Controller
     {
         return ( isset(Yii::$app->session['client_id'])) ? Yii::$app->session['client_id'] : 0;
     }
+
+    // Match callback called! This page can be accessed only each October 31st
+    public function actionSpecialCallback()
+    {
+        echo 'Работает!';
+//        return $this->render('happy-halloween');
+    }
+
 
     public function loadModel($id) 
     {
