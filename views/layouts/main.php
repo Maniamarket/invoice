@@ -48,12 +48,17 @@ AppAsset::register($this);
             'options' => ['class' => 'navbar-nav navbar-right'],
             'items' => [
                 ['label' => Yii::t('lang', 'Home'), 'url' => ['/site/index'], 'visible' => !Yii::$app->user->isGuest],
-                ['label' => Yii::t('lang', 'Users'), 'url' => ['/user/index'], 'visible' => !Yii::$app->user->isGuest],
+                ['label' => Yii::t('lang', 'Users'), 'url' => ['/user/index'], 'visible' => Yii::$app->user->can('manager')],
                 ['label' => Yii::t('lang', 'Clients'), 'url' => ['/client/index'], 'visible' => !Yii::$app->user->isGuest],
                 ['label' => Yii::t('lang', 'Invoice'), 'url' => ['/invoice/index'], 'visible' => !Yii::$app->user->isGuest],
                 ['label' => Yii::t('lang', 'Companies'), 'url' => ['/company/index'], 'visible' => !Yii::$app->user->isGuest],
                 ['label' => Yii::t('lang', 'Services'), 'url' => ['/service/index'], 'visible' => !Yii::$app->user->isGuest],
-                ['label' => Yii::t('lang', 'Taxes'), 'url' => ['/tax/index'], 'visible' => !Yii::$app->user->isGuest],
+                ['label' => 'Налоги', 'url' => '#', 'visible' => !Yii::$app->user->isGuest,
+                    'items' => [
+                        ['label' => 'Подоходный', 'url' => ['/tax/index'], 'visible' => !Yii::$app->user->isGuest],
+                        ['label' => 'НДС', 'url' => ['/vat/index'], 'visible' => !Yii::$app->user->isGuest],
+                    ],
+                ],
                 ['label' => Yii::t('lang', 'Settings'), 'url' => ['/setting/update'], 'visible' => !Yii::$app->user->isGuest],
                 ['label' => Yii::t('lang', 'Register'), 'url' => ['/site/signup'], 'visible' => Yii::$app->user->isGuest],
                 Yii::$app->user->isGuest ?
