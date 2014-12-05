@@ -6,12 +6,12 @@ use yii\helpers\Url;
 /* @var $this VatController */
 /* @var $dataProvider CActiveDataProvider */
 
-$this->title=Yii::$app->name . ' - Vats';
+$this->title=Yii::$app->name . ' - SurTax';
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 
-<h1><?php echo Yii::t('lang', 'Vats'); ?></h1>
+<h1><?php echo Yii::t('lang', 'SurTax'); ?></h1>
 
 <?php echo Html::a('Создать', Url::toRoute('create'),['class'=>'btn-lg btn btn-success']) ?>
 <table class="table table-striped">

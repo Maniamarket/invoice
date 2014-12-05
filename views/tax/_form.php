@@ -1,52 +1,33 @@
 <?php
-/* @var $this TaxController */
-/* @var $model Tax */
-/* @var $form CActiveForm */
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+use yii\helpers\BaseHtml;
+
 ?>
 
-<div class="form">
 
-<?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'tax-form',
-	// Please note: When you enable ajax validation, make sure the corresponding
-	// controller action is handling ajax validation correctly.
-	// There is a call to performAjaxValidation() commented in generated controller code.
-	// See class documentation of CActiveForm for details on this.
-	'enableAjaxValidation'=>false,
-)); ?>
+<div class="row">
+    <div class="col-lg-5">
+    <?php $form=ActiveForm::begin( [
+        'id'=>'service-form',
+        'enableAjaxValidation'=>false,
+    ]); ?>
 
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
 
 	<?php echo $form->errorSummary($model); ?>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'from'); ?>
-		<?php echo $form->textField($model,'from'); ?>
-		<?php echo $form->error($model,'from'); ?>
+
+    <div class="form-group">
+		<?php echo $form->field($model, 'percent')->textInput()->hint('Please enter percent')->label('Percent') ; ?>
+		<?php echo Html::error($model, 'percent'); ?>
 	</div>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'to'); ?>
-		<?php echo $form->textField($model,'to'); ?>
-		<?php echo $form->error($model,'to'); ?>
+    <div class="form-group">
+		<?php echo Html::submitButton($model->isNewRecord ? 'Create' : 'Save',['class'=>'btn btn-success']); ?>
 	</div>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'manager'); ?>
-		<?php echo $form->textField($model,'manager'); ?>
-		<?php echo $form->error($model,'manager'); ?>
-	</div>
+    <?php  ActiveForm::end(); ?>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'admin'); ?>
-		<?php echo $form->textField($model,'admin'); ?>
-		<?php echo $form->error($model,'admin'); ?>
-	</div>
-
-	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
-	</div>
-
-<?php $this->endWidget(); ?>
-
-</div><!-- form -->
+    </div>
+</div>

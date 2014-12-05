@@ -14,14 +14,14 @@ use \yii\db\ActiveRecord;
  * @property double $manager
  * @property double $admin
  */
-class Tax extends ActiveRecord
+class Income extends ActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public static function tableName()
 	{
-		return 'surtax';
+		return 'income';
 	}
 
 	/**
@@ -32,12 +32,12 @@ class Tax extends ActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('from, to, manager, admin', 'required'),
-			array('from, to', 'numerical', 'integerOnly'=>true),
-			array('manager, admin', 'numerical'),
+			[ ['from','to','manager','admin'], 'required'],
+			[ ['from','to'], 'integer'],
+			[ ['manager','admin'], 'integer', 'integerOnly'=>false],
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, from, to, manager, admin', 'safe', 'on'=>'search'),
+//			array('id, from, to, manager, admin', 'safe', 'on'=>'search'),
 		);
 	}
 

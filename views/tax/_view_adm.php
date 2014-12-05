@@ -2,20 +2,17 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-$view_element = 'income_id'.$model->id;
-$view_element_td = 'td_income_id'.$model->id;
+$view_element = 'tax_id'.$model->id;
+$view_element_td = 'td_tax_id'.$model->id;
 ?>
 
 <tr id="<?php echo Html::encode($view_element); ?>">
     <td><?php echo Html::encode($model->id); ?></td>
-    <td><?php echo Html::encode($model->from); ?></td>
-    <td><?php echo Html::encode($model->to); ?></td>
-    <td><?php echo Html::encode($model->manager); ?></td>
-    <td><?php echo Html::encode($model->admin); ?></td>
+    <td><?php echo Html::textInput('percent', $model->percent, ['id'=>$view_element_td]); ?></td>
     <td>
        <?php 
-            $url = Url::toRoute(['income/update','id'=>$model->id]);
-            echo Html::a('save',Url::toRoute(['income/update','id'=>$model->id]),
+            $url = Url::toRoute(['tax/update','id'=>$model->id]);
+            echo Html::a('save',Url::toRoute(['tax/update','id'=>$model->id]),
             [
              'title' => Yii::t('yii', 'Save'),
              'class' => 'btn btn-primary btn-xs',
@@ -38,7 +35,7 @@ $view_element_td = 'td_income_id'.$model->id;
                 $.ajax({
                type     :'POST',
                cache    : false,
-               url  : 'income/delete',
+               url  : 'tax/delete',
                success  : function(response) { $('#".$view_element."').html(response);   }
            })}; return false; ",
           ]);

@@ -32,12 +32,11 @@ class Tax extends ActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('from, to, manager, admin', 'required'),
-			array('from, to', 'numerical', 'integerOnly'=>true),
-			array('manager, admin', 'numerical'),
-			// The following rule is used by search().
+			array('percent', 'required'),
+			array('percent', 'integer','integerOnly'=>FALSE),
+	// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, from, to, manager, admin', 'safe', 'on'=>'search'),
+			//array('id, from, to, manager, admin', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -59,10 +58,7 @@ class Tax extends ActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'from' => 'From',
-			'to' => 'To',
-			'manager' => 'Manager(%)',
-			'admin' => 'Administrator(%)',
+			'percent' => 'Percent',
 		);
 	}
 

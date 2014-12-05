@@ -87,22 +87,6 @@ class VatController extends Controller
             else  return $this->render('index',array( 'dataProvider'=>$dataProvider, ));
 	}
 
-	/**
-	 * Manages all models.
-	 */
-	public function actionAdmin()
-	{
-		$model=new Vat('search');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Vat']))
-			$model->attributes=$_GET['Vat'];
-
-		$this->render('admin',array(
-			'model'=>$model,
-		));
-	}
-
-	
 	public function loadModel($id)
 	{
             $model=Vat::find()->where(['id' => $id])->one();
