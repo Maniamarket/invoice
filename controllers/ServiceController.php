@@ -27,10 +27,10 @@ class ServiceController extends Controller
                         'allow' => true,
                         'roles' => ['superadmin'],
                     ],
+                        ],
                 ],
-            ],
-    ];
-}
+            ];
+    }
 	
 	/**
 	 * Creates a new model.
@@ -45,16 +45,10 @@ class ServiceController extends Controller
                  if ($model->load(Yii::$app->request->post()) && $model->save()) {
                         return $this->redirect(['index']);
                  } else 
-                        return $this->render('create', [
-                            'model' => $model,
-                        ]);
+                        return $this->render('create', ['model' => $model, ]);
 	}
 
-	/**
-	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 * @param integer $id the ID of the model to be updated
-	 */
+	
 	public function actionUpdate($id)
 	{
                 if( Yii::$app->request->isAjax)
@@ -64,20 +58,14 @@ class ServiceController extends Controller
                     $model->name= $post['name'];
                     $model->save();
                     echo $model->name;
-
                 }
 	}
 
-	/**
-	 * Deletes a particular model.
-	 * If deletion is successful, the browser will be redirected to the 'admin' page.
-	 * @param integer $id the ID of the model to be deleted
-	 */
+	
 	public function actionDelete($id)
 	{
 		$this->loadModel($id)->delete();
 
-		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
 	}

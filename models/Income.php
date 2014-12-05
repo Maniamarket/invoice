@@ -5,20 +5,23 @@ use Yii;
 use \yii\db\ActiveRecord;
 
 /**
- * This is the model class for table "vat".
+ * This is the model class for table "tax".
  *
- * The followings are the available columns in table 'vat':
+ * The followings are the available columns in table 'tax':
  * @property integer $id
- * @property integer $percent
+ * @property integer $from
+ * @property integer $to
+ * @property double $manager
+ * @property double $admin
  */
-class Vat extends ActiveRecord
+class Tax extends ActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public static function tableName()
 	{
-		return 'vat';
+		return 'surtax';
 	}
 
 	/**
@@ -29,11 +32,12 @@ class Vat extends ActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('percent', 'required'),
-			array('percent', 'integer','integerOnly'=>FALSE),
+			array('from, to, manager, admin', 'required'),
+			array('from, to', 'numerical', 'integerOnly'=>true),
+			array('manager, admin', 'numerical'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			//array('id, percent', 'safe', 'on'=>'search'),
+			array('id, from, to, manager, admin', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -54,8 +58,11 @@ class Vat extends ActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',			
-			'percent' => 'Percent',
+			'id' => 'ID',
+			'from' => 'From',
+			'to' => 'To',
+			'manager' => 'Manager(%)',
+			'admin' => 'Administrator(%)',
 		);
 	}
 
@@ -77,8 +84,11 @@ class Vat extends ActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id);		
-		$criteria->compare('percent',$this->percent);
+		$criteria->compare('id',$this->id);
+		$criteria->compare('from',$this->from);
+		$criteria->compare('to',$this->to);
+		$criteria->compare('manager',$this->manager);
+		$criteria->compare('admin',$this->admin);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -89,7 +99,7 @@ class Vat extends ActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Vat the static model class
+	 * @return Tax the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
