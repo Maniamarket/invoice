@@ -48,11 +48,11 @@ class Client extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['email','id'], 'required'],
-            [['email','id'], 'unique'],
+            [['email'], 'required'],
+            [['email'], 'unique'],
             ['email','email'],
-            [['country','city','street','phone','name'], 'filter', 'filter' => 'trim'],
-	    [['country','city','street','phone','name'], 'string', 'max' => 100],
+            [['country','city','street','phone','name','email'], 'filter', 'filter' => 'trim'],
+	    [['country','city','street','phone','name','email'], 'string', 'max' => 100],
 
         ];
     }
@@ -150,8 +150,8 @@ class Client extends ActiveRecord implements IdentityInterface
      */
     public function validatePassword($password)
     {
-   //     return Yii::$app->security->validatePassword($password, $this->password_hash);
-          return $password;
+        return Yii::$app->security->validatePassword($password, $this->password_hash);
+   //       return $password;
     }
 
     /**
@@ -161,8 +161,8 @@ class Client extends ActiveRecord implements IdentityInterface
      */
     public function setPassword($password)
     {
-//        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
-        $this->password_hash = $password;
+        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
+//        $this->password_hash = $password;
     }
 
     /**

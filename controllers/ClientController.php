@@ -11,6 +11,7 @@ use yii\filters\AccessControl;
 use yii\data\ActiveDataProvider;
 
 use app\models\LoginClientForm;
+use app\models\SignupClientForm;
 use app\models\Invoice;
 use app\models\Client;
 
@@ -67,13 +68,28 @@ class ClientController extends Controller
 
     public function actionLogout()
     {
+        unset(Yii::$app->session['client_id']);
         Yii::$app->user->logout();
 
         return $this->goHome();
     }
     
     
+    public function actionCreate() {
+        $this->layout='main';
+        $model = new SignupClientForm();
+        if ($model->load(Yii::$app->request->post())) {
+            if ($client = $model->signup()) {
+                var_dump(Yii::$app->session['password']);                exit();
+                return $this->redirect(['index']);
+            }
+        }
+
+        return $this->render('signup_client', ['model' => $model,]);
+    }
+
     public function actionIndex() {
+        $this->layout='main';
         $dataProvider = new ActiveDataProvider([
             'query' => Client::find()->where(['user_id'=>  Yii::$app->user->id]),
             'pagination' => [

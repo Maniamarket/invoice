@@ -46,9 +46,8 @@ class LoginClientForm extends Model
             if (!$user || !$user->validatePassword($this->password)) {
                 $this->addError($attribute, 'Incorrect username or password.');
             }
-            if( $user['id'] == $this->id && $user['password_hash'] == $this->password) return true;
-            else {$this->addError($attribute, 'Incorrect id or password.'); return false;}
-            
+          // if( $user['id'] == $this->id && $user['password_hash'] == $this->password) return true;
+          //  else {$this->addError($attribute, 'Incorrect id or password.'); return false;}
         }
     }
 
