@@ -47,10 +47,8 @@ AppAsset::register($this);
         echo Nav::widget([
             'options' => ['class' => 'navbar-nav navbar-right'],
             'items' => [
-                ['label' => Yii::t('lang', 'Clients'), 'url' => ['/client/index'], 'visible' => !Yii::$app->user->isGuest],
-                ['label' => Yii::t('lang', 'Invoice'), 'url' => ['/invoice/index'], 'visible' => !Yii::$app->user->isGuest],
-                ['label' => Yii::t('lang', 'Taxes'), 'url' => ['/tax/index'], 'visible' => !Yii::$app->user->isGuest],
-                ['label' => Yii::t('lang', 'Settings'), 'url' => ['/setting/update'], 'visible' => !Yii::$app->user->isGuest],
+                ['label' => Yii::t('lang', 'Invoice'), 'url' => ['/client/invoice'], 'visible' => $this->context->isClient()],
+                ['label' => Yii::t('lang', 'Settings'), 'url' => ['/client/update'], 'visible' => $this->context->isClient()],
                 Yii::$app->user->isGuest ?
                     ['label' => 'Login', 'url' => ['/client/login']] :
                     ['label' => 'Logout',

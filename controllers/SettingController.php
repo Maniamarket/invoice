@@ -109,11 +109,9 @@ class SettingController extends Controller {
 
     
     public function loadModel($id) {
-	$model= Setting::find()
-                        ->where(['user_id' => $id])
-                        ->one();
-        if($model===null)
-                throw new HttpException(404,'The requested page does not exist.');
+	$model= Setting::find()->where(['user_id' => $id])->one();
+        
+        if($model===null) throw new HttpException(404,'The requested page does not exist.');
         return $model;
     }
 

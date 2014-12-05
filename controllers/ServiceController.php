@@ -95,7 +95,6 @@ class ServiceController extends Controller
             ]);
             if( yii::$app->user->identity->role==='superadmin' ) return $this->render('index_adm',array( 'dataProvider'=>$dataProvider, ));
             else  return $this->render('index',array( 'dataProvider'=>$dataProvider, ));
- 
 	}
 
 	public function loadModel($id)

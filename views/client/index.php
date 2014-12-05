@@ -1,9 +1,27 @@
 <?php
-/* @var $this SiteController */
+use yii\widgets\ListView;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
-$this->title='Billing';
+
+/* @var $this ServiceController */
+/* @var $dataProvider CActiveDataProvider */
+
+$this->title=Yii::$app->name . ' - My Invoice';
+$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 
-<h1><?php echo Yii::t('lang', 'Welcome'); ?><i><?php //echo Yii::$app->user->identity->role; ?></i></h1>
-<p><?php echo Yii::t('lang', 'main_page_text'); ?><b><?php if (!Yii::$app->user->isGuest) echo Yii::$app->user->identity->username; ?></b></p>
+<h1><?php echo Yii::t('lang', 'Invoice'); ?></h1>
+
+<table class="table table-striped">
+    <tr>
+        <th>ID</th>
+        <th>Client_id</th>
+    </tr>
+<?php echo ListView::widget([
+	'dataProvider'=>$dataProvider,
+	'itemView'=>'_view',
+]); ?>
+</table>
 
