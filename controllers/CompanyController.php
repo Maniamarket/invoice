@@ -94,7 +94,7 @@ class CompanyController extends Controller {
      */
     public function actionUpdate($id) {
 	$model = $this->loadModel($id);
-    $uploaded = false;
+        $uploaded = false;
 
 	// Uncomment the following line if AJAX validation is needed
 	// $this->performAjaxValidation($model);
@@ -109,7 +109,7 @@ class CompanyController extends Controller {
                 $uploaded = $file->saveAs('images/companies/'.$file->name);
             $this->redirect(array('view', 'id' => $model->id));
         }
-	}
+    }
 
 	return $this->render('update', array(
 	    'model' => $model,

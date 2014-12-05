@@ -54,15 +54,19 @@ class IncomeController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
-                if( Yii::$app->request->isAjax)
-                {      
-                    $model=$this->loadModel($id);
-                    $post = Yii::$app->request->post();
-                    $model->percent = $post['percent'];
-                    $model->save();
-                    echo $model->percent;
+            	$model = $this->loadModel($id);
+               	if (isset($_POST['Company'])) {
+            $file = UploadedFile::getInstance($model,'file');
+            if ($file)
+                $model->logo = $file->name;
+                $model->attributes = $_POST['Company'];
+                if ($model->save()) {
+                if ($file)
+                    $uploaded = $file->saveAs('images/companies/'.$file->name);
+                $this->redirect(array('view', 'id' => $model->id));
+            }
                 }
-	}
+        }        
 
 	public function actionDelete($id)
 	{

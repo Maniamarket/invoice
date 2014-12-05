@@ -18,9 +18,24 @@ use yii\helpers\BaseHtml;
 	<?php echo $form->errorSummary($model); ?>
 
 
-    <div class="form-group">
-		<?php echo $form->field($model, 'percent')->textInput()->hint('Please enter percent')->label('Percent') ; ?>
-		<?php echo Html::error($model, 'percent'); ?>
+        <div class="form-group">
+		<?php echo $form->field($model, 'from')->textInput()->hint('Please enter from')->label('From') ; ?>
+		<?php echo Html::error($model, 'from'); ?>
+	</div>
+
+        <div class="form-group">
+		<?php echo $form->field($model, 'to')->textInput()->hint('Please enter to')->label('To') ; ?>
+		<?php echo Html::error($model, 'to'); ?>
+	</div>
+
+        <div class="form-group">
+		<?php echo $form->field($model, 'manager')->textInput()->hint('Please enter manager')->label('Manager') ; ?>
+		<?php echo Html::error($model, 'manager'); ?>
+	</div>
+
+        <div class="form-group">
+		<?php echo $form->field($model, 'admin')->textInput()->hint('Please enter admin')->label('Admin') ; ?>
+		<?php echo Html::error($model, 'admin'); ?>
 	</div>
 
     <div class="form-group">

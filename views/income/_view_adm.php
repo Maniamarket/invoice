@@ -14,19 +14,8 @@ $view_element_td = 'td_income_id'.$model->id;
     <td><?php echo Html::encode($model->admin); ?></td>
     <td>
        <?php 
-            $url = Url::toRoute(['income/update','id'=>$model->id]);
-            echo Html::a('save',Url::toRoute(['income/update','id'=>$model->id]),
-            [
-             'title' => Yii::t('yii', 'Save'),
-             'class' => 'btn btn-primary btn-xs',
-             'onclick'=>"{  var percent = $('#".$view_element_td." ').val();
-               $.ajax({
-               url  : '".$url."',
-               type :'POST',
-               data: {'percent': percent},
-               success  : function(response) { $('#".$view_element_td."').empty().html(response).focus();   }
-             })}; return false; ",
-           ]);
+            echo Html::a('<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>',
+                    ['update', 'id'=>$model->id],['title'=>'Update']);
        ?>
       &nbsp;
       <?php  
