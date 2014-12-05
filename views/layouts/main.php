@@ -59,6 +59,8 @@ AppAsset::register($this);
                         ['label' => 'НДС', 'url' => ['/vat/index'], 'visible' => !Yii::$app->user->isGuest],
                     ],
                 ],
+                ['label' => Yii::t('lang', 'Lang'), 'url' => ['/lang/index'], 'visible' => !Yii::$app->user->isGuest],
+                ['label' => Yii::t('lang', 'Incomes'), 'url' => ['/income/index'], 'visible' => !Yii::$app->user->isGuest],
                 ['label' => Yii::t('lang', 'Settings'), 'url' => ['/setting/update'], 'visible' => !Yii::$app->user->isGuest],
                 ['label' => Yii::t('lang', 'Register'), 'url' => ['/site/signup'], 'visible' => Yii::$app->user->isGuest],
                 Yii::$app->user->isGuest ?
