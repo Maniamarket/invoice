@@ -15,6 +15,8 @@ use app\models\SignupClientForm;
 use app\models\Invoice;
 use app\models\Client;
 
+use yii\widgets\ListView;
+
 /**
  * Site controller
  */
@@ -91,15 +93,24 @@ class ClientController extends Controller
     public function actionIndex() {
         $this->layout='main';
         $dataProvider = new ActiveDataProvider([
-            'query' => Client::find()->where(['user_id'=>  Yii::$app->user->id]),
+            'query' => Client::queryProvider(Yii::$app->request->queryParams),
             'pagination' => [
                 'pageSize' => 20,
             ],
         ]);
-        return $this->render('index', array('dataProvider' => $dataProvider, ));
+        return $this->render('index', ['dataProvider' => $dataProvider]);
     }
 
-    
+    public function actionAjax() {
+        $dataProvider = new ActiveDataProvider([
+            'query' => Client::queryProvider(Yii::$app->request->queryParams),
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+        ]);
+        return $this->renderPartial('ajax', ['dataProvider' => $dataProvider]);
+    }
+
     public function actionInvoice()
     {
         $client_id = $this->isClient();

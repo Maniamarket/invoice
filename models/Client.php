@@ -7,6 +7,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use yii\helpers\ArrayHelper;
+use yii\data\ActiveDataProvider;
 
 /**
  * Client model
@@ -52,9 +53,67 @@ class Client extends ActiveRecord implements IdentityInterface
             [['email'], 'unique'],
             ['email','email'],
             [['country','city','street','phone','name','email'], 'filter', 'filter' => 'trim'],
-	    [['country','city','street','phone','name','email'], 'string', 'max' => 100],
+	        [['country','city','street','phone','name','email'], 'string', 'max' => 100],
 
         ];
+    }
+
+    public function getLanguage()
+    {
+        return $this->hasOne('app\models\Lang', array('id' => 'def_lang_id'));
+        // Первый параметр – это у нас имя класса, с которым мы настраиваем связь.
+        // Во втором параметре в виде массива задаётся имя удалённого PK ключа  (id) и FK из текущей таблицы модели (author_id), которые связываются между собой
+    }
+
+    public static function queryProvider($qp) {
+        $query = Client::find()->where(['user_id'=>  Yii::$app->user->id]);
+        if (isset($qp['name']))
+        {
+            if ( !empty($qp['name']))
+                $query->andFilterWhere(['like', 'name', $qp['name']]);
+            if (isset($qp['orderby'])) {
+                $orderBy = ($qp['orderby']=='asc')? SORT_ASC:SORT_DESC;
+                $query->orderBy(['name'=>$orderBy]);
+            }
+
+        }
+        return $query;
+    }
+
+
+    /**
+     * Creates data provider instance with search query applied
+     *
+     * @param array $params
+     *
+     * @return ActiveDataProvider
+     */
+    public function search($params)
+    {
+        $query = self::find()->where(['user_id'=>  Yii::$app->user->id]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        if (!($this->load($params) && $this->validate())) {
+            return $dataProvider;
+        }
+
+        $query->andFilterWhere([
+            'email' => $this->email,
+            'created_at' => $this->created_at,
+            'def_lang_id' => $this->def_lang_id,
+            'country' => $this->country,
+            'city' => $this->city,
+        ]);
+
+        $query->andFilterWhere(['like', 'id', $this->id])
+            ->andFilterWhere(['like', 'email', $this->email])
+            ->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'created_at', $this->created_at]);
+
+        return $dataProvider;
     }
 
     /**

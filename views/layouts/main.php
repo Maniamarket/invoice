@@ -9,7 +9,6 @@ use app\components\LanguageSelector;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
-
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
@@ -59,10 +58,14 @@ AppAsset::register($this);
                         ['label' => 'НДС', 'url' => ['/vat/index'], 'visible' => !Yii::$app->user->isGuest],
                     ],
                 ],
-                ['label' => Yii::t('lang', 'payment'), 'url' => ['/payment/index'], 'visible' => !Yii::$app->user->isGuest],
-                ['label' => Yii::t('lang', 'Lang'), 'url' => ['/lang/index'], 'visible' => !Yii::$app->user->isGuest],
-                ['label' => Yii::t('lang', 'Incomes'), 'url' => ['/income/index'], 'visible' => !Yii::$app->user->isGuest],
-                ['label' => Yii::t('lang', 'Settings'), 'url' => ['/setting/update'], 'visible' => !Yii::$app->user->isGuest],
+                ['label' =>  Yii::t('lang', 'Settings'), 'url' => '#', 'visible' => !Yii::$app->user->isGuest,
+                    'items' => [
+                        ['label' => Yii::t('lang', 'Payment'), 'url' => ['/payment/index'], 'visible' => !Yii::$app->user->isGuest],
+                        ['label' => Yii::t('lang', 'Lang'), 'url' => ['/lang/index'], 'visible' => !Yii::$app->user->isGuest],
+                        ['label' => Yii::t('lang', 'Incomes'), 'url' => ['/income/index'], 'visible' => !Yii::$app->user->isGuest],
+                    ],
+                ],
+                ['label' => Yii::t('lang', 'Account'), 'url' => ['/setting/update'], 'visible' => !Yii::$app->user->isGuest],
                 ['label' => Yii::t('lang', 'Register'), 'url' => ['/site/signup'], 'visible' => Yii::$app->user->isGuest],
                 Yii::$app->user->isGuest ?
                     ['label' => 'Login', 'url' => ['/site/login']] :
