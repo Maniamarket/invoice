@@ -80,7 +80,7 @@ class ClientController extends Controller
         $model = new SignupClientForm();
         if ($model->load(Yii::$app->request->post())) {
             if ($client = $model->signup()) {
-                var_dump(Yii::$app->session['password']);                exit();
+               // var_dump(Yii::$app->session['password']);                exit();
                 return $this->redirect(['index']);
             }
         }

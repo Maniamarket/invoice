@@ -38,7 +38,8 @@ class SignupClientForm extends Model
             $client->email = $this->email;
             $client->user_id = Yii::$app->user->id;
             $password = $this->generateRandomPassword();
-Yii::$app->session['password']= $password;            
+            $client->password = $password;
+//Yii::$app->session['password']= $password;
             $client->setPassword($password);
             $client->generateAuthKey();
             $client->save();
