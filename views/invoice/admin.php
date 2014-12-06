@@ -44,20 +44,18 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
     $cgrid = (Yii::app()->user->role == 5) ? 'MyCButtonColumn' : 'CButtonColumn';
 
 
-$this->widget('zii.widgets.grid.CGridView', array(
+$this->widget('zii.widgets.grid.CGridView', [
 	'id'=>'invoice-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
-	'columns'=>array(
-	    array('name'=>'id',
+	'columns'=>[
+	    ['name'=>'id',
 		    'type'=>'raw',
-		    'value'=>'CHtml::link($data->id,array("invoice/createpdf","id"=>$data->id),array("target"=>"_blank"))',
-		    ),		
+		    'value'=>CHtml::link($model->id,array("invoice/pdf","id"=>$model->id),array("target"=>"_blank")),
+		    ],		
 		'date',
 		'name',
 		'company',		
-		array(
-			'class'=>$cgrid,
-		),
-	),
-)); ?>
+		['class'=>$cgrid]
+	],
+]); ?>

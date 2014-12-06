@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "865ce4d9e6c2c445e707b268f070dd3f",
+    "hash": "db99a02d049ed9a2347d06f484dae681",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -102,16 +102,16 @@
         },
         {
             "name": "bower-asset/jquery.inputmask",
-            "version": "3.1.31",
+            "version": "3.1.44",
             "source": {
                 "type": "git",
                 "url": "https://github.com/RobinHerbots/jquery.inputmask.git",
-                "reference": "2b485a3f9329c829b40872e4463c42143b0c6405"
+                "reference": "c95fe993f91e1da2069a26d84eaa372835842286"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/RobinHerbots/jquery.inputmask/zipball/2b485a3f9329c829b40872e4463c42143b0c6405",
-                "reference": "2b485a3f9329c829b40872e4463c42143b0c6405",
+                "url": "https://api.github.com/repos/RobinHerbots/jquery.inputmask/zipball/c95fe993f91e1da2069a26d84eaa372835842286",
+                "reference": "c95fe993f91e1da2069a26d84eaa372835842286",
                 "shasum": ""
             },
             "require": {
@@ -154,16 +154,16 @@
         },
         {
             "name": "bower-asset/punycode",
-            "version": "v1.3.1",
+            "version": "v1.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bestiejs/punycode.js.git",
-                "reference": "de452f89aea23f126f7b219f576abda1c0823825"
+                "reference": "38c8d3131a82567bfef18da09f7f4db68c84f8a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bestiejs/punycode.js/zipball/de452f89aea23f126f7b219f576abda1c0823825",
-                "reference": "de452f89aea23f126f7b219f576abda1c0823825",
+                "url": "https://api.github.com/repos/bestiejs/punycode.js/zipball/38c8d3131a82567bfef18da09f7f4db68c84f8a3",
+                "reference": "38c8d3131a82567bfef18da09f7f4db68c84f8a3",
                 "shasum": ""
             },
             "type": "bower-asset-library",
@@ -182,16 +182,16 @@
         },
         {
             "name": "bower-asset/yii2-pjax",
-            "version": "v2.0.1",
+            "version": "v2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/jquery-pjax.git",
-                "reference": "f07ce95f6098c0bd5421789a20789f39a19be73b"
+                "reference": "fb92be865c0fd6583714475cb7d629020749d73f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/jquery-pjax/zipball/f07ce95f6098c0bd5421789a20789f39a19be73b",
-                "reference": "f07ce95f6098c0bd5421789a20789f39a19be73b",
+                "url": "https://api.github.com/repos/yiisoft/jquery-pjax/zipball/fb92be865c0fd6583714475cb7d629020749d73f",
+                "reference": "fb92be865c0fd6583714475cb7d629020749d73f",
                 "shasum": ""
             },
             "require": {
@@ -202,22 +202,26 @@
                 "bower-asset-main": "./jquery.pjax.js",
                 "bower-asset-ignore": [
                     ".travis.yml",
+                    "Gemfile",
+                    "Gemfile.lock",
+                    "vendor/",
+                    "script/",
                     "test/"
                 ]
             }
         },
         {
             "name": "cebe/markdown",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cebe/markdown.git",
-                "reference": "4f6b35cc5cc1025ed946839fd24e05ace617867a"
+                "reference": "9d6c36d6623497523ed421a31d940bc1d7435578"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cebe/markdown/zipball/4f6b35cc5cc1025ed946839fd24e05ace617867a",
-                "reference": "4f6b35cc5cc1025ed946839fd24e05ace617867a",
+                "url": "https://api.github.com/repos/cebe/markdown/zipball/9d6c36d6623497523ed421a31d940bc1d7435578",
+                "reference": "9d6c36d6623497523ed421a31d940bc1d7435578",
                 "shasum": ""
             },
             "require": {
@@ -264,7 +268,7 @@
                 "markdown",
                 "markdown-extra"
             ],
-            "time": "2014-10-10 20:54:29"
+            "time": "2014-10-25 16:16:49"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -312,17 +316,110 @@
             "time": "2013-11-30 08:25:19"
         },
         {
-            "name": "swiftmailer/swiftmailer",
-            "version": "v5.3.0",
+            "name": "mpdf/mpdf",
+            "version": "v5.7.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "b86b927dfefdb56ab0b22d1350033d9a38e9f205"
+                "url": "https://github.com/finwe/mpdf.git",
+                "reference": "ace190986978df40b9c416cf7ba8761945fc1758"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/b86b927dfefdb56ab0b22d1350033d9a38e9f205",
-                "reference": "b86b927dfefdb56ab0b22d1350033d9a38e9f205",
+                "url": "https://api.github.com/repos/finwe/mpdf/zipball/ace190986978df40b9c416cf7ba8761945fc1758",
+                "reference": "ace190986978df40b9c416cf7ba8761945fc1758",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=4.3.10"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "mpdf.php",
+                    "classes"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-1.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Ian Back"
+                }
+            ],
+            "description": "A PHP class to generate PDF files from HTML with Unicode/UTF-8 and CJK support",
+            "homepage": "http://www.mpdf1.com/mpdf/index.php",
+            "keywords": [
+                "pdf",
+                "php",
+                "utf-8"
+            ],
+            "time": "2014-08-24 08:33:20"
+        },
+        {
+            "name": "robregonm/yii2-pdf",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/robregonm/yii2-pdf.git",
+                "reference": "191c0b26014763d02e4bb4a367716d3c349db941"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/robregonm/yii2-pdf/zipball/191c0b26014763d02e4bb4a367716d3c349db941",
+                "reference": "191c0b26014763d02e4bb4a367716d3c349db941",
+                "shasum": ""
+            },
+            "require": {
+                "mpdf/mpdf": ">=5.7.0",
+                "php": ">=5.4.0",
+                "yiisoft/yii2": "*",
+                "yiisoft/yii2-composer": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "robregonm\\pdf\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "robregonm",
+                    "email": "robregonm@gmail.com",
+                    "homepage": "http://obregon.co",
+                    "role": "Author"
+                }
+            ],
+            "description": "Yii 2 PDF Response Formatter",
+            "keywords": [
+                "documents",
+                "formatter",
+                "pdf",
+                "reports",
+                "response",
+                "yii",
+                "yii2"
+            ],
+            "time": "2014-11-04 00:27:20"
+        },
+        {
+            "name": "swiftmailer/swiftmailer",
+            "version": "v5.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/swiftmailer/swiftmailer.git",
+                "reference": "c5f963e7f9d6f6438fda4f22d5cc2db296ec621a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/c5f963e7f9d6f6438fda4f22d5cc2db296ec621a",
+                "reference": "c5f963e7f9d6f6438fda4f22d5cc2db296ec621a",
                 "shasum": ""
             },
             "require": {
@@ -361,7 +458,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2014-10-04 05:53:18"
+            "time": "2014-12-05 14:17:14"
         },
         {
             "name": "yiisoft/yii2",
@@ -646,9 +743,7 @@
             },
             "type": "library",
             "extra": {
-                "branch-alias": [
-
-                ]
+                "branch-alias": []
             },
             "autoload": {
                 "psr-0": {
@@ -896,18 +991,14 @@
             "time": "2014-10-12 17:09:06"
         }
     ],
-    "aliases": [
-
-    ],
+    "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [
-
-    ],
+    "stability-flags": {
+        "robregonm/yii2-pdf": 20
+    },
     "prefer-stable": false,
     "platform": {
         "php": ">=5.4.0"
     },
-    "platform-dev": [
-
-    ]
+    "platform-dev": []
 }

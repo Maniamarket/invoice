@@ -40,6 +40,17 @@ class InvoiceController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+    
+    /**
+     * export a single Invoice model in PDF.
+     * @return mixed
+     */
+    public function actionPdf($id){        
+	Yii::$app->response->format = 'pdf';
+        return $this->renderPartial('invoice', [
+	    'model' => $this->findModel($id),
+	]);
+    }
 
     /**
      * Displays a single Invoice model.
