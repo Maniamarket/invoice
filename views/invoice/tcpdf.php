@@ -73,34 +73,36 @@ $html = $this->context->renderPartial('invoice', ['model' =>$model]);
 // Print text using writeHTMLCell()
 $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
 
+if(empty($model->finished)) {
 // ---------------------------------------------------------
 
-$ImageW = 150; //WaterMark Size
-$ImageH = 150;
+    $ImageW = 180; //WaterMark Size
+    $ImageH = 180;
 
-$pdf->setPage( 1 ); //WaterMark Page
+    $pdf->setPage( 1 ); //WaterMark Page
 
-$myPageWidth = $pdf->getPageWidth();
-$myPageHeight = $pdf->getPageHeight();
-$myX = ( $myPageWidth / 2 ) - 50;  //WaterMark Positioning
-$myY = ( $myPageHeight / 2 ) -40;
+    $myPageWidth = $pdf->getPageWidth();
+    $myPageHeight = $pdf->getPageHeight();
+    $myX = ( $myPageWidth / 2 ) - 90;  //WaterMark Positioning
+    $myY = ( $myPageHeight / 2 ) -90;
 
-$pdf->SetAlpha(0.09);
-$pdf->Image(K_PATH_IMAGES.'xmark.png', $myX, $myY, $ImageW, $ImageH, '', '', '', true, 150);
+    $pdf->SetAlpha(0.29);
+    $pdf->Image(K_PATH_IMAGES.'xmark.png', $myX, $myY, $ImageW, $ImageH, '', '', '', true, 150);
 
-/*$pdf->setPage( 2 );
+    /*$pdf->setPage( 2 );
 
-$myPageWidth = $pdf->getPageWidth();
-$myPageHeight = $pdf->getPageHeight();
-$myX = ( $myPageWidth / 2 ) - 50;
-$myY = ( $myPageHeight / 2 ) -40;
+    $myPageWidth = $pdf->getPageWidth();
+    $myPageHeight = $pdf->getPageHeight();
+    $myX = ( $myPageWidth / 2 ) - 50;
+    $myY = ( $myPageHeight / 2 ) -40;
 
-$pdf->SetAlpha(0.09);
-$pdf->Image(K_PATH_IMAGES.'xmark.png', $myX, $myY, $ImageW, $ImageH, '', '', '', true, 150);*/
+    $pdf->SetAlpha(0.09);
+    $pdf->Image(K_PATH_IMAGES.'xmark.png', $myX, $myY, $ImageW, $ImageH, '', '', '', true, 150);*/
 
-//Likewise can be added for all pages after writing all pages.
+    //Likewise can be added for all pages after writing all pages.
 
-$pdf->SetAlpha(1); //Reset Alpha Setings
+    $pdf->SetAlpha(1); //Reset Alpha Setings
+}
 // Close and output PDF document
 // This method has several options, check the source code documentation for more information.
 $pdf->Output('yii2_tcpdf_example.pdf', 'I');
