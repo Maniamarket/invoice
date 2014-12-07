@@ -5,39 +5,54 @@ use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
-use app\models\SignupForm;
+use app\models\User;
 
 class UserController extends Controller {
 
-    /**
-     * @return array action filters
-     */
-    public function filters() {
-	return array(
-	    'accessControl', // perform access control for CRUD operations
-	    'postOnly + delete', // we only allow deletion via POST request
-	);
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['logout', 'login'],
+                'rules' => [
+                    [
+                        'actions' => ['login'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'actions' => ['logout','special-callback'],
+                        'allow' => true,
+                        'matchCallback' => function ($rule, $action) {
+                                return $this->isClient();
+                            }
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'logout' => ['post'],
+                ],
+            ],
+        ];
     }
 
-    /**
-     * Displays a particular model.
-     * @param integer $id the ID of the model to be displayed
-     */
-    public function actionView($id) {
-	$this->render('view', array(
-	    'model' => $this->loadModel($id),
-	));
-    }
 
     /**
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate() {
-	$model = new SignupForm();
+	$model = new \app\models\SignupAdminForm();
         if ($model->load(Yii::$app->request->post())) {
-            if ($user = $model->signup()) {
+            $role_admin = \yii::$app->user->identity->role;
+            $id_t = \yii::$app->user->id;
+            $type = $this->getType($role_admin);  
+            if ($user = $model->signup($role_admin,$type)) {
                 if (Yii::$app->getUser()->login($user)) {
                     $model = new \app\models\Setting();
                     $model->user_id = Yii::$app->getUser()->id;
@@ -46,48 +61,15 @@ class UserController extends Controller {
                     $model->bank_code = 'no';
                     $model->account_number = 'no';
                     $model->save();
+                    
+                    $user = $this->loadModel($id_t);
+                    Yii::$app->getUser()->login($user); 
                     return $this->goHome();
                 }
             }
         }
+        return $this->render('signup', [ 'model' => $model]);
 
-        return $this->render('signup', [ 'model' => $model, ]);
-
-    }
-
-    /**
-     * Updates a particular model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id the ID of the model to be updated
-     */
-    public function actionUpdate($id) {
-	$model = $this->loadModel($id);
-
-	// Uncomment the following line if AJAX validation is needed
-	// $this->performAjaxValidation($model);
-
-	if (isset($_POST['User'])) {
-	    $model->attributes = $_POST['User'];
-	    if ($model->save())
-		$this->redirect(array('view', 'id' => $model->id));
-	}
-
-	$this->render('update', array(
-	    'model' => $model,
-	));
-    }
-
-    /**
-     * Deletes a particular model.
-     * If deletion is successful, the browser will be redirected to the 'admin' page.
-     * @param integer $id the ID of the model to be deleted
-     */
-    public function actionDelete($id) {
-	$this->loadModel($id)->delete();
-
-	// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-	if (!isset($_GET['ajax']))
-	    $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
     }
 
     /**
@@ -95,7 +77,8 @@ class UserController extends Controller {
      */
     public function actionIndex() {
         $dataProvider = new ActiveDataProvider([
-                'query' => User::find()->where(['manager_id'=>  Yii::$app->user->id]),
+                'query' => User::find()->where(['admin_id'=>Yii::$app->user->id]),
+//                'query' => User::find()->where(['manager_id'=>  Yii::$app->user->id]),
                 'pagination' => [
                     'pageSize' => 10,
                 ],
@@ -103,32 +86,21 @@ class UserController extends Controller {
         return $this->render('index',array( 'dataProvider'=>$dataProvider, ));
    }
 
-    /**
-     * Manages all models.
-     */
-    public function actionAdmin() {
-	$model = new User('search');
-	$model->unsetAttributes();  // clear any default values
-	if (isset($_GET['User']))
-	    $model->attributes = $_GET['User'];
-
-	$this->render('admin', array(
-	    'model' => $model,
-	));
+    
+    public function getType($role) {
+        switch ( $role){
+            case  'manager' : return 2;
+            case  'admin' : return 3;
+            case  'superadmin' : return 4;
+            default : return 1;   
+        }
     }
 
-    /**
-     * Returns the data model based on the primary key given in the GET variable.
-     * If the data model is not found, an HTTP exception will be raised.
-     * @param integer $id the ID of the model to be loaded
-     * @return User the loaded model
-     * @throws CHttpException
-     */
+    
     public function loadModel($id) {
-	$model = User::model()->findByPk($id);
-	if ($model === null)
-	    throw new CHttpException(404, 'The requested page does not exist.');
-	return $model;
+	$model= User::find()->where(['id' => $id])->one();
+        if($model===null) throw new HttpException(404,'The requested page does not exist.');
+        return $model;
     }
 
     /**

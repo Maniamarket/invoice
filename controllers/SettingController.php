@@ -27,20 +27,6 @@ class SettingController extends Controller {
         ];
     }
 
-    /**
-     * Displays a particular model.
-     * @param integer $id the ID of the model to be displayed
-     */
-    public function actionView($id) {
-	$this->render('view', array(
-	    'model' => $this->loadModel($id),
-	));
-    }
-
-    protected function getDefaultCompany() {
-	$companyArray = CHtml::listData(Company::model()->findAll(), 'id', 'name');
-	return $companyArray;
-    }
 
 
     public function actionCredit() {
@@ -69,61 +55,11 @@ class SettingController extends Controller {
         else  return $this->render('update', ['model' => $model,]);
     }
 
-    /**
-     * Deletes a particular model.
-     * If deletion is successful, the browser will be redirected to the 'admin' page.
-     * @param integer $id the ID of the model to be deleted
-     */
-    public function actionDelete($id) {
-	$this->loadModel($id)->delete();
-
-	// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-	if (!isset($_GET['ajax']))
-	    $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-    }
-
-    /**
-     * Lists all models.
-     */
-    public function actionIndex() {
-        $id = Yii::$app->user->id;
-	$dataProvider = new ActiveDataProvider([
-                'query' => Setting::find()->where(['user_id' => $id]),
-            ]);
-        return $this->render('index',array( 'dataProvider'=>$dataProvider, ));
-    }
-
-    /**
-     * Manages all models.
-     */
-    public function actionAdmin() {
-	$model = new Setting('search');
-	$model->unsetAttributes();  // clear any default values
-	if (isset($_GET['Setting']))
-	    $model->attributes = $_GET['Setting'];
-
-	$this->render('admin', array(
-	    'model' => $model,
-	));
-    }
-
-    
     public function loadModel($id) {
 	$model= Setting::find()->where(['user_id' => $id])->one();
         
         if($model===null) throw new HttpException(404,'The requested page does not exist.');
         return $model;
-    }
-
-    /**
-     * Performs the AJAX validation.
-     * @param Setting $model the model to be validated
-     */
-    protected function performAjaxValidation($model) {
-	if (isset($_POST['ajax']) && $_POST['ajax'] === 'setting-form') {
-	    echo CActiveForm::validate($model);
-	    Yii::app()->end();
-	}
     }
 
 }
