@@ -32,19 +32,19 @@ class SignupAdminForm extends Model
      *
      * @return User|null the saved model or null if saving fails
      */
-    public function signup($role,$type)
+    public function signup($role,$parent_id)
     {
         if ($this->validate()) {
             $user = new User();
             $user->email = $this->email;
             $user->setPassword('123456');
             $user->role = $role;
+            $user->parent_id = $parent_id;
             $user->generateAuthKey();
             $user->save();
             $user->username = $user->id;
             $password = 'user_'.$user->id;
             $user->setPassword($password);
-            $this->setOwner($user, $type);
             $user->save();
             Yii::$app->mailer->compose('welcome_admin', ['user' => $user,'password' => $password])
                 ->setFrom('no-reply@site.ru')
@@ -55,14 +55,5 @@ class SignupAdminForm extends Model
         }
 
         return null;
-    }
-    
-    public function setOwner($user, $type)
-    {
-        switch ( $type){
-            case  2 : $user->manager_id = Yii::$app->user->id;  return true;
-            case  3 : $user->admin_id = Yii::$app->user->id;  return true;
-            case  4 : $user->admin_id = Yii::$app->user->id;  return true;
-        }
     }
 }

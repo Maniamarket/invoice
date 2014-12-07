@@ -46,13 +46,12 @@ class UserController extends Controller {
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
-    public function actionCreate() {
+    public function actionCreate($type_user) {
 	$model = new \app\models\SignupAdminForm();
         if ($model->load(Yii::$app->request->post())) {
-            $role_admin = \yii::$app->user->identity->role;
             $id_t = \yii::$app->user->id;
-            $type = $this->getType($role_admin);  
-            if ($user = $model->signup($role_admin,$type)) {
+            $role = $this->getRole($type_user);
+            if ($user = $model->signup($role,$id_t)) {
                 if (Yii::$app->getUser()->login($user)) {
                     $model = new \app\models\Setting();
                     $model->user_id = Yii::$app->getUser()->id;
@@ -64,7 +63,7 @@ class UserController extends Controller {
                     
                     $user = $this->loadModel($id_t);
                     Yii::$app->getUser()->login($user); 
-                    return $this->goHome();
+                    return $this->redirect(['index', 'type_user' => $type_user]);
                 }
             }
         }
@@ -75,28 +74,43 @@ class UserController extends Controller {
     /**
      * Lists all models.
      */
-    public function actionIndex() {
+    public function actionIndex($type_user = 1) {
+        $query = $this->getQueri($type_user);
         $dataProvider = new ActiveDataProvider([
-                'query' => User::find()->where(['admin_id'=>Yii::$app->user->id]),
+                'query' => $query,
 //                'query' => User::find()->where(['manager_id'=>  Yii::$app->user->id]),
                 'pagination' => [
                     'pageSize' => 10,
                 ],
             ]);
-        return $this->render('index',array( 'dataProvider'=>$dataProvider, ));
+        $hearder = $this->getHeader($type_user);
+        return $this->render('index',['dataProvider'=>$dataProvider, 'hearder' => $hearder, 'type_user' => $type_user ]);
    }
 
-    
-    public function getType($role) {
-        switch ( $role){
-            case  'manager' : return 2;
-            case  'admin' : return 3;
-            case  'superadmin' : return 4;
-            default : return 1;   
+    public function getQueri($type_user) {
+        switch ( $type_user ){
+            case  1 : return User::find()->where(['parent_id'=>  Yii::$app->user->id, 'role'=>'user']);
+            case  2 : return User::find()->where(['parent_id'=>  Yii::$app->user->id, 'role'=>'manager']);
+            case  3 : return User::find()->where(['parent_id'=>  Yii::$app->user->id, 'role'=>'admin']);
         }
     }
 
-    
+    public function getRole($type_user) {
+        switch ( $type_user ){
+            case  1 : return 'user';
+            case  2 : return 'manager';
+            case  3 : return 'admin';
+        }
+    }
+
+    public function getHeader($type_user) {
+        switch ( $type_user ){
+            case  1 : return 'My Users';
+            case  2 : return 'My Managers';
+            case  3 : return 'My Admins';
+        }
+    }    
+
     public function loadModel($id) {
 	$model= User::find()->where(['id' => $id])->one();
         if($model===null) throw new HttpException(404,'The requested page does not exist.');

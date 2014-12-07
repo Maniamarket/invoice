@@ -1,5 +1,6 @@
 <?php /* @var $this Controller */
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\Menu;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
@@ -49,9 +50,9 @@ AppAsset::register($this);
                 ['label' => Yii::t('lang', 'Home'), 'url' => ['/site/index'], 'visible' => !Yii::$app->user->isGuest],
                 ['label' => 'Users', 'url' => '#', 'visible' => Yii::$app->user->can('manager'),
                     'items' => [
-                        ['label' => 'My Users', 'url' => ['/user/index'], 'visible' => Yii::$app->user->can('manager')],
-                        ['label' => 'My Managers', 'url' => ['/user/manager'], 'visible' => Yii::$app->user->can('admin')],
-                        ['label' => 'My Admins', 'url' => ['/user/admin'], 'visible' => Yii::$app->user->can('superadmin')],
+                        ['label' => 'My Users', 'url' => Url::toRoute(['/user/index','type_user'=>1]), 'visible' => Yii::$app->user->can('manager')],
+                        ['label' => 'My Managers', 'url' => Url::toRoute(['/user/index','type_user'=>2]), 'visible' => Yii::$app->user->can('admin')],
+                        ['label' => 'My Admins', 'url' => Url::toRoute(['/user/index','type_user'=>3]), 'visible' => Yii::$app->user->can('superadmin')],
                     ],
                 ],
                 ['label' => Yii::t('lang', 'Clients'), 'url' => ['/client/index'], 'visible' => !Yii::$app->user->isGuest],
