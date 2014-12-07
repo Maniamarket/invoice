@@ -9,7 +9,6 @@ use yii\data\ActiveDataProvider;
 use app\models\Payment;
 use yii\web\Request;
 
-
 class PaymentController extends Controller
 {
     public function behaviors()

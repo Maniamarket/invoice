@@ -1,12 +1,14 @@
 <?php
+namespace app\controllers;
+
+use Yii;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\data\ActiveDataProvider;
+use yii\filters\VerbFilter;
+use app\models\SignupForm;
 
 class UserController extends Controller {
-
-    /**
-     * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
-     * using two-column layout. See 'protected/views/layouts/column2.php'.
-     */
-    public $layout = '//layouts/column2';
 
     /**
      * @return array action filters
@@ -33,32 +35,24 @@ class UserController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate() {
-	$model = new User;
-	$setting = new Setting;
+	$model = new SignupForm();
+        if ($model->load(Yii::$app->request->post())) {
+            if ($user = $model->signup()) {
+                if (Yii::$app->getUser()->login($user)) {
+                    $model = new \app\models\Setting();
+                    $model->user_id = Yii::$app->getUser()->id;
+                    $model->def_company_id = 0;
+                    $model->def_lang_id = 0;
+                    $model->bank_code = 'no';
+                    $model->account_number = 'no';
+                    $model->save();
+                    return $this->goHome();
+                }
+            }
+        }
 
-	// Uncomment the following line if AJAX validation is needed
-	// $this->performAjaxValidation($model);
+        return $this->render('signup', [ 'model' => $model, ]);
 
-	if (isset($_POST['User'])) {
-	    $model->attributes = $_POST['User'];
-
-	    $model->setAttributes(array('register_date' => date('Y-m-d H:i:s'),
-		'last_login' => date('Y-m-d H:i:s'),
-	    ));
-	    $model->user_id = uniqid();
-	    $model->parent_id = Yii::app()->user->id;
-	    $model->password = md5($model->password);
-	    $setting->user_id = Yii::app()->user->id;
-	    if ($model->save()) {
-		$setting->save();
-		$this->redirect(array('view', 'id' => $model->id));
-	    }
-		
-	}
-
-	$this->render('create', array(
-	    'model' => $model,
-	));
     }
 
     /**
@@ -100,14 +94,14 @@ class UserController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
-	$model = new User('search');
-	$model->unsetAttributes();
-	$dataProvider = new CActiveDataProvider('User');
-	$this->render('admin', array(
-	    'dataProvider' => $dataProvider,
-	    'model' => $model,
-	));
-    }
+        $dataProvider = new ActiveDataProvider([
+                'query' => User::find()->where(['manager_id'=>  Yii::$app->user->id]),
+                'pagination' => [
+                    'pageSize' => 10,
+                ],
+            ]);
+        return $this->render('index',array( 'dataProvider'=>$dataProvider, ));
+   }
 
     /**
      * Manages all models.

@@ -47,7 +47,7 @@ AppAsset::register($this);
             'options' => ['class' => 'navbar-nav navbar-right'],
             'items' => [
                 ['label' => Yii::t('lang', 'Home'), 'url' => ['/site/index'], 'visible' => !Yii::$app->user->isGuest],
-                ['label' => Yii::t('lang', 'Users'), 'url' => ['/user/index'], 'visible' => Yii::$app->user->can('manager')],
+                ['label' => Yii::t('lang', 'My Users'), 'url' => ['/user/index'], 'visible' => Yii::$app->user->can('manager')],
                 ['label' => Yii::t('lang', 'Clients'), 'url' => ['/client/index'], 'visible' => !Yii::$app->user->isGuest],
                 ['label' => Yii::t('lang', 'Invoice'), 'url' => ['/invoice/index'], 'visible' => !Yii::$app->user->isGuest],
                 ['label' => Yii::t('lang', 'Companies'), 'url' => ['/company/index'], 'visible' => !Yii::$app->user->isGuest],

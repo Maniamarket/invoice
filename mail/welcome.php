@@ -7,9 +7,9 @@ use yii\helpers\Html;
 $settingLink = Yii::$app->urlManager->createAbsoluteUrl(['setting/update']);
 ?>
 
-Здравствуйте, <?= Html::encode($user->username) ?>!
+Здравствуйте!
 <br />
-Благодарим Вас за регистрацию на сайте. Начните с заполнения своего профиля:
+Благодарим Вас за регистрацию на сайте. Ваш ID(логин)- <?= Html::encode($user->username) ?>  Начните с заполнения своего профиля:
 <br />
 <?= Html::a(Html::encode('Перейти в профиль'), $settingLink) ?>
 <br />
