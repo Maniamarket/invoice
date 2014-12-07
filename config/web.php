@@ -38,6 +38,10 @@ $config = [
                     ],
                 ]
         ],
+        // Yii2 TCPDF
+        'tcpdf' => [
+            'class' => 'cinghie\tcpdf\TCPDF',
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'shfhgjfh637yghhgfbhgghjhn',

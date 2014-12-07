@@ -52,6 +52,13 @@ class InvoiceController extends Controller
 	]);
     }
 
+    public function actionTcpdf($id)
+    {
+        return $this->render('tcpdf', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
     /**
      * Displays a single Invoice model.
      * @param string $id
