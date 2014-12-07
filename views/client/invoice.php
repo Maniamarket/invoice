@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 
-<h1><?php echo Yii::t('lang', 'Invoice'); ?></h1>
+<h1><?php echo Yii::t('app', 'Invoice'); ?></h1>
 
 <table class="table table-striped">
     <tr>

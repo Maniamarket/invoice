@@ -8,7 +8,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 
-<h1><?php echo Yii::t('lang', 'Settings'); ?></h1>
+<h1><?php echo Yii::t('app', 'Settings'); ?></h1>
 
 <?php  echo ListView::widget([
 	'dataProvider'=>$dataProvider,

@@ -1,94 +1,121 @@
 <?php
+
 namespace app\controllers;
 
 use Yii;
-use yii\filters\AccessControl;
-use yii\web\Controller;
-use yii\filters\VerbFilter;
-use yii\data\ActiveDataProvider;
 use app\models\Lang;
-use yii\web\Request;
+use yii\data\ActiveDataProvider;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
 
-
+/**
+ * LangController implements the CRUD actions for Lang model.
+ */
 class LangController extends Controller
 {
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'actions'=>['index'],
-                        'roles' => ['@'],
-                    ],
-                    [
-                        'allow' => true,
-                        'roles' => ['superadmin'],
-                    ],
-                        ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['post'],
                 ],
-            ];
+            ],
+        ];
     }
-	
-	/**
-	 * Creates a new model.
-	 * If creation is successful, the browser will be redirected to the 'view' page.
-	 */
-	public function actionCreate()
-	{
-		$model=new Lang;
 
-                 if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                        return $this->redirect(['index']);
-                 } else 
-                        return $this->render('create', ['model' => $model, ]);
-	}
+    /**
+     * Lists all Lang models.
+     * @return mixed
+     */
+    public function actionIndex()
+    {
+        $dataProvider = new ActiveDataProvider([
+            'query' => Lang::find(),
+        ]);
 
-	
-	public function actionUpdate($id)
-	{
-                if( Yii::$app->request->isAjax)
-                {      
-                    $model=$this->loadModel($id);
-                    $post = Yii::$app->request->post();
-                    $model->name= $post['name'];
-                    $model->save();
-                    echo $model->name;
-                }
-	}
-	
-	public function actionDelete($id)
-	{
-		$this->loadModel($id)->delete();
+        return $this->render('index', [
+            'dataProvider' => $dataProvider,
+        ]);
+    }
 
-		if(!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
-	}
+    /**
+     * Displays a single Lang model.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionView($id)
+    {
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
 
-	/**
-	 * Lists all models.
-	 */
-	public function actionIndex()
-	{
-            $dataProvider = new ActiveDataProvider([
-                'query' => Lang::find(),
-                'pagination' => [
-                    'pageSize' => 10,
-                ],
+    /**
+     * Creates a new Lang model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionCreate()
+    {
+        $model = new Lang();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('create', [
+                'model' => $model,
             ]);
-            if( yii::$app->user->identity->role==='superadmin' ) return $this->render('index_adm',array( 'dataProvider'=>$dataProvider, ));
-            else  return $this->render('index',array( 'dataProvider'=>$dataProvider, ));
-	}
+        }
+    }
 
-	public function loadModel($id)
-	{
-            $model=Lang::find()->where(['id' => $id])->one();
-            
-            if($model===null) throw new CHttpException(404,'The requested page does not exist.');
-            
+    /**
+     * Updates an existing Lang model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    /**
+     * Deletes an existing Lang model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionDelete($id)
+    {
+        $this->findModel($id)->delete();
+
+        return $this->redirect(['index']);
+    }
+
+    /**
+     * Finds the Lang model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return Lang the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id)
+    {
+        if (($model = Lang::findOne($id)) !== null) {
             return $model;
-	}
-
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
 }

@@ -1,15 +1,16 @@
 <?php /* @var $this Controller */
 use yii\helpers\Html;
-use yii\helpers\Url;
 use yii\widgets\Menu;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use app\components\LanguageSelector;
+use app\models\Lang;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
+
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
@@ -47,34 +48,15 @@ AppAsset::register($this);
         echo Nav::widget([
             'options' => ['class' => 'navbar-nav navbar-right'],
             'items' => [
-                ['label' => Yii::t('lang', 'Home'), 'url' => ['/site/index'], 'visible' => !Yii::$app->user->isGuest],
-                ['label' => 'Users', 'url' => '#', 'visible' => Yii::$app->user->can('manager'),
-                    'items' => [
-                        ['label' => 'My Users', 'url' => Url::toRoute(['/user/index','type_user'=>1]), 'visible' => Yii::$app->user->can('manager')],
-                        ['label' => 'My Managers', 'url' => Url::toRoute(['/user/index','type_user'=>2]), 'visible' => Yii::$app->user->can('admin')],
-                        ['label' => 'My Admins', 'url' => Url::toRoute(['/user/index','type_user'=>3]), 'visible' => Yii::$app->user->can('superadmin')],
-                    ],
-                ],
-                ['label' => Yii::t('lang', 'Clients'), 'url' => ['/client/index'], 'visible' => !Yii::$app->user->isGuest],
-                ['label' => Yii::t('lang', 'Invoice'), 'url' => ['/invoice/index'], 'visible' => !Yii::$app->user->isGuest],
-                ['label' => Yii::t('lang', 'Companies'), 'url' => ['/company/index'], 'visible' => !Yii::$app->user->isGuest],
-                ['label' => Yii::t('lang', 'Services'), 'url' => ['/service/index'], 'visible' => !Yii::$app->user->isGuest],
-                ['label' => 'Налоги', 'url' => '#', 'visible' => !Yii::$app->user->isGuest,
-                    'items' => [
-//                        ['label' => 'Подоходный', 'url' => ['/tax/index'], 'visible' => !Yii::$app->user->isGuest],
-                        ['label' => 'Подоходный', 'url' => ['/user/set_tax'], 'visible' => Yii::$app->user->can('superadmin')],
-                        ['label' => 'НДС', 'url' => ['/vat/index'], 'visible' => !Yii::$app->user->isGuest],
-                    ],
-                ],
-                ['label' =>  Yii::t('lang', 'Settings'), 'url' => '#', 'visible' => !Yii::$app->user->isGuest,
-                    'items' => [
-                        ['label' => Yii::t('lang', 'Payment'), 'url' => ['/payment/index'], 'visible' => !Yii::$app->user->isGuest],
-                        ['label' => Yii::t('lang', 'Lang'), 'url' => ['/lang/index'], 'visible' => !Yii::$app->user->isGuest],
-                        ['label' => Yii::t('lang', 'Incomes'), 'url' => ['/income/index'], 'visible' => !Yii::$app->user->isGuest],
-                    ],
-                ],
-                ['label' => Yii::t('lang', 'Account'), 'url' => ['/setting/update'], 'visible' => !Yii::$app->user->isGuest],
-                ['label' => Yii::t('lang', 'Register'), 'url' => ['/site/signup'], 'visible' => Yii::$app->user->isGuest],
+                ['label' => Yii::t('app', 'Home'), 'url' => ['/site/index'], 'visible' => !Yii::$app->user->isGuest],
+                ['label' => Yii::t('app', 'Users'), 'url' => ['/user/index'], 'visible' => !Yii::$app->user->isGuest],
+                ['label' => Yii::t('app', 'Clients'), 'url' => ['/client/index'], 'visible' => !Yii::$app->user->isGuest],
+                ['label' => Yii::t('app', 'Invoice'), 'url' => ['/invoice/index'], 'visible' => !Yii::$app->user->isGuest],
+                ['label' => Yii::t('app', 'Companies'), 'url' => ['/company/index'], 'visible' => !Yii::$app->user->isGuest],
+                ['label' => Yii::t('app', 'Services'), 'url' => ['/service/index'], 'visible' => !Yii::$app->user->isGuest],
+                ['label' => Yii::t('app', 'Taxes'), 'url' => ['/tax/index'], 'visible' => !Yii::$app->user->isGuest],
+                ['label' => Yii::t('app', 'Settings'), 'url' => ['/setting/update'], 'visible' => !Yii::$app->user->isGuest],
+                ['label' => Yii::t('app', 'Register'), 'url' => ['/site/signup'], 'visible' => Yii::$app->user->isGuest],
                 Yii::$app->user->isGuest ?
                     ['label' => 'Login', 'url' => ['/site/login']] :
                     ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
@@ -88,24 +70,16 @@ AppAsset::register($this);
             <?= Breadcrumbs::widget([
                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
             ]) ?>
-            <div class="col-lg-12">
-                <?php
-                foreach (Yii::$app->session->getAllFlashes() as $key => $message) {
-                    echo '<div class="alert alert-' . $key . '">' . $message . '</div>';
-                }
-                ?>
-            </div>
             <?= $content ?>
         </div>
     </div>
-
-    <footer class="footer">
+    
+	<footer class="footer">
         <div class="container">
             <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
             <p class="pull-right"><?= Yii::powered() ?></p>
         </div>
     </footer>
-
 
 <?php $this->endBody() ?>
 </body>

@@ -4,23 +4,13 @@ namespace app\components;
 use yii\base\Widget;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use app\models\Lang;
 
 class LanguageSelector extends Widget {
 
     public function run() {
 	$currentLang = \Yii::$app->language;
-	$languages = \Yii::$app->params['languages'];
-	return $this->render('languageSelector', array('currentLang' => $currentLang,
-						'languages' => $languages)
-		);
-    }
-
-    public function createMultilanguageReturnUrl($lang = 'en') {
-        if (count($_GET) > 0) {
-            $arr = $_GET;
-            $arr['language'] = $lang;
-        } else
-            $arr = array('language' => $lang);
-        return Url::toRoute('', $arr);
+	$langs = Lang::find()->where('id != :current_id', [':current_id' => Lang::getCurrent()->id])->all();
+	return $this->render('languageSelector', ['currentLang' => $currentLang, 'langs' => $langs]);
     }
 }

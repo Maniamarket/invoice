@@ -24,34 +24,29 @@ $config = [
                 '*' => [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'basePath' => '@app/messages',
-                    'sourceLanguage' => 'en',
+                    'sourceLanguage' => 'en-US',
                     'fileMap' => [
-                        //'main' => 'main.php',
+                        //'app' => 'app.php',
+                        //'app/error' => 'error.php',
                     ],
                 ],
             ],
-        ],	
-	'image' => [
-                'class' => 'yii\image\ImageDriver',
-                'driver' => 'GD',  //GD or Imagick
-                ],
-            
-        'response' => [
-                'formatters' => [
-                    'pdf' => [
-                        'class' => 'robregonm\pdf\PdfResponseFormatter',
-                    ],
-                ]
         ],
-        // Yii2 TCPDF
-        'tcpdf' => [
-            'class' => 'cinghie\tcpdf\TCPDF',
-        ],
-        'request' => [
+		'urlManager' => [
+			'enablePrettyUrl' => true,
+			'showScriptName' => false,
+			'class'=>'app\components\LangUrlManager',
+			'rules'=>[
+				'/' => 'site/index',
+				'<controller:\w+>/<action:\w+>/*'=>'<controller>/<action>',
+			]
+		],
+		'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'shfhgjfh637yghhgfbhgghjhn',
+			'class' => 'app\components\LangRequest'
         ],
-        'cache' => [
+		'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
         'authManager' => [
@@ -76,16 +71,8 @@ $config = [
             // send all mails to a file by default. You have to set
             // 'useFileTransport' to false and configure a transport
             // for the mailer to send real emails.
-            'useFileTransport' => false,
+            'useFileTransport' => true,
         ],
-        'pagenService'=>[
-                // use пагинация андрея
-                'class' => 'app\components\PagenService'
-        ],
-        'HelpKontrol'=>[
-                // use cache андрея
-                'class' => 'app\components\HelpKontrol'
-         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
@@ -107,31 +94,6 @@ if (YII_ENV_DEV) {
 
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = ['class' => 'yii\gii\Module', 'allowedIPs' => ['*'],];
-
-    $config['components']['log']['targets'][] = [
-        'class' => 'yii\log\FileTarget',
-        'levels' => ['info'],
-        'categories' => ['apiRequest'],
-        'logFile' => '@app/runtime/logs/API/requests.log',
-        'maxFileSize' => 1024 * 2,
-        'maxLogFiles' => 20,
-    ];
-    $config['components']['log']['targets'][] = [
-        'class' => 'yii\log\FileTarget',
-        'levels' => ['info'],
-        'categories' => ['apiResponse'],
-        'logFile' => '@app/runtime/logs/API/response.log',
-        'maxFileSize' => 1024 * 2,
-        'maxLogFiles' => 20,
-    ];
-    $config['components']['log']['targets'][] = [
-        'class' => 'yii\log\FileTarget',
-        'levels' => ['info'],
-        'categories' => ['userMessage'],
-        'logFile' => '@app/runtime/logs/messages/messages.log',
-        'maxFileSize' => 1024 * 2,
-        'maxLogFiles' => 20,
-    ];
 }
 
 return $config;

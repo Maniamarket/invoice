@@ -15,7 +15,7 @@ $qp=Yii::$app->request->queryParams;
 
 ?>
 
-<h1><?php echo Yii::t('lang', 'My Client'); ?></h1>
+<h1><?php echo Yii::t('app', 'My Client'); ?></h1>
 <p></p><?php echo Html::a('Создать', Url::toRoute('create'),['class'=>'btn-lg btn btn-success']) ?></p>
 <div class="col-10">
     <h3>Форма поиска</h3>

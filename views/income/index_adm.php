@@ -11,7 +11,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 
-<h1><?php echo Yii::t('lang', 'Income'); ?></h1>
+<h1><?php echo Yii::t('app', 'Income'); ?></h1>
 
 <?php echo Html::a('Создать', Url::toRoute('create'),['class'=>'btn-lg btn btn-success']) ?>
 <table class="table table-striped">

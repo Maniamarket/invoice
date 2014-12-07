@@ -11,7 +11,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 
-<h1><?php echo Yii::t('lang', 'Surtax'); ?></h1>
+<h1><?php echo Yii::t('app', 'Surtax'); ?></h1>
 
 <table class="table table-striped">
     <tr>

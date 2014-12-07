@@ -3,18 +3,23 @@
 namespace app\models;
 
 use Yii;
-use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "lang".
  *
  * @property integer $id
+ * @property string $url
+ * @property string $local
  * @property string $name
- *
- * @property Translit[] $translits
+ * @property integer $default
+ * @property integer $date_update
+ * @property integer $date_create
  */
 class Lang extends \yii\db\ActiveRecord
 {
+	//Переменная, для хранения текущего объекта языка
+	static $current = null;
+
     /**
      * @inheritdoc
      */
@@ -29,8 +34,9 @@ class Lang extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
-            [['name'], 'string', 'max' => 40]
+            [['url', 'local', 'name', 'date_update', 'date_create'], 'required'],
+            [['default', 'date_update', 'date_create'], 'integer'],
+            [['url', 'local', 'name'], 'string', 'max' => 255]
         ];
     }
 
@@ -40,22 +46,65 @@ class Lang extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'name' => 'Name',
+            'id' => Yii::t('app', 'ID'),
+            'url' => Yii::t('app', 'Url'),
+            'local' => Yii::t('app', 'Local'),
+            'name' => Yii::t('app', 'Name'),
+            'default' => Yii::t('app', 'Default'),
+            'date_update' => Yii::t('app', 'Date Update'),
+            'date_create' => Yii::t('app', 'Date Create'),
         ];
     }
+    
+    public function behaviors()
+	{
+		return [
+			'timestamp' => [
+				'class' => 'yii\behaviors\TimestampBehavior',
+				'attributes' => [
+					\yii\db\ActiveRecord::EVENT_BEFORE_INSERT => ['date_create', 'date_update'],
+					\yii\db\ActiveRecord::EVENT_BEFORE_UPDATE => ['date_update'],
+				],
+			],
+		];
+	}
+	
+	//Получение текущего объекта языка
+	static function getCurrent()
+	{
+		if( self::$current === null ){
+			self::$current = self::getDefaultLang();
+		}
+		return self::$current;
+	}
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTranslits()
-    {
-        return $this->hasMany(Translit::className(), ['from_lang_id' => 'id']);
-    }
+	//Установка текущего объекта языка и локаль пользователя
+	static function setCurrent($url = null)
+	{
+		$language = self::getLangByUrl($url);
+		self::$current = ($language === null) ? self::getDefaultLang() : $language;
+		Yii::$app->language = self::$current->local;
+	}
 
-    public static function getLanguageArray(){
-        $models = self::find()->all();
-        $result = ArrayHelper::map($models,'id','name');
-        return $result;
-    }
+	//Получения объекта языка по умолчанию
+	static function getDefaultLang()
+	{
+		return Lang::find()->where('`default` = :default', [':default' => 1])->one();
+	}
+
+	//Получения объекта языка по буквенному идентификатору
+	static function getLangByUrl($url = null)
+	{
+		if ($url === null) {
+			return null;
+		} else {
+			$language = Lang::find()->where('url = :url', [':url' => $url])->one();
+			if ( $language === null ) {
+				return null;
+			}else{
+				return $language;
+			}
+		}
+	}
+
 }
