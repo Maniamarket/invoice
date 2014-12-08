@@ -1,5 +1,6 @@
 <?php
-return array(
+
+return [
     ////contact page    
     'Name' => 'Имя',
     'Email' => 'Мейл',
@@ -37,8 +38,11 @@ return array(
     'ClientCreateText' => 'Создать клиент',
     
     //// Invoice page
+    'Invoices' => 'Счет-фактуры',
+    'From' => 'От',
+    'Seller' => 'Продавец',
     'InvoiceHeaderText' => 'Счет-фактуры',
-    'InvoiceHeaderCreateText' => 'Создать Счет-фактуру',
+    'Create Invoice' => 'Создание счет-фактуры',
     'InvoiceClientNameText' => 'Клиент',
     'InvoiceNameText' => 'Название',
     'InvoiceServiceText' => 'Услуга',
@@ -65,4 +69,4 @@ return array(
     
     //// Setting page
     'SettingHeaderText' => 'Настройки',
-);
+];

@@ -68,7 +68,7 @@ $pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'colo
 
 // Set some content to print
 //$html = "<h1>Yii2 TCPDF Works Fine!</h1>";
-$html = $this->context->renderPartial('invoice', ['model' =>$model]);
+$html = $this->context->renderPartial('invoice', ['model' => $model]);
 
 // Print text using writeHTMLCell()
 $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);

@@ -60,4 +60,31 @@ class Invoice extends \yii\db\ActiveRecord
             'currency_id' => Yii::t('app', 'Currency ID'),
         ];
     }
+
+    public function getCompany()
+    {
+        return $this->hasOne('app\models\Company', array('id' => 'company_id'));
+    }
+
+    public function getService()
+    {
+        return $this->hasOne('app\models\Service', array('id' => 'service_id'));
+    }
+
+    public static function queryProvider($qp) {
+        $query = self::find()->where(
+            [/*'user_id'=>  Yii::$app->user->id*/]
+        );
+        if (isset($qp['name']))
+        {
+            if ( !empty($qp['name']))
+                $query->andFilterWhere(['like', 'name', $qp['name']]);
+            if (isset($qp['orderby'])) {
+                $orderBy = ($qp['orderby']=='asc')? SORT_ASC:SORT_DESC;
+                $query->orderBy(['name'=>$orderBy]);
+            }
+
+        }
+        return $query;
+    }
 }

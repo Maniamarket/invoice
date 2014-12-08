@@ -73,6 +73,14 @@ $config = [
             // for the mailer to send real emails.
             'useFileTransport' => false,
         ],
+        'pagenService'=>[
+                // use пагинация андрея
+                'class' => 'app\components\PagenService'
+        ],
+        'HelpKontrol'=>[
+                // use cache андрея
+                'class' => 'app\components\HelpKontrol'
+         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
