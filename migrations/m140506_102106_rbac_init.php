@@ -85,7 +85,7 @@ class m140506_102106_rbac_init extends \yii\db\Migration
         $manager->ruleName = $groupRule->name;
         $authManager->add($manager);
         $authManager->addChild($manager, $user);
-        // связываем пользователя с id=1 c ролью Manager
+        // связываем пользователя с id=2 c ролью Manager
         $authManager->assign($manager, 2);
 
         $admin = $authManager->createRole('admin');
@@ -93,7 +93,7 @@ class m140506_102106_rbac_init extends \yii\db\Migration
         $admin->ruleName = $groupRule->name;
         $authManager->add($admin);
         $authManager->addChild($admin, $manager);
-        // связываем пользователя с id=1 c ролью Admin
+        // связываем пользователя с id=3 c ролью Admin
         $authManager->assign($admin, 3);
 
         $superadmin = $authManager->createRole('superadmin');
@@ -101,7 +101,7 @@ class m140506_102106_rbac_init extends \yii\db\Migration
         $superadmin->ruleName = $groupRule->name;
         $authManager->add($superadmin);
         $authManager->addChild($superadmin, $admin);
-        // связываем пользователя с id=1 c ролью Superadmin
+        // связываем пользователя с id=4 c ролью Superadmin
         $authManager->assign($superadmin, 4);
     }
 

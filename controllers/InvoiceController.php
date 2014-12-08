@@ -8,6 +8,7 @@ use app\models\InvoiceSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\data\ActiveDataProvider;
 
 /**
  * InvoiceController implements the CRUD actions for Invoice model.
@@ -32,13 +33,20 @@ class InvoiceController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new InvoiceSearch();
+        $dataProvider = new ActiveDataProvider([
+            'query' => Invoice::queryProvider(Yii::$app->request->queryParams),
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+        ]);
+        return $this->render('index', ['dataProvider' => $dataProvider]);
+/*        $searchModel = new InvoiceSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-        ]);
+        ]);*/
     }
     
     /**

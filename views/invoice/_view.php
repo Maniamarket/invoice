@@ -1,39 +1,28 @@
 <?php
-/* @var $this InvoiceController */
-/* @var $data Invoice */
+use yii\helpers\Html;
 ?>
-<?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'invoice_paying_form',
-	// Please note: When you enable ajax validation, make sure the corresponding
-	// controller action is handling ajax validation correctly.
-	// There is a call to performAjaxValidation() commented in generated controller code.
-	// See class documentation of CActiveForm for details on this.
-	'enableAjaxValidation'=>false,
-)); ?>
-<div class="view">
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('id')); ?>:</b>
-	<?php echo CHtml::link(CHtml::encode($data->id), array('view', 'id'=>$data->id)); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('date')); ?>:</b>
-	<?php echo CHtml::encode($data->date); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('name')); ?>:</b>
-	<?php echo CHtml::encode($data->name); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('company')); ?>:</b>
-	<?php echo CHtml::encode($data->company); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('price')); ?>:</b>
-	<?php echo CHtml::encode($data->price); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('pay')); ?>:</b>	
-	<?php echo CHtml::encode($data->pay); ?>
+<tr>
+    <td>
+        <?php echo Html::encode($model->user_id); ?>
+        &nbsp;
+        <?php if (\Yii::$app->user->can('superadmin')){ ?>
+            <span class="pull-right">
+                <?php echo Html::a('<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>',
+                    ['update', 'id'=>$model->id],['title'=>'Update']); ?>
+                &nbsp;
+                <?php echo '<a class="remove-btn" data-rmid="'.$model->id.'" data-rmu="'.yii\helpers\Url::toRoute('company/remove').'" data-message="Вы уверены, что хотите удалить компанию '.$model->name.'?"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>'; ?>
+            </span>
+        <?php } ?>
+    </td>
+    <td><?php echo Html::encode($model->date); ?></td>
+    <td><?php echo Html::encode($model->name); ?></td>
+    <td>Оплата</td>
+    <td><?php echo Html::encode($model->company->name); ?></td>
+    <td><?php echo Html::encode($model->service->name); ?></td>
+    <td><?php echo Html::encode($model->count); ?></td>
+    <td><?php echo Html::encode($model->vat_id); ?></td>
+    <td><?php echo Html::encode($model->discount); ?></td>
+</tr>
 
 
 </div>
