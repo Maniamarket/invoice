@@ -17,8 +17,8 @@ $config = [
             'baseUrl' => '@web/themes/classic',
         ],
     ],*/
+    'language'=>'ru-RU',
     'components' => [
-        'language'=>'ru-RU',
         'i18n' => [
             'translations' => [
                 '*' => [
