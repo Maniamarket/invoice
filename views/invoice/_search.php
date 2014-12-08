@@ -19,29 +19,21 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'user_id') ?>
 
+    <?= $form->field($model, 'number') ?>
+
     <?= $form->field($model, 'date') ?>
 
-    <?= $form->field($model, 'name') ?>
+    <?= $form->field($model, 'seller_id') ?>
 
-    <?= $form->field($model, 'company_id') ?>
+    <?php // echo $form->field($model, 'sender_addr') ?>
 
-    <?php // echo $form->field($model, 'service_id') ?>
+    <?php // echo $form->field($model, 'recipient_addr') ?>
 
-    <?php // echo $form->field($model, 'count') ?>
+    <?php // echo $form->field($model, 'bill_number') ?>
 
-    <?php // echo $form->field($model, 'vat_id') ?>
+    <?php // echo $form->field($model, 'client_id') ?>
 
-    <?php // echo $form->field($model, 'discount') ?>
-
-    <?php // echo $form->field($model, 'price') ?>
-
-    <?php // echo $form->field($model, 'pay') ?>
-
-    <?php // echo $form->field($model, 'type') ?>
-
-    <?php // echo $form->field($model, 'finished') ?>
-
-    <?php // echo $form->field($model, 'created_date') ?>
+    <?php // echo $form->field($model, 'currency_id') ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>

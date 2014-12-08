@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Invoice */
 
-$this->title = $model->name;
+$this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Invoices'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -30,18 +30,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'user_id',
+            'number',
             'date',
-            'name',
-            'company_id',
-            'service_id',
-            'count',
-            'vat_id',
-            'discount',
-            'price',
-            'pay',
-            'type',
-            'finished',
-            'created_date',
+            'seller_id',
+            'sender_addr',
+            'recipient_addr',
+            'bill_number',
+            'client_id',
+            'currency_id',
         ],
     ]) ?>
 

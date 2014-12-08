@@ -8,6 +8,9 @@ use app\models\InvoiceSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
+use app\models\Sellers;
+use app\models\Clients;
 
 /**
  * InvoiceController implements the CRUD actions for Invoice model.
@@ -40,28 +43,10 @@ class InvoiceController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
-    
-    /**
-     * export a single Invoice model in PDF.
-     * @return mixed
-     */
-    public function actionPdf($id){        
-	Yii::$app->response->format = 'pdf';
-        return $this->renderPartial('invoice', [
-	    'model' => $this->findModel($id),
-	]);
-    }
-
-    public function actionTcpdf($id)
-    {
-        return $this->render('tcpdf', [
-            'model' => $this->findModel($id),
-        ]);
-    }
 
     /**
      * Displays a single Invoice model.
-     * @param string $id
+     * @param integer $id
      * @return mixed
      */
     public function actionView($id)
@@ -80,11 +65,26 @@ class InvoiceController extends Controller
     {
         $model = new Invoice();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+		$sellersList = ArrayHelper::map(Sellers::find()->asArray()->all(), 'id', 'name');
+		$sellersAddrList = ArrayHelper::map(Sellers::find()->asArray()->all(), 'id', 'address');
+		$sellersInnList = ArrayHelper::map(Sellers::find()->asArray()->all(), 'id', 'inn');
+		$clientsList = ArrayHelper::map(Clients::find()->asArray()->all(), 'id', 'name');
+		$clientsAddrList = ArrayHelper::map(Clients::find()->asArray()->all(), 'id', 'address');
+		$clientsInnList = ArrayHelper::map(Clients::find()->asArray()->all(), 'id', 'inn');
+
+		$model->user_id = Yii::$app->user->identity->id;
+
+		if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'sellersList' => $sellersList,
+                'sellersAddrList' => $sellersAddrList,
+                'sellersInnList' => $sellersInnList,
+                'clientsList' => $clientsList,
+                'clientsAddrList' => $clientsAddrList,
+                'clientsInnList' => $clientsInnList,
             ]);
         }
     }
@@ -92,7 +92,7 @@ class InvoiceController extends Controller
     /**
      * Updates an existing Invoice model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param string $id
+     * @param integer $id
      * @return mixed
      */
     public function actionUpdate($id)
@@ -111,7 +111,7 @@ class InvoiceController extends Controller
     /**
      * Deletes an existing Invoice model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param string $id
+     * @param integer $id
      * @return mixed
      */
     public function actionDelete($id)
@@ -124,7 +124,7 @@ class InvoiceController extends Controller
     /**
      * Finds the Invoice model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param string $id
+     * @param integer $id
      * @return Invoice the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
