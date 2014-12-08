@@ -40,8 +40,6 @@ class LangController extends Controller
 	{
 		$model=new Lang;
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
                  if ($model->load(Yii::$app->request->post()) && $model->save()) {
                         return $this->redirect(['index']);
                  } else 

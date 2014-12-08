@@ -15,7 +15,7 @@ use yii\helpers\Html;
         <?php } ?>
     </td>
     <td><?php if ($model->is_pay) echo 'фактура оплачена';
-              else echo 'оплатить';         
+              else echo Html::a('Оплатить', ['user/pay', 'id'=>$model->id],['title'=>'Pay']);;         
      ?></td>
     <td><?php echo Html::encode($model->date); ?></td>
     <td><?php echo Html::encode($model->name); ?></td>

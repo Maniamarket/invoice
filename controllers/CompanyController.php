@@ -48,7 +48,7 @@ class CompanyController extends Controller {
     public function actionCreate() {
 	$model = new Company;
 //    $dir = Yii::getAlias('@web/images');
-    $uploaded = false;
+       $uploaded = false;
 
 	// Uncomment the following line if AJAX validation is needed
 	// $this->performAjaxValidation($model);

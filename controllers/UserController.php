@@ -11,6 +11,7 @@ use yii\db\Query;
 
 use app\models\User;
 use app\models\Setting;
+use app\models\Invoice;
 
 class UserController extends Controller {
 
@@ -85,6 +86,19 @@ class UserController extends Controller {
             ]);
         $hearder = $this->getHeader($type_user);
         return $this->render('index',['dataProvider'=>$dataProvider, 'hearder' => $hearder, 'type_user' => $type_user ]);
+   }
+
+    /**
+     * Lists all models.
+     */
+    public function actionPay($id) {
+        $invoice = Invoice::findOne($id);
+        var_dump($invoice->user_id);  var_dump(Yii::$app->user->id);        exit();
+        if( $invoice->user_id == Yii::$app->user->id)
+        {
+           $price = Invoice::getPriceTax($invoice);
+        }
+        else echo 'Это не ваша фактура';
    }
 
     /**

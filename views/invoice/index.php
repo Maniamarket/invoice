@@ -18,10 +18,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create {modelClass}', [
-    'modelClass' => 'Invoice',
-]), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Create {modelClass}', [ 'modelClass' => 'Invoice',]), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
+    <p>
+        <?= Html::a(Yii::t('app', 'Buy credit' ), ['user/buy', 'id' => Yii::$app->user->id], ['class' => 'btn btn-success']) ?>
+   </p>
+
 
     <div class="col-10">
         <h3>Форма поиска</h3>
@@ -36,6 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <thead>
         <tr>
             <th>ID</th>
+            <th>Оплата</th>
             <th>Date</th>
             <th>Name
                 <?php if(isset($qp['name'])) {
@@ -60,7 +63,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
                 ?>
             </th>
-            <th>Оплата</th>
             <th>Company</th>
             <th>Service</th>
             <th>Count</th>

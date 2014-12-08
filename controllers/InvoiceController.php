@@ -9,6 +9,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
+use yii\helpers\ArrayHelper;
+use yii\db\Expression;
 
 /**
  * InvoiceController implements the CRUD actions for Invoice model.
@@ -52,21 +54,13 @@ class InvoiceController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Invoice::queryProvider(Yii::$app->request->queryParams),
+            'query' => Invoice::find()->where(['user_id'=> Yii::$app->user->id]),
             'pagination' => [
                 'pageSize' => 20,
             ],
         ]);
         return $this->render('index', ['dataProvider' => $dataProvider]);
-/*        $searchModel = new InvoiceSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);*/
     }
-
     /**
      * Displays a single Invoice model.
      * @param integer $id
@@ -86,30 +80,16 @@ class InvoiceController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Invoice();
+       $model = new Invoice;
 
-		$sellersList = ArrayHelper::map(Sellers::find()->asArray()->all(), 'id', 'name');
-		$sellersAddrList = ArrayHelper::map(Sellers::find()->asArray()->all(), 'id', 'address');
-		$sellersInnList = ArrayHelper::map(Sellers::find()->asArray()->all(), 'id', 'inn');
-		$clientsList = ArrayHelper::map(Clients::find()->asArray()->all(), 'id', 'name');
-		$clientsAddrList = ArrayHelper::map(Clients::find()->asArray()->all(), 'id', 'address');
-		$clientsInnList = ArrayHelper::map(Clients::find()->asArray()->all(), 'id', 'inn');
-
-		$model->user_id = Yii::$app->user->identity->id;
-
-		if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-                'sellersList' => $sellersList,
-                'sellersAddrList' => $sellersAddrList,
-                'sellersInnList' => $sellersInnList,
-                'clientsList' => $clientsList,
-                'clientsAddrList' => $clientsAddrList,
-                'clientsInnList' => $clientsInnList,
-            ]);
-        }
+        if ($model->load(Yii::$app->request->post()) ) {
+ //           $model->date = new Expression('NOW()');;
+            $price = $model->price_service*$model->count;
+            $model->price = $price*($model->vat+$model->tax)/100;
+            $model->user_id = Yii::$app->user->id;
+            if( $model->save()) return $this->redirect(['index']);
+        } 
+        return $this->render('create', ['model' => $model, ]);
     }
 
     /**

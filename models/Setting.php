@@ -115,6 +115,20 @@ class Setting extends ActiveRecord {
 	return $list;
     }
 
+    public static  function List_service() {
+	// @todo Please modify the following code to remove attributes that should not be searched.
+        $company = Service::find()->all();
+        $list = ArrayHelper::map($company,'id', 'name'); 
+	return $list;
+    }
+
+    public static  function List_client() {
+	// @todo Please modify the following code to remove attributes that should not be searched.
+        $company = Client::find()->where(['user_id' => Yii::$app->user->id])->all();
+        $list = ArrayHelper::map($company,'id', 'name'); 
+	return $list;
+    }
+
     /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!

@@ -34,11 +34,14 @@ class Invoice extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'date', 'seller_id', 'sender_addr', 'recipient_addr', 'client_id', 'currency_id'], 'required'],
-            [['user_id', 'seller_id', 'client_id', 'currency_id'], 'integer'],
-            [['date'], 'safe'],
-            [['number', 'bill_number'], 'string', 'max' => 32],
-            [['sender_addr', 'recipient_addr'], 'string', 'max' => 128]
+            [[ 'client_id'], 'required'],
+//            [['user_id', 'date', 'seller_id', 'sender_addr', 'recipient_addr', 'client_id', 'currency_id'], 'required'],
+//            [['user_id', 'seller_id', 'client_id', 'currency_id'], 'integer'],
+            [['user_id',  'client_id',  'count'], 'integer'],
+            [['vat',  'tax',  'discount'], 'integer', 'integerOnly'=>FALSE],
+           // [['date'], 'safe'],
+         //   [['number', 'bill_number'], 'string', 'max' => 32],
+       //     [['sender_addr', 'recipient_addr'], 'string', 'max' => 128]
         ];
     }
 
@@ -50,6 +53,7 @@ class Invoice extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'user_id' => Yii::t('app', 'User ID'),
+            'count' => Yii::t('app', 'count'),
             'number' => Yii::t('app', 'Number'),
             'date' => Yii::t('app', 'Date'),
             'seller_id' => Yii::t('app', 'Seller ID'),
@@ -97,4 +101,14 @@ class Invoice extends \yii\db\ActiveRecord
         }
         return $query;
     }
+    
+    public function getPriceTax(Invoice $model)
+    {
+        $tax = $model->vat + $model->surtax;
+        $price = $model->price_service*$model->count;
+        var_dump($price);
+        return $price;
+    }
+
+
 }
