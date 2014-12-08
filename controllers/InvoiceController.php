@@ -12,12 +12,13 @@ use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
 use yii\db\Expression;
 
+
 /**
  * InvoiceController implements the CRUD actions for Invoice model.
  */
 class InvoiceController extends Controller
 {
-    public function behaviors()
+/*    public function behaviors()
     {
         return [
             'verbs' => [
@@ -27,7 +28,7 @@ class InvoiceController extends Controller
                 ],
             ],
         ];
-    }
+    }*/
 
     /**
      * export a single Invoice model in PDF.

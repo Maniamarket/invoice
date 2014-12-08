@@ -5,12 +5,18 @@ use yii\helpers\Html;
     <td>
         <?php echo Html::a('MM100'.$model->id,['tcpdf', 'id'=>$model->id]); ?>
         &nbsp;
-        <?php if (\Yii::$app->user->can('superadmin')){ ?>
+        <?php if ($model->is_pay) { ?>
+            <span class="pull-right">
+                <?php echo Html::a('<span class="glyphicon glyphicon-print" aria-hidden="true"></span>',
+            ['tcpdf', 'id'=>$model->id],['title'=>'Print']); ?>
+            </span>
+        <?php } elseif (\Yii::$app->user->can('superadmin')){ ?>
             <span class="pull-right">
                 <?php echo Html::a('<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>',
                     ['update', 'id'=>$model->id],['title'=>'Update']); ?>
                 &nbsp;
-                <?php echo '<a class="remove-btn" data-rmid="'.$model->id.'" data-rmu="'.yii\helpers\Url::toRoute('company/remove').'" data-message="Вы уверены, что хотите удалить компанию '.$model->name.'?"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>'; ?>
+                <?php echo Html::a('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>',
+                    ['delete', 'id'=>$model->id],['title'=>'Delete', 'onClick'=>'return confirm("Вы действительно хотите удалить?")']); ?>
             </span>
         <?php } ?>
     </td>

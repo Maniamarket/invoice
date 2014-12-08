@@ -11,7 +11,7 @@
  * @tcpdf documentation http://www.tcpdf.org/docs.php
  * @tcpdf examples http://www.tcpdf.org/examples.php
  */
-
+// http://www.ibm.com/developerworks/ru/library/os-tcpdf/index.html
 const K_PATH_IMAGES = 'images/';
 // Load Component Yii2 TCPDF 
 \Yii::$app->get('tcpdf');
