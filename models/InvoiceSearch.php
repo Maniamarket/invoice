@@ -18,8 +18,8 @@ class InvoiceSearch extends Invoice
     public function rules()
     {
         return [
-            [['id', 'date', 'name', 'type', 'created_date'], 'safe'],
-            [['user_id', 'company_id', 'service_id', 'count', 'vat_id', 'discount', 'price', 'pay', 'finished'], 'integer'],
+            [['id', 'user_id', 'seller_id', 'client_id', 'currency_id'], 'integer'],
+            [['number', 'date', 'sender_addr', 'recipient_addr', 'bill_number'], 'safe'],
         ];
     }
 
@@ -52,22 +52,18 @@ class InvoiceSearch extends Invoice
         }
 
         $query->andFilterWhere([
+            'id' => $this->id,
             'user_id' => $this->user_id,
             'date' => $this->date,
-            'company_id' => $this->company_id,
-            'service_id' => $this->service_id,
-            'count' => $this->count,
-            'vat_id' => $this->vat_id,
-            'discount' => $this->discount,
-            'price' => $this->price,
-            'pay' => $this->pay,
-            'finished' => $this->finished,
-            'created_date' => $this->created_date,
+            'seller_id' => $this->seller_id,
+            'client_id' => $this->client_id,
+            'currency_id' => $this->currency_id,
         ]);
 
-        $query->andFilterWhere(['like', 'id', $this->id])
-            ->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'type', $this->type]);
+        $query->andFilterWhere(['like', 'number', $this->number])
+            ->andFilterWhere(['like', 'sender_addr', $this->sender_addr])
+            ->andFilterWhere(['like', 'recipient_addr', $this->recipient_addr])
+            ->andFilterWhere(['like', 'bill_number', $this->bill_number]);
 
         return $dataProvider;
     }

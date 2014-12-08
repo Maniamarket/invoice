@@ -7,20 +7,16 @@ use Yii;
 /**
  * This is the model class for table "invoice".
  *
- * @property string $id
+ * @property integer $id
  * @property integer $user_id
+ * @property string $number
  * @property string $date
- * @property string $name
- * @property integer $company_id
- * @property integer $service_id
- * @property integer $count
- * @property integer $vat_id
- * @property integer $discount
- * @property integer $price
- * @property integer $pay
- * @property string $type
- * @property integer $finished
- * @property string $created_date
+ * @property integer $seller_id
+ * @property string $sender_addr
+ * @property string $recipient_addr
+ * @property string $bill_number
+ * @property integer $client_id
+ * @property integer $currency_id
  */
 class Invoice extends \yii\db\ActiveRecord
 {
@@ -38,12 +34,11 @@ class Invoice extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'user_id', 'date', 'name', 'count', 'vat_id', 'discount', 'price', 'pay', 'created_date'], 'required'],
-            [['user_id', 'company_id', 'service_id', 'count', 'vat_id', 'discount', 'price', 'pay', 'finished'], 'integer'],
-            [['date', 'created_date'], 'safe'],
-            [['id'], 'string', 'max' => 15],
-            [['name'], 'string', 'max' => 255],
-            [['type'], 'string', 'max' => 50]
+            [['user_id', 'date', 'seller_id', 'sender_addr', 'recipient_addr', 'client_id', 'currency_id'], 'required'],
+            [['user_id', 'seller_id', 'client_id', 'currency_id'], 'integer'],
+            [['date'], 'safe'],
+            [['number', 'bill_number'], 'string', 'max' => 32],
+            [['sender_addr', 'recipient_addr'], 'string', 'max' => 128]
         ];
     }
 
@@ -55,18 +50,14 @@ class Invoice extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'user_id' => Yii::t('app', 'User ID'),
+            'number' => Yii::t('app', 'Number'),
             'date' => Yii::t('app', 'Date'),
-            'name' => Yii::t('app', 'Name'),
-            'company_id' => Yii::t('app', 'Company ID'),
-            'service_id' => Yii::t('app', 'Service ID'),
-            'count' => Yii::t('app', 'Count'),
-            'vat_id' => Yii::t('app', 'Vat ID'),
-            'discount' => Yii::t('app', 'Discount'),
-            'price' => Yii::t('app', 'Price'),
-            'pay' => Yii::t('app', 'Pay'),
-            'type' => Yii::t('app', 'Type'),
-            'finished' => Yii::t('app', 'Finished'),
-            'created_date' => Yii::t('app', 'Created Date'),
+            'seller_id' => Yii::t('app', 'Seller ID'),
+            'sender_addr' => Yii::t('app', 'Sender Addr'),
+            'recipient_addr' => Yii::t('app', 'Recipient Addr'),
+            'bill_number' => Yii::t('app', 'Bill Number'),
+            'client_id' => Yii::t('app', 'Client ID'),
+            'currency_id' => Yii::t('app', 'Currency ID'),
         ];
     }
 

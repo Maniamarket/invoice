@@ -1,7 +1,6 @@
 <?php
-//index.php
+
 use yii\helpers\Html;
-use yii\helpers\Url;
 use yii\grid\GridView;
 use yii\widgets\ListView;
 
@@ -83,28 +82,17 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-	    
-            ['label'=>'id',
-	    'format'=>'raw',
-	    'value'=>function($model){
-		return Html::a(Html::encode($model->id),Url::toRoute(['invoice/pdf', 'id' => $model->id]));
-		//return Html::url('invoice/pdf');
-	    }
-	    
-	    ],	
+
+            'id',
             'user_id',
+            'number',
             'date',
-            'name',
-            'company_id',
-            // 'service_id',
-            // 'count',
-            // 'vat_id',
-            // 'discount',
-            // 'price',
-            // 'pay',
-            // 'type',
-            // 'finished',
-            // 'created_date',
+            'seller_id',
+            // 'sender_addr',
+            // 'recipient_addr',
+            // 'bill_number',
+            // 'client_id',
+            // 'currency_id',
 
         ],
     ]);*/ ?>
