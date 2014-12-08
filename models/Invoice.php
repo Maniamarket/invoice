@@ -102,12 +102,11 @@ class Invoice extends \yii\db\ActiveRecord
         return $query;
     }
     
-    public function getPriceTax(Invoice $model)
+    public static function getPriceTax(Invoice $model)
     {
-        $tax = $model->vat + $model->surtax;
+        $tax = $model->vat + $model->tax;
         $price = $model->price_service*$model->count;
-        var_dump($price);
-        return $price;
+        return $price*$tax/100;
     }
 
 
