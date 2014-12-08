@@ -4,21 +4,27 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 ?>
-<?php if(empty($model->finished)) : ?>
-    <div style="background: url('images/xmark.png') no-repeat center center; position: fixed; width: 100%; height: 350px; top:0; left:0;  z-index: -1;">
-<?php else : ?>
-    <div class="invoice-view">
-<?php endif;?>
+<div>
+    <div><img src="<?php !empty($model->company->logo) ? 'images/companies/'.$model->company->logo : ''; ?>" width="150" alt="<?php echo $model->company->name ?>" /> </div>
     <h1>Invoice - #<?= Html::encode($model->id) ?></h1>
     <?= DetailView::widget([
 	'model' => $model,
 	'attributes' => [
 	    'id',
-	    'user_id',
+        [
+            'attribute'=>'User Name',
+            'value'=>$model->user->username,
+        ],
 	    'date',
 	    'name',
-	    'company_id',
-	    'service_id',
+	    [
+            'attribute'=>'Company Name',
+            'value'=>$model->company->name,
+        ],
+        [
+            'attribute'=>'Service Name',
+            'value'=>$model->service->name,
+        ],
 	    'count',
 	    'vat_id',
 	    'discount',

@@ -70,6 +70,16 @@ class Invoice extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getClient()
+    {
+        return $this->hasOne('app\models\Client', array('id' => 'client_id'));
+    }
+
+    public function getUser()
+    {
+        return $this->hasOne('app\models\User', array('id' => 'user_id'));
+    }
+
     public function getCompany()
     {
         return $this->hasOne('app\models\Company', array('id' => 'company_id'));
