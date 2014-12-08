@@ -65,18 +65,15 @@ class CompanyController extends Controller {
 	  //print_r($model->attributes); exit;
         $file = UploadedFile::getInstance($model,'file');
         if ($file)
+	    //print_r($file); exit;
             $model->logo = $file->name;
 	    if ($model->save()) {
-            if ($file)
-                $uploaded = $file->saveAs('images/companies/'.$file->name);
-
-//		$model->logo->saveAs(Yii::app()->basePath . '/../www/images/logo/' . $model->logo);
-		
-//		$image = Yii::$app->image->load(Yii::app()->basePath . '/../www/images/logo/' . $model->logo);
-//		$image->resize(200, 200);
-//		$image->save();
-		
-		
+		if ($file){
+		    $uploaded = $file->saveAs(Yii::$app->params['logoPath'].$file->name);
+		    $image=Yii::$app->image->load(Yii::$app->params['logoPath'].$file);		
+		    $image->resize(150);
+		    $image->save();
+		}
 		$this->redirect(array('view', 'id' => $model->id));
 	    }
 	}
@@ -105,8 +102,12 @@ class CompanyController extends Controller {
             $model->logo = $file->name;
 	    $model->attributes = $_POST['Company'];
 	    if ($model->save()) {
-            if ($file)
-                $uploaded = $file->saveAs('images/companies/'.$file->name);
+           if ($file){
+		    $uploaded = $file->saveAs(Yii::$app->params['logoPath'].$file->name);
+		    $image=Yii::$app->image->load(Yii::$app->params['logoPath'].$file);		
+		    $image->resize(150);
+		    $image->save();
+		}
             $this->redirect(array('view', 'id' => $model->id));
         }
     }
