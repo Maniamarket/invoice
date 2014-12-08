@@ -1,20 +1,29 @@
 <?php
+
 use yii\helpers\Html;
-use yii\helpers\Url;
-use yii\widgets\Menu;
-use yii\widgets\Breadcrumbs;
-use yii\web\View;
-/* @var $this ServiceController */
-/* @var $model Service */
 
-$this->title=Yii::$app->name . ' - Services';
-$this->params['breadcrumbs'][] = ['label'=>$this->title,'url'=>['index']];
 
-$this->title=Yii::$app->name . ' - Create';
+/* @var $this yii\web\View */
+/* @var $model app\models\Invoice */
+
+$this->title = Yii::t('app', 'Create {modelClass}', [
+    'modelClass' => 'Invoice',
+]);
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Invoices'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<?php echo Html::a('Список Комиссий', Url::toRoute('index'),['class'=>'btn-lg btn btn-primary']) ?>
+<div class="invoice-create">
 
-<h1>Create Income</h1>
+    <h1><?= Html::encode($this->title) ?></h1>
 
-<?php  echo $this->context->renderPartial('_form', ['model'=>$model]); ?>
+    <?= $this->render('_form', [
+        'model' => $model,
+        'sellersList' => $sellersList,
+        'sellersAddrList' => $sellersAddrList,
+        'sellersInnList' => $sellersInnList,
+		'clientsList' => $clientsList,
+		'clientsAddrList' => $clientsAddrList,
+		'clientsInnList' => $clientsInnList,
+    ]) ?>
+
+</div>

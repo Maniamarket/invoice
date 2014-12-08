@@ -8,9 +8,6 @@ use app\models\InvoiceSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\helpers\ArrayHelper;
-use app\models\Sellers;
-use app\models\Clients;
 use yii\data\ActiveDataProvider;
 
 /**
