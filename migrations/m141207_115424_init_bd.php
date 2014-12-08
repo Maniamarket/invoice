@@ -69,7 +69,7 @@ class m141207_115424_init_bd extends Migration
 
         $this->batchInsert('{{%company}}', ['id', 'name', 'logo', 'country', 'city', 'street', 'post_index', 'phone',
             'web_site', 'mail', 'vat_number', 'activity', 'resp_person'], [
-            [1, 'google', '', 'Russia', 'Moscow', 'Lenina 1', 60000, '22222222', '22', '22', '22', '22', '22'],
+            [1, 'google', 'cat1.jpg', 'Russia', 'Moscow', 'Lenina 1', 60000, '22222222', '22', '22', '22', '22', '22'],
             [2, 'microsoft', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL],
             [3, 'gregsys', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL],
             [4, 'bmw', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL]
@@ -102,14 +102,13 @@ class m141207_115424_init_bd extends Migration
             'service_id' => Schema::TYPE_INTEGER . ' NOT NULL DEFAULT 0',
             'price_service' => Schema::TYPE_DECIMAL . '(12,0) NOT NULL DEFAULT 0',
             'count' => Schema::TYPE_INTEGER . ' NOT NULL',
-            'vat_id' => Schema::TYPE_INTEGER . ' NOT NULL',
+            'vat' => Schema::TYPE_DECIMAL . '(5,2) NOT NULL DEFAULT 0',
             'tax' => Schema::TYPE_DECIMAL . '(5,2) NOT NULL DEFAULT 0',
             'discount' => Schema::TYPE_INTEGER . '(3) NOT NULL',
             'price' => Schema::TYPE_INTEGER . ' NOT NULL',
-            'pay' => Schema::TYPE_INTEGER . ' NOT NULL',
+            'is_pay' => Schema::TYPE_BOOLEAN . ' NOT NULL DEFAULT 0',
             'type' => Schema::TYPE_STRING . '(50) DEFAULT NULL',
             'finished' => Schema::TYPE_BOOLEAN . ' DEFAULT NULL',
-            'created_date' => Schema::TYPE_DATETIME . ' NOT NULL',
         ], $tableOptions);
 
         $this->addPrimaryKey('idx_invoice_primary', '{{%invoice}}', 'id');
@@ -119,9 +118,9 @@ class m141207_115424_init_bd extends Migration
         $this->createIndex('idx_invoice_service', '{{%invoice}}', 'service_id');
 
         $this->batchInsert('{{%invoice}}', ['id', 'user_id', 'client_id', 'date', 'name', 'company_id', 'service_id',
-            'price_service', 'count', 'vat_id', 'tax', 'discount', 'price', 'pay', 'type', 'finished', 'created_date'], [
-            ['1', 1, 1, '2014-12-05', '1', 1, 1, '0', 1, 1, '0.00', 1, 1, 1, '1', 0, '2014-12-05 00:00:00'],
-            ['2', 1, 1, '2014-12-05', '1', 1, 1, '0', 1, 1, '0.00', 1, 1, 1, '1', 1, '2014-12-05 00:00:00']
+            'price_service', 'count', 'vat', 'tax', 'discount', 'price', 'is_pay', 'type', 'finished'], [
+            ['1', 1, 1, '2014-12-05', '1', 1, 1, '0', 1, 1, '0.00', 1, 1, 1, '1', 0],
+            ['2', 1, 1, '2014-12-05', '1', 1, 1, '0', 1, 1, '0.00', 1, 1, 1, '1', 1]
         ]);
 
         // Таблица языков
