@@ -26,13 +26,11 @@ use yii\widgets\DetailView;
             'value'=>$model->service->name,
         ],
 	    'count',
-	    'vat_id',
+	    'vat',
 	    'discount',
 	    'price',
-	    'pay',
 	    'type',
 	    'finished',
-	    'created_date',
 	],
     ]) ?>
 </div>
