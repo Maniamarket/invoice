@@ -17,7 +17,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-lg-5">
             <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
-                <?= $form->field($model, 'email') ?>
+            <?= $form->field($model, 'email') ?>
+            <?= $form->field($model, 'name') ?>
                 <div class="form-group">
                     <?= Html::submitButton('Create', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
                 </div>

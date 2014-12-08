@@ -23,14 +23,14 @@ use yii\bootstrap\ActiveForm;
 	</div>
 
         <div class="form-group">
-          <?php echo $form->field($model, 'company_id')->dropDownList(app\models\Setting::List_company())->hint('Company')->label('Company') ; ?>
+          <?php echo $form->field($model, 'company_id')->dropDownList(app\models\Setting::List_company(),['prompt'=>'-Choose a Company-'])->hint('Company')->label('Company') ; ?>
         </div>
         <div class="form-group">
-          <?php echo $form->field($model, 'client_id')->dropDownList(app\models\Setting::List_client())->hint('client')->label('client') ; ?>
+          <?php echo $form->field($model, 'client_id')->dropDownList(app\models\Setting::List_client(),['prompt'=>'-Choose a Client-'])->hint('client')->label('client') ; ?>
         </div>
 
         <div class="form-group">
-          <?php echo $form->field($model, 'service_id')->dropDownList(app\models\Setting::List_service())->hint('Service')->label('Service') ; ?>
+          <?php echo $form->field($model, 'service_id')->dropDownList(app\models\Setting::List_service(),['prompt'=>'-Choose a Service-'])->hint('Service')->label('Service') ; ?>
         </div>
 
         <div class="form-group">

@@ -79,7 +79,7 @@ $html = $this->context->renderPartial('invoice', ['model' => $model]);
 // Print text using writeHTMLCell()
 $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
 
-if(empty($model->finished)) {
+if(empty($model->is_pay)) {
 // ---------------------------------------------------------
 
     $ImageW = 180; //WaterMark Size

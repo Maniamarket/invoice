@@ -93,34 +93,32 @@ class m141207_115424_init_bd extends Migration
 
         // Таблица счет-фактур
         $this->createTable('{{%invoice}}', [
-            'id' => Schema::TYPE_STRING . '(15) NOT NULL DEFAULT ""',
+            'id' => Schema::TYPE_PK . ' NOT NULL',
             'user_id' => Schema::TYPE_INTEGER . ' NOT NULL',
             'client_id' => Schema::TYPE_INTEGER . ' NOT NULL',
             'date' => Schema::TYPE_DATE . ' NOT NULL',
             'name' => Schema::TYPE_STRING . ' NOT NULL',
             'company_id' => Schema::TYPE_INTEGER . ' NOT NULL DEFAULT 0',
             'service_id' => Schema::TYPE_INTEGER . ' NOT NULL DEFAULT 0',
-            'price_service' => Schema::TYPE_DECIMAL . '(12,0) NOT NULL DEFAULT 0',
+            'price_service' => Schema::TYPE_DECIMAL . '(10,2) NOT NULL DEFAULT 0',
             'count' => Schema::TYPE_INTEGER . ' NOT NULL',
             'vat' => Schema::TYPE_DECIMAL . '(5,2) NOT NULL DEFAULT 0',
             'tax' => Schema::TYPE_DECIMAL . '(5,2) NOT NULL DEFAULT 0',
-            'discount' => Schema::TYPE_INTEGER . '(3) NOT NULL',
+            'discount' => Schema::TYPE_DECIMAL . '(5,2) NOT NULL',
             'price' => Schema::TYPE_INTEGER . ' NOT NULL',
             'is_pay' => Schema::TYPE_BOOLEAN . ' NOT NULL DEFAULT 0',
             'type' => Schema::TYPE_STRING . '(50) DEFAULT NULL',
-            'finished' => Schema::TYPE_BOOLEAN . ' DEFAULT NULL',
         ], $tableOptions);
 
-        $this->addPrimaryKey('idx_invoice_primary', '{{%invoice}}', 'id');
         $this->createIndex('idx_invoice_user', '{{%invoice}}', 'user_id');
         $this->createIndex('idx_invoice_client', '{{%invoice}}', 'client_id');
         $this->createIndex('idx_invoice_company', '{{%invoice}}', 'company_id');
         $this->createIndex('idx_invoice_service', '{{%invoice}}', 'service_id');
 
         $this->batchInsert('{{%invoice}}', ['id', 'user_id', 'client_id', 'date', 'name', 'company_id', 'service_id',
-            'price_service', 'count', 'vat', 'tax', 'discount', 'price', 'is_pay', 'type', 'finished'], [
-            ['1', 1, 1, '2014-12-05', '1', 1, 1, '0', 1, 1, '0.00', 1, 1, 1, '1', 0],
-            ['2', 1, 1, '2014-12-05', '1', 1, 1, '0', 1, 1, '0.00', 1, 1, 1, '1', 1]
+            'price_service', 'count', 'vat', 'tax', 'discount', 'price', 'is_pay', 'type'], [
+            [1, 1, 1, '2014-12-05', '1', 1, 1, '200.00', 1, 1, '15.00', '4.00', '7.00', 0, '1'],
+            [2, 1, 1, '2014-12-05', '1', 1, 1, '500.00', 1, 1, '40.00', '10.00', '10.00', 1, '1']
         ]);
 
         // Таблица языков

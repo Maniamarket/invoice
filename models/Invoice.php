@@ -34,12 +34,12 @@ class Invoice extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [[ 'client_id'], 'required'],
+            [[ 'client_id', 'name', 'company_id', 'service_id', 'vat', 'tax', 'discount'], 'required'],
 //            [['user_id', 'date', 'seller_id', 'sender_addr', 'recipient_addr', 'client_id', 'currency_id'], 'required'],
 //            [['user_id', 'seller_id', 'client_id', 'currency_id'], 'integer'],
             [['user_id',  'client_id',  'count'], 'integer'],
             [['vat',  'tax',  'discount'], 'integer', 'integerOnly'=>FALSE],
-           // [['date'], 'safe'],
+            [['date','company_id', 'service_id'], 'safe'],
          //   [['number', 'bill_number'], 'string', 'max' => 32],
        //     [['sender_addr', 'recipient_addr'], 'string', 'max' => 128]
         ];
