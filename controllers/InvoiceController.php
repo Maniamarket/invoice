@@ -11,7 +11,7 @@ use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
 use yii\db\Expression;
-
+use yii\web\ForbiddenHttpException;
 
 /**
  * InvoiceController implements the CRUD actions for Invoice model.
@@ -43,9 +43,14 @@ class InvoiceController extends Controller
 
     public function actionTcpdf($id)
     {
-        return $this->render('tcpdf', [
-            'model' => $this->findModel($id),
-        ]);
+        $model = $this->findModel($id);
+        if ($model->user_id == Yii::$app->user->id) {
+            return $this->render('tcpdf', [
+                'model' => $model,
+            ]);
+        } else {
+            throw new ForbiddenHttpException('Access to the invoice is forbidden. You are not the owner of the invoice');
+        }
     }
 
     /**

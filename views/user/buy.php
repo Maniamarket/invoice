@@ -10,4 +10,8 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <h1><?php  echo 'System payment';  ?></h1>
-
+<h3>Выберите платежную систему</h3>
+<?php echo Html::beginForm(); ?>
+<?php echo Html::radioList('payment',[],[1=>'PayPal',2=>'Bank Card', 3=>'Bank transfer'],['separator'=>'<br />']); ?>
+<?= Html::submitButton('Send', ['class' => 'btn btn-primary', 'name' => 'send']) ?>
+<?php echo Html::endForm(); ?>
