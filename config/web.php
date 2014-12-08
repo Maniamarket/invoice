@@ -30,7 +30,12 @@ $config = [
                     ],
                 ],
             ],
-        ],
+        ],	
+	'image' => [
+                'class' => 'yii\image\ImageDriver',
+                'driver' => 'GD',  //GD or Imagick
+                ],
+            
         'response' => [
                 'formatters' => [
                     'pdf' => [

@@ -77,15 +77,12 @@ class UserController extends Controller {
      * Lists all models.
      */
     public function actionBuy($id) {
-        var_dump($id);        exit();
-        $dataProvider = new ActiveDataProvider([
-                'query' => $query,
-                'pagination' => [
-                    'pageSize' => 10,
-                ],
-            ]);
-        $hearder = $this->getHeader($type_user);
-        return $this->render('index',['dataProvider'=>$dataProvider, 'hearder' => $hearder, 'type_user' => $type_user ]);
+        if( $id == Yii::$app->user->id)
+        {
+          return $this->render('buy',[]);
+        }
+        else echo 'Это не для гостей';
+
    }
 
     /**
@@ -93,10 +90,23 @@ class UserController extends Controller {
      */
     public function actionPay($id) {
         $invoice = Invoice::findOne($id);
-        var_dump($invoice->user_id);  var_dump(Yii::$app->user->id);        exit();
         if( $invoice->user_id == Yii::$app->user->id)
         {
            $price = Invoice::getPriceTax($invoice);
+           $credit = Setting::find()->where(['user_id'=>$invoice->user_id])->one();
+           if( $price > $credit->credit) {
+               \Yii::$app->getSession()->setFlash('danger', 'Вам надо пополнить кредиты на сумму '.($price).' кредита');
+               return $this->redirect(['buy', 'id'=>$invoice->user_id]);
+           }
+           else{
+              $credit->credit = $credit->credit - $price; 
+              $credit->save();
+          //    var_dump($credit->credit);              exit();
+              $invoice->is_pay = TRUE; 
+              
+              if($credit->save() && $invoice->save() ) return $this->redirect(['invoice/index']);
+              else echo 'сбой прт снятии кредитов';
+           }
         }
         else echo 'Это не ваша фактура';
    }

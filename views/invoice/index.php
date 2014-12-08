@@ -24,7 +24,6 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a(Yii::t('app', 'Buy credit' ), ['user/buy', 'id' => Yii::$app->user->id], ['class' => 'btn btn-success']) ?>
    </p>
 
-
     <div class="col-10">
         <h3>Форма поиска</h3>
         <?php echo Html::beginForm(['index'],'get',['id'=>'form-client-search']); ?>
@@ -65,6 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </th>
             <th>Company</th>
             <th>Service</th>
+            <th>Price Service</th>
             <th>Count</th>
             <th>Vat</th>
             <th>Discount</th>

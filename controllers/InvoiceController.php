@@ -12,12 +12,13 @@ use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
 use yii\db\Expression;
 
+
 /**
  * InvoiceController implements the CRUD actions for Invoice model.
  */
 class InvoiceController extends Controller
 {
-    public function behaviors()
+/*    public function behaviors()
     {
         return [
             'verbs' => [
@@ -27,7 +28,7 @@ class InvoiceController extends Controller
                 ],
             ],
         ];
-    }
+    }*/
 
     /**
      * export a single Invoice model in PDF.
@@ -54,7 +55,7 @@ class InvoiceController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Invoice::find()->where(['user_id'=> Yii::$app->user->id]),
+            'query' => Invoice::find()->where(['user_id'=> Yii::$app->user->id])->orderBy(['is_pay'=>SORT_ASC, 'id'=>SORT_DESC]),
             'pagination' => [
                 'pageSize' => 20,
             ],
@@ -85,7 +86,7 @@ class InvoiceController extends Controller
         if ($model->load(Yii::$app->request->post()) ) {
             $model->date = new Expression('NOW()');
             $price = $model->price_service*$model->count;
-            $model->price = $price*($model->vat+$model->tax)/100;
+            $model->price = $price*(1+($model->vat + $model->tax - $model->discount)/100);
             $model->user_id = Yii::$app->user->id;
             if( $model->save()) return $this->redirect(['index']);
         } 
