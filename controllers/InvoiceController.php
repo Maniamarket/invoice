@@ -54,7 +54,7 @@ class InvoiceController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Invoice::find()->where(['user_id'=> Yii::$app->user->id]),
+            'query' => Invoice::find()->where(['user_id'=> Yii::$app->user->id])->orderBy(['is_pay'=>SORT_ASC, 'id'=>SORT_DESC]),
             'pagination' => [
                 'pageSize' => 20,
             ],

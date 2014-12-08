@@ -93,10 +93,22 @@ class UserController extends Controller {
      */
     public function actionPay($id) {
         $invoice = Invoice::findOne($id);
-        var_dump($invoice->user_id);  var_dump(Yii::$app->user->id);        exit();
         if( $invoice->user_id == Yii::$app->user->id)
         {
            $price = Invoice::getPriceTax($invoice);
+           $credit = Setting::find()->where(['user_id'=>$invoice->user_id])->one();
+           if( $price > $credit->credit) {
+               echo 'пополните кредиты';
+           }
+           else{
+              $credit->credit = $credit->credit - $price; 
+              $credit->save();
+          //    var_dump($credit->credit);              exit();
+              $invoice->is_pay = TRUE; 
+              
+              if($credit->save() && $invoice->save() ) return $this->redirect(['invoice/index']);
+              else echo 'сбой прт снятии кредитов';
+           }
         }
         else echo 'Это не ваша фактура';
    }
