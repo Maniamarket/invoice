@@ -176,6 +176,7 @@ class m141207_115424_init_bd extends Migration
             'post_index' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
             'phone' => Schema::TYPE_STRING . '(100) DEFAULT NULL',
             'web_site' => Schema::TYPE_BOOLEAN . ' DEFAULT NULL',
+            'surtax' => Schema::TYPE_DECIMAL . '(5,2) DEFAULT NULL',
         ], $tableOptions);
 
         $this->addPrimaryKey('idx_setting_primary', '{{%setting}}', 'user_id');
@@ -184,15 +185,15 @@ class m141207_115424_init_bd extends Migration
         $this->createIndex('idx_setting_def_lang_id', '{{%setting}}', 'def_lang_id');
 
         $this->batchInsert('{{%setting}}', ['user_id', 'name', 'credit', 'def_vat_id', 'def_company_id', 'def_lang_id',
-            'bank_code', 'account_number', 'last_login', 'is_on', 'country','city', 'street', 'post_index', 'phone', 'web_site'], [
-            [1, 'no', 0, 3, 2, 2, '1111111111', '1111111111', '2014-12-01 00:00:00', 1, 'yyyy', 'yyy', 'yyy', 999999, '67895909', 'tururt'],
-            [2, 'no', 0, 1, 1, 1, 'no', 'no', '2014-12-04 12:39:39', 1, 'qq', 'qq', 'qq', 11, 'qq', 'www'],
-            [3, 'aaaaa', 0, 1, 1, 1, 'no', 'no', '2014-12-04 09:21:05', 1, 'qq', 'qq', 'qq', 11111, 'qq', 'qq'],
-            [4, 'aaaaa', 0, 1, 1, 1, 'no', 'no', '2014-12-04 09:21:05', 1, 'qq', 'qq', 'qq', 11111, 'qq', 'qq'],
-            [6, '', 0, 0, 0, 0, 'no', 'no', '2014-12-07 11:39:47', 1, '', '', '', NULL, '', ''],
-            [7, '', 0, 1, 1, 1, 'no', 'no', '2014-12-07 15:05:00', 1, '', '', '', NULL, '', ''],
-            [8, '', 0, 0, 0, 0, 'no', 'no', '2014-12-07 16:20:27', 1, '', '', '', NULL, '', ''],
-            [9, '', 0, 0, 0, 0, 'no', 'no', '2014-12-07 16:31:05', 1, '', '', '', NULL, '', ''],
+            'bank_code', 'account_number', 'last_login', 'is_on', 'country','city', 'street', 'post_index', 'phone', 'web_site', 'surtax'], [
+            [1, 'no', 0, 3, 2, 2, '1111111111', '1111111111', '2014-12-01 00:00:00', 1, 'yyyy', 'yyy', 'yyy', 999999, '67895909', 'tururt', 5],
+            [2, 'no', 0, 1, 1, 1, 'no', 'no', '2014-12-04 12:39:39', 1, 'qq', 'qq', 'qq', 11, 'qq', 'www', 5],
+            [3, 'aaaaa', 0, 1, 1, 1, 'no', 'no', '2014-12-04 09:21:05', 1, 'qq', 'qq', 'qq', 11111, 'qq', 'qq', 5],
+            [4, 'aaaaa', 0, 1, 1, 1, 'no', 'no', '2014-12-04 09:21:05', 1, 'qq', 'qq', 'qq', 11111, 'qq', 'qq', 5],
+            [6, '', 0, 0, 0, 0, 'no', 'no', '2014-12-07 11:39:47', 1, '', '', '', NULL, '', '', 5],
+            [7, '', 0, 1, 1, 1, 'no', 'no', '2014-12-07 15:05:00', 1, '', '', '', NULL, '', '', 5],
+            [8, '', 0, 0, 0, 0, 'no', 'no', '2014-12-07 16:20:27', 1, '', '', '', NULL, '', '', 5],
+            [9, '', 0, 0, 0, 0, 'no', 'no', '2014-12-07 16:31:05', 1, '', '', '', NULL, '', '', 5],
         ]);
 
         // Таблица подоходных налогов
