@@ -68,9 +68,11 @@ $pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'colo
 
 // Set some content to print
 //$html = "<h1>Yii2 TCPDF Works Fine!</h1>";
-$logo = !empty($model->company->logo) ? 'images/companies/'.$model->company->logo : '';
-$pdf->Image($logo, '15', '25', '20', '0', '', '', '', true, 150);
-
+// логотип компании
+if (!empty($model->company->logo)) {
+    $logo = 'images/companies/'.$model->company->logo;
+    $pdf->Image($logo, '15', '25', '20', '0', '', '', '', true, 150);
+}
 //echo $logo;
 $html = $this->context->renderPartial('invoice', ['model' => $model]);
 
