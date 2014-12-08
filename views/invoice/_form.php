@@ -34,6 +34,14 @@ use yii\bootstrap\ActiveForm;
         </div>
 
         <div class="form-group">
+         <?php echo $form->field($model, 'price_service', [
+                'inputOptions' => [ 'placeholder' => $model->getAttributeLabel('price_service'), ],
+               ])->label(false);
+             echo Html::error($model, 'price_service'); 
+         ?>
+        </div>
+
+        <div class="form-group">
          <?php echo $form->field($model, 'count', [
                 'inputOptions' => [ 'placeholder' => $model->getAttributeLabel('count'), ],
                ])->label(false);

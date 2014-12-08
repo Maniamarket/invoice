@@ -86,7 +86,7 @@ class InvoiceController extends Controller
         if ($model->load(Yii::$app->request->post()) ) {
             $model->date = new Expression('NOW()');
             $price = $model->price_service*$model->count;
-            $model->price = $price*($model->vat+$model->tax)/100;
+            $model->price = $price*(1+($model->vat + $model->tax - $model->discount)/100);
             $model->user_id = Yii::$app->user->id;
             if( $model->save()) return $this->redirect(['index']);
         } 

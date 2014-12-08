@@ -27,6 +27,7 @@ use yii\helpers\Html;
     <td><?php echo Html::encode($model->name); ?></td>
     <td><?php echo Html::encode($model->company->name); ?></td>
     <td><?php echo Html::encode($model->service->name); ?></td>
+    <td><?php echo Html::encode($model->price_service); ?></td>
     <td><?php echo Html::encode($model->count); ?></td>
     <td><?php echo Html::encode($model->vat); ?></td>
     <td><?php echo Html::encode($model->discount); ?></td>

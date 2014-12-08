@@ -77,15 +77,12 @@ class UserController extends Controller {
      * Lists all models.
      */
     public function actionBuy($id) {
-        var_dump($id);        exit();
-        $dataProvider = new ActiveDataProvider([
-                'query' => $query,
-                'pagination' => [
-                    'pageSize' => 10,
-                ],
-            ]);
-        $hearder = $this->getHeader($type_user);
-        return $this->render('index',['dataProvider'=>$dataProvider, 'hearder' => $hearder, 'type_user' => $type_user ]);
+        if( $id == Yii::$app->user->id)
+        {
+          return $this->render('buy',[]);
+        }
+        else echo 'Это не для гостей';
+
    }
 
     /**
@@ -98,7 +95,8 @@ class UserController extends Controller {
            $price = Invoice::getPriceTax($invoice);
            $credit = Setting::find()->where(['user_id'=>$invoice->user_id])->one();
            if( $price > $credit->credit) {
-               echo 'пополните кредиты';
+               \Yii::$app->getSession()->setFlash('danger', 'Вам надо пополнить кредиты на сумму '.($price).' кредита');
+               return $this->redirect(['buy', 'id'=>$invoice->user_id]);
            }
            else{
               $credit->credit = $credit->credit - $price; 
