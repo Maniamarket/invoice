@@ -14,13 +14,15 @@ use yii\helpers\Html;
             </span>
         <?php } ?>
     </td>
+    <td><?php if ($model->is_pay) echo 'фактура оплачена';
+              else echo 'оплатить';         
+     ?></td>
     <td><?php echo Html::encode($model->date); ?></td>
     <td><?php echo Html::encode($model->name); ?></td>
-    <td>Оплата</td>
     <td><?php echo Html::encode($model->company->name); ?></td>
     <td><?php echo Html::encode($model->service->name); ?></td>
     <td><?php echo Html::encode($model->count); ?></td>
-    <td><?php echo Html::encode($model->vat_id); ?></td>
+    <td><?php echo Html::encode($model->vat); ?></td>
     <td><?php echo Html::encode($model->discount); ?></td>
 </tr>
 

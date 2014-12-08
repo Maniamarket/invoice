@@ -32,11 +32,11 @@ class InvoiceController extends Controller
      * @return mixed
      */
     public function actionPdf($id){
-    Yii::$app->response->format = 'pdf';
-    return $this->renderPartial('invoice', [
-        'model' => $this->findModel($id),
-    ]);
-}
+        Yii::$app->response->format = 'pdf';
+        return $this->renderPartial('invoice', [
+            'model' => $this->findModel($id),
+        ]);
+    }
 
     public function actionTcpdf($id)
     {
