@@ -7,7 +7,10 @@ use yii\web\NotFoundHttpException;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\db\Query;
+
 use app\models\User;
+use app\models\Setting;
 
 class UserController extends Controller {
 
@@ -16,19 +19,17 @@ class UserController extends Controller {
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'login'],
+                'only' => ['create', 'index', 'set_tax', 'update'],
                 'rules' => [
                     [
-                        'actions' => ['login'],
+                        'actions' => ['create', 'index'],
                         'allow' => true,
-                        'roles' => ['?'],
+                        'roles' => ['manager'],
                     ],
                     [
-                        'actions' => ['logout','special-callback'],
+                        'actions' => ['set_tax', 'update'],
                         'allow' => true,
-                        'matchCallback' => function ($rule, $action) {
-                                return $this->isClient();
-                            }
+                        'roles' => ['superadmin'],
                     ],
                 ],
             ],
@@ -78,13 +79,47 @@ class UserController extends Controller {
         $query = $this->getQueri($type_user);
         $dataProvider = new ActiveDataProvider([
                 'query' => $query,
-//                'query' => User::find()->where(['manager_id'=>  Yii::$app->user->id]),
                 'pagination' => [
                     'pageSize' => 10,
                 ],
             ]);
         $hearder = $this->getHeader($type_user);
         return $this->render('index',['dataProvider'=>$dataProvider, 'hearder' => $hearder, 'type_user' => $type_user ]);
+   }
+
+    public function actionUpdate($user_id) {
+           if( Yii::$app->request->isAjax)
+                {      
+                    $model = Setting::find()->where(['user_id' => $user_id])->one();
+                    $post = Yii::$app->request->post();
+                    $model->surtax = $post['surtax'];
+                    $model->save();
+                    echo $model->surtax;
+                }
+   }
+
+    /**
+     * Lists all models.
+     */
+    public function actionSet_tax( $page = 1) {
+/*        $query = new Query;
+	$query->select(['update_cache'])->from('{{user}}')->orderBy('update_cache','desc')->offset(0)->limit(2);
+	$data = $query->createCommand()->queryAll();    */
+        $pagen_service = Yii::$app->pagenService;
+
+        $q = new Query;
+        $count = $q ->select(['count(*) as kol'])->from('{{user}}')->createCommand()->queryOne();
+        $q = new Query;
+        $q ->select(['u.*','s.surtax'])->from('{{user}} as u')
+                ->join('join','{{setting}} as s',' u.id = s.user_id ')
+                ->orderBy('id');
+    
+        $data_all = $pagen_service->getPaginat($count, $q,6,5,$page);
+        $datas = $data_all['values'];
+        $pages = $data_all['pages'];
+        $page = $data_all['page'];
+     
+        return $this->render('settax',['datas'=>$datas, 'pages'=> $pages, 'page' => $page ]);
    }
 
     public function getQueri($type_user) {
