@@ -3,7 +3,7 @@ use yii\helpers\Html;
 ?>
 <tr>
     <td>
-        <?php echo Html::a($model->user_id,['tcpdf', 'id'=>$model->id]); ?>
+        <?php echo Html::a('MM100'.$model->id,['tcpdf', 'id'=>$model->id]); ?>
         &nbsp;
         <?php if (\Yii::$app->user->can('superadmin')){ ?>
             <span class="pull-right">
