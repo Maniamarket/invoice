@@ -61,7 +61,8 @@ AppAsset::register($this);
                 ['label' => Yii::t('lang', 'Services'), 'url' => ['/service/index'], 'visible' => !Yii::$app->user->isGuest],
                 ['label' => 'Налоги', 'url' => '#', 'visible' => !Yii::$app->user->isGuest,
                     'items' => [
-                        ['label' => 'Подоходный', 'url' => ['/tax/index'], 'visible' => !Yii::$app->user->isGuest],
+//                        ['label' => 'Подоходный', 'url' => ['/tax/index'], 'visible' => !Yii::$app->user->isGuest],
+                        ['label' => 'Подоходный', 'url' => ['/user/set_tax'], 'visible' => Yii::$app->user->can('superadmin')],
                         ['label' => 'НДС', 'url' => ['/vat/index'], 'visible' => !Yii::$app->user->isGuest],
                     ],
                 ],
