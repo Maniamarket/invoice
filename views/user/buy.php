@@ -13,6 +13,5 @@ $this->params['breadcrumbs'][] = $this->title;
 <h3>Выберите платежную систему</h3>
 <?php echo Html::beginForm(['user/buy','id'=>  Yii::$app->user->id]); ?>
 <?php echo Html::radioList('payment',[],  \app\models\Setting::List_payment(),['separator'=>'<br />']); ?>
-<?php// echo Html::radioList('payment',[],[1=>'PayPal',2=>'Bank Card', 3=>'Bank transfer'],['separator'=>'<br />']); ?>
 <?= Html::submitButton('Send', ['class' => 'btn btn-primary', 'name' => 'send']) ?>
 <?php echo Html::endForm(); ?>

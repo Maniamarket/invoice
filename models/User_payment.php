@@ -20,10 +20,10 @@ use yii\helpers\ArrayHelper;
  * @property integer $def_company
  * @property integer $def_lang
  */
-class Setting extends ActiveRecord {
+class User_payment extends ActiveRecord {
 
     public static function tableName() {
-	return 'setting';
+	return 'user_payment';
     }
 
     /**
@@ -33,14 +33,9 @@ class Setting extends ActiveRecord {
 	// NOTE: you should only define rules for those attributes that
 	// will receive user inputs.
 	return array(
-	    [['def_company_id','bank_code', 'account_number','def_lang_id'], 'required'],
-	    [['def_vat_id','post_index'], 'integer'],
-	    [['credit'], 'integer','integerOnly'=>FALSE],
-        [['bank_code', 'account_number','country','city','street','phone','web_site','name'], 'filter', 'filter' => 'trim'],
-	    [['bank_code', 'account_number','country','city','street','phone','web_site','name'], 'string', 'max' => 100],
-	    // The following rule is used by search().
-	    // @todo Please remove those attributes that should not be searched.
-	   [['credit', 'def_vat_id', 'def_company_id', 'def_lang_id'], 'safe', 'on' => 'search'],
+	    [['user_id','credit', 'is_input','date'], 'required'],
+	    [['user_id','credit', 'is_input'], 'integer'],
+	 //   [['date'], 'integer','integerOnly'=>FALSE],
 	);
     }
 

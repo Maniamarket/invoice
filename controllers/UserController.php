@@ -7,11 +7,13 @@ use yii\web\NotFoundHttpException;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\db\Expression;
 use yii\db\Query;
 
 use app\models\User;
 use app\models\Setting;
 use app\models\Invoice;
+use app\models\User_payment;
 
 class UserController extends Controller {
 
@@ -80,10 +82,30 @@ class UserController extends Controller {
         if( $id == Yii::$app->user->id)
         {
           if( isset($_POST['payment'])){
-              $payment = $_POST['payment'];
-              var_dump($payment);              exit();
+              return $this->redirect(['payment_credit', 'id'=>$id, 'payment_id'=> $_POST['payment']]);
           }  
           return $this->render('buy',[]);
+        }
+        else echo 'Это не для гостей';
+
+   }
+
+    /**
+     * Lists all models.
+     */
+    public function actionPayment_credit($id, $payment_id) {
+        if( $id == Yii::$app->user->id)
+        {
+          $model = new User_payment;  
+          if( $model->load(Yii::$app->request->post()) ){
+              $model->user_id = $id;
+              $model->is_input = TRUE;
+              $model->date = new Expression('NOW()');
+              if( $model->save()){
+                  return $this->redirect(['invoice/index']);
+              }
+          }  
+          return $this->render('payment_credit',['model' => $model,'payment_id'=>$payment_id]);
         }
         else echo 'Это не для гостей';
 
