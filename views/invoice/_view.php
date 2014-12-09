@@ -11,18 +11,18 @@ use yii\bootstrap\Modal;
             <span class="pull-right">
                <?php Modal::begin([
                    'header' => '<h2>Шаблон для печати</h2>',
-                   'toggleButton' => ['tag'=>'a', 'label' => '<span class="glyphicon glyphicon-print" aria-hidden="true"></span>',
-                       'style'=>'cursor:pointer;', 'title'=>'Print'],
+                   'toggleButton' => ['tag'=>'a', 'label' => '<span class="glyphicon glyphicon-picture" aria-hidden="true"></span>',
+                       'style'=>'cursor:pointer;', 'title'=>'Set Template'],
                ]);
                echo 'Выберите шаблон:';
                echo Html::ol([
-                   Html::a('Базовый',['tcpdf','id'=>$model->id,'template'=>'basic']),
-                   Html::a('Дополнительный',['tcpdf','id'=>$model->id,'template'=>'add'])
+                   Html::a('Базовый',['settemplate','id'=>$model->id,'template'=>'basic']),
+                   Html::a('Дополнительный',['settemplate','id'=>$model->id,'template'=>'add'])
                 ],
                ['encode'=>false]);
-               Modal::end(); ?>
-
-                <?php //echo Html::a('<span class="glyphicon glyphicon-print" aria-hidden="true"></span>', ['tcpdf', 'id'=>$model->id],['title'=>'Print']); ?>
+               Modal::end();
+               echo Html::a('<span class="glyphicon glyphicon-print" aria-hidden="true"></span>', ['tcpdf', 'id'=>$model->id],['title'=>'Print']);
+               ?>
             </span>
         <?php } elseif (\Yii::$app->user->can('superadmin')){ ?>
             <span class="pull-right">

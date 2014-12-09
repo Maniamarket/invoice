@@ -19,15 +19,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a(Yii::t('app', 'Create {modelClass}', [ 'modelClass' => 'Invoice',]), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-    <p>
         <?= Html::a(Yii::t('app', 'Buy credit' ), ['user/buy', 'id' => Yii::$app->user->id], ['class' => 'btn btn-success']) ?>
-   </p>
-    <p>
         <?= Html::a(Yii::t('app', 'History credit' ), ['history'], ['class' => 'btn btn-success']) ?>
    </p>
     <p>
-        <?= Yii::$app->user->identity->setting->credit ?>
+        <b>Credits: </b><?= Yii::$app->user->identity->setting->credit ?>
    </p>
 
     <div class="col-10">

@@ -41,11 +41,26 @@ class InvoiceController extends Controller
         ]);
     }
 
+    public function actionSettemplate($id, $template)
+    {
+        $model = $this->findModel($id);
+        if ($model->user_id == Yii::$app->user->id) {
+            $model->type = $template;
+            if ($model->save())
+                Yii::$app->getSession()->setFlash('success', 'Шаблон успешно установлен ');
+            else
+                Yii::$app->getSession()->setFlash('danger', 'Неизвестная ошибка: '.$model->errors['type'][0]);
+            return $this->redirect(['index']);
+        } else {
+            throw new ForbiddenHttpException('Access to the invoice is forbidden. You are not the owner of the invoice');
+        }
+    }
+
     public function actionTcpdf($id)
     {
         $model = $this->findModel($id);
         if ($model->user_id == Yii::$app->user->id) {
-            $template = isset(Yii::$app->request->queryParams['template'])?Yii::$app->request->queryParams['template']:'basic';
+            $template = empty($model->type) ? 'basic' : $model->type;
             return $this->render('tcpdf', [
                 'model' => $model,
                 'template'=>$template
@@ -55,7 +70,6 @@ class InvoiceController extends Controller
         }
     }
 
-    
    
     /**
      * Lists all Invoice models.

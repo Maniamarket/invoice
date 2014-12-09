@@ -38,6 +38,8 @@ class Invoice extends \yii\db\ActiveRecord
 //            [['user_id', 'date', 'seller_id', 'sender_addr', 'recipient_addr', 'client_id', 'currency_id'], 'required'],
 //            [['user_id', 'seller_id', 'client_id', 'currency_id'], 'integer'],
             [['user_id',  'client_id',  'count'], 'integer'],
+            ['type', 'default', 'value' => 'basic'],
+            ['type', 'string', 'max' => 50],
             [['vat',  'tax',  'discount', 'price_service'], 'integer', 'integerOnly'=>FALSE],
             [['date','company_id', 'service_id'], 'safe'],
          //   [['number', 'bill_number'], 'string', 'max' => 32],
