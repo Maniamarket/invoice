@@ -8,17 +8,17 @@ $config = [
     'bootstrap' => ['log'],
     'name' => 'Biling',
 //    'defaultController' => 'site/login',
-/*    'view' => [
-        'theme' => [
-            'pathMap' => [
-                '@app/views' => '@app/themes/classic',
-                '@app/modules' => '@app/themes/classic/modules'
-            ],
-            'baseUrl' => '@web/themes/classic',
-        ],
-    ],*/
+    /*    'view' => [
+      'theme' => [
+      'pathMap' => [
+      '@app/views' => '@app/themes/classic',
+      '@app/modules' => '@app/themes/classic/modules'
+      ],
+      'baseUrl' => '@web/themes/classic',
+      ],
+      ], */
     'components' => [
-        'language'=>'ru-RU',
+        'language' => 'ru-RU',
         'i18n' => [
             'translations' => [
                 '*' => [
@@ -26,7 +26,7 @@ $config = [
                     'basePath' => '@app/messages',
                     'sourceLanguage' => 'en',
                     'fileMap' => [
-                        //'main' => 'main.php',
+                    //'main' => 'main.php',
                     ],
                 ],
             ],
@@ -41,7 +41,7 @@ $config = [
         'authManager' => [
             'class' => 'yii\rbac\PhpManager',
             'defaultRoles' => ['SUPERADMIN', 'ADMIN', 'MANAGER', 'USER'],
-            ],
+        ],
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
@@ -67,6 +67,11 @@ $config = [
         ],
         'db' => require(__DIR__ . '/db.php'),
     ],
+    /*'urlManager' => [
+        'rules' => [
+            ['pattern' => 'payments', 'route' => 'payments/default/index'],
+        ],
+    ],*/
     'params' => $params,
 ];
 
@@ -79,4 +84,7 @@ if (YII_ENV_DEV) {
     $config['modules']['gii'] = 'yii\gii\Module';
 }
 
+$config['modules'] ['payments'] = [
+    'class' => 'app\modules\payments\Module',
+];
 return $config;
