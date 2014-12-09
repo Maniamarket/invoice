@@ -74,7 +74,7 @@ if (!empty($model->company->logo)) {
     $pdf->Image($logo, '15', '25', '20', '0', '', '', '', true, 150);
 }
 //echo $logo;
-$html = $this->context->renderPartial('invoice', ['model' => $model]);
+$html = $this->context->renderPartial('template/'.$template, ['model' => $model]);
 
 // Print text using writeHTMLCell()
 $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);

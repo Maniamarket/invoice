@@ -1,5 +1,7 @@
 <?php
 use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\bootstrap\Modal;
 ?>
 <tr>
     <td>
@@ -7,8 +9,20 @@ use yii\helpers\Html;
         &nbsp;
         <?php if ($model->is_pay) { ?>
             <span class="pull-right">
-                <?php echo Html::a('<span class="glyphicon glyphicon-print" aria-hidden="true"></span>',
-            ['tcpdf', 'id'=>$model->id],['title'=>'Print']); ?>
+               <?php Modal::begin([
+                   'header' => '<h2>Шаблон для печати</h2>',
+                   'toggleButton' => ['tag'=>'a', 'label' => '<span class="glyphicon glyphicon-print" aria-hidden="true"></span>',
+                       'style'=>'cursor:pointer;', 'title'=>'Print'],
+               ]);
+               echo 'Выберите шаблон:';
+               echo Html::ol([
+                   Html::a('Базовый',['tcpdf','id'=>$model->id,'template'=>'basic']),
+                   Html::a('Дополнительный',['tcpdf','id'=>$model->id,'template'=>'add'])
+                ],
+               ['encode'=>false]);
+               Modal::end(); ?>
+
+                <?php //echo Html::a('<span class="glyphicon glyphicon-print" aria-hidden="true"></span>', ['tcpdf', 'id'=>$model->id],['title'=>'Print']); ?>
             </span>
         <?php } elseif (\Yii::$app->user->can('superadmin')){ ?>
             <span class="pull-right">

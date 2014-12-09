@@ -45,8 +45,10 @@ class InvoiceController extends Controller
     {
         $model = $this->findModel($id);
         if ($model->user_id == Yii::$app->user->id) {
+            $template = isset(Yii::$app->request->queryParams['template'])?Yii::$app->request->queryParams['template']:'basic';
             return $this->render('tcpdf', [
                 'model' => $model,
+                'template'=>$template
             ]);
         } else {
             throw new ForbiddenHttpException('Access to the invoice is forbidden. You are not the owner of the invoice');
