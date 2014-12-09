@@ -147,7 +147,7 @@ class m141209_124406_countri extends Migration
 
     public function down()
     {
-        echo "m141209_124406_countri cannot be reverted.\n";
+       $this->dropTable('{{%country}}');
 
         return false;
     }
