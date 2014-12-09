@@ -79,6 +79,10 @@ class UserController extends Controller {
     public function actionBuy($id) {
         if( $id == Yii::$app->user->id)
         {
+          if( isset($_POST['payment'])){
+              $payment = $_POST['payment'];
+              var_dump($payment);              exit();
+          }  
           return $this->render('buy',[]);
         }
         else echo 'Это не для гостей';

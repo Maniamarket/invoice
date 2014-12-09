@@ -125,8 +125,15 @@ class Setting extends ActiveRecord {
 
     public static  function List_client() {
 	// @todo Please modify the following code to remove attributes that should not be searched.
-        $company = Client::find()->where(['user_id' => Yii::$app->user->id])->all();
-        $list = ArrayHelper::map($company,'id', 'name'); 
+        $client = Client::find()->where(['user_id' => Yii::$app->user->id])->all();
+        $list = ArrayHelper::map($client,'id', 'name'); 
+	return $list;
+    }
+
+    public static  function List_payment() {
+	// @todo Please modify the following code to remove attributes that should not be searched.
+        $payment = \Faker\Provider\lv_LV\Payment::find();
+        $list = ArrayHelper::map($payment,'id', 'name'); 
 	return $list;
     }
 

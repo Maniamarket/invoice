@@ -48,15 +48,34 @@ AppAsset::register($this);
         echo Nav::widget([
             'options' => ['class' => 'navbar-nav navbar-right'],
             'items' => [
-                ['label' => Yii::t('app', 'Home'), 'url' => ['/site/index'], 'visible' => !Yii::$app->user->isGuest],
-                ['label' => Yii::t('app', 'Users'), 'url' => ['/user/index'], 'visible' => !Yii::$app->user->isGuest],
-                ['label' => Yii::t('app', 'Clients'), 'url' => ['/client/index'], 'visible' => !Yii::$app->user->isGuest],
-                ['label' => Yii::t('app', 'Invoice'), 'url' => ['/invoice/index'], 'visible' => !Yii::$app->user->isGuest],
-                ['label' => Yii::t('app', 'Companies'), 'url' => ['/company/index'], 'visible' => !Yii::$app->user->isGuest],
-                ['label' => Yii::t('app', 'Services'), 'url' => ['/service/index'], 'visible' => !Yii::$app->user->isGuest],
-                ['label' => Yii::t('app', 'Taxes'), 'url' => ['/tax/index'], 'visible' => !Yii::$app->user->isGuest],
-                ['label' => Yii::t('app', 'Settings'), 'url' => ['/setting/update'], 'visible' => !Yii::$app->user->isGuest],
-                ['label' => Yii::t('app', 'Register'), 'url' => ['/site/signup'], 'visible' => Yii::$app->user->isGuest],
+                ['label' => Yii::t('lang', 'Home'), 'url' => ['/site/index'], 'visible' => !Yii::$app->user->isGuest],
+                ['label' => Yii::t('lang','Users'), 'url' => '#', 'visible' => Yii::$app->user->can('manager'),
+                    'items' => [
+                        ['label' => Yii::t('lang','My Users'), 'url' => ['/user/index','type_user'=>1], 'visible' => Yii::$app->user->can('manager')],
+                        ['label' => Yii::t('lang','My Managers'), 'url' => ['/user/index','type_user'=>2], 'visible' => Yii::$app->user->can('admin')],
+                        ['label' => Yii::t('lang','My Admins'), 'url' => ['/user/index','type_user'=>3], 'visible' => Yii::$app->user->can('superadmin')],
+                    ],
+                ],
+                ['label' => Yii::t('lang', 'Clients'), 'url' => ['/client/index'], 'visible' => !Yii::$app->user->isGuest],
+                ['label' => Yii::t('lang', 'Invoice'), 'url' => ['/invoice/index'], 'visible' => !Yii::$app->user->isGuest],
+                ['label' => Yii::t('lang', 'Companies'), 'url' => ['/company/index'], 'visible' => !Yii::$app->user->isGuest],
+                ['label' => Yii::t('lang', 'Services'), 'url' => ['/service/index'], 'visible' => !Yii::$app->user->isGuest],
+                ['label' => 'Налоги', 'url' => '#', 'visible' => !Yii::$app->user->isGuest,
+                    'items' => [
+//                        ['label' => 'Подоходный', 'url' => ['/tax/index'], 'visible' => !Yii::$app->user->isGuest],
+                        ['label' => 'Подоходный', 'url' => ['/user/set_tax'], 'visible' => Yii::$app->user->can('superadmin')],
+                        ['label' => 'НДС', 'url' => ['/vat/index'], 'visible' => !Yii::$app->user->isGuest],
+                    ],
+                ],
+                ['label' =>  Yii::t('lang', 'Settings'), 'url' => '#', 'visible' => !Yii::$app->user->isGuest,
+                    'items' => [
+                        ['label' => Yii::t('lang', 'Payment'), 'url' => ['/payment/index'], 'visible' => !Yii::$app->user->isGuest],
+                        ['label' => Yii::t('lang', 'Lang'), 'url' => ['/lang/index'], 'visible' => !Yii::$app->user->isGuest],
+                        ['label' => Yii::t('lang', 'Incomes'), 'url' => ['/income/index'], 'visible' => !Yii::$app->user->isGuest],
+                    ],
+                ],
+                ['label' => Yii::t('lang', 'Account'), 'url' => ['/setting/update'], 'visible' => !Yii::$app->user->isGuest],
+                ['label' => Yii::t('lang', 'Register'), 'url' => ['/site/signup'], 'visible' => Yii::$app->user->isGuest],
                 Yii::$app->user->isGuest ?
                     ['label' => 'Login', 'url' => ['/site/login']] :
                     ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
@@ -64,7 +83,7 @@ AppAsset::register($this);
                         'linkOptions' => ['data-method' => 'post']],
             ],
         ]);
-        NavBar::end();  ?>
+        NavBar::end(); ?>
 
         <div class="container">
             <?= Breadcrumbs::widget([
