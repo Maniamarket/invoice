@@ -20,10 +20,10 @@ use yii\helpers\ArrayHelper;
  * @property integer $def_company
  * @property integer $def_lang
  */
-class User_payment extends ActiveRecord {
+class User_income extends ActiveRecord {
 
     public static function tableName() {
-	return 'user_payment';
+	return 'user_income';
     }
 
     /**
@@ -33,9 +33,8 @@ class User_payment extends ActiveRecord {
 	// NOTE: you should only define rules for those attributes that
 	// will receive user inputs.
 	return array(
-	    [['user_id','credit', 'credit_sum', 'is_input','date'], 'required'],
-	    [['user_id', 'is_input'], 'integer'],
-	    [['user_id','credit', 'is_input'], 'integer','integerOnly' => FALSE],
+	    [['user_id','credit', 'date'], 'required'],
+	    [['user_id'], 'integer'],
 	 //   [['date'], 'integer','integerOnly'=>FALSE],
 	);
     }
@@ -55,8 +54,6 @@ class User_payment extends ActiveRecord {
      */
     public function attributeLabels() {
 	return array(
-	    'user_id' => 'User',
-	    'credit' => 'Credit',
 	);
     }
 

@@ -14,6 +14,7 @@ use app\models\User;
 use app\models\Setting;
 use app\models\Invoice;
 use app\models\User_payment;
+use app\models\User_income;
 
 class UserController extends Controller {
 
@@ -98,10 +99,30 @@ class UserController extends Controller {
         {
           $model = new User_payment;  
           if( $model->load(Yii::$app->request->post()) ){
+    //увеличение кредитов (история)
               $model->user_id = $id;
               $model->is_input = TRUE;
+              $model->credit_sum = $model->credit_sum + $model->credit;
               $model->date = new Expression('NOW()');
               if( $model->save()){
+    //увеличение кредитов
+                  $user_credit = Setting::find()->where(['user_id'=>$id])->one();
+                  $user_credit->credit = $user_credit->credit + $model->credit;
+                  $user_credit->save();
+                
+    //сумма налогов за месяц
+                  $q = new Query;
+                  $isDate =  new Expression('MONTH(`date`)=MONTH(NOW())');
+                  $q ->select(['SUM(u.credit) as sum'])->from('{{user_payment}} as u')
+                    ->where( $isDate )->andWhere('is_input = 0');
+                  $res = $q->createCommand()->queryOne();
+                  if( !$user = User_income::find()->where([ 'user_id'=>$id ])->one())
+                       $user = new User_income;
+                  $user->credit = $res['sum'];
+                  $user->user_id = $id;
+                  $user->date = new Expression('NOW()');
+                  $user->save();
+                  
                   return $this->redirect(['invoice/index']);
               }
           }  
@@ -126,11 +147,20 @@ class UserController extends Controller {
            }
            else{
               $credit->credit = $credit->credit - $price; 
-              $credit->save();
           //    var_dump($credit->credit);              exit();
               $invoice->is_pay = TRUE; 
               
-              if($credit->save() && $invoice->save() ) return $this->redirect(['invoice/index']);
+              if($credit->save() && $invoice->save() ){
+                  $model = new User_payment;  
+                  $model->user_id = $id;
+                  $model->is_input = 0;
+                  $model->credit = - $price;
+                  $model->credit_sum = $model->credit_sum - $price;
+                  $model->date = new Expression('NOW()');
+                  $model->validate();
+                  $model->save();
+                  return $this->redirect(['invoice/index']);
+              }
               else echo 'сбой прт снятии кредитов';
            }
         }
