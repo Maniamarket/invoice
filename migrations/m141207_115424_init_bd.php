@@ -124,17 +124,17 @@ class m141207_115424_init_bd extends Migration
         // Таблица языков
         $this->createTable('{{%lang}}', [
             'id' => Schema::TYPE_PK,
-            'name' => Schema::TYPE_STRING . '(40) NOT NULL',
             'url' => Schema::TYPE_STRING . ' NOT NULL',
             'local' => Schema::TYPE_STRING . ' NOT NULL',
-            'default' => Schema::TYPE_INTEGER . ' NOT NULL',
+            'name' => Schema::TYPE_STRING . ' NOT NULL',
+            'default' => Schema::TYPE_SMALLINT . ' NOT NULL DEFAULT 0',
             'date_update' => Schema::TYPE_INTEGER . ' NOT NULL',
             'date_create' => Schema::TYPE_INTEGER . ' NOT NULL',
         ], $tableOptions);
 
-        $this->batchInsert('{{%lang}}', ['id', 'name', 'url', 'local', 'default', 'date_update', 'date_create'], [
-            [1, 'Russia', 'ru', 'ru-RU', 1, 0, 0],
-            [2, 'English', 'en', 'en-US', 2, 0, 0]
+        $this->batchInsert('{{%lang}}', ['id', 'url', 'local', 'name', 'default', 'date_update', 'date_create'], [
+            [1, 'en', 'en-US', 'English', 0, time(), time()],
+            [2, 'ru', 'ru-RU', 'Русский', 1, time(), time()]
         ]);
 
         // Таблица платежей
