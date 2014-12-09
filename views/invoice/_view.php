@@ -45,7 +45,9 @@ use yii\bootstrap\Modal;
     <td><?php echo Html::encode($model->price_service); ?></td>
     <td><?php echo Html::encode($model->count); ?></td>
     <td><?php echo Html::encode($model->vat); ?></td>
+    <td><?php echo Html::encode($model->tax); ?></td>
     <td><?php echo Html::encode($model->discount); ?></td>
+    <td><?php echo Html::encode($model->price); ?></td>
 </tr>
 
 

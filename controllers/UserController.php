@@ -102,7 +102,8 @@ class UserController extends Controller {
     //увеличение кредитов (история)
               $model->user_id = $id;
               $model->is_input = TRUE;
-              $model->credit_sum = $model->credit_sum + $model->credit;
+              $old = User_payment::find()->where(['user_id'=>$id])->orderBy(['id'=>SORT_DESC])->one();
+              $model->credit_sum = (( $old) ? $old->credit_sum : 0) + $model->credit;
               $model->profit_parent = $model->profit_parent + 0;
               $model->date = new Expression('NOW()');
               if( $model->save()){
@@ -137,7 +138,6 @@ class UserController extends Controller {
            }
            else{
               $credit->credit = $credit->credit - $price_tek; 
-          //    var_dump($credit->credit);              exit();
               $invoice->is_pay = TRUE; 
               
               if($credit->save() && $invoice->save() ){
@@ -146,21 +146,23 @@ class UserController extends Controller {
                   $model->user_id = $invoice->user_id;
                   $model->is_input = 0;
                   $model->credit = - $price_tek;
-                  $model->credit_sum = $model->credit_sum - $price_tek;
+                  $old = User_payment::find()->where(['user_id'=>$invoice->user_id])->orderBy(['id'=>SORT_DESC])->one();
+                  $model->credit_sum = $old->credit_sum - $price_tek;
                   $model->profit_parent = $model->profit_parent + $price['tax'];
                   $model->date = new Expression('NOW()');
-//                  $model->validate();   var_dump($model->errors);                  exit();
+//              var_dump($old->credit_sum );     var_dump($model->credit_sum );              exit();
                   $model->save();
      //сумма налогов за месяц
                   $q = new Query;
                   $isDate =  new Expression('MONTH(`date`)=MONTH(NOW())');
                   $q ->select(['SUM(u.profit_parent) as sum'])->from('{{user_payment}} as u')
-                    ->where( $isDate )->andWhere('is_input = 0');
+                    ->where( $isDate )->andWhere('is_input = 0 and user_id='.$model->user_id);
                   $res = $q->createCommand()->queryOne();
-                  if( !$user = User_income::find()->where([ 'user_id'=>$id ])->orderBy(['id'=>'desc'])->one())
+                  if( !$user = User_income::find()->where([ 'user_id'=>$model->user_id])
+                          ->andWhere($isDate)->orderBy(['id'=>SORT_DESC])->one())
                        $user = new User_income;
                   $user->parent_id = \Yii::$app->user->identity->parent_id;
-                  $user->credit = $res['sum'];
+                  $user->credit =  $res['sum'];
                   $user->user_id = $invoice->user_id;
                   $user->date = new Expression('NOW()');
                   $user->save();
@@ -169,31 +171,33 @@ class UserController extends Controller {
                   $q ->select(['SUM(u.credit) as sum'])->from('{{user_income}} as u')
                     ->where( $isDate )->andWhere('parent_id = '.$user->parent_id);
                   $res = $q->createCommand()->queryOne();
-                  if( ! $parent_manager = User_income::find()->where([ 'user_id'=>$user->parent_id ])->orderBy(['id'=>'desc'])->one())
+                  if( ! $parent_manager = User_income::find()->where([ 'user_id'=>$user->parent_id ])
+                                    ->andWhere($isDate)->orderBy(['id'=>SORT_DESC])->one())
                          $parent_manager = new User_income;
-                  if( \Yii::$app->user->identity->role == 'manager')
-                            $parent_manager->profit_manager = $res['sum'];
-                  elseif (\Yii::$app->user->identity->role == 'admin') {
-                            $parent_manager->profit_admin = $res['sum'];
-                        }
                   $parent_manager->user_id = $user->parent_id;
                   $parent_manager->credit = 0;
                   $parent_manager->date = $user->date;
                   $paren = User::find()->where(['id'=>$user->parent_id])->one();
                   $parent_manager->parent_id = ( $paren )? $paren->parent_id : 0;
+                  if( ! $paren) { echo ' добавь в базу user='.$user->parent_id; exit();}
+                  elseif( $paren->role == 'manager')     $parent_manager->profit_manager = $res['sum'];
+                  elseif($paren->role  == 'admin')  $parent_manager->profit_admin = $res['sum'];
+                     
                   $parent_manager->save();
+                  
                   if( $parent_manager->parent_id >0 ){
                     $q = new Query;
                     $q ->select(['SUM(u.credit) as sum, SUM(u.profit_manager) as sum_prof'])->from('{{user_income}} as u')
-                      ->where( $isDate )->andWhere('parent_id = '.$user->parent_id);
+                      ->where( $isDate )->andWhere('parent_id = '.$parent_manager->parent_id);
                     $res = $q->createCommand()->queryOne();
-                    if( ! $parent_admin = User_income::find()->where([ 'user_id'=>$parent_manager->parent_id ])->orderBy(['id'=>'desc'])->one())
+                    if( ! $parent_admin = User_income::find()->where([ 'user_id'=>$parent_manager->parent_id ])
+                            ->andWhere($isDate)->orderBy(['id'=>SORT_DESC])->one())
                             $parent_admin = new User_income;  
                         $parent_admin->profit_admin = $res['sum'] + $res['sum_prof'];
                         $parent_admin->credit = 0;
                         $parent_admin->date = $user->date;
-                      //  $paren = User::find()->where(['user_id'=>$user->parent_id]);
                         $parent_admin->parent_id = 0;
+     //    var_dump($res['sum_prof']);   var_dump($res['sum']);   var_dump($parent_admin->profit_admin);   exit();
                         $parent_admin->save();
                   }
                   
@@ -249,7 +253,7 @@ class UserController extends Controller {
      */
     public function actionSet_tax( $page = 1) {
 /*        $query = new Query;
-	$query->select(['update_cache'])->from('{{user}}')->orderBy('update_cache','desc')->offset(0)->limit(2);
+	$query->select(['update_cache'])->from('{{user}}')->orderBy('update_cache',SORT_DESC)->offset(0)->limit(2);
 	$data = $query->createCommand()->queryAll();    */
         $pagen_service = Yii::$app->pagenService;
 

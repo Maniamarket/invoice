@@ -70,7 +70,9 @@ $this->params['breadcrumbs'][] = $this->title;
             <th>Price Service</th>
             <th>Count</th>
             <th>Vat</th>
+            <th>Surtax</th>
             <th>Discount</th>
+            <th>Total Price</th>
         </tr>
         </thead>
         <tbody>
@@ -82,25 +84,4 @@ $this->params['breadcrumbs'][] = $this->title;
         ?>
         </tbody>
     </table>
-
-    <?php /*echo GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'user_id',
-            'number',
-            'date',
-            'seller_id',
-            // 'sender_addr',
-            // 'recipient_addr',
-            // 'bill_number',
-            // 'client_id',
-            // 'currency_id',
-
-        ],
-    ]);*/ ?>
-
 </div>
