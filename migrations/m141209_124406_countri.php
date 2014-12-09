@@ -149,6 +149,5 @@ class m141209_124406_countri extends Migration
     {
        $this->dropTable('{{%country}}');
 
-        return false;
     }
 }
