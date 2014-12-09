@@ -33,7 +33,7 @@ class User_payment extends ActiveRecord {
 	// NOTE: you should only define rules for those attributes that
 	// will receive user inputs.
 	return array(
-	    [['user_id','credit', 'credit_sum', 'is_input','date'], 'required'],
+	    [['user_id','credit', 'credit_sum', 'profit_parent', 'is_input','date'], 'required'],
 	    [['user_id', 'is_input'], 'integer'],
 	    [['user_id','credit', 'is_input'], 'integer','integerOnly' => FALSE],
 	 //   [['date'], 'integer','integerOnly'=>FALSE],

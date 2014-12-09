@@ -26,7 +26,7 @@ class UserController extends Controller {
                 'only' => ['create', 'index', 'set_tax', 'update'],
                 'rules' => [
                     [
-                        'actions' => ['create', 'index'],
+                        'actions' => ['create', 'index', 'profit'],
                         'allow' => true,
                         'roles' => ['manager'],
                     ],
@@ -103,26 +103,14 @@ class UserController extends Controller {
               $model->user_id = $id;
               $model->is_input = TRUE;
               $model->credit_sum = $model->credit_sum + $model->credit;
+              $model->profit_parent = $model->profit_parent + 0;
               $model->date = new Expression('NOW()');
               if( $model->save()){
     //увеличение кредитов
-                  $user_credit = Setting::find()->where(['user_id'=>$id])->one();
+                  $user_credit = Setting::find()->where(['user_id' => $id])->one();
                   $user_credit->credit = $user_credit->credit + $model->credit;
                   $user_credit->save();
                 
-    //сумма налогов за месяц
-                  $q = new Query;
-                  $isDate =  new Expression('MONTH(`date`)=MONTH(NOW())');
-                  $q ->select(['SUM(u.credit) as sum'])->from('{{user_payment}} as u')
-                    ->where( $isDate )->andWhere('is_input = 0');
-                  $res = $q->createCommand()->queryOne();
-                  if( !$user = User_income::find()->where([ 'user_id'=>$id ])->one())
-                       $user = new User_income;
-                  $user->credit = $res['sum'];
-                  $user->user_id = $id;
-                  $user->date = new Expression('NOW()');
-                  $user->save();
-                  
                   return $this->redirect(['invoice/index']);
               }
           }  
@@ -141,24 +129,74 @@ class UserController extends Controller {
         {
            $price = Invoice::getPriceTax($invoice);
            $credit = Setting::find()->where(['user_id'=>$invoice->user_id])->one();
-           if( $price > $credit->credit) {
-               \Yii::$app->getSession()->setFlash('danger', 'Вам надо пополнить кредиты на сумму '.($price).' кредита');
+           $price_tek = $price['vat'] + $price['tax'];
+           if( $price_tek > $credit->credit) {
+               \Yii::$app->getSession()->setFlash('danger', 'Вам надо пополнить кредиты на сумму '.
+                       round($price['vat']+$price['tax']).' кредита');
                return $this->redirect(['buy', 'id'=>$invoice->user_id]);
            }
            else{
-              $credit->credit = $credit->credit - $price; 
+              $credit->credit = $credit->credit - $price_tek; 
           //    var_dump($credit->credit);              exit();
               $invoice->is_pay = TRUE; 
               
               if($credit->save() && $invoice->save() ){
+     //оплата налогов (история)
                   $model = new User_payment;  
-                  $model->user_id = $id;
+                  $model->user_id = $invoice->user_id;
                   $model->is_input = 0;
-                  $model->credit = - $price;
-                  $model->credit_sum = $model->credit_sum - $price;
+                  $model->credit = - $price_tek;
+                  $model->credit_sum = $model->credit_sum - $price_tek;
+                  $model->profit_parent = $model->profit_parent + $price['tax'];
                   $model->date = new Expression('NOW()');
-                  $model->validate();
+//                  $model->validate();   var_dump($model->errors);                  exit();
                   $model->save();
+     //сумма налогов за месяц
+                  $q = new Query;
+                  $isDate =  new Expression('MONTH(`date`)=MONTH(NOW())');
+                  $q ->select(['SUM(u.profit_parent) as sum'])->from('{{user_payment}} as u')
+                    ->where( $isDate )->andWhere('is_input = 0');
+                  $res = $q->createCommand()->queryOne();
+                  if( !$user = User_income::find()->where([ 'user_id'=>$id ])->orderBy(['id'=>'desc'])->one())
+                       $user = new User_income;
+                  $user->parent_id = \Yii::$app->user->identity->parent_id;
+                  $user->credit = $res['sum'];
+                  $user->user_id = $invoice->user_id;
+                  $user->date = new Expression('NOW()');
+                  $user->save();
+        //parent manager
+                  $q = new Query;
+                  $q ->select(['SUM(u.credit) as sum'])->from('{{user_income}} as u')
+                    ->where( $isDate )->andWhere('parent_id = '.$user->parent_id);
+                  $res = $q->createCommand()->queryOne();
+                  if( ! $parent_manager = User_income::find()->where([ 'user_id'=>$user->parent_id ])->orderBy(['id'=>'desc'])->one())
+                         $parent_manager = new User_income;
+                  if( \Yii::$app->user->identity->role == 'manager')
+                            $parent_manager->profit_manager = $res['sum'];
+                  elseif (\Yii::$app->user->identity->role == 'admin') {
+                            $parent_manager->profit_admin = $res['sum'];
+                        }
+                  $parent_manager->user_id = $user->parent_id;
+                  $parent_manager->credit = 0;
+                  $parent_manager->date = $user->date;
+                  $paren = User::find()->where(['id'=>$user->parent_id])->one();
+                  $parent_manager->parent_id = ( $paren )? $paren->parent_id : 0;
+                  $parent_manager->save();
+                  if( $parent_manager->parent_id >0 ){
+                    $q = new Query;
+                    $q ->select(['SUM(u.credit) as sum, SUM(u.profit_manager) as sum_prof'])->from('{{user_income}} as u')
+                      ->where( $isDate )->andWhere('parent_id = '.$user->parent_id);
+                    $res = $q->createCommand()->queryOne();
+                    if( ! $parent_admin = User_income::find()->where([ 'user_id'=>$parent_manager->parent_id ])->orderBy(['id'=>'desc'])->one())
+                            $parent_admin = new User_income;  
+                        $parent_admin->profit_admin = $res['sum'] + $res['sum_prof'];
+                        $parent_admin->credit = 0;
+                        $parent_admin->date = $user->date;
+                      //  $paren = User::find()->where(['user_id'=>$user->parent_id]);
+                        $parent_admin->parent_id = 0;
+                        $parent_admin->save();
+                  }
+                  
                   return $this->redirect(['invoice/index']);
               }
               else echo 'сбой прт снятии кредитов';
@@ -180,6 +218,19 @@ class UserController extends Controller {
             ]);
         $hearder = $this->getHeader($type_user);
         return $this->render('index',['dataProvider'=>$dataProvider, 'hearder' => $hearder, 'type_user' => $type_user ]);
+   }
+
+    /**
+     * Lists all models.
+     */
+    public function actionProfit() {
+        $dataProvider = new ActiveDataProvider([
+                'query' => User_income::find()->where(['user_id'=> Yii::$app->user->id])->orderBy(['id'=>SORT_DESC]),
+                'pagination' => [
+                    'pageSize' => 10,
+                ],
+            ]);
+        return $this->render('profit',['dataProvider'=>$dataProvider]);
    }
 
     public function actionUpdate($user_id) {

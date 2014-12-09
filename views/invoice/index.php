@@ -23,6 +23,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a(Yii::t('app', 'Buy credit' ), ['user/buy', 'id' => Yii::$app->user->id], ['class' => 'btn btn-success']) ?>
    </p>
+    <p>
+        <?= Html::a(Yii::t('app', 'History credit' ), ['history'], ['class' => 'btn btn-success']) ?>
+   </p>
+    <p>
+        <?= Yii::$app->user->identity->setting->credit ?>
+   </p>
 
     <div class="col-10">
         <h3>Форма поиска</h3>
@@ -38,7 +44,6 @@ $this->params['breadcrumbs'][] = $this->title;
         <tr>
             <th>ID</th>
             <th>Оплата</th>
-            <th>Date</th>
             <th>Name
                 <?php if(isset($qp['name'])) {
                     if (isset($qp['orderby']) && $qp['orderby']=='asc') {
@@ -62,6 +67,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
                 ?>
             </th>
+            <th>Client</th>
+            <th>Date</th>
             <th>Company</th>
             <th>Service</th>
             <th>Price Service</th>

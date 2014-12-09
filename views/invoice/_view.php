@@ -37,8 +37,9 @@ use yii\bootstrap\Modal;
     <td><?php if ($model->is_pay) echo 'фактура оплачена';
               else echo Html::a('Оплатить', ['user/pay', 'id'=>$model->id],['title'=>'Pay']);;         
      ?></td>
-    <td><?php echo Html::encode($model->date); ?></td>
     <td><?php echo Html::encode($model->name); ?></td>
+    <td><?php echo Html::encode($model->client->name); ?></td>
+    <td><?php echo Html::encode($model->date); ?></td>
     <td><?php echo Html::encode($model->company->name); ?></td>
     <td><?php echo Html::encode($model->service->name); ?></td>
     <td><?php echo Html::encode($model->price_service); ?></td>

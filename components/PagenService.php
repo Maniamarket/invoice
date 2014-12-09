@@ -197,9 +197,11 @@ class PagenService extends \yii\base\Component
 
     public  function getPaginat($count, Query $q_all,$per_page,$inter_page,$page,$AjaxDivId=0)
     {
-        $r_param = Yii::$app->request->queryParams;         
-        $route_all[] = $r_param['r'];        
-        unset($r_param['r']);
+        $r_param = Yii::$app->request->queryParams;
+        if (isset($r_param['r'])) {
+            $route_all[] = $r_param['r'];
+            unset($r_param['r']);
+        }
         foreach ($r_param as $row)
            if(is_array($row)) foreach ($row as $key=>$val ) $route_all[$key] = $val;
         $route_all['page'] = $page;  
