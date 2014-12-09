@@ -107,7 +107,7 @@ class m141207_115424_init_bd extends Migration
             'discount' => Schema::TYPE_DECIMAL . '(5,2) NOT NULL',
             'price' => Schema::TYPE_INTEGER . ' NOT NULL',
             'is_pay' => Schema::TYPE_BOOLEAN . ' NOT NULL DEFAULT 0',
-            'type' => Schema::TYPE_STRING . '(50) DEFAULT NULL',
+            'type' => Schema::TYPE_STRING . '(50) DEFAULT "basic"',
         ], $tableOptions);
 
         $this->createIndex('idx_invoice_user', '{{%invoice}}', 'user_id');
