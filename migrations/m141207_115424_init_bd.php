@@ -69,7 +69,7 @@ class m141207_115424_init_bd extends Migration
 
         $this->batchInsert('{{%company}}', ['id', 'name', 'logo', 'country', 'city', 'street', 'post_index', 'phone',
             'web_site', 'mail', 'vat_number', 'activity', 'resp_person'], [
-            [1, 'google', 'cat1.jpg', 'Russia', 'Moscow', 'Lenina 1', 60000, '22222222', '22', '22', '22', '22', '22'],
+            [1, 'google', 'Google.jpg', 'Russia', 'Moscow', 'Lenina 1', 60000, '22222222', '22', '22', '22', '22', '22'],
             [2, 'microsoft', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL],
             [3, 'gregsys', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL],
             [4, 'bmw', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL]
@@ -193,10 +193,6 @@ class m141207_115424_init_bd extends Migration
             [2, 'no', 0, 1, 1, 1, 'no', 'no', '2014-12-04 12:39:39', 1, 'qq', 'qq', 'qq', 11, 'qq', 'www', 5],
             [3, 'aaaaa', 0, 1, 1, 1, 'no', 'no', '2014-12-04 09:21:05', 1, 'qq', 'qq', 'qq', 11111, 'qq', 'qq', 5],
             [4, 'aaaaa', 0, 1, 1, 1, 'no', 'no', '2014-12-04 09:21:05', 1, 'qq', 'qq', 'qq', 11111, 'qq', 'qq', 5],
-            [6, '', 0, 0, 0, 0, 'no', 'no', '2014-12-07 11:39:47', 1, '', '', '', NULL, '', '', 5],
-            [7, '', 0, 1, 1, 1, 'no', 'no', '2014-12-07 15:05:00', 1, '', '', '', NULL, '', '', 5],
-            [8, '', 0, 0, 0, 0, 'no', 'no', '2014-12-07 16:20:27', 1, '', '', '', NULL, '', '', 5],
-            [9, '', 0, 0, 0, 0, 'no', 'no', '2014-12-07 16:31:05', 1, '', '', '', NULL, '', '', 5],
         ]);
 
         // Таблица подоходных налогов
