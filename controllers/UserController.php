@@ -180,7 +180,7 @@ class UserController extends Controller {
                   $parent_manager->credit = 0;
                   $parent_manager->date = $user->date;
                   $paren = User::find()->where(['id'=>$user->parent_id])->one();
-                  $parent_manager->parent_id = $paren->parent_id;
+                  $parent_manager->parent_id = ( $paren )? $paren->parent_id : 0;
                   $parent_manager->save();
                   if( $parent_manager->parent_id >0 ){
                     $q = new Query;
