@@ -46,6 +46,21 @@ $config = [
             'cookieValidationKey' => 'shfhgjfh637yghhgfbhgghjhn',
 			'class' => 'app\components\LangRequest'
         ],
+        'image' => [
+            'class' => 'yii\image\ImageDriver',
+            'driver' => 'GD', //GD or Imagick
+        ],
+        'response' => [
+            'formatters' => [
+                'pdf' => [
+                    'class' => 'robregonm\pdf\PdfResponseFormatter',
+                ],
+            ]
+        ],
+        // Yii2 TCPDF
+        'tcpdf' => [
+            'class' => 'cinghie\tcpdf\TCPDF',
+        ],
 		'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
