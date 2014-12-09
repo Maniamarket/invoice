@@ -26,7 +26,7 @@ class UserController extends Controller {
                 'only' => ['create', 'index', 'set_tax', 'update'],
                 'rules' => [
                     [
-                        'actions' => ['create', 'index'],
+                        'actions' => ['create', 'index', 'profit'],
                         'allow' => true,
                         'roles' => ['manager'],
                     ],
@@ -218,6 +218,19 @@ class UserController extends Controller {
             ]);
         $hearder = $this->getHeader($type_user);
         return $this->render('index',['dataProvider'=>$dataProvider, 'hearder' => $hearder, 'type_user' => $type_user ]);
+   }
+
+    /**
+     * Lists all models.
+     */
+    public function actionProfit() {
+        $dataProvider = new ActiveDataProvider([
+                'query' => User_income::find()->where(['user_id'=> Yii::$app->user->id])->orderBy(['id'=>SORT_DESC]),
+                'pagination' => [
+                    'pageSize' => 10,
+                ],
+            ]);
+        return $this->render('profit',['dataProvider'=>$dataProvider]);
    }
 
     public function actionUpdate($user_id) {
