@@ -32,7 +32,6 @@ class m141209_054746_user_payment extends Migration
 
     public function down()
     {
-        $this->dropTable('user_payment');
-        return false;
+        $this->dropTable('{{%user_payment}}');
     }
 }
