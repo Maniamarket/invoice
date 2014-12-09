@@ -24,7 +24,7 @@ class m141209_124406_countri extends Migration
         $this->addForeignKey(
             'FK_country_lang_id', '{{%country}}', 'lang_id', '{{%lang}}', 'id', 'NO ACTION', 'CASCADE'
         );
-        $this->batchInsert('{{%translit}}', ['id', 'cid', 'lang_id', 'name'], [
+        $this->batchInsert('{{%country}}', ['id', 'cid', 'lang_id', 'name'], [
             [1, 30, 1, 'Afghanistan'], [2, 21, 1, 'Albania'], [3, 22, 1, 'Algeria'], [4, 23, 1, 'American Samoa'],
             [5, 26, 1, 'Andorra'], [6, 25, 1, 'Angola'], [7, 24, 1, 'Anguilla'], [8, 27, 1, 'Antigua and Barbuda'],
             [9, 28, 1, 'Argentina'], [10, 6, 1, 'Armenia'], [11, 29, 1, 'Aruba'], [12, 19, 1, 'Australia'],
