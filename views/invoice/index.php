@@ -44,7 +44,6 @@ $this->params['breadcrumbs'][] = $this->title;
         <tr>
             <th>ID</th>
             <th>Оплата</th>
-            <th>Date</th>
             <th>Name
                 <?php if(isset($qp['name'])) {
                     if (isset($qp['orderby']) && $qp['orderby']=='asc') {
@@ -68,6 +67,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
                 ?>
             </th>
+            <th>Client</th>
+            <th>Date</th>
             <th>Company</th>
             <th>Service</th>
             <th>Price Service</th>

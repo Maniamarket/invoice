@@ -5,6 +5,7 @@ use Yii;
 use yii\base\InvalidParamException;
 use yii\web\Session;
 use yii\web\BadRequestHttpException;
+use yii\web\ForbiddenHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -122,6 +123,20 @@ class ClientController extends Controller
                 ],
             ]);
         return $this->render('invoice',array( 'dataProvider'=>$dataProvider, ));
+    }
+
+    public function actionTcpdf($id)
+    {
+        $model = Invoice::find()->where(['id'=>$id])->one();
+        if ($model->client_id == $this->isClient()) {
+            $template = isset(Yii::$app->request->queryParams['template'])?Yii::$app->request->queryParams['template']:'basic';
+            return $this->render('/invoice/tcpdf', [
+                'model' => $model,
+                'template'=>$template
+            ]);
+        } else {
+            throw new ForbiddenHttpException('Access to the invoice is forbidden. You are not the owner of the invoice');
+        }
     }
 
     public function actionUpdate()
