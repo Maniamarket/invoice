@@ -86,7 +86,15 @@ $config = [
             // send all mails to a file by default. You have to set
             // 'useFileTransport' to false and configure a transport
             // for the mailer to send real emails.
-            'useFileTransport' => true,
+            'useFileTransport' => false,
+        ],
+        'pagenService'=>[
+            // use пагинация андрея
+            'class' => 'app\components\PagenService'
+        ],
+        'HelpKontrol'=>[
+            // use cache андрея
+            'class' => 'app\components\HelpKontrol'
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -109,6 +117,15 @@ if (YII_ENV_DEV) {
 
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = ['class' => 'yii\gii\Module', 'allowedIPs' => ['*'],];
+
+    $config['components']['log']['targets'][] = [
+        'class' => 'yii\log\FileTarget',
+        'levels' => ['info'],
+        'categories' => ['userMessage'],
+        'logFile' => '@app/runtime/logs/messages/messages.log',
+        'maxFileSize' => 1024 * 2,
+        'maxLogFiles' => 20,
+    ];
 }
 
 return $config;
