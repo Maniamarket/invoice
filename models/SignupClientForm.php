@@ -43,6 +43,8 @@ class SignupClientForm extends Model
             $client->setPassword($password);
             $client->generateAuthKey();
             $client->save();
+            $client->name = $client->id ;
+            $client->save();
             Yii::$app->mailer->compose('welcome_client', ['user' => $client,'password' => $password])
                 ->setFrom('no-reply@site.ru')
                 ->setTo($client->email)

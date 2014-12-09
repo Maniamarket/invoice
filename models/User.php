@@ -66,6 +66,7 @@ class User extends ActiveRecord implements IdentityInterface
             [['email'], 'required'],
             [['email','username'], 'unique'],
             ['email','email'],
+
         ];
     }
 
@@ -254,9 +255,13 @@ class User extends ActiveRecord implements IdentityInterface
         return ArrayHelper::map(Yii::$app->authManager->getRoles(), 'name', 'description');
     }
 
-    /**
-     * @inheritdoc
-     */
+    public function getSetting()
+    {
+        return $this->hasOne('app\models\Setting', array('user_id' => 'id'));
+        // Первый параметр – это у нас имя класса, с которым мы настраиваем связь.
+        // Во втором параметре в виде массива задаётся имя удалённого PK ключа  (id) и FK из текущей таблицы модели (author_id), которые связываются между собой
+    }
+
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);

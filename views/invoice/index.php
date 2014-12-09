@@ -23,6 +23,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a(Yii::t('app', 'Buy credit' ), ['user/buy', 'id' => Yii::$app->user->id], ['class' => 'btn btn-success']) ?>
    </p>
+    <p>
+        <?= Html::a(Yii::t('app', 'History credit' ), ['history'], ['class' => 'btn btn-success']) ?>
+   </p>
+    <p>
+        <?= Yii::$app->user->identity->setting->credit ?>
+   </p>
 
     <div class="col-10">
         <h3>Форма поиска</h3>

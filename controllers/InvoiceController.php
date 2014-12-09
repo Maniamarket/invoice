@@ -55,6 +55,22 @@ class InvoiceController extends Controller
         }
     }
 
+    
+   
+    /**
+     * Lists all Invoice models.
+     * @return mixed
+     */
+    public function actionHistory()
+    {
+        $dataProvider = new ActiveDataProvider([
+            'query' => \app\models\User_payment::find()->where(['user_id'=> Yii::$app->user->id])->orderBy(['id'=>SORT_DESC]),
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+        ]);
+        return $this->render('history', ['dataProvider' => $dataProvider]);
+    }
     /**
      * Lists all Invoice models.
      * @return mixed

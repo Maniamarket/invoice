@@ -33,7 +33,7 @@ class User_income extends ActiveRecord {
 	// NOTE: you should only define rules for those attributes that
 	// will receive user inputs.
 	return array(
-	    [['user_id','credit', 'date'], 'required'],
+	    [['user_id','credit','parent_id', 'date'], 'required'],
 	    [['user_id'], 'integer'],
 	 //   [['date'], 'integer','integerOnly'=>FALSE],
 	);
