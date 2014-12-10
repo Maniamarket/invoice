@@ -262,6 +262,13 @@ class User extends ActiveRecord implements IdentityInterface
         // Во втором параметре в виде массива задаётся имя удалённого PK ключа  (id) и FK из текущей таблицы модели (author_id), которые связываются между собой
     }
 
+    public function getUser_income()
+    {
+        return $this->hasOne('app\models\user_income',[ 'user_id' => 'id']);
+        // Первый параметр – это у нас имя класса, с которым мы настраиваем связь.
+        // Во втором параметре в виде массива задаётся имя удалённого PK ключа  (id) и FK из текущей таблицы модели (author_id), которые связываются между собой
+    }
+
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);

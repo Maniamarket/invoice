@@ -16,9 +16,14 @@ $this->params['breadcrumbs'][] = $this->title;
     <tr>
         <th>ID</th>
         <th>Name</th>
+        <th>Profit</th>
+        <?php if( $type_user > 1){ ?>
+        <th>Profit Manager</th>
+        <?php } ?>
     </tr>
 <?php echo ListView::widget([
 	'dataProvider'=>$dataProvider,
 	'itemView'=>'_view',
+        'viewParams'=>['type_user'=>$type_user],
 ]); ?>
 </table>
