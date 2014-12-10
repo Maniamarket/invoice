@@ -1,23 +1,28 @@
 <?php
+namespace app\models;
+
+use Yii;
+use yii\base\NotSupportedException;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
+use app\models\Company;
+use app\models\Lang;
+use app\models\Vat;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "setting".
  *
  * The followings are the available columns in table 'setting':
- * @property integer $id
  * @property integer $user_id
  * @property integer $credit
  * @property integer $vat
  * @property integer $def_company
  * @property integer $def_lang
  */
-class Setting extends CActiveRecord {
+class Setting extends ActiveRecord {
 
-    public $role;
-    /**
-     * @return string the associated database table name
-     */
-    public function tableName() {
+    public static function tableName() {
 	return 'setting';
     }
 
@@ -28,11 +33,14 @@ class Setting extends CActiveRecord {
 	// NOTE: you should only define rules for those attributes that
 	// will receive user inputs.
 	return array(
-	    array('user_id, def_company, def_lang', 'required'),
-	    array('user_id, vat', 'numerical', 'integerOnly' => true),
+	    [['def_company_id','bank_code', 'account_number','def_lang_id'], 'required'],
+	    [['def_vat_id','post_index'], 'integer'],
+	    [['credit'], 'integer','integerOnly'=>FALSE],
+        [['bank_code', 'account_number','country','city','street','phone','web_site','name'], 'filter', 'filter' => 'trim'],
+	    [['bank_code', 'account_number','country','city','street','phone','web_site','name'], 'string', 'max' => 100],
 	    // The following rule is used by search().
 	    // @todo Please remove those attributes that should not be searched.
-	    array('id, user_id, credit, vat, def_company, def_lang', 'safe', 'on' => 'search'),
+	   [['credit', 'def_vat_id', 'def_company_id', 'def_lang_id'], 'safe', 'on' => 'search'],
 	);
     }
 
@@ -51,13 +59,11 @@ class Setting extends CActiveRecord {
      */
     public function attributeLabels() {
 	return array(
-	    'id' => 'ID',
 	    'user_id' => 'User',
 	    'credit' => 'Credit',
 	    'vat' => 'VAT %',
-	    'def_company' => 'Default Company',
-	    'def_lang' => 'Default Language',
-	    'role' => 'Change Role',
+	    'def_company_id' => 'Default Company',
+	    'def_lang_id' => 'Default Language',
 	);
     }
 
@@ -78,7 +84,6 @@ class Setting extends CActiveRecord {
 
 	$criteria = new CDbCriteria;
 
-	$criteria->compare('id', $this->id);
 	$criteria->compare('user_id', $this->user_id);
 	$criteria->compare('credit', $this->credit);
 	$criteria->compare('vat', $this->vat);
@@ -88,6 +93,48 @@ class Setting extends CActiveRecord {
 	return new CActiveDataProvider($this, array(
 	    'criteria' => $criteria,
 	));
+    }
+
+    public static  function List_company() {
+	// @todo Please modify the following code to remove attributes that should not be searched.
+        $company = Company::find()->all();
+        $list = ArrayHelper::map($company,'id', 'name'); 
+	return $list;
+    }
+
+    public static  function List_lang() {
+	// @todo Please modify the following code to remove attributes that should not be searched.
+        $company = Lang::find()->all();
+        $list = ArrayHelper::map($company,'id', 'name'); 
+	return $list;
+    }
+
+    public static  function List_Vat() {
+	// @todo Please modify the following code to remove attributes that should not be searched.
+        $company = Vat::find()->all();
+        $list = ArrayHelper::map($company,'id', 'percent'); 
+	return $list;
+    }
+
+    public static  function List_service() {
+	// @todo Please modify the following code to remove attributes that should not be searched.
+        $company = Service::find()->all();
+        $list = ArrayHelper::map($company,'id', 'name'); 
+	return $list;
+    }
+
+    public static  function List_client() {
+	// @todo Please modify the following code to remove attributes that should not be searched.
+        $client = Client::find()->where(['user_id' => Yii::$app->user->id])->all();
+        $list = ArrayHelper::map($client,'id', 'name'); 
+	return $list;
+    }
+
+    public static  function List_payment() {
+	// @todo Please modify the following code to remove attributes that should not be searched.
+        $payment = Payment::find()->all();
+        $list = ArrayHelper::map($payment,'id', 'name'); 
+	return $list;
     }
 
     /**

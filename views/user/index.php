@@ -1,20 +1,29 @@
 <?php
-/* @var $this UserController */
-/* @var $dataProvider CActiveDataProvider */
+use yii\widgets\ListView;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
-$this->breadcrumbs=array(
-	'Users',
-);
 
-$this->menu=array(
-	array('label'=>'Create User', 'url'=>array('create')),
-	array('label'=>'Manage User', 'url'=>array('admin')),
-);
+$this->title = Yii::$app->name . ' - '.$hearder;
+$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 
-<h1>Users</h1>
+<h1><?php echo Yii::t('app', $hearder); ?></h1>
 
-<?php $this->widget('zii.widgets.CListView', array(
+<?php echo Html::a('Создать', Url::toRoute(['create','type_user'=>$type_user]),['class'=>'btn-lg btn btn-success']) ?>
+<table class="table table-striped">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Profit</th>
+        <?php if( $type_user > 1){ ?>
+        <th>Profit Manager</th>
+        <?php } ?>
+    </tr>
+<?php echo ListView::widget([
 	'dataProvider'=>$dataProvider,
 	'itemView'=>'_view',
-)); ?>
+        'viewParams'=>['type_user'=>$type_user],
+]); ?>
+</table>

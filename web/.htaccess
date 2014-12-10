@@ -1,6 +1,13 @@
-RewriteEngine on
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-#RewriteRule ^chat/([a-z0-9_-]+)(/?)$ /chat/$1
-#RewriteRule ^chat(/?)$ /chat/index.php [L]
-RewriteRule . index.php
+﻿AddDefaultCharset utf-8
+# Mod_Rewrite
+<IfModule mod_rewrite.c>
+	Options +FollowSymLinks
+	RewriteEngine on
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^(.*)$ index.php [L,QSA]
+	RewriteCond %{REQUEST_URI} !/images/.*
+	#RewriteRule ^en/images/en.gif$ images/en.gif
+	#http://178.21.175.181/ru/images/en.gif
+	RewriteRule ^(.*\.(gif|jpg|png))$ images/$1 [QSA,L]
+</IfModule>

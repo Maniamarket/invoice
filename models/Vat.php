@@ -1,19 +1,22 @@
 <?php
+namespace app\models;
+
+use Yii;
+use \yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "vat".
  *
  * The followings are the available columns in table 'vat':
  * @property integer $id
- * @property string $name
  * @property integer $percent
  */
-class Vat extends CActiveRecord
+class Vat extends ActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
-	public function tableName()
+	public static function tableName()
 	{
 		return 'vat';
 	}
@@ -27,10 +30,10 @@ class Vat extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('percent', 'required'),
-			array('percent', 'numerical', 'integerOnly'=>true),
+			array('percent', 'integer','integerOnly'=>FALSE),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, percent', 'safe', 'on'=>'search'),
+			//array('id, percent', 'safe', 'on'=>'search'),
 		);
 	}
 

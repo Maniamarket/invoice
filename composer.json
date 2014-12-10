@@ -17,7 +17,10 @@
         "php": ">=5.4.0",
         "yiisoft/yii2": "*",
         "yiisoft/yii2-bootstrap": "*",
-        "yiisoft/yii2-swiftmailer": "*"
+        "yiisoft/yii2-swiftmailer": "*",
+        "robregonm/yii2-pdf": "dev-master",
+        "cinghie/yii2-tcpdf": "dev-master",
+        "yurkinx/yii2-image": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

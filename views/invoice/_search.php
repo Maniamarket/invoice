@@ -1,50 +1,45 @@
 <?php
-/* @var $this InvoiceController */
-/* @var $model Invoice */
-/* @var $form CActiveForm */
+
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+
+/* @var $this yii\web\View */
+/* @var $model app\models\InvoiceSearch */
+/* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="wide form">
+<div class="invoice-search">
 
-<?php $form=$this->beginWidget('CActiveForm', array(
-	'action'=>Yii::app()->createUrl($this->route),
-	'method'=>'get',
-)); ?>
+    <?php $form = ActiveForm::begin([
+        'action' => ['index'],
+        'method' => 'get',
+    ]); ?>
 
-	<div class="row">
-		<?php echo $form->label($model,'id'); ?>
-		<?php echo $form->textField($model,'id',array('size'=>15,'maxlength'=>15)); ?>
-	</div>
+    <?= $form->field($model, 'id') ?>
 
-	<div class="row">
-		<?php echo $form->label($model,'date'); ?>
-		<?php echo $form->textField($model,'date'); ?>
-	</div>
+    <?= $form->field($model, 'user_id') ?>
 
-	<div class="row">
-		<?php echo $form->label($model,'name'); ?>
-		<?php echo $form->textField($model,'name',array('size'=>60,'maxlength'=>255)); ?>
-	</div>
+    <?= $form->field($model, 'number') ?>
 
-	<div class="row">
-		<?php echo $form->label($model,'company'); ?>
-		<?php echo $form->textField($model,'company',array('size'=>60,'maxlength'=>255)); ?>
-	</div>
+    <?= $form->field($model, 'date') ?>
 
-	<div class="row">
-		<?php echo $form->label($model,'price'); ?>
-		<?php echo $form->textField($model,'price'); ?>
-	</div>
+    <?= $form->field($model, 'seller_id') ?>
 
-	<div class="row">
-		<?php echo $form->label($model,'pay'); ?>
-		<?php echo $form->textField($model,'pay'); ?>
-	</div>
+    <?php // echo $form->field($model, 'sender_addr') ?>
 
-	<div class="row buttons">
-		<?php echo CHtml::submitButton('Search'); ?>
-	</div>
+    <?php // echo $form->field($model, 'recipient_addr') ?>
 
-<?php $this->endWidget(); ?>
+    <?php // echo $form->field($model, 'bill_number') ?>
 
-</div><!-- search-form -->
+    <?php // echo $form->field($model, 'client_id') ?>
+
+    <?php // echo $form->field($model, 'currency_id') ?>
+
+    <div class="form-group">
+        <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
+        <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-default']) ?>
+    </div>
+
+    <?php ActiveForm::end(); ?>
+
+</div>

@@ -1,31 +1,25 @@
 <?php
-/* @var $this TaxController */
+use yii\widgets\ListView;
+use yii\helpers\Html;
+use yii\helpers\Url;
+
+/* @var $this VatController */
 /* @var $dataProvider CActiveDataProvider */
 
-$this->breadcrumbs=array(
-	Yii::t('lang', 'TaxHeaderText'),
-);
-/*
-$this->menu=array(
-	array('label'=>'Create Tax', 'url'=>array('create')),
-	array('label'=>'Manage Tax', 'url'=>array('admin')),
-);
- * 
- */
+$this->title=Yii::$app->name . ' - Surtax';
+$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 
-<h1><?php echo Yii::t('lang', 'TaxHeaderText'); ?></h1>
+<h1><?php echo Yii::t('app', 'Surtax'); ?></h1>
 
-<?php /*$this->widget('zii.widgets.CListView', array(
+<table class="table table-striped">
+    <tr>
+        <th>ID</th>
+        <th>Percent</th>
+    </tr>
+<?php echo ListView::widget([
 	'dataProvider'=>$dataProvider,
 	'itemView'=>'_view',
-)); */?>
-
-    <div class="row">
-	<?php echo CHtml::link(Yii::t('lang', 'TaxVATSettingText'),array('vat/admin')); ?>
-    </div>
-    </br>
-    <div class="row">
-	<?php echo CHtml::link(Yii::t('lang', 'TaxSettingText'),array('tax/admin')); ?>
-    </div>
-    
+]); ?>
+</table>

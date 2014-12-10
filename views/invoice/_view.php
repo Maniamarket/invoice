@@ -1,39 +1,54 @@
 <?php
-/* @var $this InvoiceController */
-/* @var $data Invoice */
+use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\bootstrap\Modal;
 ?>
-<?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'invoice_paying_form',
-	// Please note: When you enable ajax validation, make sure the corresponding
-	// controller action is handling ajax validation correctly.
-	// There is a call to performAjaxValidation() commented in generated controller code.
-	// See class documentation of CActiveForm for details on this.
-	'enableAjaxValidation'=>false,
-)); ?>
-<div class="view">
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('id')); ?>:</b>
-	<?php echo CHtml::link(CHtml::encode($data->id), array('view', 'id'=>$data->id)); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('date')); ?>:</b>
-	<?php echo CHtml::encode($data->date); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('name')); ?>:</b>
-	<?php echo CHtml::encode($data->name); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('company')); ?>:</b>
-	<?php echo CHtml::encode($data->company); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('price')); ?>:</b>
-	<?php echo CHtml::encode($data->price); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('pay')); ?>:</b>	
-	<?php echo CHtml::encode($data->pay); ?>
+<tr>
+    <td>
+        <?php echo Html::a('MM100'.$model->id,['tcpdf', 'id'=>$model->id]); ?>
+        &nbsp;
+        <?php if ($model->is_pay) { ?>
+            <span class="pull-right">
+               <?php Modal::begin([
+                   'header' => '<h2>Шаблон для печати</h2>',
+                   'toggleButton' => ['tag'=>'a', 'label' => '<span class="glyphicon glyphicon-picture" aria-hidden="true"></span>',
+                       'style'=>'cursor:pointer;', 'title'=>'Set Template'],
+               ]);
+               echo 'Выберите шаблон:';
+               echo Html::ol([
+                   Html::a('Базовый',['settemplate','id'=>$model->id,'template'=>'basic']),
+                   Html::a('Дополнительный',['settemplate','id'=>$model->id,'template'=>'add'])
+                ],
+               ['encode'=>false]);
+               Modal::end();
+               echo Html::a('<span class="glyphicon glyphicon-print" aria-hidden="true"></span>', ['tcpdf', 'id'=>$model->id],['title'=>'Print']);
+               ?>
+            </span>
+        <?php } elseif (\Yii::$app->user->can('superadmin')){ ?>
+            <span class="pull-right">
+                <?php echo Html::a('<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>',
+                    ['update', 'id'=>$model->id],['title'=>'Update']); ?>
+                &nbsp;
+                <?php echo Html::a('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>',
+                    ['delete', 'id'=>$model->id],['title'=>'Delete', 'onClick'=>'return confirm("Вы действительно хотите удалить?")']); ?>
+            </span>
+        <?php } ?>
+    </td>
+    <td><?php if ($model->is_pay) echo 'фактура оплачена';
+              else echo Html::a('Оплатить', ['user/pay', 'id'=>$model->id],['title'=>'Pay']);;         
+     ?></td>
+    <td><?php echo Html::encode($model->name); ?></td>
+    <td><?php echo Html::encode($model->client->name); ?></td>
+    <td><?php echo Html::encode($model->date); ?></td>
+    <td><?php echo Html::encode($model->company->name); ?></td>
+    <td><?php echo Html::encode($model->service->name); ?></td>
+    <td><?php echo Html::encode($model->price_service); ?></td>
+    <td><?php echo Html::encode($model->count); ?></td>
+    <td><?php echo Html::encode($model->vat); ?></td>
+    <td><?php echo Html::encode($model->tax); ?></td>
+    <td><?php echo Html::encode($model->discount); ?></td>
+    <td><?php echo Html::encode($model->price); ?></td>
+</tr>
 
 
 </div>

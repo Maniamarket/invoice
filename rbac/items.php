@@ -1,73 +1,32 @@
 <?php
 return [
-    'login' => [
-        'type' => 2,
-    ],
-    'logout' => [
-        'type' => 2,
-    ],
-    'error' => [
-        'type' => 2,
-    ],
-    'sign-up' => [
-        'type' => 2,
-    ],
-    'index' => [
-        'type' => 2,
-    ],
-    'view' => [
-        'type' => 2,
-    ],
-    'update' => [
-        'type' => 2,
-    ],
-    'delete' => [
-        'type' => 2,
-    ],
-    'guest' => [
+    'user' => [
         'type' => 1,
-        'ruleName' => 'userGroup',
+        'description' => 'User',
+        'ruleName' => 'group',
+    ],
+    'manager' => [
+        'type' => 1,
+        'description' => 'Manager',
+        'ruleName' => 'group',
         'children' => [
-            'login',
-            'logout',
-            'error',
-            'sign-up',
-            'index',
-            'view',
+            'user',
         ],
     ],
-    'USER' => [
+    'admin' => [
         'type' => 1,
-        'ruleName' => 'userGroup',
+        'description' => 'Admin',
+        'ruleName' => 'group',
         'children' => [
-            'update',
-            'guest',
+            'manager',
         ],
     ],
-    'MANAGER' => [
+    'superadmin' => [
         'type' => 1,
-        'ruleName' => 'userGroup',
+        'description' => 'Superadmin',
+        'ruleName' => 'group',
         'children' => [
-            'update',
-            'guest',
-        ],
-    ],
-    'ADMIN' => [
-        'type' => 1,
-        'ruleName' => 'userGroup',
-        'children' => [
-            'delete',
-            'USER',
-            'MANAGER',
-        ],
-    ],
-    'SUPERADMIN' => [
-        'type' => 1,
-        'children' => [
-            'delete',
-            'USER',
-            'MANAGER',
-            'ADMIN',
+            'admin',
         ],
     ],
 ];

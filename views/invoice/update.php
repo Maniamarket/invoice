@@ -1,21 +1,23 @@
 <?php
-/* @var $this InvoiceController */
-/* @var $model Invoice */
 
-$this->breadcrumbs=array(
-	'Invoices'=>array('index'),
-	$model->name=>array('view','id'=>$model->id),
-	'Update',
-);
+use yii\helpers\Html;
 
-$this->menu=array(
-	array('label'=>'List Invoice', 'url'=>array('index')),
-	array('label'=>'Create Invoice', 'url'=>array('create')),
-	array('label'=>'View Invoice', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage Invoice', 'url'=>array('admin')),
-);
+/* @var $this yii\web\View */
+/* @var $model app\models\Invoice */
+
+$this->title = Yii::t('app', 'Update {modelClass}: ', [
+    'modelClass' => 'Invoice',
+]) . ' ' . $model->id;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Invoices'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
+<div class="invoice-update">
 
-<h1>Update Invoice <?php echo $model->id; ?></h1>
+    <h1><?= Html::encode($this->title) ?></h1>
 
-<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+    <?= $this->render('_form', [
+        'model' => $model,
+    ]) ?>
+
+</div>

@@ -1,34 +1,33 @@
 <?php
-/* @var $this VatController */
-/* @var $model Vat */
-/* @var $form CActiveForm */
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+use yii\helpers\BaseHtml;
+
 ?>
 
-<div class="form">
 
-<?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'vat-form',
-	// Please note: When you enable ajax validation, make sure the corresponding
-	// controller action is handling ajax validation correctly.
-	// There is a call to performAjaxValidation() commented in generated controller code.
-	// See class documentation of CActiveForm for details on this.
-	'enableAjaxValidation'=>false,
-)); ?>
+<div class="row">
+    <div class="col-lg-5">
+    <?php $form=ActiveForm::begin( [
+        'id'=>'service-form',
+        'enableAjaxValidation'=>false,
+    ]); ?>
 
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
 
 	<?php echo $form->errorSummary($model); ?>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'percent'); ?>
-		<?php echo $form->textField($model,'percent'); ?>
-		<?php echo $form->error($model,'percent'); ?>
+
+    <div class="form-group">
+		<?php echo $form->field($model, 'percent')->textInput()->hint('Please enter percent')->label('Percent') ; ?>
+		<?php echo Html::error($model, 'percent'); ?>
 	</div>
 
-	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+    <div class="form-group">
+		<?php echo Html::submitButton($model->isNewRecord ? 'Create' : 'Save',['class'=>'btn btn-success']); ?>
 	</div>
 
-<?php $this->endWidget(); ?>
+    <?php  ActiveForm::end(); ?>
 
-</div><!-- form -->
+    </div>
+</div>

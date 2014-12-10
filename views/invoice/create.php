@@ -1,18 +1,18 @@
 <?php
-/* @var $this InvoiceController */
-/* @var $model Invoice */
+use yii\helpers\Html;
+use yii\widgets\Breadcrumbs;
+use yii\helpers\Url;
 
-$this->breadcrumbs=array(
-	'Invoices'=>array('index'),
-	'Create',
-);
 
-$this->menu=array(
-	array('label'=>'List Invoice', 'url'=>array('index')),
-	array('label'=>'Manage Invoice', 'url'=>array('admin')),
-);
+/* @var $this yii\web\View */
+/* @var $model app\models\Invoice */
+
+$this->title = Yii::t('app', 'Create {modelClass}', [ 'modelClass' => 'Invoice',]);
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Invoices'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
+<?php echo Html::a('Список сервисов', Url::toRoute('index'),['class'=>'btn-lg btn btn-primary']) ?>
 
-<h1><?php echo Yii::t('lang','InvoiceHeaderCreateText'); ?></h1>
+<h1><?= Html::encode($this->title) ?></h1>
 
-<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php  echo $this->context->renderPartial('_form', ['model'=>$model]); ?>

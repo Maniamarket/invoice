@@ -1,18 +1,20 @@
 <?php
-/* @var $this VatController */
-/* @var $model Vat */
+use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\widgets\Menu;
+use yii\widgets\Breadcrumbs;
+use yii\web\View;
+/* @var $this ServiceController */
+/* @var $model Service */
 
-$this->breadcrumbs=array(
-	'Vats'=>array('index'),
-	'Create',
-);
+$this->title=Yii::$app->name . ' - Services';
+$this->params['breadcrumbs'][] = ['label'=>$this->title,'url'=>['index']];
 
-$this->menu=array(
-	array('label'=>'List Vat', 'url'=>array('index')),
-	array('label'=>'Manage Vat', 'url'=>array('admin')),
-);
+$this->title=Yii::$app->name . ' - Create';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
+<?php echo Html::a('Список НДС', Url::toRoute('index'),['class'=>'btn-lg btn btn-primary']) ?>
 
-<h1>Create VAT</h1>
+<h1>Create Vat</h1>
 
-<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php  echo $this->context->renderPartial('_form', ['model'=>$model]); ?>

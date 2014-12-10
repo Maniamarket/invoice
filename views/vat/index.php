@@ -1,20 +1,25 @@
 <?php
+use yii\widgets\ListView;
+use yii\helpers\Html;
+use yii\helpers\Url;
+
 /* @var $this VatController */
 /* @var $dataProvider CActiveDataProvider */
 
-$this->breadcrumbs=array(
-	'Vats',
-);
+$this->title=Yii::$app->name . ' - Vats';
+$this->params['breadcrumbs'][] = $this->title;
 
-$this->menu=array(
-	array('label'=>'Create Vat', 'url'=>array('create')),
-	array('label'=>'Manage Vat', 'url'=>array('admin')),
-);
 ?>
 
-<h1>VAT settings</h1>
+<h1><?php echo Yii::t('app', 'Vats'); ?></h1>
 
-<?php $this->widget('zii.widgets.CListView', array(
+<table class="table table-striped">
+    <tr>
+        <th>ID</th>
+        <th>Percent</th>
+    </tr>
+<?php echo ListView::widget([
 	'dataProvider'=>$dataProvider,
 	'itemView'=>'_view',
-)); ?>
+]); ?>
+</table>
