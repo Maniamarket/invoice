@@ -10,6 +10,10 @@ class Module extends \yii\base\Module
     {
         parent::init();
 
+        $this->setImport(array(
+            'mypurse.models.*',
+            'mypurse.components.*',
+        ));
         // custom initialization code goes here
     }
 }
