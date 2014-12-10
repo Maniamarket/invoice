@@ -9,7 +9,7 @@ $this->params['breadcrumbs'][]= ['label'=>'Services', 'url'=>['index']];
 $this->params['breadcrumbs'][]= 'Update';
 ?>
 
-<?php echo Html::a('Список услуг', Url::toRoute('index'),['class'=>'btn-lg btn btn-primary']) ?>
+<?php echo Html::a('Список языков', Url::toRoute('index'),['class'=>'btn-lg btn btn-primary']) ?>
 
 <h1>Update Service <?php echo $model->id; ?></h1>
 

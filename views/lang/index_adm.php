@@ -15,7 +15,11 @@ $this->params['breadcrumbs'][] = $this->title;
 <table class="table table-striped">
     <tr>
         <th>ID</th>
+        <th>Url</th>
+        <th>Local</th>
         <th>Name</th>
+        <th>Default</th>
+        <th>Date update</th>
         <th>Действия</th>
     </tr>
 <?php echo ListView::widget([

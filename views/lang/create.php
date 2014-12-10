@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = ['label'=>$this->title,'url'=>['index']];
 $this->title=Yii::$app->name . ' - Create';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<?php echo Html::a('Список сервисов', Url::toRoute('index'),['class'=>'btn-lg btn btn-primary']) ?>
+<?php echo Html::a('Список языков', Url::toRoute('index'),['class'=>'btn-lg btn btn-primary']) ?>
 
 <h1>Create Service</h1>
 

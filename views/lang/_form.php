@@ -22,8 +22,23 @@ use yii\helpers\BaseHtml;
 
 
     <div class="form-group">
-		<?php echo $form->field($model, 'name')->textInput()->hint('Please enter your name')->label('Name') ; ?>
-		<?php echo Html::error($model, 'name'); ?>
+		<?php echo $form->field($model, 'url')->textInput()->hint('Please enter url. Example: "en"')->label('Url') ; ?>
+		<?php echo Html::error($model, 'url'); ?>
+    </div>
+
+    <div class="form-group">
+        <?php echo $form->field($model, 'local')->textInput()->hint('Please enter locale. Example: "en-US"')->label('Locale') ; ?>
+        <?php echo Html::error($model, 'local'); ?>
+    </div>
+
+    <div class="form-group">
+        <?php echo $form->field($model, 'name')->textInput()->hint('Please enter name')->label('Name') ; ?>
+        <?php echo Html::error($model, 'name'); ?>
+    </div>
+
+    <div class="form-group">
+        <?php echo $form->field($model, 'default')->textInput()->hint('Please enter default')->label('Default') ; ?>
+        <?php echo Html::error($model, 'default'); ?>
     </div>
 
     <div class="form-group">
