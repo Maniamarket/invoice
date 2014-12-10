@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 $params = require(__DIR__ . '/params.php');
 
@@ -7,17 +7,22 @@ $config = [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'name' => 'Biling',
+     /*'import' => array( 
+        'application.modules.payments.models.*.*',
+        'application.modules.payments.components.*',       
+    ),*/
 //    'defaultController' => 'site/login',
-/*    'view' => [
-        'theme' => [
-            'pathMap' => [
-                '@app/views' => '@app/themes/classic',
-                '@app/modules' => '@app/themes/classic/modules'
-            ],
-            'baseUrl' => '@web/themes/classic',
-        ],
-    ],*/
+    /*    'view' => [
+      'theme' => [
+      'pathMap' => [
+      '@app/views' => '@app/themes/classic',
+      '@app/modules' => '@app/themes/classic/modules'
+      ],
+      'baseUrl' => '@web/themes/classic',
+      ],
+      ], */
     'language'=>'ru-RU',
+        'language' => 'ru-RU',
     'components' => [
         'i18n' => [
             'translations' => [
@@ -106,6 +111,15 @@ $config = [
             ],
         ],
         'db' => require(__DIR__ . '/db.php'),
+        'urlManager' => [
+            'class' => 'yii\web\UrlManager',
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            'rules' => [                
+                ['pattern' => '<module:\w+>/<controller:\w+>/<action:\w+>', 'route' => '<module>/<controller>/<action>'],
+                ['pattern' => 'payments', 'route' => 'payments/default/index'],
+            ],
+        ],
     ],
     'params' => $params,
 ];
@@ -128,4 +142,7 @@ if (YII_ENV_DEV) {
     ];
 }
 
+$config['modules'] ['payments'] = [
+    'class' => 'app\modules\payments\Module',
+];
 return $config;
