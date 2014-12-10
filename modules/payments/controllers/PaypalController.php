@@ -7,16 +7,9 @@ use yii\web\Controller;
 use app\modules\payments\models as Models;
 
 class PaypalController extends Controller {
-  
 
     public function actionIndex() {
         $model = new Models\PaypalForm;
-        //$model = new Models\PaypalForm;
-        /*
-          if (isset($_POST['ajax']) && $_POST['ajax'] === 'paypal-form') {
-          echo CActiveForm::validate($model);
-          Yii::app()->end();
-          } */
 
         if (isset($_POST['PaypalForm'])) {
             $model->attributes = $_POST['PaypalForm'];
@@ -29,15 +22,13 @@ class PaypalController extends Controller {
                 $history->equivalent = $model->amount * $history->curs;
                 $history->type = Models\PaymentHistory::PT_PAYPAL;
                 $history->save();
-                $this->layout = '//layouts/column1';
-                var_dump(Yii::$app);
-                die;
-                $this->render('processing', array(
-                    'amount' => $model->amount,
-                    'user' => Yii::$app()->user->getModel(),
-                    'pp_id' => $history->id, // номер счета
+
+                return $this->render('processing', array(
+                            'amount' => $model->amount,
+                            'user' => Yii::$app->user->identity,
+                            'pp_id' => $history->id, // номер счета
                 ));
-                Yii::app()->end();
+                Yii::$app->end();
             }
         }
 
@@ -84,6 +75,7 @@ class PaypalController extends Controller {
             // log for manual investigation
             $this->write_log($_POST);
         }
+
         $this->redirect(array('payment/history'));
     }
 
