@@ -50,8 +50,8 @@ AppAsset::register($this);
                 ['label' => Yii::t('app', 'Invoice'), 'url' => ['/client/invoice'], 'visible' => $this->context->isClient()],
                 ['label' => Yii::t('app', 'Settings'), 'url' => ['/client/update'], 'visible' => $this->context->isClient()],
                 !$this->context->isClient() ?
-                    ['label' => 'Login', 'url' => ['/client/login']] :
-                    ['label' => 'Logout',
+                    ['label' => Yii::t('app', 'Login'), 'url' => ['/client/login']] :
+                    ['label' => Yii::t('app', 'Logout'),
                         'url' => ['/client/logout'],
                         'linkOptions' => ['data-method' => 'post']],
             ],

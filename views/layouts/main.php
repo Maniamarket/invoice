@@ -61,11 +61,11 @@ AppAsset::register($this);
                 ['label' => Yii::t('app', 'Invoice'), 'url' => ['/invoice/index'], 'visible' => !Yii::$app->user->isGuest],
                 ['label' => Yii::t('app', 'Companies'), 'url' => ['/company/index'], 'visible' => !Yii::$app->user->isGuest],
                 ['label' => Yii::t('app', 'Services'), 'url' => ['/service/index'], 'visible' => !Yii::$app->user->isGuest],
-                ['label' => 'Налоги', 'url' => '#', 'visible' => !Yii::$app->user->isGuest,
+                ['label' => Yii::t('app', 'Taxes'), 'url' => '#', 'visible' => !Yii::$app->user->isGuest,
                     'items' => [
 //                        ['label' => 'Подоходный', 'url' => ['/tax/index'], 'visible' => !Yii::$app->user->isGuest],
-                        ['label' => 'Подоходный', 'url' => ['/user/set_tax'], 'visible' => Yii::$app->user->can('superadmin')],
-                        ['label' => 'НДС', 'url' => ['/vat/index'], 'visible' => !Yii::$app->user->isGuest],
+                        ['label' => Yii::t('app', 'Tax'), 'url' => ['/user/set_tax'], 'visible' => Yii::$app->user->can('superadmin')],
+                        ['label' => Yii::t('app', 'Vat'), 'url' => ['/vat/index'], 'visible' => !Yii::$app->user->isGuest],
                     ],
                 ],
                 ['label' =>  Yii::t('app', 'Settings'), 'url' => '#', 'visible' => !Yii::$app->user->isGuest,
@@ -78,8 +78,8 @@ AppAsset::register($this);
                 ['label' => Yii::t('app', 'Account'), 'url' => ['/setting/update'], 'visible' => !Yii::$app->user->isGuest],
                 ['label' => Yii::t('app', 'Register'), 'url' => ['/site/signup'], 'visible' => Yii::$app->user->isGuest],
                 Yii::$app->user->isGuest ?
-                    ['label' => 'Login', 'url' => ['/site/login']] :
-                    ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
+                    ['label' => Yii::t('app', 'Login'), 'url' => ['/site/login']] :
+                    ['label' => Yii::t('app', 'Logout').' (' . Yii::$app->user->identity->username . ')',
                         'url' => ['/site/logout'],
                         'linkOptions' => ['data-method' => 'post']],
             ],
