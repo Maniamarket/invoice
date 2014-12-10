@@ -7,6 +7,10 @@ $config = [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'name' => 'Biling',
+     /*'import' => array( 
+        'application.modules.payments.models.*.*',
+        'application.modules.payments.components.*',       
+    ),*/
 //    'defaultController' => 'site/login',
     /*    'view' => [
       'theme' => [
@@ -66,12 +70,16 @@ $config = [
             ],
         ],
         'db' => require(__DIR__ . '/db.php'),
-    ],
-    /*'urlManager' => [
-        'rules' => [
-            ['pattern' => 'payments', 'route' => 'payments/default/index'],
+        'urlManager' => [
+            'class' => 'yii\web\UrlManager',
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            'rules' => [                
+                ['pattern' => '<module:\w+>/<controller:\w+>/<action:\w+>', 'route' => '<module>/<controller>/<action>'],
+                ['pattern' => 'payments', 'route' => 'payments/default/index'],
+            ],
         ],
-    ],*/
+    ],
     'params' => $params,
 ];
 

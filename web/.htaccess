@@ -1,0 +1,6 @@
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteRule ^chat/([a-z0-9_-]+)(/?)$ /chat/$1
+#RewriteRule ^chat(/?)$ /chat/index.php [L]
+RewriteRule . index.php

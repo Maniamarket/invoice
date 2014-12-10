@@ -1,64 +1,37 @@
-<style type="text/css">
-    .form_default div.row input.submit{
-        margin-left: 210px;
-    }
-    .profile_balance .paypal_mini{
-        margin-left: 580px;
-        position: absolute;
-    }
-</style>
 <?php
-$this->pageTitle = Yii::app()->name . ' - Buy Credits';
-$this->breadcrumbs = array(
-    'Buy Credits',
-);
-?>
-<div class="page">
-<h1 class="page__tit"><?php echo Yii::t('credits', 'Update your balance using "PayPal"'); ?></h1>
-<div class="grid_2">
-    <?php
-    $this->widget('ext.LeftMenu.LeftMenu');
-    ?>
-</div>
 
-<div class="grid_10 content_block_3 profile_balance">
-    <div>
-        <div class="align_left" style="width: 550px;">
+use yii\helpers\Html;
+use yii\bootstrap\ActiveForm;
+
+$this->title = Yii::$app->name . ' - Buy Credits';
+$this->params['breadcrumbs'][] = $this->title;
+?>
+<div class="paypal-form">
+    <h1><?= Html::encode($this->title) ?></h1>
+
+    <div class="row">
+        <div class="text-left">
             <p><?php echo Yii::t('user', 'Recommended for europe and america'); ?></p>
             <p><?php echo Yii::t('credits', 'IMPORTANT! Currency - the U.S. dollar.'); ?></p>
             <p><?php echo Yii::t('credits', 'If you are using any other currency will be automatically converted at the exchange rate.'); ?></p>
         </div>
         <div class="paypal_mini">
-            <img src="<?php print Yii::app()->baseUrl; ?>/images/paypal_mini.gif" alt="paypal" />
+            <img src="<?php print Yii::$app->homeUrl; ?>/images/paypal_mini.gif" alt="paypal" />
         </div>
     </div>
     <div class="clear"></div>
 
-    <?php $this->renderPartial('messages'); ?>
-
-    <div class="form">
-        <?php
-        $form = $this->beginWidget('CActiveForm', array(
-            'id' => 'paypal-form',
-            'enableClientValidation' => true,
-            'enableAjaxValidation' => true,
-            'clientOptions' => array(
-                'validateOnSubmit' => true,
-            ),
-            'htmlOptions' => array('class' => 'form_default payment_form'),
-        ));
-        ?>
-        <div class="row">
-            <?php echo $form->labelEx($model, 'amount'); ?>
-            <?php echo $form->textField($model, 'amount'); ?>
-            <?php echo $form->error($model, 'amount'); ?>
+    <div class="row">
+        <div class="col-lg-5">
+            <?php $form = ActiveForm::begin(['id' => 'payment-form']); ?>
+            <div class="row">
+                <?= $form->field($model, 'amount') ?>
+            </div>
+            <div class="form-group">                
+                <?= Html::submitButton('Пополнить', ['class' => 'btn btn-primary', 'name' => 'payment-button']) ?>
+            </div>
+            <?php ActiveForm::end(); ?>
         </div>
-
-        <div class="row buttons">
-            <?php echo CHtml::submitButton(Yii::t('credits', 'Go to payment'), array('class' => 'submit')); ?>
-        </div>
-
-        <?php $this->endWidget(); ?>
-    </div><!-- form -->
-</div>
+    </div>
+    <div class="clear"></div>
 </div>

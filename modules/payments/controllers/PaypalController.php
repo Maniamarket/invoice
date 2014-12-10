@@ -1,56 +1,47 @@
 <?php
 
+namespace app\modules\payments\controllers;
+
+use Yii;
+use yii\web\Controller;
+use app\modules\payments\models as Models;
+
 class PaypalController extends Controller {
-
-    public function init() {
-        $this->layout = '//layouts/column2';
-    }
-
-    public function accessRules() {
-        return array(
-            array('allow',
-                'actions' => array('index'),
-                'users' => array('@'),
-            ),
-            array('allow',
-                'actions' => array('notify'),
-                'users' => array('*'),
-            ),
-            array('deny', // deny all users
-                'users' => array('*'), //любой пользователь, включая анонимного.
-            ),
-        );
-    }
+  
 
     public function actionIndex() {
-        $model = new PaypalForm;
-
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'paypal-form') {
-            echo CActiveForm::validate($model);
-            Yii::app()->end();
-        }
+        $model = new Models\PaypalForm;
+        //$model = new Models\PaypalForm;
+        /*
+          if (isset($_POST['ajax']) && $_POST['ajax'] === 'paypal-form') {
+          echo CActiveForm::validate($model);
+          Yii::app()->end();
+          } */
 
         if (isset($_POST['PaypalForm'])) {
             $model->attributes = $_POST['PaypalForm'];
             if ($model->validate()) {
-                $history = new PaymentHistory;
-                $history->summ = $model->amount;
-                $history->curr = 'PayPal: пополнение на $'.$model->amount;
-                $history->curs = Yii::app()->cfg->getItem('RUR_USD');
-                $history->outSum = $model->amount * $history->curs;
-                $history->typeid = PaymentHistory::PT_PAYPAL;
+                $history = new Models\PaymentHistory;
+                $history->amount = $model->amount;
+                $history->payment_system_id = 1;
+                $history->description = 'PayPal: пополнение на ' . $model->amount;
+                $history->curs = 1;
+                $history->equivalent = $model->amount * $history->curs;
+                $history->type = Models\PaymentHistory::PT_PAYPAL;
                 $history->save();
                 $this->layout = '//layouts/column1';
+                var_dump(Yii::$app);
+                die;
                 $this->render('processing', array(
                     'amount' => $model->amount,
-                    'user' => Yii::app()->user->getModel(),
+                    'user' => Yii::$app()->user->getModel(),
                     'pp_id' => $history->id, // номер счета
                 ));
                 Yii::app()->end();
             }
         }
 
-        $this->render('pay_form', array('model' => $model));
+        return $this->render('pay_form', array('model' => $model));
     }
 
     public function actionNotify() {

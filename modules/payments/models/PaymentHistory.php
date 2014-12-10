@@ -1,5 +1,11 @@
 <?php
 
+namespace app\modules\payments\models;
+
+use Yii;
+use \yii\db\ActiveRecord;
+use \yii\base\Model;
+
 /**
  * This is the model class for table "tbl_payment_history".
  *
@@ -22,31 +28,29 @@
  * @property user $operator
  * @property paymentOutput $paymentOutput
  */
-class PaymentHistory extends MyActiveRecord {
+class PaymentHistory extends ActiveRecord {
 
-    const PT_MANUAL = 10;    
+    const PT_MANUAL = 10;
     const PT_MONEY_TRANSFER = 20;
-   
+    const PT_PAYPAL = 30;
 
     public function init() {
         $this->type = self::PT_MANUAL;
         $this->complete = 0;
-        $this->bonus = 0;
         parent::init();
     }
 
-    public function tableName() {
+    public static function tableName() {
         return 'payment_history';
     }
 
     public function rules() {
         return array(
-            array('amount, payment_system_id', 'required'),
-            array('user_id, payment_system_id, complete, type, operator_id', 'numerical', 'integerOnly' => true),
-            array('amount', 'numerical'),
-            array('user_id, payment_system_id', 'length', 'max' => 11),
-            array('description', 'length', 'max' => 128),
-            array('id, user_id, amount, description, date, payment_system_id, complete, type', 'safe', 'on' => 'searchLast, search'),
+            [['amount', 'payment_system_id'], 'required'],
+            [['user_id', 'payment_system_id', 'complete', 'type', 'operator_id'], 'integer'],
+            [['amount'], 'double'],
+            [['description'], 'string', 'max' => 255],
+            [['id', 'user_id', 'amount', 'description', 'date', 'payment_system_id', 'complete', 'type', 'date',], 'safe', 'on' => 'search'],
         );
     }
 
@@ -99,18 +103,17 @@ class PaymentHistory extends MyActiveRecord {
             ),
         ));
     }
-    
 
     public static function model($className = __CLASS__) {
         return parent::model($className);
     }
 
-    protected function beforeSave() {
-        $this->_setSecretKey('payment_key');
+    public function beforeSave($insert) {
+        //$this->_setSecretKey('payment_key');
         if (empty($this->description) && $this->payment_system_id) {
             $this->description = 'Top-up through {model}. To the amount of ${amount}';
         }
-        return parent::beforeSave();
+        return parent::beforeSave($insert);
     }
 
     public function getDate($format = 'd M Y') {
@@ -118,13 +121,12 @@ class PaymentHistory extends MyActiveRecord {
     }
 
     public function getStatus() {
-            return ($this->complete) ? Yii::t('mypurse', 'Complete') : Yii::t('mypurse', 'Not Complete');
+        return ($this->complete) ? Yii::t('mypurse', 'Complete') : Yii::t('mypurse', 'Not Complete');
     }
 
     public function getCssClass() {
         return ($this->complete) ? 'complete' : 'complete fail';
     }
-
 
     public function getType() {
         switch ($this->type) {
@@ -134,20 +136,17 @@ class PaymentHistory extends MyActiveRecord {
             case self::PT_MONEY_TRANSFER:
                 return 'Перевод средств внутри системы';
                 break;
-          
         }
     }
 
-    protected function afterSave() {
+    public function afterSave($insert, $changedAttributes) {
         //send email about payment
-        parent::afterSave();
+        parent::afterSave($insert, $changedAttributes);
     }
 
-
-    protected function beforeDelete() {
+    public function beforeDelete() {
         return parent::beforeDelete();
     }
-    
 
     public static function balanceToDay($uid, $date) {
         return Yii::app()->db->createCommand()

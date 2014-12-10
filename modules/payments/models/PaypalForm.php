@@ -1,20 +1,23 @@
 <?php
+namespace app\modules\payments\models;
 
-class PaypalForm extends CFormModel {
+use Yii;
+use yii\base\Model;
+
+class PaypalForm extends Model {
 
     public $amount;
 
     public function rules() {
         return array(
             array('amount', 'required'),
-//            array('amount', 'numerical', 'integerOnly' => true),
-            array('amount', 'numerical'),
+            //array('amount', 'numerical'),
         );
     }
 
     public function attributeLabels() {
         return array(
-            'amount' => Yii::t('credits', 'Sum'),
+            'amount' => Yii::t('lang', 'Amount'),
         );
     }
 

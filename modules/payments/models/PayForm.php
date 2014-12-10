@@ -1,6 +1,10 @@
 <?php
+namespace app\modules\payments\models;
 
-class PayForm extends CFormModel {
+use Yii;
+use yii\base\Model;
+
+class PayForm extends Model {
 
     const MINIMUM = 25;
 
@@ -17,7 +21,7 @@ class PayForm extends CFormModel {
 
     public function attributeLabels() {
         return array(
-            'amount' => Yii::t('mypurse', 'Amount').', $',
+            'amount' => Yii::t('app', 'Amount').', $',
             'payment_system_id' => Yii::t('mypurse', 'Top-up through'),
         );
     }

@@ -4,7 +4,7 @@
 Redirect on <a href="http://www.paypal.com">www.paypal.com</a>. One moment please.
 <form method="post" id="paypal-form" name="_xclick" action= "https://www.paypal.com/cgi-bin/webscr" />
 <input type="hidden" name="cmd" value="_xclick" />
-<input type="hidden" name="business" value="tetven@gmail.com" />
+<input type="hidden" name="business" value="gergarius@gmail.com" />
 <input type="hidden" name="item_name" value="<?php echo CHtml::encode(Yii::app()->name); ?>: update blance on  $<?php print $amount; ?>" />
 <input type="hidden" name="amount" value="<?php print $amount; ?>" />
 <input type="hidden" name="no_shipping" value="1" />
