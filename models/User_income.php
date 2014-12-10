@@ -21,7 +21,6 @@ use yii\helpers\ArrayHelper;
  * @property integer $def_lang
  */
 class User_income extends ActiveRecord {
-    public $sum_credit;
             
     public static function tableName() {
 	return 'user_income';
