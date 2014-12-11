@@ -8,9 +8,11 @@ use yii\helpers\Url;
 # false - рабочий режим, https://www.paypal.com/
 */
   $SandboxFlag = true;
-  $url_pay = ( $SandboxFlag ) ? 'https://www.sandbox.paypal.com' : 'https://www.paypal.com/'; //'https://www.paypal.com/cgi-bin/webscr'
+  //$url_pay = ( $SandboxFlag ) ? 'https://www.sandbox.paypal.com' : 'https://www.paypal.com/'; //'https://www.paypal.com/cgi-bin/webscr'
+  $url_pay = ( $SandboxFlag ) ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
 // e-mail продавца
   $paypalemail  = ( $SandboxFlag ) ? "RabotaSurv-facilitator@gmail.com " : "RabotaSurv-facilitator@gmail.com ";
+   // e-mail client RabotaSurv-buyer@gmail.com 
   $currency     = "EUR";              // валюта
 ?>
 
@@ -20,8 +22,8 @@ use yii\helpers\Url;
 
   $form=ActiveForm::begin( [
 	'id'=>'setting-form',
-        'action' => 'succecc_paypal',
-//        'action' => $url_pay,
+//        'action' => 'succecc_paypal',
+        'action' => $url_pay,
 	'enableAjaxValidation'=>false,
 ]); ?>
 
