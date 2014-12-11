@@ -67,7 +67,7 @@ class PaypalController extends Controller {
     public function actionNotify() {
 
         file_put_contents(realpath(dirname(__FILE__)) . '/test.txt', $_POST);
-      
+      die;
         // read the post from PayPal system and add 'cmd'
         $req = 'cmd=' . urlencode('_notify-validate');
         foreach ($_POST as $key => $value) {
