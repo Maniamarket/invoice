@@ -34,19 +34,24 @@ class ClientController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'login'],
+                'only' => ['login', 'invoice', 'tcpdf', 'logout', 'update', 'delete', 'index'],
                 'rules' => [
                     [
-                        'actions' => ['login'],
+                        'actions' => ['login', 'invoice', 'tcpdf'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['logout','special-callback'],
+                        'actions' => ['logout', 'update', 'special-callback'],
                         'allow' => true,
                         'matchCallback' => function ($rule, $action) {
                                 return $this->isClient();
                             }
+                    ],
+                    [
+                        'actions' => ['delete', 'index', 'update'],
+                        'allow' => true,
+                        'roles' => ['@']
                     ],
                 ],
             ],
@@ -86,6 +91,7 @@ class ClientController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             if ($client = $model->signup()) {
                // var_dump(Yii::$app->session['password']);                exit();
+                Yii::$app->getSession()->setFlash('success', 'Клиент успешно зарегистрирован ');
                 return $this->redirect(['index']);
             }
         }
@@ -142,28 +148,34 @@ class ClientController extends Controller
         }
     }
 
-    public function actionUpdate($id)
+    public function actionUpdate($id=0)
     {
-        $client_id = $this->isClient();
-
-        $model = $this->loadModel($id);
-        if($model->user_id!=Yii::$app->user->getId()){
-           throw new ForbiddenHttpException('Client not found');
+        if (Yii::$app->user->isGuest) {
+            $client_id = $this->isClient();
+            $model = $this->loadModel($client_id);
+        }
+        else {
+            $this->layout='main';
+            $model = $this->loadModel($id);
+            if($model->user_id!=Yii::$app->user->getId()){
+               throw new ForbiddenHttpException('Client not found');
+            }
         }
 	// Uncomment the following line if AJAX validation is needed
 	// $this->performAjaxValidation($model);
 
-	if ($model->load(Yii::$app->request->post()) && $model->save()) 
-         {
-             return $this->render('update', ['model' => $model,]);
-         }
-        else
-            return $this->render('update', ['model' => $model,]);
-
+        if ($model->load(Yii::$app->request->post()) && $model->save())
+        {
+            Yii::$app->getSession()->setFlash('success', 'Клиент успешно обновлен ');
+            if (!Yii::$app->user->isGuest)
+                return $this->redirect(['index']);
+        }
+       return $this->render('update', ['model' => $model,]);
     }
 
     public function actionDelete()
     {
+        $this->layout='main';
         $id = Yii::$app->request->post();
         if(!Yii::$app->request->isAjax) throw new BadRequestHttpException('Invalid request');
 
