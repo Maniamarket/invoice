@@ -14,11 +14,11 @@ class PaypalController extends Controller {
             'access' => [
                 'class' => AccessControl::className(),
                 'rules' => [
-                    /* [
-                      'allow' => true,
-                      'actions' => ['index', 'view'],
-                      'roles' => ['@'],
-                      ], */
+                    [
+                        'allow' => true,
+                        'actions' => ['notify', 'view'],
+                        'roles' => ['@'],
+                    ],
                     [
                         'allow' => true,
                         'roles' => ['user'],
@@ -65,6 +65,9 @@ class PaypalController extends Controller {
     }
 
     public function actionNotify() {
+
+        file_put_contents(realpath(dirname(__FILE__)) . '/test.txt', $_POST);
+      
         // read the post from PayPal system and add 'cmd'
         $req = 'cmd=' . urlencode('_notify-validate');
         foreach ($_POST as $key => $value) {
@@ -84,7 +87,9 @@ class PaypalController extends Controller {
         $res = curl_exec($ch);
         curl_close($ch);
 
+        file_put_contents('test.txt', '$res');
         if (strcmp($res, "VERIFIED") == 0) {
+            //if (1) {
             $pp_id = $_POST['custom']; //номер счета
             $currency = $_POST['mc_currency'];
             $status = $_POST['payment_status'];
@@ -110,7 +115,7 @@ class PaypalController extends Controller {
 
     public function write_log($mixed) {
         ob_start();
-        pr($mixed);
+        // pr($mixed);
         $data = ob_get_contents();
         Yii::log($data, 'trace', 'app.notify.PaypalController');
         ob_end_clean();
