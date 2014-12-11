@@ -79,7 +79,7 @@ class InvoiceController extends Controller
     public function actionHistory()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => User_payment::findBySql('select u.* from {{User_payment}} as u '
+            'query' => User_payment::findBySql('select u.* from {{user_payment}} as u '
                     . '  where u.user_id = '.Yii::$app->user->id.' and u.txn_id IS NOT NULL order by u.id desc'),
             'pagination' => [
                 'pageSize' => 20,

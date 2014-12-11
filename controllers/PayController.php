@@ -112,7 +112,7 @@ class PayController extends Controller
                die("Out of money? Please contact ".$adminemail);
              }*/
 //  проверки завершены. 
-            $old = User_payment::findBySql('select u.* from {{User_payment}} as u where u.user_id = '.$user_payment->user_id
+            $old = User_payment::findBySql('select u.* from {{user_payment}} as u where u.user_id = '.$user_payment->user_id
                     .' and u.txn_id IS NOT NULL order by u.id desc ')->one();
 //                 var_dump($old);                  exit();
             $user_payment->credit_sum = (( $old) ? $old->credit_sum : 0) + $user_payment->credit;

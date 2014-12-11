@@ -3,19 +3,25 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 
-
+/*
+# true - тестовый режим, https://www.sandbox.paypal.com
+# false - рабочий режим, https://www.paypal.com/
+*/
+  $SandboxFlag = true;
+  $url_pay = ( $SandboxFlag ) ? 'https://www.sandbox.paypal.com' : 'https://www.paypal.com/'; //'https://www.paypal.com/cgi-bin/webscr'
+// e-mail продавца
+  $paypalemail  = ( $SandboxFlag ) ? "RabotaSurv-facilitator@gmail.com " : "RabotaSurv-facilitator@gmail.com ";
+  $currency     = "EUR";              // валюта
 ?>
 
 <div class="row">
     
 <?php
-  $paypalemail  = "my@email.com";     // e-mail продавца
-  $currency     = "EUR";              // валюта
 
   $form=ActiveForm::begin( [
 	'id'=>'setting-form',
         'action' => 'succecc_paypal',
-//        'action' => 'https://www.paypal.com/cgi-bin/webscr',
+//        'action' => $url_pay,
 	'enableAjaxValidation'=>false,
 ]); ?>
 
