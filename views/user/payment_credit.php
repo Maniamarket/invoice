@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	'options'=>['enctype'=>'multipart/form-data', 'role'=>'form'],
 ]); ?>
     <div class="form-group">
-          <?php echo $form->field($model, 'credit')->textInput()->hint('You family, credit ')->label('count credit') ; ?>
+          <?php echo $form->field($model, 'credit')->textInput()->hint('You credit ')->label('count credit') ; ?>
           <?php echo Html::error($model, 'credit'); ?>
     </div>
 <?= Html::submitButton('Send', ['class' => 'btn btn-primary', 'name' => 'send']) ?>

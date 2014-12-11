@@ -102,17 +102,18 @@ class UserController extends Controller {
     //увеличение кредитов (история)
               $model->user_id = $id;
               $model->is_input = TRUE;
-              $old = User_payment::find()->where(['user_id'=>$id])->orderBy(['id'=>SORT_DESC])->one();
-              $model->credit_sum = (( $old) ? $old->credit_sum : 0) + $model->credit;
+              $model->credit_sum = 0;
               $model->profit_parent = $model->profit_parent + 0;
               $model->date = new Expression('NOW()');
+              
               if( $model->save()){
-    //увеличение кредитов
-                  $user_credit = Setting::find()->where(['user_id' => $id])->one();
-                  $user_credit->credit = $user_credit->credit + $model->credit;
-                  $user_credit->save();
-                
-                  return $this->redirect(['invoice/index']);
+                switch ( $payment_id ){
+                  case  1 : break;
+                  case  2 :  return $this->redirect(['pay/paypal','id' => $model->id ]);
+                  case  1 : break;
+                }                
+                   
+                return $this->redirect(['invoice/index']);
               }
           }  
           return $this->render('payment_credit',['model' => $model,'payment_id'=>$payment_id]);

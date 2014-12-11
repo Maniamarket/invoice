@@ -3,8 +3,6 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Invoice;
-use app\models\InvoiceSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -12,6 +10,9 @@ use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
 use yii\db\Expression;
 use yii\web\ForbiddenHttpException;
+use app\models\Invoice;
+use app\models\InvoiceSearch;
+use app\models\User_payment;
 
 /**
  * InvoiceController implements the CRUD actions for Invoice model.
@@ -78,7 +79,8 @@ class InvoiceController extends Controller
     public function actionHistory()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => \app\models\User_payment::find()->where(['user_id'=> Yii::$app->user->id])->orderBy(['id'=>SORT_DESC]),
+            'query' => User_payment::findBySql('select u.* from {{User_payment}} as u '
+                    . '  where u.user_id = '.Yii::$app->user->id.' and u.txn_id IS NOT NULL order by u.id desc'),
             'pagination' => [
                 'pageSize' => 20,
             ],
