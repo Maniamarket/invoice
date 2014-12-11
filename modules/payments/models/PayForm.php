@@ -6,8 +6,6 @@ use yii\base\Model;
 
 class PayForm extends Model {
 
-    const MINIMUM = 25;
-
     public $payment_system_id;
     public $amount;
 

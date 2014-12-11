@@ -1,4 +1,14 @@
 ﻿<?php
+function sho($a) {
+    echo '<pre>';
+    print_r($a);
+    echo '</pre>';
+}
+
+function shodie($a) {
+    sho($a);
+    die;
+}
 
 $params = require(__DIR__ . '/params.php');
 
@@ -7,10 +17,10 @@ $config = [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'name' => 'Biling',
-     /*'import' => array( 
-        'application.modules.payments.models.*.*',
-        'application.modules.payments.components.*',       
-    ),*/
+    /* 'import' => array( 
+      'application.modules.payments.models.*.*',
+      'application.modules.payments.components.*',
+      ), */
 //    'defaultController' => 'site/login',
     /*    'view' => [
       'theme' => [
@@ -21,8 +31,8 @@ $config = [
       'baseUrl' => '@web/themes/classic',
       ],
       ], */
-    'language'=>'ru-RU',
-        'language' => 'ru-RU',
+    'language' => 'ru-RU',
+    'language' => 'ru-RU',
     'components' => [
         'i18n' => [
             'translations' => [
@@ -31,25 +41,25 @@ $config = [
                     'basePath' => '@app/messages',
                     'sourceLanguage' => 'en-US',
                     'fileMap' => [
-                        //'app' => 'app.php',
-                        //'app/error' => 'error.php',
+                    //'app' => 'app.php',
+                    //'app/error' => 'error.php',
                     ],
                 ],
             ],
         ],
-		'urlManager' => [
-			'enablePrettyUrl' => true,
-			'showScriptName' => false,
-			'class'=>'app\components\LangUrlManager',
-			'rules'=>[
-				'/' => 'site/index',
-				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
-			]
-		],
-		'request' => [
+        'urlManager' => [
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            'class' => 'app\components\LangUrlManager',
+            'rules' => [
+                '/' => 'site/index',
+                '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+            ]
+        ],
+        'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'shfhgjfh637yghhgfbhgghjhn',
-			'class' => 'app\components\LangRequest'
+            'class' => 'app\components\LangRequest'
         ],
         'image' => [
             'class' => 'yii\image\ImageDriver',
@@ -66,7 +76,7 @@ $config = [
         'tcpdf' => [
             'class' => 'cinghie\tcpdf\TCPDF',
         ],
-		'cache' => [
+        'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
         'authManager' => [
@@ -93,11 +103,11 @@ $config = [
             // for the mailer to send real emails.
             'useFileTransport' => false,
         ],
-        'pagenService'=>[
+        'pagenService' => [
             // use пагинация андрея
             'class' => 'app\components\PagenService'
         ],
-        'HelpKontrol'=>[
+        'HelpKontrol' => [
             // use cache андрея
             'class' => 'app\components\HelpKontrol'
         ],
@@ -115,7 +125,7 @@ $config = [
             'class' => 'yii\web\UrlManager',
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => [                
+            'rules' => [
                 ['pattern' => '<module:\w+>/<controller:\w+>/<action:\w+>', 'route' => '<module>/<controller>/<action>'],
                 ['pattern' => 'payments', 'route' => 'payments/default/index'],
             ],
@@ -144,5 +154,28 @@ if (YII_ENV_DEV) {
 
 $config['modules'] ['payments'] = [
     'class' => 'app\modules\payments\Module',
+    //'isProduction' => false,
+    // This is config file for the PayPal system
+    'config' => array(
+        'paypal' => array(
+            'live' => array(
+                'proccessUrl' => 'https://www.paypal.com/cgi-bin/webscr',
+                'businessEmail' => 'arsen.sitdikov@gmail.com',
+                'defaultCurrency' => 'EUR',
+            ),
+            'test' => array(
+                'proccessUrl' => 'https://www.sandbox.paypal.com/cgi-bin/webscr',
+                'businessEmail' => 'arsen.sitdikov@gmail.com',
+                'defaultCurrency' => 'RUB',
+            ),
+        ),
+        'mode' => YII_ENV_DEV ? 'test' : 'live',
+    //'http.ConnectionTimeOut' => 30,
+    //'http.Retry' => 1,
+    //'mode' => \ak\Paypal::MODE_SANDBOX, // development (sandbox) or production (live) mode
+    //'log.LogEnabled' => YII_DEBUG ? 1 : 0,
+    //'log.FileName' => '@runtime/logs/paypal.log',
+    //'log.LogLevel' => \ak\Paypal::LOG_LEVEL_FINE,
+    ),
 ];
 return $config;

@@ -29,30 +29,39 @@ class PaypalController extends Controller {
     }
 
     public function actionIndex() {
-        $model = new Models\PaypalForm;
+        $PaypalForm = new Models\PaypalForm;
+        $PaymentCurrency = new Models\PaymentCurrency;
 
         if (isset($_POST['PaypalForm'])) {
-            $model->attributes = $_POST['PaypalForm'];
-            if ($model->validate()) {
+            $PaypalForm->attributes = $_POST['PaypalForm'];
+
+            if ($PaypalForm->validate()) {
+                $currency = $PaymentCurrency->getCurrencyById($PaypalForm->currency);
+
                 $history = new Models\PaymentHistory;
-                $history->amount = $model->amount;
+                $history->amount = $PaypalForm->amount;
+                $history->currency_id = $currency->id;
+                $history->curs = $currency->curs;
+
+                $history->equivalent = $PaymentCurrency->getEquivalent($history->amount, $history->curs);
+
                 $history->payment_system_id = 1;
-                $history->description = 'PayPal: пополнение на ' . $model->amount;
-                $history->curs = 1;
-                $history->equivalent = $model->amount * $history->curs;
+                $history->description = 'Пополнение на ' . $history->amount . ' кредитов';
+
                 $history->type = Models\PaymentHistory::PT_PAYPAL;
                 $history->save();
 
                 return $this->render('processing', array(
-                            'amount' => $model->amount,
+                            'PaypalForm' => $PaypalForm,
+                            'history' => $history,
                             'user' => Yii::$app->user->identity,
-                            'pp_id' => $history->id, // номер счета
                 ));
                 Yii::$app->end();
             }
         }
 
-        return $this->render('pay_form', array('model' => $model));
+        $activeCurrency = $PaymentCurrency->getActiveCurrency();
+        return $this->render('pay_form', array('model' => $PaypalForm, 'activeCurrency' => $activeCurrency));
     }
 
     public function actionNotify() {

@@ -64,14 +64,14 @@ class PaymentHistory extends ActiveRecord {
 
     public function attributeLabels() {
         return array(
-            'id' => Yii::t('mypurse', 'ID'),
-            'user_id' => Yii::t('mypurse', 'User'),
-            'operator_id' => Yii::t('mypurse', 'Operator'),
-            'amount' => Yii::t('mypurse', 'Amount'),
-            'description' => Yii::t('mypurse', 'Description'),
-            'date' => Yii::t('mypurse', 'Date'),
-            'complete' => Yii::t('mypurse', 'Status'),
-            'type' => Yii::t('mypurse', 'Payment Type'),
+            'id' => Yii::t('payment', 'ID'),
+            'user_id' => Yii::t('payment', 'User'),
+            'operator_id' => Yii::t('payment', 'Operator'),
+            'amount' => Yii::t('payment', 'Amount'),
+            'description' => Yii::t('payment', 'Description'),
+            'date' => Yii::t('payment', 'Date'),
+            'complete' => Yii::t('payment', 'Status'),
+            'type' => Yii::t('payment', 'Payment Type'),
         );
     }
 
@@ -121,7 +121,7 @@ class PaymentHistory extends ActiveRecord {
     }
 
     public function getStatus() {
-        return ($this->complete) ? Yii::t('mypurse', 'Complete') : Yii::t('mypurse', 'Not Complete');
+        return ($this->complete) ? Yii::t('payment', 'Complete') : Yii::t('payment', 'Not Complete');
     }
 
     public function getCssClass() {
@@ -131,10 +131,13 @@ class PaymentHistory extends ActiveRecord {
     public function getType() {
         switch ($this->type) {
             case self::PT_MANUAL:
-                return 'Пополнение';
+                return Yii::t('payment', 'manual');
                 break;
             case self::PT_MONEY_TRANSFER:
-                return 'Перевод средств внутри системы';
+                return Yii::t('payment', 'transfer');
+                break;
+            case self::PT_PAYPAL:
+                return Yii::t('payment', 'paypal');
                 break;
         }
     }

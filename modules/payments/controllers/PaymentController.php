@@ -39,12 +39,20 @@ class PaymentController extends Controller {
             if ($model->validate()) {
 
                 $history = new PaymentHistory;
-                $history->summ = $model->out_summ;
-                $history->curr = $model->in_curr;
-                $history->curs = Yii::$app->cfg->getItem('RUR_USD');
+                //$history->summ = $model->out_summ;
+                //$history->curr = $model->in_curr;
+               // $history->curs = Yii::$app->cfg->getItem('RUR_USD');
 
-                $history->outSum = $model->out_summ = $model->out_summ * $history->curs;
-                $model->inv_desc = 'По курсу ЦБ, с вас будет удержано ' . number_format($model->out_summ, 2, ',', ' ') . ' рублей. $1 = ' . $history->curs . ' RUR';
+                $history = new Models\PaymentHistory;
+                $history->amount = $model->out_summ;
+                $history->payment_system_id = 1;
+                $history->description = 'PayPal: пополнение на ' . $model->amount;
+                $history->curs = 1;
+                $history->equivalent = $model->amount * $history->curs;
+                $history->type = $model->type;
+                $history->save();
+                
+               // $model->inv_desc = 'По курсу ЦБ, с вас будет удержано ' . number_format($model->out_summ, 2, ',', ' ') . ' рублей. $1 = ' . $history->curs . ' RUR';
 
                 if ($history->save()) {
                     $model->inv_id = $history->id;
