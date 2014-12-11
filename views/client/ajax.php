@@ -33,7 +33,7 @@ GridView::widget([
             'template' => '{update} {delete}',
             'buttons'=>[
                 'delete'=>function($url, $model, $key){
-                    return "<a href='#' data-rmid='$key' onclick='return false;' data-rmu='$url' class='rm-btn' data-message='Are you sure delete $model->name'><span class='glyphicon glyphicon-trash'></span></a>";
+                    return "<a href='#' data-id='$key' onclick='return false;' data-rmu='$url' class='rm-btn' data-message='Are you sure delete $model->name'><span class='glyphicon glyphicon-trash'></span></a>";
                 }
             ]
         ],
