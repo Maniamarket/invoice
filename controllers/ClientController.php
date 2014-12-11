@@ -96,13 +96,14 @@ class ClientController extends Controller
         $dataProvider = new ActiveDataProvider([
             'query' => Client::queryProvider(Yii::$app->request->queryParams),
             'pagination' => [
-                'pageSize' => 20,
+                'pageSize' => 20
             ],
         ]);
         return $this->render('index', ['dataProvider' => $dataProvider]);
     }
 
     public function actionAjax() {
+        if(!Yii::$app->request->isAjax) throw new ForbiddenHttpException('Url should be requested via ajax only');
         $dataProvider = new ActiveDataProvider([
             'query' => Client::queryProvider(Yii::$app->request->queryParams),
             'pagination' => [
