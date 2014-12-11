@@ -105,7 +105,7 @@ class PaypalController extends Controller {
             $this->write_log($_POST);
         }
 
-        $this->redirect(array('payment/history'));
+        //$this->redirect(array('payment/history'));
     }
 
     public function write_log($mixed) {

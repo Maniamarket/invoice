@@ -77,7 +77,7 @@ $config = [
         'tcpdf' => [
             'class' => 'cinghie\tcpdf\TCPDF',
         ],
-        'paypal' => [
+        /*'paypal' => [
             'class' => 'ak\Paypal',
             'clientId' => 'AafqihCLD6RrQKhaE1nB672zsfVDIjRSHtKbmaGzFcSquWJzJ-cL_ISKrKXZ',
             'clientSecret' => 'ECRaAxBG9fgaKCBSIDQ88MwdGYl7fT8iu-NlbiN-jbr3lKf8NoMWwuPW8KeT',
@@ -91,7 +91,7 @@ $config = [
                 'log.FileName' => '@app/runtime/logs/paypal.log',
                 'log.LogLevel' => \ak\Paypal::LOG_LEVEL_FINE,
             ]
-        ],
+        ],*/
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
