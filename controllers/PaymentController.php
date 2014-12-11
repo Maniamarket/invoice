@@ -102,7 +102,9 @@ class PaymentController extends Controller
     public function actionIpn()
     {
         $qp = Yii::$app->request->queryParams;
-        var_dump($qp);
+        foreach ($qp as $k=>$val) {
+            Yii::info('key='.$k.'value='.$val, 'userMessage');
+        }
 /*        $ipn = new PPIPNMessage(array(['mode' => 'sandbox']),null,[]);
         if (!$ipn->validate()) {
             throw new \Exception('Не пройдена валидация платежа на стороне PayPal');
