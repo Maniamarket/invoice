@@ -35,6 +35,11 @@ class PaymentController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
+                        'actions'=>['ipn'],
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'allow' => true,
                         'actions'=>['index'],
                         'roles' => ['@'],
                     ],
@@ -101,6 +106,7 @@ class PaymentController extends Controller
 
     public function actionIpn()
     {
+        Yii::info('Метод сработал', 'userMessage');
         $qp = Yii::$app->request->queryParams;
         foreach ($qp as $k=>$val) {
             Yii::info('key='.$k.'value='.$val, 'userMessage');
@@ -116,15 +122,17 @@ class PaymentController extends Controller
 // $_GET['item_number1']    Ид первого товара
 // $_GET['payment_status']  Статус заказа
 // $_GET['receiver_email']  Email получателя
-        switch ($_GET['payment_status']) {
-            // Платеж успешно выполнен, оказываем услугу
-            case 'completed': echo 'completed'; break;
-            // Платеж не прошел
-            case 'failed': echo 'failed'; break;
-            // Платеж отменен продавцом
-            case 'denied': echo 'denied'; break;
-            // Деньги были возвращены покупателю
-            case 'refunded': echo 'refunded'; break;
+        if (isset($_GET['payment_status'])) {
+            switch ($_GET['payment_status']) {
+                // Платеж успешно выполнен, оказываем услугу
+                case 'completed': echo 'completed'; break;
+                // Платеж не прошел
+                case 'failed': echo 'failed'; break;
+                // Платеж отменен продавцом
+                case 'denied': echo 'denied'; break;
+                // Деньги были возвращены покупателю
+                case 'refunded': echo 'refunded'; break;
+            }
         }
     }
 
