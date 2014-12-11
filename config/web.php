@@ -77,21 +77,21 @@ $config = [
         'tcpdf' => [
             'class' => 'cinghie\tcpdf\TCPDF',
         ],
-        /*'paypal' => [
-            'class' => 'ak\Paypal',
-            'clientId' => 'AafqihCLD6RrQKhaE1nB672zsfVDIjRSHtKbmaGzFcSquWJzJ-cL_ISKrKXZ',
-            'clientSecret' => 'ECRaAxBG9fgaKCBSIDQ88MwdGYl7fT8iu-NlbiN-jbr3lKf8NoMWwuPW8KeT',
-            'isProduction' => false,
-            // This is config file for the PayPal system
-            'config' => [
-                'http.ConnectionTimeOut' => 30,
-                'http.Retry' => 1,
-                'mode' => \ak\Paypal::MODE_SANDBOX, // development (sandbox) or production (live) mode
-                'log.LogEnabled' => YII_DEBUG ? 1 : 0,
-                'log.FileName' => '@app/runtime/logs/paypal.log',
-                'log.LogLevel' => \ak\Paypal::LOG_LEVEL_FINE,
-            ]
-        ],*/
+        /* 'paypal' => [
+          'class' => 'ak\Paypal',
+          'clientId' => 'AafqihCLD6RrQKhaE1nB672zsfVDIjRSHtKbmaGzFcSquWJzJ-cL_ISKrKXZ',
+          'clientSecret' => 'ECRaAxBG9fgaKCBSIDQ88MwdGYl7fT8iu-NlbiN-jbr3lKf8NoMWwuPW8KeT',
+          'isProduction' => false,
+          // This is config file for the PayPal system
+          'config' => [
+          'http.ConnectionTimeOut' => 30,
+          'http.Retry' => 1,
+          'mode' => \ak\Paypal::MODE_SANDBOX, // development (sandbox) or production (live) mode
+          'log.LogEnabled' => YII_DEBUG ? 1 : 0,
+          'log.FileName' => '@app/runtime/logs/paypal.log',
+          'log.LogLevel' => \ak\Paypal::LOG_LEVEL_FINE,
+          ]
+          ], */
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
@@ -133,6 +133,15 @@ $config = [
                 [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
+                ],
+                [
+                    'class' => 'yii\log\FileTarget',
+                    'levels' => ['info'],
+                    'categories' => ['paypal'],
+                    'logVars' => [null],
+                    'logFile' => '@app/runtime/logs/paypal.log',
+                    'maxFileSize' => 1024 * 2,
+                    'maxLogFiles' => 20,
                 ],
             ],
         ],
@@ -184,6 +193,7 @@ $config['modules'] ['payments'] = [
                 'businessEmail' => 'arsen.sitdikov@gmail.com',
                 'defaultCurrency' => 'RUB',
             ),
+        //'log' => \Yii::getAlias('@runtime/logs/paypal.log'),
         ),
         'mode' => YII_ENV_DEV ? 'test' : 'live',
     //'http.ConnectionTimeOut' => 30,

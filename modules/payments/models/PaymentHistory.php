@@ -3,8 +3,6 @@
 namespace app\modules\payments\models;
 
 use Yii;
-use \yii\db\ActiveRecord;
-use \yii\base\Model;
 
 /**
  * This is the model class for table "tbl_payment_history".
@@ -28,7 +26,7 @@ use \yii\base\Model;
  * @property user $operator
  * @property paymentOutput $paymentOutput
  */
-class PaymentHistory extends ActiveRecord {
+class PaymentHistory extends \yii\db\ActiveRecord {
 
     const PT_MANUAL = 10;
     const PT_MONEY_TRANSFER = 20;
@@ -45,13 +43,13 @@ class PaymentHistory extends ActiveRecord {
     }
 
     public function rules() {
-        return array(
-            [['amount', 'payment_system_id'], 'required'],
-            [['user_id', 'payment_system_id', 'complete', 'type', 'operator_id'], 'integer'],
-            [['amount'], 'double'],
-            [['description'], 'string', 'max' => 255],
-            [['id', 'user_id', 'amount', 'description', 'date', 'payment_system_id', 'complete', 'type', 'date',], 'safe', 'on' => 'search'],
-        );
+        return [
+            [['user_id', 'operator_id', 'currency_id', 'payment_system_id', 'complete', 'type'], 'integer'],
+            [['amount', 'currency_id', 'payment_system_id'], 'required'],
+            [['amount', 'curs', 'equivalent'], 'number'],
+            [['date'], 'safe'],
+            [['description'], 'string', 'max' => 128]
+        ];
     }
 
     public function relations() {
@@ -59,61 +57,57 @@ class PaymentHistory extends ActiveRecord {
             'paymentSystem' => array(self::BELONGS_TO, 'PaymentSystem', 'payment_system_id'),
             'user' => array(self::BELONGS_TO, 'User', 'user_id'),
             'operator' => array(self::BELONGS_TO, 'User', 'operator_id'),
+            'currency' => array(self::HAS_ONE, 'PaymentCurrency', 'currency_id'),
         );
+    }
+    
+    public function getNonCompleteById($id) {
+        return $this->find()->where('id=:id AND complete = :complete', ['id' => $id, 'complete' => false])->one();
     }
 
     public function attributeLabels() {
-        return array(
+        return [
             'id' => Yii::t('payment', 'ID'),
-            'user_id' => Yii::t('payment', 'User'),
-            'operator_id' => Yii::t('payment', 'Operator'),
+            'user_id' => Yii::t('payment', 'User ID'),
+            'operator_id' => Yii::t('payment', 'Operator ID'),
             'amount' => Yii::t('payment', 'Amount'),
+            'currency_id' => Yii::t('payment', 'Currency ID'),
+            'curs' => Yii::t('payment', 'Curs'),
+            'equivalent' => Yii::t('payment', 'Equivalent'),
             'description' => Yii::t('payment', 'Description'),
             'date' => Yii::t('payment', 'Date'),
-            'complete' => Yii::t('payment', 'Status'),
-            'type' => Yii::t('payment', 'Payment Type'),
-        );
+            'payment_system_id' => Yii::t('payment', 'Payment System ID'),
+            'complete' => Yii::t('payment', 'Complete'),
+            'type' => Yii::t('payment', 'Type'),
+        ];
     }
 
-    public function search() {
-        $criteria = new CDbCriteria;
-
-        $criteria->compare('t.id', $this->id, false);
-        $criteria->compare('user_id', $this->user_id);
-        $criteria->compare('amount', $this->amount, true);
-        $criteria->compare('description', $this->description, true);
-        $criteria->compare('date', $this->date, true);
-        $criteria->compare('complete', $this->complete);
-        $criteria->compare('type', $this->type);
-
-        return new CActiveDataProvider($this, array(
-            'criteria' => $criteria,
-            'sort' => array(
-                'defaultOrder' => 't.date DESC, t.type ASC',
-                'attributes' => array(
-                    'userEmail' => array(
-                        'asc' => 'user.email ASC',
-                        'desc' => 'user.email DESC',
-                    ),
-                    '*', // add all of the other columns as sortable
-                ),
-            ),
-            'pagination' => array(
-                'pageSize' => Yii::$app->user->getState('pageSize', Yii::$app->params['defaultPageSize']),
-            ),
-        ));
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPaymentSystem() {
+        return $this->hasOne(PaymentSystem::className(), ['id' => 'payment_system_id']);
     }
 
-    public static function model($className = __CLASS__) {
-        return parent::model($className);
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser() {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
-    public function beforeSave($insert) {
-        //$this->_setSecretKey('payment_key');
-        if (empty($this->description) && $this->payment_system_id) {
-            $this->description = 'Top-up through {model}. To the amount of ${amount}';
-        }
-        return parent::beforeSave($insert);
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOperator() {
+        return $this->hasOne(User::className(), ['id' => 'operator_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCurrency() {
+        return $this->hasOne(PaymentCurrency::className(), ['id' => 'currency_id']);
     }
 
     public function getDate($format = 'd M Y') {

@@ -66,8 +66,8 @@ class PaypalController extends Controller {
 
     public function actionNotify() {
 
-        file_put_contents(realpath(dirname(__FILE__)) . '/test.txt', $_POST);
-      die;
+        Yii::info($_POST, 'paypal');
+
         // read the post from PayPal system and add 'cmd'
         $req = 'cmd=' . urlencode('_notify-validate');
         foreach ($_POST as $key => $value) {
@@ -87,27 +87,28 @@ class PaypalController extends Controller {
         $res = curl_exec($ch);
         curl_close($ch);
 
-        file_put_contents('test.txt', '$res');
         if (strcmp($res, "VERIFIED") == 0) {
-            //if (1) {
-            $pp_id = $_POST['custom']; //номер счета
+            $pp_id = (int) $_POST['custom']; //номер счета
             $currency = $_POST['mc_currency'];
             $status = $_POST['payment_status'];
             $receiver_email = $_POST['receiver_email'];
-            if ($currency == 'USD' && $status == 'Completed' && $receiver_email == 'tetven@gmail.com' && $pp_id) {
-                $record = PaymentHistory::model()->findByAttributes(array('id' => $pp_id, 'complete' => 0));
-                if ($record) {
+            if ($pp_id) {
+                $PaypalForm = new Models\PaypalForm;
+                $model = new Models\PaymentHistory;
+                $record = $model->getNonCompleteById($pp_id);
+
+                if ($currency == $PaypalForm->defaultCurrency && $status == 'Completed' && $PaypalForm->businessEmail == $receiver_email && $record) {
                     //TODO: Счет подтвержден - пометить завершенным
                     $record->complete = 1;
                     $record->save();
-                    EmailNotification::SendPaymentInfo($record);
+                    // EmailNotification::SendPaymentInfo($record);
+                } else {
+                    Yii::info('res is INVALID 0', 'paypal');
                 }
-            } else {
-                $this->write_log($_POST);
             }
         } else if (strcmp($res, "INVALID") == 0) {
             // log for manual investigation
-            $this->write_log($_POST);
+            Yii::info('res is INVALID 1', 'paypal');
         }
 
         //$this->redirect(array('payment/history'));
