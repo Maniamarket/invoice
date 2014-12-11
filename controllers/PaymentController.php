@@ -177,66 +177,69 @@ class PaymentController extends Controller
 
     public function actionTest()
     {
-        $resultUrl = Url::toRoute(['pay/test_success'],true);
-    //    define('PP_CONFIG_PATH', '@app/config/sdk_config.ini');
-//        Yii::$app->paypal->payDemo();
+        if (!isset($_GET['classic'])) {
+            $resultUrl = Url::toRoute(['payment/test_success'],true);
+    //        Yii::$app->paypal->payDemo();
 
-        $apiContext = new ApiContext(new OAuthTokenCredential('AQkquBDf1zctJOWGKWUEtKXm6qVhueUEMvXO_-MCI4DQQ4-LWvkDLIN2fGsd','EL1tVxAjhT7cJimnz5-Nsx9k2reTKSVfErNQF-CmrwJgxRtylkGTKlU4RvrX'));
+            if (isset($_REQUEST['amount'])) {
+                $price = $_REQUEST['amount'];
+            $apiContext = new ApiContext(new OAuthTokenCredential('AQkquBDf1zctJOWGKWUEtKXm6qVhueUEMvXO_-MCI4DQQ4-LWvkDLIN2fGsd','EL1tVxAjhT7cJimnz5-Nsx9k2reTKSVfErNQF-CmrwJgxRtylkGTKlU4RvrX'));
 
- /*       $payment = new Payment();
+            $sdkConfig = array(
+                "mode" => "sandbox"
+            );
 
-        $payment->setIntent("Sale");
-        $payment->setIntent("Sale");
+            $apiContext->setConfig($sdkConfig);
 
-        $payment->create($apiContext);
+            $payer = new Payer();
+            $payer->setPaymentMethod('paypal');
+            $amount = new Amount();
+            $amount->setCurrency('RUB');
+//            $amount->setTotal('10');
+            $amount->setTotal($price);
+//                var_dump($amount); exit;
+    //        $amount->
+            $item1 = new Item();
+            $item1->setName('Buy Credits')->setCurrency('RUB')->setQuantity(1)->setPrice($price);
+    // Ид товара/услуги на вашей стороне
+            $item1->setSku('1000');
+            $itemList = new ItemList();
+            $itemList->setItems(array($item1));
+            $transaction = new Transaction();
+            $transaction->setAmount($amount);
+            $transaction->setDescription('Payment to UnitPay');
+            $transaction->setItemList($itemList);
+            $payment = new Payment();
+            $payment->setIntent('sale');
+            $payment->setPayer($payer);
+            $payment->setTransactions(array($transaction));
+            $redirectUrls = new RedirectUrls();
+            $redirectUrls->setReturnUrl($resultUrl);
+            $redirectUrls->setCancelUrl($resultUrl);
+            $payment->setRedirectUrls($redirectUrls);
+            $payment->create($apiContext);
 
-        var_dump($payment);*/
+     //       var_dump($payment);
 
-        $sdkConfig = array(
-            "mode" => "sandbox"
-        );
+            $payment->getId();
+            $links = $payment->getLinks();
 
-        $apiContext->setConfig($sdkConfig);
+    //        var_dump($links);
+            foreach ($links as $link) {
+                if ($link->getMethod() == 'REDIRECT') {
+    //                echo $link->getHref();
 
-        $payer = new Payer();
-        $payer->setPaymentMethod('paypal');
-        $amount = new Amount();
-        $amount->setCurrency('RUB');
-        $amount->setTotal('10');
-        $item1 = new Item();
-        $item1->setName('Продажа товара/услуги')->setCurrency('RUB')->setQuantity(1)->setPrice('10');
-// Ид товара/услуги на вашей стороне
-        $item1->setSku('1000');
-        $itemList = new ItemList();
-        $itemList->setItems(array($item1));
-        $transaction = new Transaction();
-        $transaction->setAmount($amount);
-        $transaction->setDescription('Payment to UnitPay');
-        $transaction->setItemList($itemList);
-        $payment = new Payment();
-        $payment->setIntent('sale');
-        $payment->setPayer($payer);
-        $payment->setTransactions(array($transaction));
-        $redirectUrls = new RedirectUrls();
-        $redirectUrls->setReturn_url($resultUrl);
-        $redirectUrls->setCancel_url($resultUrl);
-        $payment->setRedirect_urls($redirectUrls);
-        $payment->create($apiContext);
-
- //       var_dump($payment);
-
-        $payment->getId();
-        $links = $payment->getLinks();
-
-//        var_dump($links);
-        foreach ($links as $link) {
-            if ($link->getMethod() == 'REDIRECT') {
-//                echo $link->getHref();
-
- //               header('location:'.$link->getHref());
-                return $this->redirect($link->getHref());
+     //               header('location:'.$link->getHref());
+                    return $this->redirect($link->getHref());
+                }
+            }
+            }
+            else {
+                return $this->render('paypal', ['classic'=>0]);
             }
         }
+        return $this->render('paypal',['classic'=>1]);
+
 //        $cred = new OAuthTokenCredential("AQkquBDf1zctJOWGKWUEtKXm6qVhueUEMvXO_-MCI4DQQ4-LWvkDLIN2fGsd","EL1tVxAjhT7cJimnz5-Nsx9k2reTKSVfErNQF-CmrwJgxRtylkGTKlU4RvrX", $sdkConfig);
         //        $cred = new OAuthTokenCredential("AQkquBDf1zctJOWGKWUEtKXm6qVhueUEMvXO_-MCI4DQQ4-LWvkDLIN2fGsd","ECRaAxBG9fgaKCBSIDQ88MwdGYl7fT8iu-NlbiN-jbr3lKf8NoMWwuPW8KeT", $sdkConfig);
  //       echo $cred;
