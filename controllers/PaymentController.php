@@ -6,8 +6,19 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
-use app\models\Payment;
+//use app\models\Payment;
 use yii\web\Request;
+use PayPal\Api\Details;
+use PayPal\Api\Address;
+use PayPal\Api\Amount;
+use PayPal\Api\CreditCard;
+use PayPal\Api\FundingInstrument;
+use PayPal\Api\Payer;
+use PayPal\Api\Payment;
+use PayPal\Api\RedirectUrls;
+use PayPal\Api\Transaction;
+use PayPal\Rest\ApiContext;
+use PayPal\Auth\OAuthTokenCredential;
 
 class PaymentController extends Controller
 {
@@ -68,11 +79,62 @@ class PaymentController extends Controller
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
 	}
 
+    public function actionTest()
+    {
+    //    define('PP_CONFIG_PATH', '@app/config/sdk_config.ini');
+//        Yii::$app->paypal->payDemo();
+
+        $apiContext = new ApiContext(new OAuthTokenCredential('AQkquBDf1zctJOWGKWUEtKXm6qVhueUEMvXO_-MCI4DQQ4-LWvkDLIN2fGsd','EL1tVxAjhT7cJimnz5-Nsx9k2reTKSVfErNQF-CmrwJgxRtylkGTKlU4RvrX'));
+
+        $payment = new Payment();
+
+        $payment->setIntent("Sale");
+
+        $payment->create($apiContext);
+
+        var_dump($payment);
+
+        $sdkConfig = array(
+            "mode" => "sandbox"
+        );
+
+//        $cred = new OAuthTokenCredential("AQkquBDf1zctJOWGKWUEtKXm6qVhueUEMvXO_-MCI4DQQ4-LWvkDLIN2fGsd","EL1tVxAjhT7cJimnz5-Nsx9k2reTKSVfErNQF-CmrwJgxRtylkGTKlU4RvrX", $sdkConfig);
+        //        $cred = new OAuthTokenCredential("AQkquBDf1zctJOWGKWUEtKXm6qVhueUEMvXO_-MCI4DQQ4-LWvkDLIN2fGsd","ECRaAxBG9fgaKCBSIDQ88MwdGYl7fT8iu-NlbiN-jbr3lKf8NoMWwuPW8KeT", $sdkConfig);
+ //       echo $cred;
+/*        $cred = "AQkquBDf1zctJOWGKWUEtKXm6qVhueUEMvXO_-MCI4DQQ4-LWvkDLIN2fGsd";
+        $apiContext = new ApiContext($cred, 'Request' . time());
+        $apiContext->setConfig($sdkConfig);
+
+        $payer = new Payer();
+        $payer->setPayment_method("paypal");
+
+        $amount = new Amount();
+        $amount->setCurrency("USD");
+        $amount->setTotal("12");
+
+        $transaction = new Transaction();
+        $transaction->setDescription("creating a payment");
+        $transaction->setAmount($amount);
+
+//        $baseUrl = getBaseUrl();
+        $redirectUrls = new RedirectUrls();
+        $redirectUrls->setReturn_url("https://devtools-paypal.com/guide/pay_paypal/php?success=true");
+        $redirectUrls->setCancel_url("https://devtools-paypal.com/guide/pay_paypal/php?cancel=true");
+
+        $payment = new Payment();
+        $payment->setIntent("sale");
+        $payment->setPayer($payer);
+        $payment->setRedirect_urls($redirectUrls);
+        $payment->setTransactions(array($transaction));
+
+        $payment->create($apiContext);*/
+    }
 	/**
 	 * Lists all models.
 	 */
 	public function actionIndex()
 	{
+        exit;
             $dataProvider = new ActiveDataProvider([
                 'query' => Payment::find(),
                 'pagination' => [

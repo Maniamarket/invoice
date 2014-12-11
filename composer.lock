@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "adcaabf515e13b6c133ef7bc9485672f",
+    "hash": "484d6d19638b42e750794b8f58c884e3",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -359,6 +359,50 @@
             "time": "2013-11-30 08:25:19"
         },
         {
+            "name": "marciocamello/yii2-paypal",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/marciocamello/yii2-paypal.git",
+                "reference": "eb9dda41f6aa283794fac0c8877e7e410b5c8ed6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/marciocamello/yii2-paypal/zipball/eb9dda41f6aa283794fac0c8877e7e410b5c8ed6",
+                "reference": "eb9dda41f6aa283794fac0c8877e7e410b5c8ed6",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "paypal/rest-api-sdk-php": "*",
+                "php": ">=5.3.0",
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "ak\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Andrey Klimenko",
+                    "email": "andrey.iemail@gmail.com"
+                }
+            ],
+            "description": "The PayPal extension for the Yii2 framework",
+            "keywords": [
+                "paypal",
+                "yii2"
+            ],
+            "time": "2014-11-23 19:04:08"
+        },
+        {
             "name": "mpdf/mpdf",
             "version": "v5.7.3",
             "source": {
@@ -400,6 +444,54 @@
                 "utf-8"
             ],
             "time": "2014-08-24 08:33:20"
+        },
+        {
+            "name": "paypal/rest-api-sdk-php",
+            "version": "v0.15.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/paypal/PayPal-PHP-SDK.git",
+                "reference": "6cf15ab4bfb1add0115fc5595c73baf276e8d4ea"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/paypal/PayPal-PHP-SDK/zipball/6cf15ab4bfb1add0115fc5595c73baf276e8d4ea",
+                "reference": "6cf15ab4bfb1add0115fc5595c73baf276e8d4ea",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "PayPal": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache2"
+            ],
+            "authors": [
+                {
+                    "name": "PayPal",
+                    "homepage": "https://github.com/paypal/rest-api-sdk-php/contributors"
+                }
+            ],
+            "description": "PayPal's PHP SDK for REST APIs",
+            "homepage": "https://github.com/paypal/rest-api-sdk-php",
+            "keywords": [
+                "payments",
+                "paypal",
+                "rest",
+                "sdk"
+            ],
+            "time": "2014-12-01 23:51:08"
         },
         {
             "name": "robregonm/yii2-pdf",
@@ -1082,7 +1174,8 @@
     "stability-flags": {
         "robregonm/yii2-pdf": 20,
         "cinghie/yii2-tcpdf": 20,
-        "yurkinx/yii2-image": 20
+        "yurkinx/yii2-image": 20,
+        "marciocamello/yii2-paypal": 20
     },
     "prefer-stable": false,
     "platform": {

@@ -20,7 +20,9 @@
         "yiisoft/yii2-swiftmailer": "*",
         "robregonm/yii2-pdf": "dev-master",
         "cinghie/yii2-tcpdf": "dev-master",
-        "yurkinx/yii2-image": "dev-master"
+        "yurkinx/yii2-image": "dev-master",
+        "marciocamello/yii2-paypal": "dev-master",
+        "paypal/rest-api-sdk-php": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",
