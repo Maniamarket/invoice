@@ -12,11 +12,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="text-left">
             <p><?php echo Yii::t('user', 'Recommended for europe and america'); ?></p>
-            <p><?php echo Yii::t('credits', 'IMPORTANT! Currency - the U.S. dollar.'); ?></p>
+            <p><?php echo Yii::t('credits', 'IMPORTANT! Currency - the EUR.'); ?></p>
             <p><?php echo Yii::t('credits', 'If you are using any other currency will be automatically converted at the exchange rate.'); ?></p>
         </div>
         <div class="paypal_mini">
-            <img src="<?php print Yii::$app->homeUrl; ?>/images/paypal_mini.gif" alt="paypal" />
+            <img src="<?= Yii::$app->homeUrl; ?>/images/paypal_mini.gif" alt="paypal" />
         </div>
     </div>
     <div class="clear"></div>

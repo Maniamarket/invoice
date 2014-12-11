@@ -1,20 +1,20 @@
 DROP TABLE IF EXISTS payment;
 DROP TABLE IF EXISTS payment_old;
-CREATE TABLE `payment_old` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(40) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=INNODB DEFAULT CHARSET=utf8;
-
+DROP TABLE IF  EXISTS payment_history;
 DROP TABLE IF  EXISTS payment_system;
+DROP TABLE IF  EXISTS payment_currency;
+
 CREATE TABLE `payment_system` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `model` VARCHAR(128) DEFAULT NULL,
   `active` TINYINT(1) DEFAULT '1',
-  PRIMARY KEY (`id`)
-) ENGINE=INNODB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`),
+   UNIQUE KEY `model` (`model`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8
 
-DROP TABLE IF  EXISTS payment_currency;
+INSERT INTO `payment_system` (`model`,`active`) VALUES ('PayPal', 1);
+INSERT INTO `payment_system` (`model`,`active`) VALUES ('BankTransfer', 1);
+
 CREATE TABLE `payment_currency` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `operator_id` INT(11) DEFAULT NULL,
@@ -31,12 +31,11 @@ CREATE TABLE `payment_currency` (
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
 INSERT INTO `payment_currency` (`id`, `operator_id`, `num_code`, `char_code`, `nominal`, `name`, `value`, `active`, `last_modify`) VALUES
-(1,4,'840','USD','1','Доллар США','0.6604','1','2014-10-02 10:00:00'), 
-(2,4,'840','EUR','1','Евро','1','1','2014-10-02 10:00:00'),
-(3,4,'840','UAH','20','Украинских гривен','1','1','2014-10-02 10:00:01');
+(1,4,'840','USD','1','asd','0.6604','1','2014-10-02 10:00:00'), 
+(2,4,'840','EUR','1','asasd','1','1','2014-10-02 10:00:00'),
+(3,4,'840','UAH','20','asdasdas','1','1','2014-10-02 10:00:01');
 
 
-DROP TABLE IF  EXISTS payment_history;
 CREATE TABLE `payment_history` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `user_id` INT(11) DEFAULT NULL,

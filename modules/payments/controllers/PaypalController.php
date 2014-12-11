@@ -3,10 +3,30 @@
 namespace app\modules\payments\controllers;
 
 use Yii;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use app\modules\payments\models as Models;
 
 class PaypalController extends Controller {
+
+    public function behaviors() {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    /* [
+                      'allow' => true,
+                      'actions' => ['index', 'view'],
+                      'roles' => ['@'],
+                      ], */
+                    [
+                        'allow' => true,
+                        'roles' => ['user'],
+                    ],
+                ],
+            ],
+        ];
+    }
 
     public function actionIndex() {
         $model = new Models\PaypalForm;
