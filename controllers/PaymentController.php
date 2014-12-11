@@ -2,6 +2,7 @@
 namespace app\controllers;
 
 use Yii;
+use yii\base\Response;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -111,6 +112,8 @@ class PaymentController extends Controller
         foreach ($qp as $k=>$val) {
             Yii::info('key='.$k.'value='.$val, 'userMessage');
         }
+        $this->setHeader(200);
+        echo 'success';
 /*        $ipn = new PPIPNMessage(array(['mode' => 'sandbox']),null,[]);
         if (!$ipn->validate()) {
             throw new \Exception('Не пройдена валидация платежа на стороне PayPal');
