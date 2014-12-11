@@ -28,6 +28,8 @@ use PayPal\Auth\OAuthTokenCredential;
 
 class PaymentController extends Controller
 {
+    public $enableCsrfValidation = false;
+
     public function behaviors()
     {
         return [
@@ -112,7 +114,7 @@ class PaymentController extends Controller
         foreach ($qp as $k=>$val) {
             Yii::info('key='.$k.'value='.$val, 'userMessage');
         }
-        $this->setHeader(200);
+ //       $this->setHeader(200);
         echo 'success';
 /*        $ipn = new PPIPNMessage(array(['mode' => 'sandbox']),null,[]);
         if (!$ipn->validate()) {
