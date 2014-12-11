@@ -1,5 +1,4 @@
 var aj;
-
 $(document).ready(function () {
     if (localStorage.getItem('request') != null) {
         $('#name_search').val(localStorage.getItem('request'));
@@ -7,7 +6,6 @@ $(document).ready(function () {
     if (localStorage.getItem('lang_select')) {
         $('#lang_select').select(localStorage.getItem('lang_select'));
     }
-
     $('.table_header').children().each(function () {
         old = $(this).children().html();
         if (old) {
@@ -17,26 +15,19 @@ $(document).ready(function () {
             $(this).html(val);
         }
     });
-
     $(document).on('click', '*', function () {
-
         if (localStorage.getItem('sort_option')) {
-            if(localStorage.getItem('sort_method')==1)
-            $('#sort_by').html('Sort by: '+ localStorage.getItem('sort_option')+' asc.');
-           else
-            $('#sort_by').html('Sort by: '+ localStorage.getItem('sort_option')+' desc');
-        }else{
+            if (localStorage.getItem('sort_method') == 1)
+                $('#sort_by').html('Sort by: ' + localStorage.getItem('sort_option') + ' asc.');
+            else
+                $('#sort_by').html('Sort by: ' + localStorage.getItem('sort_option') + ' desc');
+        } else {
             $('#sort_by').html('');
         }
     });
-
     pager = $('#table-result-search').children()[2];
     pag($(pager).html());
-
-
 });
-
-
 $(document).on('click', '#bsearch', function () {
     myAjax();
 });
@@ -49,13 +40,10 @@ $(document).on('click', '#bclear', function () {
     localStorage.removeItem('request');
 });
 $(document).on('click', '.table_sort', function () {
-
     localStorage.setItem('sort_option', $(this).data('name'));
     localStorage.setItem('sort_method', $(this).data('type'));
-
     myAjax();
 });
-
 $(document).on('keyup', '#name_search', function () {
     if ($('#name_search').val().length > 0) {
         localStorage.setItem('search', 'true');
@@ -67,25 +55,19 @@ $(document).on('keyup', '#name_search', function () {
     localStorage.setItem('request', $('#name_search').val());
     myAjax();
 });
-
 $(document).on('click', '.page_open', function () {
     localStorage.setItem('open_page', $(this).data('page'));
     myAjax();
 });
-
 $(document).on('change', '#lang_select', function () {
     localStorage.setItem('lang_select', $(this).val());
     myAjax();
 });
-
-
 var myAjax = function () {
-
     valss = {};
     if (localStorage.getItem('search') && localStorage.getItem('search') != 0) {
         valss.name = localStorage.getItem('request');
     }
-
     if (localStorage.getItem('sort_option')) {
         if (localStorage.getItem('sort_method') == 1) {
             valss.sort = localStorage.getItem('sort_option');
@@ -94,17 +76,12 @@ var myAjax = function () {
             valss.sort = '-' + localStorage.getItem('sort_option');
         }
     }
-
     if (localStorage.getItem('open_page') && localStorage.getItem('open_page') != 0) {
         valss.page = localStorage.getItem('open_page');
     }
-
     if (localStorage.getItem('lang_select') && localStorage.getItem('lang_select') != 0) {
         valss.lang = localStorage.getItem('lang_select');
     }
-
-    console.log(valss);
-
     if (aj && aj.readyState != 4) {
         aj.abort();
     }
@@ -115,26 +92,20 @@ var myAjax = function () {
         success: function (data) {
             v1 = $(data).children()[1];
             v2 = $(v1).children()[1];
-
             $('#table-result-search .table tbody').remove();
             $('#table-result-search table').append(v2);
             pager = $(data).children()[2];
             pag($(pager).html());
-
         }
     });
 };
-
 var pag = function (paginator) {
     if (paginator) {
         var res = '';
         $(paginator).each(function () {
-
             turl = $(this).children().attr('data-page');
-            //console.log();
             turl = parseInt(turl) + 1;
             ttext = $(this).children().html();
-            //console.log(turl + ' => '+ ttext);
             if (turl || ttext) {
                 res += '<li ';
                 if ($(this).hasClass('active')) {
@@ -145,14 +116,10 @@ var pag = function (paginator) {
                     }
                     res += ' style="cursor:pointer;">';
                 }
-
                 res += '<span data-page="' + ((turl) ? turl : 'false') + '" class="page_open">' + ttext + '</span>';
-
-
                 res += '</li>';
             }
         });
-        console.log(res);
         $('.pagination').html(res);
     } else {
         $('.pagination').html('');
