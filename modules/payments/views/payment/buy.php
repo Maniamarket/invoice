@@ -4,7 +4,7 @@
     }
 </style>
 <?php
-$this->pageTitle = Yii::app()->name . ' - Buy Credits';
+$this->pageTitle = Yii::$app->name . ' - Buy Credits';
 $this->breadcrumbs = array(
     'Buy Credits',
 );
@@ -23,7 +23,7 @@ $this->breadcrumbs = array(
             <p><?php echo Yii::t('user', 'Recommended for CIS'); ?></p>
         </div>
         <div class="align_right">
-            <img src="<?php print Yii::app()->baseUrl; ?>/images/robokassa_mini.png" alt="robokassa" class="right15" />
+            <img src="<?php print Yii::$app->baseUrl; ?>/images/robokassa_mini.png" alt="robokassa" class="right15" />
         </div>
     </div>
     <div class="clear"></div>

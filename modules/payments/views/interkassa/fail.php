@@ -1,5 +1,5 @@
 <?php
-$this->pageTitle = Yii::app()->name . ' - Платеж завершен';
+$this->pageTitle = Yii::$app->name . ' - Платеж завершен';
 $this->breadcrumbs = array(
     'Платеж завершен',
 );

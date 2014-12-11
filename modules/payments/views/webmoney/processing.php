@@ -5,7 +5,7 @@
     <form method="post" id="pay" name="pay" action= "https://merchant.webmoney.ru/lmi/payment.asp" />
 
     <input type="hidden" name="LMI_PAYMENT_AMOUNT" value="<?php print $amount; ?>" />
-    <input type="hidden" name="LMI_PAYMENT_DESC" value="<?php echo CHtml::encode(Yii::app()->name); ?>: update blance on  $<?php print $amount; ?>" />
+    <input type="hidden" name="LMI_PAYMENT_DESC" value="<?php echo CHtml::encode(Yii::$app->name); ?>: update blance on  $<?php print $amount; ?>" />
     <input type="hidden" name="LMI_PAYMENT_NO" value="<?php print $pp_id ?>" />
     <input type="hidden" name="LMI_PAYEE_PURSE" value="Z310766237213" />
     <input type="hidden" name="LMI_SIM_MODE" value="0" />

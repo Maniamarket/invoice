@@ -6,7 +6,7 @@
     <input type="hidden" name="ik_shop_id" value="4EFA5C92-48A5-4BEA-2D29-27EE2CBA12A0" />
     <input type="hidden" name="ik_payment_amount" value="<?php print $amount; ?>" />
     <input type="hidden" name="ik_payment_id" value="<?php print $pp_id ?>" />
-    <input type="hidden" name="ik_payment_desc" value="<?php echo CHtml::encode(Yii::app()->name); ?>: update blance on  $<?php print $amount; ?>" />
+    <input type="hidden" name="ik_payment_desc" value="<?php echo CHtml::encode(Yii::$app->name); ?>: update blance on  $<?php print $amount; ?>" />
     <input type="hidden" name="ik_paysystem_alias" value="" />
     </form>
 <script type="text/javascript">document.forms["pay"].submit();</script>

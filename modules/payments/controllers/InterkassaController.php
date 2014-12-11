@@ -30,7 +30,7 @@ class InterkassaController extends Controller {
 
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'interkassa-form') {
             echo CActiveForm::validate($model);
-            Yii::app()->end();
+            Yii::$app->end();
         }
 
         if (isset($_POST['PaypalForm'])) {
@@ -39,7 +39,7 @@ class InterkassaController extends Controller {
                 $history = new PaymentHistory;
                 $history->summ = $model->amount;
                 $history->curr = 'Interkassa: пополнение на $' . $model->amount;
-                $history->curs = Yii::app()->cfg->getItem('RUR_USD');
+                $history->curs = Yii::$app->cfg->getItem('RUR_USD');
                 $history->outSum = $model->amount * $history->curs;
                 $history->typeid = PaymentHistory::PT_IK;
                 $history->save();
@@ -48,7 +48,7 @@ class InterkassaController extends Controller {
                     'amount' => $model->amount,
                     'pp_id' => $history->id, // номер счета
                 ));
-                Yii::app()->end();
+                Yii::$app->end();
             }
         }
 
@@ -67,12 +67,12 @@ class InterkassaController extends Controller {
                 }
             }
         }
-        Yii::app()->end();
+        Yii::$app->end();
     }
 
     public function actionSuccess() {
         Yii::log(print_r($_REQUEST, true), 'info', 'application.credits.IKSuccess');
-        $user = Yii::app()->user->getModel();
+        $user = Yii::$app->user->getModel();
         if (isset($_REQUEST['ik_payment_id'])) {
             $record = PaymentHistory::model()->findByAttributes(array('id' => $_REQUEST['ik_payment_id'], 'complete' => 1));
             if ($record) {
@@ -87,7 +87,7 @@ class InterkassaController extends Controller {
 
     public function actionFail() {
         Yii::log(print_r($_REQUEST, true), 'info', 'application.credits.IKFail');
-        $this->render('fail', array('user' => Yii::app()->user->getModel()));
+        $this->render('fail', array('user' => Yii::$app->user->getModel()));
     }
 
     public function checkSign($status_data) {

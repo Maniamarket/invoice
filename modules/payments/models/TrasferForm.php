@@ -11,7 +11,7 @@ class TrasferForm extends CFormModel {
     public $accept;
 
     public function init() {
-        $this->balance = Yii::app()->user->getModel()->balance;
+        $this->balance = Yii::$app->user->getModel()->balance;
         parent::init();
     }
 
@@ -48,7 +48,7 @@ class TrasferForm extends CFormModel {
         if (!$recipient) {
             $this->addError($attribute, Yii::t('mypurse', 'Recipient not found'));
         }
-        if ($this->email == Yii::app()->user->getModel()->email) {
+        if ($this->email == Yii::$app->user->getModel()->email) {
             $this->addError($attribute, Yii::t('mypurse', 'Attention! Are you trying to transfer funds into your same account. Operation rejected.'));
         }
     }

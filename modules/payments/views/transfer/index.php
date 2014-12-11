@@ -1,5 +1,5 @@
-<?php $this->pageTitle = Yii::app()->name . ' - ' . Yii::t('mypurse', 'My Purse') . ": " . Yii::t('mypurse', 'Withdraw Money'); ?>
-<?php //Yii::app()->clientScript->registerScript(__CLASS__ . '#mypurse', '$(document).ready(function() {$(".open_dialog").dialog("open");});', CClientScript::POS_END);    ?>
+<?php $this->pageTitle = Yii::$app->name . ' - ' . Yii::t('mypurse', 'My Purse') . ": " . Yii::t('mypurse', 'Withdraw Money'); ?>
+<?php //Yii::$app->clientScript->registerScript(__CLASS__ . '#mypurse', '$(document).ready(function() {$(".open_dialog").dialog("open");});', CClientScript::POS_END);    ?>
 <?php
 /** Start Widget * */
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
@@ -47,7 +47,7 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 </div>
 <div class="cl"></div>
 
-<?php $aFlashes = Yii::app()->user->getFlashes(); ?>
+<?php $aFlashes = Yii::$app->user->getFlashes(); ?>
 <?php if ($aFlashes): ?>
     <div class="notise">
         <?php $this->renderPartial('//layouts/messages'); ?>

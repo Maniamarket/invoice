@@ -31,7 +31,7 @@ class WebMoney extends Payment implements iPayment {
     }
 
     public function getParams(PaymentHistory $history) {
-        $description = Yii::app()->name . '. ' . Yii::t('mypurse', 'Payer') . ': ' . $history->user->email . '. ' . $history->getDescription();
+        $description = Yii::$app->name . '. ' . Yii::t('mypurse', 'Payer') . ': ' . $history->user->email . '. ' . $history->getDescription();
         return array(
             'LMI_PAYMENT_AMOUNT' => $history->amount,
             'LMI_PAYMENT_DESC_BASE64' => base64_encode($description),

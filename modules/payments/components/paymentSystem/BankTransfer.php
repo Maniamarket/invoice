@@ -31,16 +31,16 @@ class BankTransfer extends Payment implements iPayment {
 //            'cmd' => '_xclick',
 //            'charset' => 'utf-8',
 //            'business' => self::RECEIVER_EMAIL,
-//            'item_name' => CHtml::encode(Yii::app()->name . '. ' . $history->getDescription()),
+//            'item_name' => CHtml::encode(Yii::$app->name . '. ' . $history->getDescription()),
 //            'amount' => $history->amount,
 //            'no_shipping' => 1,
 //            'quantity' => 1,
 //            'currency_code' => 'USD',
 //            'email' => $history->user->email,
 //            'custom' => $history->id,
-//            'return' => Yii::app()->createAbsoluteUrl('/credits/paypal/notify', array('status' => 'complete')),
-//            'cancel_return' => Yii::app()->createAbsoluteUrl('/site/index'),
-//            'notify_url' => Yii::app()->createAbsoluteUrl('/credits/paypal/notify'),
+//            'return' => Yii::$app->createAbsoluteUrl('/credits/paypal/notify', array('status' => 'complete')),
+//            'cancel_return' => Yii::$app->createAbsoluteUrl('/site/index'),
+//            'notify_url' => Yii::$app->createAbsoluteUrl('/credits/paypal/notify'),
 //        );
     }
 

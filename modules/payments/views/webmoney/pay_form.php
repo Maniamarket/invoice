@@ -8,7 +8,7 @@
     }
 </style>
 <?php
-$this->pageTitle = Yii::app()->name . ' - Buy Credits';
+$this->pageTitle = Yii::$app->name . ' - Buy Credits';
 $this->breadcrumbs = array(
     'Buy Credits',
 );
@@ -29,7 +29,7 @@ $this->breadcrumbs = array(
             <p><?php echo Yii::t('credits', 'In case if your USD wallet is empty, the website will convert other currencies on your Webmoney wallets into dollars.'); ?></p>
         </div>
         <div class="paypal_mini">
-            <img src="<?php print Yii::app()->baseUrl; ?>/images/webmoney.png" alt="webmoney" />
+            <img src="<?php print Yii::$app->baseUrl; ?>/images/webmoney.png" alt="webmoney" />
         </div>
     </div>
     <div class="clear"></div>

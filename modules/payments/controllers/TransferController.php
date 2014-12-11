@@ -24,7 +24,7 @@ class TransferController extends Controller {
     }
 
     public function actionIndex() {
-        $owner = Yii::app()->user->getModel();
+        $owner = Yii::$app->user->getModel();
         if ($this->isWebmaster) {
             $this->layout = 'application.modules.webmaster.views.layouts.webmaster';
         }
@@ -52,10 +52,10 @@ class TransferController extends Controller {
                         $successText = Yii::t('app', 'On the phone number {pnum} has been send SMS message.', array('{pnum}' => '<b>' . $owner->phone . '</b>'));
                     }
 
-                    Yii::app()->user->setFlash('success', $successText);
+                    Yii::$app->user->setFlash('success', $successText);
                     $this->redirect(array('confirm'));
                 } else {
-                    Yii::app()->user->setFlash('error', Yii::t('app', 'Error writing to database'));
+                    Yii::$app->user->setFlash('error', Yii::t('app', 'Error writing to database'));
                 }
             }
         }
@@ -79,18 +79,18 @@ class TransferController extends Controller {
             if ($modelForm->validate()) {
                 $criteria = new CDbCriteria;
                 $criteria->select = 'id, data';
-                $criteria->condition = '`hash`="' . $modelForm->hash . '" AND `user_id`=' . Yii::app()->user->getId() . ' AND `dateAdded`>=NOW() - INTERVAL 1 DAY ';
+                $criteria->condition = '`hash`="' . $modelForm->hash . '" AND `user_id`=' . Yii::$app->user->getId() . ' AND `dateAdded`>=NOW() - INTERVAL 1 DAY ';
                 /* ищем код протекции не старше одного дня */
                 $model = PaymentConfirm::model()->find($criteria);
 
                 if (is_object($model)) {
                     $data = unserialize($model->data);
                     $recipient = User::model()->findByAttributes(array('email' => $data['email']));
-                    $sender = Yii::app()->user->getModel();
+                    $sender = Yii::$app->user->getModel();
 
                     /* вызов хранимой процедуры */
                     $model->_setSecretKey('payment_key');
-                    $command = Yii::app()->db->createCommand('CALL transferMoney(:sender,:recipient,:amount,:operator,:description);');
+                    $command = Yii::$app->db->createCommand('CALL transferMoney(:sender,:recipient,:amount,:operator,:description);');
                     $command->bindValue(':sender', $sender->id, PDO::PARAM_INT);
                     $command->bindValue(':recipient', $recipient->id, PDO::PARAM_INT);
                     $command->bindValue(':amount', $data['amount'], PDO::PARAM_INT);
@@ -103,18 +103,18 @@ class TransferController extends Controller {
 
                     /* уведомление на екране. */
                     $message = Yii::t('mypurse', 'Transfer money for {user} complete!', array('{user}' => '<b>' . $recipient->email . '</b>'));
-                    Yii::app()->user->setFlash('success', $message);
+                    Yii::$app->user->setFlash('success', $message);
 
                     /* email transfer notification for admin */
                     $body = $this->renderPartial('//mail/transfer_admin_notification', array('senderEmail' => $sender->email, 'data' => $data), TRUE);
-                    Email::send(Yii::app()->params['transferNotificationEmail'], 'RTB System', $body);
+                    Email::send(Yii::$app->params['transferNotificationEmail'], 'RTB System', $body);
 
                     /* phone transfer notification for admin */
                     $message = $sender->email . ' transfer $' . $data['amount'] . ' to ' . $recipient->email;
-                    SMS::send(Yii::app()->params['transferNotificationPhone'], $message);
+                    SMS::send(Yii::$app->params['transferNotificationPhone'], $message);
                     $this->redirect(array('/mypurse/info'));
                 } else {
-                    Yii::app()->user->setFlash('error', Yii::t('app', 'Security code is invalid. Or the validity of the security code has expired.'));
+                    Yii::$app->user->setFlash('error', Yii::t('app', 'Security code is invalid. Or the validity of the security code has expired.'));
                 }
             }
         }

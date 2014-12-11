@@ -1,5 +1,5 @@
 ﻿<?php
-$this->pageTitle = Yii::app()->name . ' - ' . Yii::t('mypurse', 'My Purse');
+$this->pageTitle = Yii::$app->name . ' - ' . Yii::t('mypurse', 'My Purse');
 $paymentSystems = PaymentSystem::getDropDownListData();
 $payment_system_id = key($paymentSystems);
 ?>

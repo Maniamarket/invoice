@@ -1,4 +1,4 @@
-<?php $this->pageTitle = Yii::app()->name . ' - ' . Yii::t('app', 'My Purse'); ?>
+<?php $this->pageTitle = Yii::$app->name . ' - ' . Yii::t('app', 'My Purse'); ?>
 <div class="block_title">
     <h1><?php print Yii::t('app', 'My Purse'); ?></h1>
 </div>

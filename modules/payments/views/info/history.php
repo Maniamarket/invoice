@@ -1,5 +1,5 @@
 <?php
-$this->pageTitle = Yii::app()->name . ' - ' . Yii::t('mypurse', 'My Purse') . ": " . Yii::t('mypurse', 'Payment History');
+$this->pageTitle = Yii::$app->name . ' - ' . Yii::t('mypurse', 'My Purse') . ": " . Yii::t('mypurse', 'Payment History');
 ?>
 <div class="block_title">    
     <h1><?php print Yii::t('menu', 'Home') . " / " . Yii::t('menu', 'profile') . " / " . Yii::t('menu', 'my purse') . " / " . Yii::t('mypurse', 'payment history'); ?></h1>

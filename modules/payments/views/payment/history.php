@@ -4,7 +4,7 @@
     }
 </style>
 <?php
-$this->pageTitle = Yii::app()->name . ' - ' . Yii::t('payment', 'Payment History');
+$this->pageTitle = Yii::$app->name . ' - ' . Yii::t('payment', 'Payment History');
 $this->breadcrumbs = array(
     Yii::t('payment', 'Payment History'),
 );

@@ -31,7 +31,7 @@ class WebmoneyController extends Controller {
 
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'webmoney-form') {
             echo CActiveForm::validate($model);
-            Yii::app()->end();
+            Yii::$app->end();
         }
 
         if (isset($_POST['PaypalForm'])) {
@@ -40,7 +40,7 @@ class WebmoneyController extends Controller {
                 $history = new PaymentHistory;
                 $history->summ = $model->amount;
                 $history->curr = 'WebMoney: пополнение на $' . $model->amount;
-                $history->curs = Yii::app()->cfg->getItem('RUR_USD');
+                $history->curs = Yii::$app->cfg->getItem('RUR_USD');
                 $history->outSum = $model->amount * $history->curs;
                 $history->typeid = PaymentHistory::PT_WM;
                 $history->save();
@@ -49,7 +49,7 @@ class WebmoneyController extends Controller {
                     'amount' => $model->amount,
                     'pp_id' => $history->id, // номер счета
                 ));
-                Yii::app()->end();
+                Yii::$app->end();
             }
         }
 
@@ -68,12 +68,12 @@ class WebmoneyController extends Controller {
                 }
             }
         }
-        Yii::app()->end();
+        Yii::$app->end();
     }
 
     public function actionSuccess() {
         Yii::log(print_r($_REQUEST, true), 'info', 'application.credits.WMSuccess');
-        $user = Yii::app()->user->getModel();
+        $user = Yii::$app->user->getModel();
         if (isset($_REQUEST['LMI_PAYMENT_NO'])) {
             $record = PaymentHistory::model()->findByAttributes(array('id' => $_REQUEST['LMI_PAYMENT_NO'], 'complete' => 1));
             if ($record) {
@@ -88,7 +88,7 @@ class WebmoneyController extends Controller {
 
     public function actionFail() {
         Yii::log(print_r($_REQUEST, true), 'info', 'application.credits.WMFail');
-        $this->render('fail', array('user' => Yii::app()->user->getModel()));
+        $this->render('fail', array('user' => Yii::$app->user->getModel()));
     }
 
     public function checkSign($data) {

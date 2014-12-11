@@ -1,4 +1,4 @@
-<?php $this->pageTitle = Yii::app()->name . ' - ' . Yii::t('mypurse', 'My Purse') . ": " . Yii::t('mypurse', 'Withdraw Money') . " " . Yii::t('mypurse', 'Confirm the withdrawal'); ?>
+<?php $this->pageTitle = Yii::$app->name . ' - ' . Yii::t('mypurse', 'My Purse') . ": " . Yii::t('mypurse', 'Withdraw Money') . " " . Yii::t('mypurse', 'Confirm the withdrawal'); ?>
 
 <div class="title-small-menu">
     <?php

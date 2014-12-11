@@ -99,7 +99,7 @@ class PaymentHistory extends ActiveRecord {
                 ),
             ),
             'pagination' => array(
-                'pageSize' => Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']),
+                'pageSize' => Yii::$app->user->getState('pageSize', Yii::$app->params['defaultPageSize']),
             ),
         ));
     }
@@ -149,7 +149,7 @@ class PaymentHistory extends ActiveRecord {
     }
 
     public static function balanceToDay($uid, $date) {
-        return Yii::app()->db->createCommand()
+        return Yii::$app->db->createCommand()
                         ->select('ROUND(SUM(`amount`),2) AS `amount`')
                         ->from('payment_history')
                         ->where('user_id = :uid AND complete = 1 AND DATE(`date`) <= :date', array(':uid' => $uid, ':date' => $date))

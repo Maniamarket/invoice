@@ -1,4 +1,4 @@
-<?php $this->pageTitle = Yii::app()->name . ' - ' . Yii::t('mypurse', 'My Purse') . ": " . Yii::t('mypurse', 'Withdraw Money'). ": " . $PaymentSystem->getName(); ?>
+<?php $this->pageTitle = Yii::$app->name . ' - ' . Yii::t('mypurse', 'My Purse') . ": " . Yii::t('mypurse', 'Withdraw Money'). ": " . $PaymentSystem->getName(); ?>
 <div class="block_title">
     <h1><?php print Yii::t('mypurse', 'My Purse') . " &raquo; " . Yii::t('mypurse', 'Withdraw Money') . " &raquo; " . $PaymentSystem->getName(); ?></h1>
 </div>

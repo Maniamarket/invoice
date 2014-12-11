@@ -79,7 +79,7 @@ class PaymentForm extends CFormModel {
         return array(
             'ajax' => array(
                 'type' => 'POST', //request type
-                'url' => Yii::app()->createUrl('/credits/payment/update'), //url to call.
+                'url' => Yii::$app->createUrl('/credits/payment/update'), //url to call.
                 'update' => '#addtitionalInfo', //selector to update
                 ));
     }

@@ -29,14 +29,14 @@ class InfoController extends Controller {
         if (isset($_GET['PaymentHistory'])) {
             $model->attributes = $_GET['PaymentHistory'];
         }
-        $model->setAttribute('user_id', Yii::app()->user->getId());
-        $user = Yii::app()->user->getModel();
+        $model->setAttribute('user_id', Yii::$app->user->getId());
+        $user = Yii::$app->user->getModel();
         $payForm = new PayForm;
         if (isset($_POST['PayForm'])) {
             $payForm->attributes = $_POST['PayForm'];
             if ($payForm->validate()) {
                 $history = new PaymentHistory;
-                $history->user_id = Yii::app()->user->getId();
+                $history->user_id = Yii::$app->user->getId();
                 $history->amount = $payForm->amount;
                 $history->payment_system_id = $payForm->payment_system_id;
 
@@ -52,7 +52,7 @@ class InfoController extends Controller {
                     'config' => $config,
                     'params' => $params,
                 ));
-                Yii::app()->end();
+                Yii::$app->end();
             }
         }
 
@@ -60,7 +60,7 @@ class InfoController extends Controller {
             $accountLink = CHtml::link(Yii::t('app', 'account'), '/user/profile');
             $text = Yii::t('app', 'After confirming your phone number - all financial transactions will occur with his participation. That will greatly enhance the safety of your funds.');
             $text .= ' ' . Yii::t('app', 'Add your phone number in the settings of your {account}.', array('{account}' => $accountLink));
-            Yii::app()->user->setFlash('notice', $text);
+            Yii::$app->user->setFlash('notice', $text);
         }
 
         $this->render('index', array(

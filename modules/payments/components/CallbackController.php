@@ -8,7 +8,7 @@ class CallbackController extends CController {
             $payment = new $model();
             $payment->setRequest($_REQUEST);
             $this->process($payment);
-            Yii::app()->end();
+            Yii::$app->end();
         } else {
             throw new CHttpException(404, 'The requested page does not exist.');
         }

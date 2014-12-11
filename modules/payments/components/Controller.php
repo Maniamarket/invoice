@@ -31,14 +31,14 @@ class Controller extends CController {
     }
 
     public function init() {
-        $referal_id = Yii::app()->request->getParam('ref', 0);
+        $referal_id = Yii::$app->request->getParam('ref', 0);
         if ($referal_id) {
-            $cookies_referal_id = Yii::app()->request->cookies->contains('referal_id') ?
-                    (int) Yii::app()->request->cookies['referal_id']->value : FALSE;
+            $cookies_referal_id = Yii::$app->request->cookies->contains('referal_id') ?
+                    (int) Yii::$app->request->cookies['referal_id']->value : FALSE;
             if (!$cookies_referal_id) {
                 $cookie = new CHttpCookie('referal_id', $referal_id);
                 $cookie->expire = time() + 60 * 60 * 24 * 365; //1 year 
-                Yii::app()->request->cookies['referal_id'] = $cookie;
+                Yii::$app->request->cookies['referal_id'] = $cookie;
             }
         }
         parent::init();
@@ -54,25 +54,25 @@ class Controller extends CController {
             $newLang = $_POST['language'];
         } else if (isset($_GET['language'])) {
             $newLang = $_GET['language'];
-        } else if (isset(Yii::app()->request->cookies['language'])) {
-            $newLang = Yii::app()->request->cookies['language']->value;
+        } else if (isset(Yii::$app->request->cookies['language'])) {
+            $newLang = Yii::$app->request->cookies['language']->value;
         } else {
             $newLang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
         }
 
-        $allowedLanguage = Yii::app()->params['languages'];
+        $allowedLanguage = Yii::$app->params['languages'];
         if (isset($allowedLanguage[$newLang])) {
-            Yii::app()->language = $newLang;
+            Yii::$app->language = $newLang;
             $cookie = new CHttpCookie('language', $newLang);
             $cookie->expire = time() + (60 * 60 * 24 * 365); // (1 year)
-            Yii::app()->request->cookies['language'] = $cookie;
+            Yii::$app->request->cookies['language'] = $cookie;
             if (isset($_POST['language'])) {
                 $this->redirect($newLang);
             }
         } else {
             $cookie = new CHttpCookie('language', $defaultLanguage);
             $cookie->expire = time() + (60 * 60 * 24 * 365); // (1 year)
-            Yii::app()->request->cookies['language'] = $cookie;
+            Yii::$app->request->cookies['language'] = $cookie;
             $this->redirect($defaultLanguage);
         }
     }
@@ -89,15 +89,15 @@ class Controller extends CController {
 
     public function block_action($id) {
         if (UserBanList::model()->isBan($id)) {
-            Yii::app()->user->setFlash('error', Yii::t('ban', '{user} has blocked you!', array('{user}' => User::model()->findByPk($id)->fio)));
+            Yii::$app->user->setFlash('error', Yii::t('ban', '{user} has blocked you!', array('{user}' => User::model()->findByPk($id)->fio)));
             $this->redirect($this->createUrl("user/user_profile", array('id' => $id)));
-            Yii::app()->end();
+            Yii::$app->end();
         }
 
         if (UserBanList::model()->isMyBan($id)) {
-            Yii::app()->user->setFlash('error', Yii::t('ban', 'You <a href="/user/banlist">have blocked</a> {user} !', array('{user}' => User::model()->findByPk($id)->fio)));
+            Yii::$app->user->setFlash('error', Yii::t('ban', 'You <a href="/user/banlist">have blocked</a> {user} !', array('{user}' => User::model()->findByPk($id)->fio)));
             $this->redirect($this->createUrl("user/user_profile", array('id' => $id)));
-            Yii::app()->end();
+            Yii::$app->end();
         }
     }
 

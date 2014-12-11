@@ -24,7 +24,7 @@ $businessEmail=PaypalForm::TEST_BUSINES_PAYPAL_EMAIl;
         <input type="hidden" name="cancel_return" value="<?= Url::toRoute('/payments/paypal/cancel', true); ?>" />
         <input type="hidden" name="notify_url" value="<?= Url::toRoute('/payments/paypal/notify', true); ?>" />
         <input type="hidden" name="custom" value="<?php print $pp_id ?>" />
-        <input type="hidden" name="currency_code" value="EUR" />
+        <input type="hidden" name="currency_code" value="RUB" />
         <input type="hidden" name="email" value="<?php print $user->email ?>" />
         </form>
         <script type="text/javascript">document.forms["paypal-form"].submit();</script>
