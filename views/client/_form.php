@@ -38,8 +38,8 @@ use yii\helpers\BaseHtml;
     </div>
 
     <div class="form-group">
-            <?php echo $form->field($model, 'country')->textInput()->hint('country')->label('country') ; ?>
-            <?php echo Html::error($model, 'country'); ?>
+            <?php echo $form->field($model, 'country_id')->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\Country::getCountriesArray(2),'cid','name'))->hint('country_id')->label('country_id') ; ?>
+            <?php echo Html::error($model, 'country_id'); ?>
     </div>
 
     <div class="form-group">

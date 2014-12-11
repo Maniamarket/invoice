@@ -1,5 +1,6 @@
 <?php
 use yii\grid\GridView;
+
 ?>
 <?=
 GridView::widget([
@@ -17,7 +18,7 @@ GridView::widget([
                 return $data->getLanguage()->asArray()->one()['name'];
             }
 
-        ],        [
+        ], [
             'attribute' => 'country_id',
             'format' => 'html',
             'value' => function ($data) {
@@ -27,7 +28,15 @@ GridView::widget([
 
         ],
         'city',
-        ['class' => 'yii\grid\ActionColumn'],
+        [
+            'class' => 'yii\grid\ActionColumn',
+            'template' => '{update} {delete}',
+            'buttons'=>[
+                'delete'=>function($url, $model, $key){
+                    return "<a href='#' data-rmid='$key' onclick='return false;' data-rmu='$url' class='rm-btn' data-message='Are you sure delete $model->name'><span class='glyphicon glyphicon-trash'></span></a>";
+                }
+            ]
+        ],
     ],
 ]);
 

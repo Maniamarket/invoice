@@ -63,7 +63,13 @@ GridView::widget([
         ],
         'city',
         [
-            'class' => 'yii\grid\ActionColumn'
+            'class' => 'yii\grid\ActionColumn',
+            'template' => '{update} {delete}',
+            'buttons'=>[
+                'delete'=>function($url, $model, $key){
+                    return "<a href='#' data-id='$key' onclick='return false;' data-rmu='$url' data-message='Are you sure delete $model->name' class='rm-btn'><span class='glyphicon glyphicon-trash'></span></a>";
+                }
+            ]
         ],
     ],
 ]);

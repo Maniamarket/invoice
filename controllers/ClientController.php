@@ -3,6 +3,8 @@ namespace app\controllers;
 
 use Yii;
 use yii\base\InvalidParamException;
+use yii\helpers\Url;
+use yii\web\HttpException;
 use yii\web\Session;
 use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
@@ -140,22 +142,41 @@ class ClientController extends Controller
         }
     }
 
-    public function actionUpdate()
+    public function actionUpdate($id)
     {
         $client_id = $this->isClient();
 
-        $model = $this->loadModel($client_id);
+        $model = $this->loadModel($id);
+        if($model->user_id!=Yii::$app->user->getId()){
+           throw new ForbiddenHttpException('Client not found');
+        }
 	// Uncomment the following line if AJAX validation is needed
 	// $this->performAjaxValidation($model);
 
 	if ($model->load(Yii::$app->request->post()) && $model->save()) 
-         {  
-            return $this->redirect(['invoice']);   
+         {
+             return $this->render('update', ['model' => $model,]);
          }
-        else  return $this->render('update', ['model' => $model,]);
+        else
+            return $this->render('update', ['model' => $model,]);
 
     }
-    
+
+    public function actionDelete()
+    {
+        $id = Yii::$app->request->post();
+        if(!Yii::$app->request->isAjax) throw new BadRequestHttpException('Invalid request');
+
+        $model = $this->loadModel($id['id']);
+        if($model->user_id!=Yii::$app->user->getId()){
+            throw new ForbiddenHttpException('Client not found');
+        }
+
+        return $model->delete();
+
+
+    }
+
     public function isClient() 
     {
         return ( isset(Yii::$app->session['client_id'])) ? Yii::$app->session['client_id'] : 0;
