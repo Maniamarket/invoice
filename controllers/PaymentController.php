@@ -109,10 +109,44 @@ class PaymentController extends Controller
 
     public function actionIpn()
     {
-        Yii::info('Метод сработал', 'userMessage');
-        $qp = Yii::$app->request->queryParams;
-        foreach ($qp as $k=>$val) {
-            Yii::info('key='.$k.'value='.$val, 'userMessage');
+//        Yii::info('Метод сработал', 'userMessage');
+        $paypalmode = 'sandbox'; //Sandbox for testing or empty '';
+        if ($_POST) {
+            $req = 'cmd=' . urlencode('_notify-validate');
+            foreach ($_POST as $key => $value) {
+                $value = urlencode(stripslashes($value));
+                $req .= "&$key=$value";
+            }
+            Yii::info($req, 'userMessage');
+            if($paypalmode=='sandbox')
+            {
+                $paypalmode     =   '.sandbox';
+            }
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, 'https://www'.$paypalmode.'.paypal.com/cgi-bin/webscr');
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $req);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Host: www'.$paypalmode.'.sandbox.paypal.com'));
+            $res = curl_exec($ch);
+            curl_close($ch);
+
+            if (strcmp ($res, "VERIFIED") == 0)
+            {
+                $transaction_id = $_POST['txn_id'];
+                $payerid = $_POST['payer_id'];
+                $firstname = $_POST['first_name'];
+                $lastname = $_POST['last_name'];
+                $payeremail = $_POST['payer_email'];
+                $paymentdate = $_POST['payment_date'];
+                $paymentstatus = $_POST['payment_status'];
+                $mdate= date('Y-m-d h:i:s',strtotime($paymentdate));
+                $otherstuff = json_encode($_POST);
+                Yii::info('Validated', 'userMessage');
+            }
         }
  //       $this->setHeader(200);
         echo 'success';
