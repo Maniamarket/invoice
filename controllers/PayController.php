@@ -26,6 +26,7 @@ use PayPal\Auth\OAuthTokenCredential;
 
 class PayController extends Controller
 {
+    public $enableCsrfValidation = false;
     public static $currency = [ 1=>'EUR', 2=>'USD' , 3 => 'GBP', 4 => 'RUB'];
     public static $currency_rate = [ 1=>1, 2=>1.4 , 3 => 2, 4 => 50 ];
     
@@ -64,31 +65,40 @@ class PayController extends Controller
 	
 	public function actionSuccecc_paypal()
 	{
-        //    var_dump($_POST);           
-            // payment_success.php
-             $paypalemail = "my@email.com";     // e-mail продавца
-             $adminemail  = "admin@email.com";  // e-mail  администратора
-             $currency    = 'RUB';//"EUR";              // валюта
+           echo " платеж завершен";
+        }
 
-             /********
-             запрашиваем подтверждение транзакции
-             ********/
-      /*       $postdata="";
-             foreach ($_POST as $key=>$value) $postdata.=$key."=".urlencode($value)."&";
-             $postdata .= "cmd=_notify-validate"; 
-             $curl = curl_init("https://www.paypal.com/cgi-bin/webscr");
-             curl_setopt ($curl, CURLOPT_HEADER, 0); 
-             curl_setopt ($curl, CURLOPT_POST, 1);
-             curl_setopt ($curl, CURLOPT_POSTFIELDS, $postdata);
-             curl_setopt ($curl, CURLOPT_SSL_VERIFYPEER, 0); 
-             curl_setopt ($curl, CURLOPT_RETURNTRANSFER, 1);
-             curl_setopt ($curl, CURLOPT_SSL_VERIFYHOST, 1);
-             $response = curl_exec ($curl);
-             curl_close ($curl);
-             if ($response != "VERIFIED") die("You should not do that ..."); */
+	public function actionIpn()
+	{
+        $paypalmode = 'sandbox'; //Sandbox for testing or empty '';
+        if ($_POST) {
+            $req = 'cmd=' . urlencode('_notify-validate');
+            foreach ($_POST as $key => $value) {
+                $value = urlencode(stripslashes($value));
+                $req .= "&$key=$value";
+            }
+            Yii::info($req, 'userMessage');
+            if($paypalmode=='sandbox')
+            {
+                $paypalmode     =   '.sandbox';
+            }
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, 'https://www'.$paypalmode.'.paypal.com/cgi-bin/webscr');
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $req);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Host: www'.$paypalmode.'.sandbox.paypal.com'));
+            $res = curl_exec($ch);
+            curl_close($ch);
 
-       /*      
-             switch ($_REQUEST['payment_status']) {
+            if (strcmp ($res, "VERIFIED") == 0)
+            {
+
+             
+             switch ($_POST['payment_status']) {
                 // Платеж не прошел
                 case 'failed': echo 'Платеж не прошел';   return $this->redirect(['invoise/index']);
                 // Платеж отменен продавцом
@@ -97,15 +107,15 @@ class PayController extends Controller
                 case 'refunded':  echo 'Деньги были возвращены покупателю';   return $this->redirect(['invoise/index']);
                 // Платеж успешно выполнен, оказываем услугу
                 case 'completed': break;
-            }*/
+            }
              /********
              проверяем получателя платежа и тип транзакции, и выходим, если не наш аккаунт
              в $paypalemail - наш  primary e-mail, поэтому проверяем receiver_email
              ********/
-      /*       if ($_REQUEST['receiver_email'] != $paypalemail || $_REQUEST["txn_type"] != "web_accept")
+             if ($_POST['receiver_email'] != $paypalemail || $_POST["txn_type"] != "web_accept")
                  die("You should not be here ...");
-*/
-             $user_payment_id = intval($_REQUEST['item_number']);
+
+             $user_payment_id = intval($_POST['item_number']);
              $user_payment = User_payment::findOne($user_payment_id);
              if( !$user_payment ){ // не найден такой платеж
                 mail($adminemail, "IPN error", "Unable to restore cart contents\r\nCart ID: ".
@@ -114,20 +124,20 @@ class PayController extends Controller
              }
              
 //    убедимся в том, что эта транзакция не   была обработана ранее 
-       /*      if( $user_payment->txn_id ) die("Yet pay ... Please contact ".$adminemail);
+             if( $user_payment->txn_id ) die("Yet pay ... Please contact ".$adminemail);
              
              if( $user_payment->user_id != Yii::$app->user->id){
                  die("Это не ваша платежка ... Please contact ".$adminemail);  
              }
          
 //     проверяем сумму платежа             
-             if( $user_payment->price != floatval($_REQUEST['mc_gros']) 
-                     || $_REQUEST["mc_currency"] != PayController::$currency[$user_payment->$currency_id])
+             if( $user_payment->price != floatval($_POST['mc_gros']) 
+                     || $_POST["mc_currency"] != PayController::$currency[$user_payment->$currency_id])
              {
                mail($adminemail, "IPN error", "Payment amount mismatch\r\nCart ID: "
-                 . $user_payment->id."\r\nTransaction ID: ".$_REQUEST["txn_id"]);
+                 . $user_payment->id."\r\nTransaction ID: ".$_POST["txn_id"]);
                die("Out of money? Please contact ".$adminemail);
-             } */  
+             }   
 //  проверки завершены. 
             $old = User_payment::findBySql('select u.* from {{user_payment}} as u where u.user_id = '.$user_payment->user_id
                     .' and u.txn_id IS NOT NULL order by u.id desc ')->one();
@@ -140,29 +150,24 @@ class PayController extends Controller
             $user_credit = Setting::find()->where(['user_id' => $user_payment->user_id])->one();
             $user_credit->credit = $user_credit->credit + $user_payment->credit;
             $user_credit->save();
+ 
+            Yii::info('Validated', 'userMessage');
 
-             return $this->redirect(['invoice/index']);
+            echo 'success';
+           // return $this->redirect(['invoice/index']);
 //  mail($adminemail, "New order", "New order\r\nOrder ID: ". $order_id."\r\nTransaction ID: "
 //    .$_POST["txn_id"]);*/
              
   /* 
     сообщаем, что заказ принят, благодарим за покупку и 
-    предлагаем купить еще что-нибудь */              exit(); 
+    предлагаем купить еще что-нибудь */           
 	}
-
 	
-	public function actionDelete($id)
-	{
-		$this->loadModel($id)->delete();
-
-		if(!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
-	}
-
+	
 	/**
 	 * Lists all models.
 	 */
-	public function actionIndex()
+	/*public function actionIndex()
 	{
             $dataProvider = new ActiveDataProvider([
                 'query' => Service::find(),
@@ -173,14 +178,5 @@ class PayController extends Controller
             if( yii::$app->user->identity->role==='superadmin' ) return $this->render('index_adm',array( 'dataProvider'=>$dataProvider, ));
             else  return $this->render('index',array( 'dataProvider'=>$dataProvider, ));
 	}
-
-	public function loadModel($id)
-	{
-            $model=Service::find()->where(['id' => $id])->one();
-            
-            if($model===null) throw new CHttpException(404,'The requested page does not exist.');
-            
-            return $model;
-	}
-
+*/
 }
