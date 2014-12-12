@@ -151,9 +151,10 @@ class PayController extends Controller
 
                 Yii::info('step1', 'userMessage');
 //     проверяем сумму платежа
-             if( $user_payment->credit != floatval($_POST['mc_gros']) || $_POST["mc_currency"] != $currency)
+//                if( $user_payment->credit != floatval($_POST['mc_gros']) || $_POST["mc_currency"] != $currency)
+                    if( $_POST["mc_currency"] != $currency)
              {
-               mail($adminemail, "IPN error", "Payment amount mismatch\r\nCart ID: "
+                mail($adminemail, "IPN error", "Payment amount mismatch\r\nCart ID: "
                  . $user_payment->id."\r\nTransaction ID: ".$_POST["txn_id"]);
                  Yii::info('Failed Sum', 'userMessage');
                  throw new BadRequestHttpException("Out of money? Please contact ".$adminemail);
