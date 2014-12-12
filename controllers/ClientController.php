@@ -134,14 +134,15 @@ class ClientController extends Controller
         return $this->render('invoice',array( 'dataProvider'=>$dataProvider, ));
     }
 
-    public function actionTcpdf($id)
+    public function actionTcpdf($id, $isTranslit = 0)
     {
         $model = Invoice::find()->where(['id'=>$id])->one();
         if ($model->client_id == $this->isClient()) {
             $template = isset(Yii::$app->request->queryParams['template'])?Yii::$app->request->queryParams['template']:'basic';
             return $this->render('/invoice/tcpdf', [
                 'model' => $model,
-                'template'=>$template
+                'template'=>$template,
+                'isTranslit'=>$isTranslit
             ]);
         } else {
             throw new ForbiddenHttpException('Access to the invoice is forbidden. You are not the owner of the invoice');
