@@ -135,8 +135,8 @@ class PayController extends Controller
 
              $user_payment_id = intval($_POST['item_number']);
              $user_payment = User_payment::findOne($user_payment_id);
+             $adminemail = Yii::$app->params['adminEmail'];
              if( !$user_payment ){ // не найден такой платеж
-                 $adminemail = Yii::$app->params['adminEmail'];
                 mail($adminemail, "IPN error", "Unable to restore cart contents\r\nCart ID: ".
                     $user_payment_id ."\r\nTransaction ID: ".$_POST["txn_id"]);
                  Yii::info('Failed Payment', 'userMessage');
@@ -146,14 +146,8 @@ class PayController extends Controller
 //    убедимся в том, что эта транзакция не   была обработана ранее 
              if( $user_payment->txn_id )BadRequestHttpException("Yet pay ... Please contact ".$adminemail);
              
-             if( $user_payment->user_id != Yii::$app->user->id){
-                 Yii::info('Failed User Id', 'userMessage');
-                 throw new BadRequestHttpException("Это не ваша платежка ... Please contact ".$adminemail);
-             }
-         
-//     проверяем сумму платежа             
-             if( $user_payment->price != floatval($_POST['mc_gros']) 
-                     || $_POST["mc_currency"] != PayController::$currency[$user_payment->$currency_id])
+//     проверяем сумму платежа
+             if( $user_payment->price != floatval($_POST['mc_gros']) || $_POST["mc_currency"] != $currency)
              {
                mail($adminemail, "IPN error", "Payment amount mismatch\r\nCart ID: "
                  . $user_payment->id."\r\nTransaction ID: ".$_POST["txn_id"]);
