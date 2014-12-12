@@ -9,6 +9,7 @@ use yii\data\ActiveDataProvider;
 use yii\web\Request;
 use yii\web\Cookie;
 use yii\web\BadRequestHttpException;
+use yii\web\ForbiddenHttpException;
 use app\models\User_payment;
 use app\models\Setting;
 
@@ -71,7 +72,6 @@ class PayController extends Controller
 
     public function actionSuccecc_paypal()
     {
-        var_dump($_REQUEST);
         return $this->render('paypal_success');
     }
 
@@ -87,7 +87,7 @@ class PayController extends Controller
         //$url_pay = ( $SandboxFlag ) ? 'https://www.sandbox.paypal.com' : 'https://www.paypal.com/'; //'https://www.paypal.com/cgi-bin/webscr'
         $url_pay = ( $SandboxFlag ) ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
 // e-mail продавца
-        $paypalemail  = ( $SandboxFlag ) ? "RabotaSurv-de@gmail.com " : "RabotaSurv-facilitator@gmail.com ";
+        $paypalemail  = ( $SandboxFlag ) ? "RabotaSurv-de@gmail.com" : "RabotaSurv-facilitator@gmail.com";
         // e-mail client RabotaSurv-buyer@gmail.com
         $currency     =  "EUR";// 'RUB';             // валюта
         $paypalmode = 'sandbox'; //Sandbox for testing or empty '';
