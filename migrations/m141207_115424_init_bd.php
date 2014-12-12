@@ -25,7 +25,7 @@ class m141207_115424_init_bd extends Migration
             'created_at' => Schema::TYPE_INTEGER . ' NOT NULL',
             'updated_at' => Schema::TYPE_INTEGER . ' NOT NULL',
             'def_lang_id' => Schema::TYPE_INTEGER . ' NOT NULL DEFAULT 1',
-            'country' => Schema::TYPE_STRING . '(100) DEFAULT NULL',
+            'country_id' => Schema::TYPE_STRING . '(100) DEFAULT NULL',
             'city' => Schema::TYPE_STRING . '(100) DEFAULT NULL',
             'street' => Schema::TYPE_STRING . '(100) DEFAULT NULL',
             'post_index' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
@@ -38,14 +38,14 @@ class m141207_115424_init_bd extends Migration
         $this->createIndex('idx_client_def_lang_id', '{{%client}}', 'def_lang_id');
 
         $this->batchInsert('{{%client}}', ['id', 'name', 'user_id', 'email', 'email_confirm_token', 'password_hash',
-            'password_reset_token', 'auth_key', 'created_at', 'updated_at', 'def_lang_id', 'country', 'city',
+            'password_reset_token', 'auth_key', 'created_at', 'updated_at', 'def_lang_id', 'country_id', 'city',
             'street', 'post_index', 'phone', 'password'], [
             [1, 'Fedorov', 4, '1@mu.ru', '', '$2y$13$iLuCWhxjnNoQ7E9bm4zlRe5g6okYUaSCfm8hJj11Iyv3gIL2qDTVS', '',
-                'LeKPQcSJPBrU9EsnTRg9rI8922OS7q6q', time(), time(), 1, 'Russia', 'Moscwa', '', 2222, '', 'Ys7C'],
+                'LeKPQcSJPBrU9EsnTRg9rI8922OS7q6q', time(), time(), 1, 2, 'Moscwa', '', 2222, '', 'Ys7C'],
             [2, 'Alex', 4, '2@mu.ru', '', '$2y$13$8TnqmIT1jhnfjZiRdj8TFubVn8pC2KQNNgJoD80fhjPHCWWKYZ5Z2', '',
-                '1RDxdreA4EvNZBvfPb2Ad1Rc0h8WhMru', time(), time(), 1, '', '', '', NULL, '', 'N6t'],
+                '1RDxdreA4EvNZBvfPb2Ad1Rc0h8WhMru', time(), time(), 1, 1, '', '', NULL, '', 'N6t'],
             [3, 'Belikov', 4, '3@mu.ru', '', '$2y$13$X.G4KFKIgbkWqFcDDXQGq.sn6xnanKNaDsuZ5kjEP3GW15HI1vAKO', '',
-                'BJCNW1HZeCltZ7LrDHoAooDxbj0UBywf', time(), time(), 1, '', '', '', NULL, '', 'iud'],
+                'BJCNW1HZeCltZ7LrDHoAooDxbj0UBywf', time(), time(), 1, 1, '', '', NULL, '', 'iud'],
         ]);
 
         // Таблица компаний
@@ -67,12 +67,12 @@ class m141207_115424_init_bd extends Migration
 
         $this->createIndex('idx_company_email', '{{%client}}', 'email');
 
-        $this->batchInsert('{{%company}}', ['id', 'name', 'logo', 'country', 'city', 'street', 'post_index', 'phone',
+        $this->batchInsert('{{%company}}', ['id', 'name', 'logo', 'country_id', 'city', 'street', 'post_index', 'phone',
             'web_site', 'mail', 'vat_number', 'activity', 'resp_person'], [
-            [1, 'google', 'Google.jpg', 'Russia', 'Moscow', 'Lenina 1', 60000, '22222222', '22', '22', '22', '22', '22'],
-            [2, 'microsoft', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL],
-            [3, 'gregsys', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL],
-            [4, 'bmw', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL]
+            [1, 'google', 'Google.jpg', 1, 'Moscow', 'Lenina 1', 60000, '22222222', '22', '22', '22', '22', '22'],
+            [2, 'microsoft', '', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL],
+            [3, 'gregsys', '', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL],
+            [4, 'bmw', '', NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL]
         ]);
 
         // Таблица скидок

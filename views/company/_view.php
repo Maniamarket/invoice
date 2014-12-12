@@ -20,7 +20,7 @@ use yii\helpers\Html;
     </td>
     <td><?php echo Html::encode($model->name); ?></td>
     <td><?php echo Html::img(Yii::$app->params['imagePath'].'companies/'.$model->logo,['alt'=>'company','class'=>'logo150']); ?></td>
-    <td><?php echo Html::encode($model->country); ?></td>
+    <td><?php echo Html::encode($model->country->name); ?></td>
     <td><?php echo Html::encode($model->city); ?></td>
     <td><?php echo Html::encode($model->street); ?></td>
     <td><?php echo Html::encode($model->post_index); ?></td>
