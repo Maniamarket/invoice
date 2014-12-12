@@ -22,10 +22,6 @@ $this->params['breadcrumbs'][] = $this->title;
           <?php echo Html::error($model, 'credit'); ?>
     </div>
 
-    <div class="form-group">
-         <?php echo $form->field($model, 'currency_id')->dropDownList(PayController::$currency,['prompt'=>'-Choose a Company-'])
-                 ->hint('Please enter currency')->label('currency'); ?>
-    </div>
 <?= Html::submitButton('Send', ['class' => 'btn btn-primary', 'name' => 'send']) ?>
 <?php ActiveForm::end(); ?>
 
