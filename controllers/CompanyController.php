@@ -6,9 +6,10 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
-use app\models\Company;
 use yii\web\Request;
 use yii\web\UploadedFile;
+use app\models\Company;
+use app\models\Lang;
 
 class CompanyController extends Controller {
 
