@@ -10,7 +10,7 @@ use yii\data\ActiveDataProvider;
 use app\models\Payment;
 use yii\helpers\Url;
 use yii\web\Request;
-use PayPal\Api\Details;
+/*use PayPal\Api\Details;
 use PayPal\Api\Address;
 use PayPal\Api\Amount;
 use PayPal\Api\CreditCard;
@@ -24,7 +24,7 @@ use PayPal\Api\ItemList;
 use PayPal\Api\RedirectUrls;
 use PayPal\Api\Transaction;
 use PayPal\Rest\ApiContext;
-use PayPal\Auth\OAuthTokenCredential;
+use PayPal\Auth\OAuthTokenCredential;*/
 
 class PaymentController extends Controller
 {

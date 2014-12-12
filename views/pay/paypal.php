@@ -11,7 +11,7 @@ use yii\helpers\Url;
   //$url_pay = ( $SandboxFlag ) ? 'https://www.sandbox.paypal.com' : 'https://www.paypal.com/'; //'https://www.paypal.com/cgi-bin/webscr'
   $url_pay = ( $SandboxFlag ) ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
 // e-mail продавца
-  $paypalemail  = ( $SandboxFlag ) ? "RabotaSurv-de@gmail.com " : "RabotaSurv-facilitator@gmail.com ";
+  $paypalemail  = ( $SandboxFlag ) ? "RabotaSurv-de@gmail.com" : "info@maniamarket.eu";
    // e-mail client RabotaSurv-buyer@gmail.com 
   $currency     =  "EUR";// 'RUB';             // валюта
 ?>

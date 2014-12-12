@@ -18,20 +18,6 @@ $config = [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'name' => 'Biling',
-    /* 'import' => array( 
-      'application.modules.payments.models.*.*',
-      'application.modules.payments.components.*',
-      ), */
-//    'defaultController' => 'site/login',
-    /*    'view' => [
-      'theme' => [
-      'pathMap' => [
-      '@app/views' => '@app/themes/classic',
-      '@app/modules' => '@app/themes/classic/modules'
-      ],
-      'baseUrl' => '@web/themes/classic',
-      ],
-      ], */
     'language' => 'ru-RU',
     'language' => 'ru-RU',
     'components' => [
@@ -81,22 +67,6 @@ $config = [
 	'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
         ],
-        /*'paypal' => [
-            'class' => 'ak\Paypal',
-            'clientId' => 'AafqihCLD6RrQKhaE1nB672zsfVDIjRSHtKbmaGzFcSquWJzJ-cL_ISKrKXZ',
-            'clientSecret' => 'ECRaAxBG9fgaKCBSIDQ88MwdGYl7fT8iu-NlbiN-jbr3lKf8NoMWwuPW8KeT',
-            'isProduction' => false,
-            // This is config file for the PayPal system
-            'config' => [
-                'http.ConnectionTimeOut' => 30,
-                'http.Retry' => 1,
-                'mode' => \ak\Paypal::MODE_SANDBOX, // development (sandbox) or production (live) mode
-                'log.LogEnabled' => YII_DEBUG ? 1 : 0,
-                'log.FileName' => '@app/runtime/logs/paypal.log',
-                'log.LogLevel' => \ak\Paypal::LOG_LEVEL_FINE,
-            ]
-        ],*/
-
         /* 'paypal' => [
           'class' => 'ak\Paypal',
           'clientId' => 'AafqihCLD6RrQKhaE1nB672zsfVDIjRSHtKbmaGzFcSquWJzJ-cL_ISKrKXZ',
@@ -198,31 +168,4 @@ if (YII_ENV_DEV) {
     ];
 }
 
-$config['modules'] ['payments'] = [
-    'class' => 'app\modules\payments\Module',
-    //'isProduction' => false,
-    // This is config file for the PayPal system
-    'config' => array(
-        'paypal' => array(
-            'live' => array(
-                'proccessUrl' => 'https://www.paypal.com/cgi-bin/webscr',
-                'businessEmail' => 'arsen.sitdikov@gmail.com',
-                'defaultCurrency' => 'EUR',
-            ),
-            'test' => array(
-                'proccessUrl' => 'https://www.sandbox.paypal.com/cgi-bin/webscr',
-                'businessEmail' => 'arsen.sitdikov@gmail.com',
-                'defaultCurrency' => 'RUB',
-            ),
-        //'log' => \Yii::getAlias('@runtime/logs/paypal.log'),
-        ),
-        'mode' => YII_ENV_DEV ? 'test' : 'live',
-    //'http.ConnectionTimeOut' => 30,
-    //'http.Retry' => 1,
-    //'mode' => \ak\Paypal::MODE_SANDBOX, // development (sandbox) or production (live) mode
-    //'log.LogEnabled' => YII_DEBUG ? 1 : 0,
-    //'log.FileName' => '@runtime/logs/paypal.log',
-    //'log.LogLevel' => \ak\Paypal::LOG_LEVEL_FINE,
-    ),
-];
 return $config;

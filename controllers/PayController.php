@@ -85,7 +85,7 @@ class PayController extends Controller
     {
         $url_pay = ( \Yii::$app->params['SandboxFlag'] ) ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
         // e-mail продавца
-        $paypalemail  = ( \Yii::$app->params['SandboxFlag'] ) ? "RabotaSurv-de@gmail.com" : "RabotaSurv-facilitator@gmail.com";
+        $paypalemail  = ( \Yii::$app->params['SandboxFlag'] ) ? "RabotaSurv-de@gmail.com" : "info@maniamarket.eu";
         $currency     =  "EUR";// 'RUB';             // валюта
         $paypalmode = 'sandbox'; //Sandbox for testing or empty '';
         if ($_POST) {
