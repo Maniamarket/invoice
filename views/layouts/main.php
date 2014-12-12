@@ -1,8 +1,8 @@
 <?php /* @var $this Controller */
 use yii\helpers\Html;
 use yii\widgets\Menu;
-use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
+use kartik\nav\NavX;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use app\components\LanguageSelector;
@@ -45,7 +45,7 @@ AppAsset::register($this);
 		    ?>
         </div>
         <?php
-        echo Nav::widget([
+        echo NavX::widget([
             'options' => ['class' => 'navbar-nav navbar-right'],
             'items' => [
                 ['label' => Yii::t('app', 'Home'), 'url' => ['/site/index'], 'visible' => !Yii::$app->user->isGuest],
@@ -70,7 +70,14 @@ AppAsset::register($this);
                 ],
                 ['label' =>  Yii::t('app', 'Settings'), 'url' => '#', 'visible' => !Yii::$app->user->isGuest,
                     'items' => [
-                        ['label' => Yii::t('app', 'Payment'), 'url' => ['/payment/index'], 'visible' => !Yii::$app->user->isGuest],
+                        ['label' => Yii::t('app', 'Payment'), 'url' => ['/payment/index'], 'visible' => !Yii::$app->user->isGuest,
+							'items' => [
+								['label' => Yii::t('app', 'Pay Pal'), 'url' => ['/payment/index'], 'visible' => !Yii::$app->user->isGuest],
+								['label' => Yii::t('app', 'Card payment'), 'url' => ['/payment/index'], 'visible' => !Yii::$app->user->isGuest],
+								['label' => Yii::t('app', 'Bank transfer'), 'url' => ['/payment/index'], 'visible' => !Yii::$app->user->isGuest],
+							
+							],
+                        ],
                         ['label' => Yii::t('app', 'Lang'), 'url' => ['/lang/index'], 'visible' => !Yii::$app->user->isGuest],
                         ['label' => Yii::t('app', 'Incomes'), 'url' => ['/income/index'], 'visible' => !Yii::$app->user->isGuest],
                     ],
