@@ -22,6 +22,8 @@ use yii\bootstrap\Modal;
                ['encode'=>false]);
                Modal::end();
                echo Html::a('<span class="glyphicon glyphicon-print" aria-hidden="true"></span>', ['tcpdf', 'id'=>$model->id],['title'=>'Print']);
+               echo '&nbsp';
+               echo Html::a('<span style="color: purple;" class="glyphicon glyphicon-print" aria-hidden="true"></span>', ['tcpdf', 'id'=>$model->id, 'isTranslit'=>1],['title'=>'Print Translit']);
                ?>
             </span>
         <?php } elseif (\Yii::$app->user->can('superadmin')){ ?>

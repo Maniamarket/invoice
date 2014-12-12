@@ -49,7 +49,7 @@ class ClientController extends Controller
                             }
                     ],
                     [
-                        'actions' => ['delete', 'index', 'update'],
+                        'actions' => ['delete', 'index', 'ajax', 'update'],
                         'allow' => true,
                         'roles' => ['@']
                     ],

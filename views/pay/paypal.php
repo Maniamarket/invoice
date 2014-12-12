@@ -7,13 +7,10 @@ use yii\helpers\Url;
 # true - тестовый режим, https://www.sandbox.paypal.com
 # false - рабочий режим, https://www.paypal.com/
 */
-  $SandboxFlag = true;
-  //$url_pay = ( $SandboxFlag ) ? 'https://www.sandbox.paypal.com' : 'https://www.paypal.com/'; //'https://www.paypal.com/cgi-bin/webscr'
-  $url_pay = ( $SandboxFlag ) ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
+$url_pay = ( \Yii::$app->params['SandboxFlag'] ) ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
 // e-mail продавца
-  $paypalemail  = ( $SandboxFlag ) ? "RabotaSurv-de@gmail.com" : "info@maniamarket.eu";
-   // e-mail client RabotaSurv-buyer@gmail.com 
-  $currency     =  "EUR";// 'RUB';             // валюта
+$paypalemail  = ( \Yii::$app->params['SandboxFlag'] ) ? "RabotaSurv-de@gmail.com" : "info@maniamarket.eu";
+$currency     =  "EUR";// 'RUB';             // валюта
 ?>
 
 <div class="row">

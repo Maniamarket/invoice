@@ -1,5 +1,7 @@
 <?php
 use yii\grid\GridView;
+use app\models\Country;
+use app\models\Lang;
 
 ?>
 <?=
@@ -23,7 +25,9 @@ GridView::widget([
             'format' => 'html',
             'value' => function ($data) {
                 /** @var app\models\Client $data */
-                return $data->getCountry()->asArray()->one()['name'];
+                    $cid = $data->getCountry()->asArray()->one()['cid'];
+                    return Country::find()->where(['lang_id'=>Lang::$current->id, 'cid'=>$cid])->orderBy('cid')->asArray()->one()['name'];
+//                return $data->getCountry()->asArray()->one()['name'];
             }
 
         ],

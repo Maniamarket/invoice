@@ -80,6 +80,15 @@ class Country extends \yii\db\ActiveRecord
         return $array;
     }
 
+    /**
+     * @param int $lang Language id
+     * @return array
+     */
+    public function getNameByLocale()
+    {
+        $models = self::find()->where(['lang_id'=>Lang::$current->id, 'cid'=>$this->cid])->orderBy('cid')->one();
+        return $models->name;
+    }
 
     /**
      * @param $name
