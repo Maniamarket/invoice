@@ -70,7 +70,7 @@ class CompanyController extends Controller {
 	    if ($model->save()) {
 		if ($file){
 		    $uploaded = $file->saveAs(Yii::$app->params['logoPath'].$file->name);
-		    $image=Yii::$app->image->load(Yii::$app->params['logoPath'].$file);		
+		    $image=Yii::$app->image->load(Yii::$app->params['logoPath'].$file);
 		    $image->resize(150);
 		    $image->save();
 		}

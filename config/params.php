@@ -8,6 +8,7 @@ $params = array(
     'currency' => array('1' => 'EUR', '2' => 'USD', '3' => 'GBP', '4' => 'RUR'),
     'imagePath' => '/images/',
     'logoPath' => 'images/companies/',
+    'creditPath' => 'images/payment_credit/',
     'is_cache' => 'false',
     'paymentMode' => 'live',
 );

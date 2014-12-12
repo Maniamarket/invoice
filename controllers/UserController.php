@@ -80,16 +80,21 @@ class UserController extends Controller {
      * Lists all models.
      */
     public function actionBuy($id) {
-        if( $id == Yii::$app->user->id)
-        {
-          if( isset($_POST['payment'])){
-              return $this->redirect(['payment_credit', 'id'=>$id, 'payment_id'=> $_POST['payment']]);
-          }  
-          return $this->render('buy',[]);
-        }
-        else echo 'Это не для гостей';
-
-   }
+	if ($id == Yii::$app->user->id) {
+	    if (isset($_POST['payment'])) {
+		$pay = $_POST['payment'];
+		switch ($pay) {
+		    case 1 : return $this->redirect(['payment_credit', 'id' => $id, 'payment_id' => $pay]);
+		    case 2 : return $this->redirect(['payment_credit', 'id' => $id, 'payment_id' => $pay]);
+		    case 3 : return $this->redirect(['/paymentbanktrans/create']);
+		    default : return $this->redirect(['buy']);
+		}
+		
+	    }
+	    return $this->render('buy', []);
+	} else
+	    echo 'Это не для гостей';
+    }
 
     /**
      * Lists all models.
