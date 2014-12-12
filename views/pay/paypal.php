@@ -22,8 +22,8 @@ use yii\helpers\Url;
 
   $form=ActiveForm::begin( [
 	'id'=>'setting-form',
-        'action' => 'succecc_paypal',
-//        'action' => $url_pay,
+//        'action' => 'succecc_paypal',
+        'action' => $url_pay,
 	'enableAjaxValidation'=>false,
 ]); ?>
 

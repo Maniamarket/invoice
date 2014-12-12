@@ -165,7 +165,7 @@ class m141207_115424_init_bd extends Migration
         $this->createTable('{{%setting}}', [
             'user_id' => Schema::TYPE_INTEGER . ' NOT NULL',
             'name' => Schema::TYPE_STRING . ' NOT NULL  DEFAULT "no"',
-            'credit' => Schema::TYPE_DECIMAL . '(12,3) NOT NULL  DEFAULT 0',
+            'credit' => Schema::TYPE_DECIMAL . '(12,2) NOT NULL  DEFAULT 0',
             'def_vat_id' => Schema::TYPE_INTEGER . ' NOT NULL DEFAULT 0',
             'def_company_id' => Schema::TYPE_INTEGER . ' NOT NULL DEFAULT 0',
             'def_lang_id' => Schema::TYPE_INTEGER . ' NOT NULL DEFAULT 0',

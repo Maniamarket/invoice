@@ -63,11 +63,16 @@ class PayController extends Controller
             return $this->render('paypal', ['model' => $model, ]);
 	}
 
-	
-	public function actionSuccecc_paypal()
-	{
-           echo " платеж завершен";
-        }
+
+    public function actionSuccecc_paypal()
+    {
+        return $this->render('paypal_success');
+    }
+
+    public function actionCancel_paypal()
+    {
+        return $this->render('paypal_cancel');
+    }
 
 	public function actionIpn()
 	{

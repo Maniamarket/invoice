@@ -103,8 +103,6 @@ class UserController extends Controller {
               $model->user_id = $id;
               $model->is_input = TRUE;
               $model->credit_sum = 0;
-              $model->currency_rate = PayController::$currency_rate[$model->currency_id];
-              $model->price = $model->credit * $model->currency_rate;
               $model->profit_parent = $model->profit_parent + 0;
               $model->date = new Expression('NOW()');
               
