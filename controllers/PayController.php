@@ -81,14 +81,11 @@ class PayController extends Controller
         return $this->render('paypal_cancel');
     }
 
-	public function actionIpn()
-	{
-        $SandboxFlag = true;
-        //$url_pay = ( $SandboxFlag ) ? 'https://www.sandbox.paypal.com' : 'https://www.paypal.com/'; //'https://www.paypal.com/cgi-bin/webscr'
-        $url_pay = ( $SandboxFlag ) ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
-// e-mail продавца
-        $paypalemail  = ( $SandboxFlag ) ? "RabotaSurv-de@gmail.com" : "RabotaSurv-facilitator@gmail.com";
-        // e-mail client RabotaSurv-buyer@gmail.com
+    public function actionIpn()
+    {
+        $url_pay = ( \Yii::$app->params['SandboxFlag'] ) ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
+        // e-mail продавца
+        $paypalemail  = ( \Yii::$app->params['SandboxFlag'] ) ? "RabotaSurv-de@gmail.com" : "RabotaSurv-facilitator@gmail.com";
         $currency     =  "EUR";// 'RUB';             // валюта
         $paypalmode = 'sandbox'; //Sandbox for testing or empty '';
         if ($_POST) {
@@ -179,11 +176,7 @@ class PayController extends Controller
            // return $this->redirect(['invoice/index']);
 //  mail($adminemail, "New order", "New order\r\nOrder ID: ". $order_id."\r\nTransaction ID: "
 //    .$_POST["txn_id"]);*/
-             
-  /* 
-    сообщаем, что заказ принят, благодарим за покупку и 
-    предлагаем купить еще что-нибудь */           
-	}
+    }
 	
 	
 	/**

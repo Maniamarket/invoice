@@ -9,8 +9,9 @@ $params = array(
     'imagePath' => '/images/',
     'logoPath' => 'images/companies/',
     'creditPath' => 'images/payment_credit/',
-    'is_cache' => 'false',
+    'is_cache' => false,
     'paymentMode' => 'live',
+    'SandboxFlag' => true,
 );
 if (YII_ENV_DEV) {
     $params ['paymentMode'] = 'test';

@@ -35,7 +35,7 @@ use yii\helpers\Url;
      <?php  echo Html::hiddenInput("amount" ,$model->credit); ?>
      <?php  echo Html::hiddenInput("no_note" , "1"); ?>
      <?php  echo Html::hiddenInput("no_shipping" , "1"); ?>
-     <?php  echo Html::hiddenInput("rm" , "2"); ?>
+     <?php  echo Html::hiddenInput("rm" , "1"); ?>
      <?php  echo Html::hiddenInput("return" , Url::toRoute('succecc_paypal', TRUE )); ?>
      <?php  echo Html::hiddenInput("cancel_return" , Url::toRoute('cancel_paypal', TRUE )); ?>
      <?php  echo Html::hiddenInput("currency_code" , $currency); ?>
