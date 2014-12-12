@@ -53,7 +53,7 @@ class m141207_115424_init_bd extends Migration
             'id' => Schema::TYPE_PK,
             'name' => Schema::TYPE_STRING . ' NOT NULL',
             'logo' => Schema::TYPE_STRING . ' DEFAULT NULL',
-            'country' => Schema::TYPE_STRING . ' DEFAULT NULL',
+            'country_id' => Schema::TYPE_INTEGER . ' DEFAULT 1',
             'city' => Schema::TYPE_STRING . ' DEFAULT NULL',
             'street' => Schema::TYPE_STRING . ' DEFAULT NULL',
             'post_index' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
@@ -165,7 +165,7 @@ class m141207_115424_init_bd extends Migration
         $this->createTable('{{%setting}}', [
             'user_id' => Schema::TYPE_INTEGER . ' NOT NULL',
             'name' => Schema::TYPE_STRING . ' NOT NULL  DEFAULT "no"',
-            'credit' => Schema::TYPE_DECIMAL . '(12,3) NOT NULL  DEFAULT 0',
+            'credit' => Schema::TYPE_DECIMAL . '(12,2) NOT NULL  DEFAULT 0',
             'def_vat_id' => Schema::TYPE_INTEGER . ' NOT NULL DEFAULT 0',
             'def_company_id' => Schema::TYPE_INTEGER . ' NOT NULL DEFAULT 0',
             'def_lang_id' => Schema::TYPE_INTEGER . ' NOT NULL DEFAULT 0',

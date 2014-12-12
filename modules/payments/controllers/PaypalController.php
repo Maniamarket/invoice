@@ -14,11 +14,11 @@ class PaypalController extends Controller {
             'access' => [
                 'class' => AccessControl::className(),
                 'rules' => [
-                    /* [
-                      'allow' => true,
-                      'actions' => ['index', 'view'],
-                      'roles' => ['@'],
-                      ], */
+                    [
+                        'allow' => true,
+                        'actions' => ['notify', 'view'],
+                        'roles' => ['@'],
+                    ],
                     [
                         'allow' => true,
                         'roles' => ['user'],
@@ -65,6 +65,9 @@ class PaypalController extends Controller {
     }
 
     public function actionNotify() {
+
+        Yii::info($_POST, 'paypal');
+
         // read the post from PayPal system and add 'cmd'
         $req = 'cmd=' . urlencode('_notify-validate');
         foreach ($_POST as $key => $value) {
@@ -85,24 +88,27 @@ class PaypalController extends Controller {
         curl_close($ch);
 
         if (strcmp($res, "VERIFIED") == 0) {
-            $pp_id = $_POST['custom']; //номер счета
+            $pp_id = (int) $_POST['custom']; //номер счета
             $currency = $_POST['mc_currency'];
             $status = $_POST['payment_status'];
             $receiver_email = $_POST['receiver_email'];
-            if ($currency == 'USD' && $status == 'Completed' && $receiver_email == 'tetven@gmail.com' && $pp_id) {
-                $record = PaymentHistory::model()->findByAttributes(array('id' => $pp_id, 'complete' => 0));
-                if ($record) {
+            if ($pp_id) {
+                $PaypalForm = new Models\PaypalForm;
+                $model = new Models\PaymentHistory;
+                $record = $model->getNonCompleteById($pp_id);
+
+                if ($currency == $PaypalForm->defaultCurrency && $status == 'Completed' && $PaypalForm->businessEmail == $receiver_email && $record) {
                     //TODO: Счет подтвержден - пометить завершенным
                     $record->complete = 1;
                     $record->save();
-                    EmailNotification::SendPaymentInfo($record);
+                    // EmailNotification::SendPaymentInfo($record);
+                } else {
+                    Yii::info('res is INVALID 0', 'paypal');
                 }
-            } else {
-                $this->write_log($_POST);
             }
         } else if (strcmp($res, "INVALID") == 0) {
             // log for manual investigation
-            $this->write_log($_POST);
+            Yii::info('res is INVALID 1', 'paypal');
         }
 
         //$this->redirect(array('payment/history'));
@@ -110,7 +116,7 @@ class PaypalController extends Controller {
 
     public function write_log($mixed) {
         ob_start();
-        pr($mixed);
+        // pr($mixed);
         $data = ob_get_contents();
         Yii::log($data, 'trace', 'app.notify.PaypalController');
         ob_end_clean();

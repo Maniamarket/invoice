@@ -75,7 +75,7 @@ class PaymentCurrency extends \yii\db\ActiveRecord {
         $currency = $this->find()->where('id=:id AND active = :active', ['id' => $id, 'active' => true])->one();
 
         if (empty($currency)) {
-            throw new \yii\web\HttpException(400, Yii::t('payment', 'Wrong curremsy'), 405);
+            throw new \yii\web\HttpException(400, Yii::t('payment', 'Wrong currency'), 405);
         }
         return $currency;
     }

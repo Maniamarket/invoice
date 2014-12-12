@@ -16,5 +16,9 @@ use yii\helpers\Html;
         <td><?php  echo ($model->profit_admin) ?></td>
         <td><?php  echo ($model->sum_profit_admin) ?></td>
      <?php } ?>
+     <?php  if( $type_user > 1){ ;?>
+        <td><?php  echo ($model->income) ?></td>
+        <td><?php  echo ($model->my_profit) ?></td>
+     <?php } ?>
 
 </tr>
