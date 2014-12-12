@@ -144,7 +144,10 @@ class PayController extends Controller
              }
              
 //    убедимся в том, что эта транзакция не   была обработана ранее 
-             if( $user_payment->txn_id )BadRequestHttpException("Yet pay ... Please contact ".$adminemail);
+             if(!is_null($user_payment->txn_id) ) {
+                 Yii::info('Yet pay ... txn_id='.$user_payment->txn_id, 'userMessage');
+                 BadRequestHttpException("Yet pay ... Please contact ".$adminemail);
+             }
              
 //     проверяем сумму платежа
              if( $user_payment->price != floatval($_POST['mc_gros']) || $_POST["mc_currency"] != $currency)
