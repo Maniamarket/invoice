@@ -73,6 +73,7 @@ AppAsset::register($this);
                         ['label' => Yii::t('app', 'Payment'), 'url' => ['/payment/index'], 'visible' => !Yii::$app->user->isGuest],
                         ['label' => Yii::t('app', 'Lang'), 'url' => ['/lang/index'], 'visible' => !Yii::$app->user->isGuest],
                         ['label' => Yii::t('app', 'Incomes'), 'url' => ['/income/index'], 'visible' => !Yii::$app->user->isGuest],
+			['label' => Yii::t('app', 'Credits'), 'url' => ['/paymentbanktrans/index'], 'visible' => Yii::$app->user->can('superadmin')],
                     ],
                 ],
                 ['label' => Yii::t('app', 'Account'), 'url' => ['/setting/update'], 'visible' => !Yii::$app->user->isGuest],

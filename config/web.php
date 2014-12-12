@@ -77,6 +77,9 @@ $config = [
         'tcpdf' => [
             'class' => 'cinghie\tcpdf\TCPDF',
         ],
+	'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+        ],
         /*'paypal' => [
             'class' => 'ak\Paypal',
             'clientId' => 'AafqihCLD6RrQKhaE1nB672zsfVDIjRSHtKbmaGzFcSquWJzJ-cL_ISKrKXZ',
