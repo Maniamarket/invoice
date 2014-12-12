@@ -17,7 +17,7 @@ class m141209_054746_user_payment extends Migration
             'id' => Schema::TYPE_PK,
             'txn_id' => Schema::TYPE_STRING . '(20) DEFAULT NULL',
             'user_id' => Schema::TYPE_INTEGER . ' NOT NULL',
-            'credit' => Schema::TYPE_INTEGER . ' NOT NULL',
+            'credit' => Schema::TYPE_INTEGER . '(12,2) NOT NULL',
             'is_input' => Schema::TYPE_BOOLEAN . ' NOT NULL',
             'date' => Schema::TYPE_DATETIME . ' NOT NULL',
             'credit_sum' => Schema::TYPE_DECIMAL . '(12,2) NOT NULL DEFAULT 0.00',

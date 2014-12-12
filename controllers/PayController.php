@@ -39,6 +39,11 @@ class PayController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
+                        'actions'=>['ipn'],
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'allow' => true,
                         'actions'=>['paypal','succecc_paypal'],
                         'roles' => ['@'],
                     ],
@@ -66,11 +71,13 @@ class PayController extends Controller
 
     public function actionSuccecc_paypal()
     {
+        var_dump($_REQUEST);
         return $this->render('paypal_success');
     }
 
     public function actionCancel_paypal()
     {
+        var_dump($_REQUEST);
         return $this->render('paypal_cancel');
     }
 
