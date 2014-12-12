@@ -15,6 +15,7 @@ class m141209_054746_user_payment extends Migration
         // Таблица клиентов
         $this->createTable('{{%user_payment}}', [
             'id' => Schema::TYPE_PK,
+            'txn_id' => Schema::TYPE_STRING . '(20) DEFAULT NULL',
             'user_id' => Schema::TYPE_INTEGER . ' NOT NULL',
             'credit' => Schema::TYPE_INTEGER . ' NOT NULL',
             'is_input' => Schema::TYPE_BOOLEAN . ' NOT NULL',

@@ -53,7 +53,7 @@ class m141207_115424_init_bd extends Migration
             'id' => Schema::TYPE_PK,
             'name' => Schema::TYPE_STRING . ' NOT NULL',
             'logo' => Schema::TYPE_STRING . ' DEFAULT NULL',
-            'country' => Schema::TYPE_STRING . ' DEFAULT NULL',
+            'country_id' => Schema::TYPE_INTEGER . ' DEFAULT 1',
             'city' => Schema::TYPE_STRING . ' DEFAULT NULL',
             'street' => Schema::TYPE_STRING . ' DEFAULT NULL',
             'post_index' => Schema::TYPE_INTEGER . ' DEFAULT NULL',

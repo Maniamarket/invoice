@@ -8,6 +8,7 @@ use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 use yii\web\Request;
 use yii\web\Cookie;
+use yii\web\BadRequestHttpException;
 use app\models\User_payment;
 use app\models\Setting;
 
@@ -70,6 +71,13 @@ class PayController extends Controller
 
 	public function actionIpn()
 	{
+        $SandboxFlag = true;
+        //$url_pay = ( $SandboxFlag ) ? 'https://www.sandbox.paypal.com' : 'https://www.paypal.com/'; //'https://www.paypal.com/cgi-bin/webscr'
+        $url_pay = ( $SandboxFlag ) ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
+// e-mail продавца
+        $paypalemail  = ( $SandboxFlag ) ? "RabotaSurv-de@gmail.com " : "RabotaSurv-facilitator@gmail.com ";
+        // e-mail client RabotaSurv-buyer@gmail.com
+        $currency     =  "EUR";// 'RUB';             // валюта
         $paypalmode = 'sandbox'; //Sandbox for testing or empty '';
         if ($_POST) {
             $req = 'cmd=' . urlencode('_notify-validate');
@@ -100,34 +108,35 @@ class PayController extends Controller
              
              switch ($_POST['payment_status']) {
                 // Платеж не прошел
-                case 'failed': echo 'Платеж не прошел';   return $this->redirect(['invoise/index']);
-                // Платеж отменен продавцом
-                case 'denied': echo 'Платеж отменен продавцом';   return $this->redirect(['invoise/index']);
+                case 'failed':  throw new BadRequestHttpException('Не пройдена валидация платежа на стороне PayPal');
+                 // Платеж отменен продавцом
+                case 'denied': throw new BadRequestHttpException('Платеж отменен продавцом');
                 // Деньги были возвращены покупателю
-                case 'refunded':  echo 'Деньги были возвращены покупателю';   return $this->redirect(['invoise/index']);
+                case 'refunded':  throw new BadRequestHttpException('Деньги были возвращены покупателю');
                 // Платеж успешно выполнен, оказываем услугу
                 case 'completed': break;
             }
-             /********
-             проверяем получателя платежа и тип транзакции, и выходим, если не наш аккаунт
-             в $paypalemail - наш  primary e-mail, поэтому проверяем receiver_email
-             ********/
-             if ($_POST['receiver_email'] != $paypalemail || $_POST["txn_type"] != "web_accept")
-                 die("You should not be here ...");
+             if ($_POST['receiver_email'] != $paypalemail || $_POST["txn_type"] != "web_accept") {
+                 Yii::info('You should not be here', 'userMessage');
+                 BadRequestHttpException('You should not be here ...');
+             }
 
              $user_payment_id = intval($_POST['item_number']);
              $user_payment = User_payment::findOne($user_payment_id);
              if( !$user_payment ){ // не найден такой платеж
+                 $adminemail = Yii::$app->params['adminEmail'];
                 mail($adminemail, "IPN error", "Unable to restore cart contents\r\nCart ID: ".
-                    $cart_id."\r\nTransaction ID: ".$_POST["txn_id"]);
-                die("I cannot find N payment ... Please contact ".$adminemail);                  
+                    $user_payment_id ."\r\nTransaction ID: ".$_POST["txn_id"]);
+                 Yii::info('Failed Payment', 'userMessage');
+                 BadRequestHttpException('I cannot find N payment ... Please contact '.$adminemail);
              }
              
 //    убедимся в том, что эта транзакция не   была обработана ранее 
-             if( $user_payment->txn_id ) die("Yet pay ... Please contact ".$adminemail);
+             if( $user_payment->txn_id )BadRequestHttpException("Yet pay ... Please contact ".$adminemail);
              
              if( $user_payment->user_id != Yii::$app->user->id){
-                 die("Это не ваша платежка ... Please contact ".$adminemail);  
+                 Yii::info('Failed User Id', 'userMessage');
+                 BadRequestHttpException("Это не ваша платежка ... Please contact ".$adminemail);
              }
          
 //     проверяем сумму платежа             
@@ -136,7 +145,8 @@ class PayController extends Controller
              {
                mail($adminemail, "IPN error", "Payment amount mismatch\r\nCart ID: "
                  . $user_payment->id."\r\nTransaction ID: ".$_POST["txn_id"]);
-               die("Out of money? Please contact ".$adminemail);
+                 Yii::info('Failed Sum', 'userMessage');
+                 BadRequestHttpException("Out of money? Please contact ".$adminemail);
              }   
 //  проверки завершены. 
             $old = User_payment::findBySql('select u.* from {{user_payment}} as u where u.user_id = '.$user_payment->user_id
@@ -152,8 +162,10 @@ class PayController extends Controller
             $user_credit->save();
  
             Yii::info('Validated', 'userMessage');
+            }
 
             echo 'success';
+        }
            // return $this->redirect(['invoice/index']);
 //  mail($adminemail, "New order", "New order\r\nOrder ID: ". $order_id."\r\nTransaction ID: "
 //    .$_POST["txn_id"]);*/
