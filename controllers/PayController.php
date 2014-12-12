@@ -130,7 +130,7 @@ class PayController extends Controller
             }
              if ($_POST['receiver_email'] != $paypalemail || $_POST["txn_type"] != "web_accept") {
                  Yii::info('You should not be here', 'userMessage');
-                 BadRequestHttpException('You should not be here ...');
+                 throw new BadRequestHttpException('You should not be here ...');
              }
 
              $user_payment_id = intval($_POST['item_number']);
@@ -140,7 +140,7 @@ class PayController extends Controller
                 mail($adminemail, "IPN error", "Unable to restore cart contents\r\nCart ID: ".
                     $user_payment_id ."\r\nTransaction ID: ".$_POST["txn_id"]);
                  Yii::info('Failed Payment', 'userMessage');
-                 BadRequestHttpException('I cannot find N payment ... Please contact '.$adminemail);
+                 throw new BadRequestHttpException('I cannot find N payment ... Please contact '.$adminemail);
              }
              
 //    убедимся в том, что эта транзакция не   была обработана ранее 
@@ -148,7 +148,7 @@ class PayController extends Controller
              
              if( $user_payment->user_id != Yii::$app->user->id){
                  Yii::info('Failed User Id', 'userMessage');
-                 BadRequestHttpException("Это не ваша платежка ... Please contact ".$adminemail);
+                 throw new BadRequestHttpException("Это не ваша платежка ... Please contact ".$adminemail);
              }
          
 //     проверяем сумму платежа             
@@ -158,7 +158,7 @@ class PayController extends Controller
                mail($adminemail, "IPN error", "Payment amount mismatch\r\nCart ID: "
                  . $user_payment->id."\r\nTransaction ID: ".$_POST["txn_id"]);
                  Yii::info('Failed Sum', 'userMessage');
-                 BadRequestHttpException("Out of money? Please contact ".$adminemail);
+                 throw new BadRequestHttpException("Out of money? Please contact ".$adminemail);
              }   
 //  проверки завершены. 
             $old = User_payment::findBySql('select u.* from {{user_payment}} as u where u.user_id = '.$user_payment->user_id
