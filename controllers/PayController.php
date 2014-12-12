@@ -148,7 +148,8 @@ class PayController extends Controller
                  Yii::info('Yet pay ... txn_id='.$user_payment->txn_id, 'userMessage');
                  BadRequestHttpException("Yet pay ... Please contact ".$adminemail);
              }
-             
+
+                Yii::info('step1', 'userMessage');
 //     проверяем сумму платежа
              if( $user_payment->price != floatval($_POST['mc_gros']) || $_POST["mc_currency"] != $currency)
              {
@@ -156,16 +157,21 @@ class PayController extends Controller
                  . $user_payment->id."\r\nTransaction ID: ".$_POST["txn_id"]);
                  Yii::info('Failed Sum', 'userMessage');
                  throw new BadRequestHttpException("Out of money? Please contact ".$adminemail);
-             }   
-//  проверки завершены. 
+             }
+                Yii::info('step2', 'userMessage');
+//  проверки завершены.
             $old = User_payment::findBySql('select u.* from {{user_payment}} as u where u.user_id = '.$user_payment->user_id
                     .' and u.txn_id IS NOT NULL order by u.id desc ')->one();
 //                 var_dump($old);                  exit();
             $user_payment->credit_sum = (( $old) ? $old->credit_sum : 0) + $user_payment->credit;
+                Yii::info('step3', 'userMessage');
+
 //            $user_payment->txn_id = $_POST["txn_id"];
             $user_payment->txn_id = 5;
             $user_payment->save();
-   //увеличение кредитов
+                Yii::info('step4', 'userMessage');
+
+                //увеличение кредитов
             $user_credit = Setting::find()->where(['user_id' => $user_payment->user_id])->one();
             $user_credit->credit = $user_credit->credit + $user_payment->credit;
             $user_credit->save();
