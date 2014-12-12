@@ -11,9 +11,24 @@ use yii\web\Cookie;
 use app\models\User_payment;
 use app\models\Setting;
 
+use PayPal\Api\Details;
+use PayPal\Api\Address;
+use PayPal\Api\Amount;
+use PayPal\Api\CreditCard;
+use PayPal\Api\FundingInstrument;
+use PayPal\Api\Payer;
+use PayPal\Api\Payment;
+use PayPal\Api\RedirectUrls;
+use PayPal\Api\Transaction;
+use PayPal\Rest\ApiContext;
+use PayPal\Auth\OAuthTokenCredential;
+
 
 class PayController extends Controller
 {
+    public static $currency = [ 1=>'EUR', 2=>'USD' , 3 => 'GBP', 4 => 'RUB'];
+    public static $currency_rate = [ 1=>1, 2=>1.4 , 3 => 2, 4 => 50 ];
+    
     public function behaviors()
     {
         return [
@@ -41,23 +56,24 @@ class PayController extends Controller
 	public function actionPaypal( $id )
 	{
             $model = User_payment::findOne($id);
-            Yii::$app->getResponse()->getCookies()->add( new Cookie([ 'name' => 'credit', 'value' => $model->credit,]));
+   //         Yii::$app->getResponse()->getCookies()->add( new Cookie([ 'name' => 'credit', 'value' => $model->credit,]));
+    
             return $this->render('paypal', ['model' => $model, ]);
 	}
 
 	
 	public function actionSuccecc_paypal()
 	{
-            var_dump($_POST);           
+        //    var_dump($_POST);           
             // payment_success.php
              $paypalemail = "my@email.com";     // e-mail продавца
              $adminemail  = "admin@email.com";  // e-mail  администратора
-             $currency    = "EUR";              // валюта
+             $currency    = 'RUB';//"EUR";              // валюта
 
              /********
              запрашиваем подтверждение транзакции
              ********/
-     /*        $postdata="";
+      /*       $postdata="";
              foreach ($_POST as $key=>$value) $postdata.=$key."=".urlencode($value)."&";
              $postdata .= "cmd=_notify-validate"; 
              $curl = curl_init("https://www.paypal.com/cgi-bin/webscr");
@@ -69,48 +85,49 @@ class PayController extends Controller
              curl_setopt ($curl, CURLOPT_SSL_VERIFYHOST, 1);
              $response = curl_exec ($curl);
              curl_close ($curl);
-             if ($response != "VERIFIED") die("You should not do that ..."); 
+             if ($response != "VERIFIED") die("You should not do that ..."); */
 
+       /*      
+             switch ($_REQUEST['payment_status']) {
+                // Платеж не прошел
+                case 'failed': echo 'Платеж не прошел';   return $this->redirect(['invoise/index']);
+                // Платеж отменен продавцом
+                case 'denied': echo 'Платеж отменен продавцом';   return $this->redirect(['invoise/index']);
+                // Деньги были возвращены покупателю
+                case 'refunded':  echo 'Деньги были возвращены покупателю';   return $this->redirect(['invoise/index']);
+                // Платеж успешно выполнен, оказываем услугу
+                case 'completed': break;
+            }*/
              /********
              проверяем получателя платежа и тип транзакции, и выходим, если не наш аккаунт
              в $paypalemail - наш  primary e-mail, поэтому проверяем receiver_email
              ********/
-   /*          if ($_POST['receiver_email'] != $paypalemail 
-               || $_POST["txn_type"] != "web_accept")
+      /*       if ($_REQUEST['receiver_email'] != $paypalemail || $_REQUEST["txn_type"] != "web_accept")
                  die("You should not be here ...");
-
-             /*
-               здесь код, подключающийся к базе данных 
-             */ 
-
-             /******** 
-               убедимся в том, что эта транзакция не 
-               была обработана ранее 
-             ********/
- /*            $r = mysql_query("SELECT order_id FROM orders WHERE txn_id='".$_POST["txn_id"]."'");
-             list($duplicate) = mysql_fetch_row($r);
-             mysql_free_result($r);
-             if ($duplicate) die ("I feel like I met you before ..."); 
-             /********
-               проверяем сумму платежа
-             ********/ 
-             $user_payment_id = intval($_POST['item_number']);
+*/
+             $user_payment_id = intval($_REQUEST['item_number']);
              $user_payment = User_payment::findOne($user_payment_id);
-             if( $user_payment->user_id != Yii::$app->user->id){
-                 die("Это не ваша платежка ... Please contact ".$adminemail);  
-             }
              if( !$user_payment ){ // не найден такой платеж
                 mail($adminemail, "IPN error", "Unable to restore cart contents\r\nCart ID: ".
                     $cart_id."\r\nTransaction ID: ".$_POST["txn_id"]);
                 die("I cannot find N payment ... Please contact ".$adminemail);                  
              }
-
-        /*     if ($user_payment->credit != $_POST["mc_gross"] || $_POST["mc_currency"] != $currency)
+             
+//    убедимся в том, что эта транзакция не   была обработана ранее 
+       /*      if( $user_payment->txn_id ) die("Yet pay ... Please contact ".$adminemail);
+             
+             if( $user_payment->user_id != Yii::$app->user->id){
+                 die("Это не ваша платежка ... Please contact ".$adminemail);  
+             }
+         
+//     проверяем сумму платежа             
+             if( $user_payment->price != floatval($_REQUEST['mc_gros']) 
+                     || $_REQUEST["mc_currency"] != PayController::$currency[$user_payment->$currency_id])
              {
                mail($adminemail, "IPN error", "Payment amount mismatch\r\nCart ID: "
-                 . $user_payment->id."\r\nTransaction ID: ".$_POST["txn_id"]);
+                 . $user_payment->id."\r\nTransaction ID: ".$_REQUEST["txn_id"]);
                die("Out of money? Please contact ".$adminemail);
-             }*/
+             } */  
 //  проверки завершены. 
             $old = User_payment::findBySql('select u.* from {{user_payment}} as u where u.user_id = '.$user_payment->user_id
                     .' and u.txn_id IS NOT NULL order by u.id desc ')->one();

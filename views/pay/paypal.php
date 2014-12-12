@@ -13,7 +13,7 @@ use yii\helpers\Url;
 // e-mail продавца
   $paypalemail  = ( $SandboxFlag ) ? "RabotaSurv-facilitator@gmail.com " : "RabotaSurv-facilitator@gmail.com ";
    // e-mail client RabotaSurv-buyer@gmail.com 
-  $currency     = "EUR";              // валюта
+  $currency     = 'RUB';// "EUR";              // валюта
 ?>
 
 <div class="row">
@@ -22,8 +22,8 @@ use yii\helpers\Url;
 
   $form=ActiveForm::begin( [
 	'id'=>'setting-form',
-//        'action' => 'succecc_paypal',
-        'action' => $url_pay,
+        'action' => 'succecc_paypal',
+//        'action' => $url_pay,
 	'enableAjaxValidation'=>false,
 ]); ?>
 

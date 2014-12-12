@@ -86,6 +86,43 @@ class User_income extends ActiveRecord {
 	));
     }
 
+    public static function setIncome()
+    {
+        $u_income = User_income::findBySql('select u.id,u.profit_manager, u.profit_admin from {{user_income}} as u '
+                    . '  where u.profit_manager > 0 or u.profit_admin>0')->all();
+        if(count($u_income) > 0){
+            foreach ( $u_income as $val){
+                if( $val['profit_manager'] >0 ){
+                    $income = self::getIncome($val['profit_manager']);
+                    Yii::$app->db->createCommand("UPDATE user_income SET my_profit=:prof, income = :in  WHERE id=:id")
+                      ->bindValues([':prof'=>$income['manager']*$val['profit_manager']/100,':in'=>$income['admin'],':id'=>$val['id']])->execute();
+                }
+                else {
+                    $income = self::getIncome($val['profit_admin']);
+                  //  var_dump($income);                    exit();
+                    Yii::$app->db->createCommand("UPDATE user_income SET my_profit=:prof, income = :in  WHERE id=:id")
+                      ->bindValues([':prof'=>$income['admin']*$val['profit_admin']/100, ':in'=>$income['admin'],'id'=>$val['id']])->execute();
+                }
+            }
+        }
+                
+        return TRUE;
+    }
+
+    public static function getIncome( $profit )
+    {
+        $u_income = Income::find()->all();
+        
+        $q = new \yii\db\Query;
+        foreach ( $u_income as $val){
+            $atr = $val->getAttributes();     
+            if( $atr['from']<= $profit && $atr['to'] > $profit) return $atr; 
+        }
+                
+        return TRUE;
+    }
+
+
     /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
