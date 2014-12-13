@@ -33,7 +33,7 @@ class SignupForm extends Model {
             ['email', 'filter', 'filter' => 'trim'],
             [['email', 'captcha'], 'required'],
             ['email', 'email'],
-            ['captcha', 'captcha'],
+            ['captcha', 'captcha', 'captchaAction' => '/site/captcha'],
             ['email', 'unique', 'targetClass' => '\app\models\User', 'message' => 'This email address has already been taken.'],
             ['password', 'required'],
             ['password', 'string', 'min' => 6],

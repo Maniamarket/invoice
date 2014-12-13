@@ -23,13 +23,11 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= $form->field($model, 'password')->passwordInput() ?>
 
 
-            <?=
-            $form->field($model, 'captcha')->widget(Captcha::className(), [
+            
+            <?= $form->field($model, 'captcha')->widget(Captcha::className(), [
                 'captchaAction' => '/site/captcha',
-                'options' => ['class' => 'form-control'],
-                'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-9">{input}</div></div>',
-            ])
-            ?>
+    'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
+]) ?>
 
             <div class="form-group">
             <?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
