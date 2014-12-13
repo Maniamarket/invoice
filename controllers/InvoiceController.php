@@ -57,14 +57,15 @@ class InvoiceController extends Controller
         }
     }
 
-    public function actionTcpdf($id)
+    public function actionTcpdf($id, $isTranslit = 0)
     {
         $model = $this->findModel($id);
         if ($model->user_id == Yii::$app->user->id) {
             $template = empty($model->type) ? 'basic' : $model->type;
             return $this->render('tcpdf', [
                 'model' => $model,
-                'template'=>$template
+                'template'=>$template,
+                'isTranslit'=>$isTranslit
             ]);
         } else {
             throw new ForbiddenHttpException('Access to the invoice is forbidden. You are not the owner of the invoice');

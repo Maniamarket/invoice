@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "lang".
@@ -107,4 +108,9 @@ class Lang extends \yii\db\ActiveRecord
 		}
 	}
 
+    public static function getLanguageArray(){
+        $models = self::find()->all();
+        $result = ArrayHelper::map($models,'id','name');
+        return $result;
+    }
 }

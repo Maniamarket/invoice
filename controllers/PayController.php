@@ -8,18 +8,41 @@ use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 use yii\web\Request;
 use yii\web\Cookie;
+use yii\web\BadRequestHttpException;
+use yii\web\ForbiddenHttpException;
 use app\models\User_payment;
 use app\models\Setting;
+
+use PayPal\Api\Details;
+use PayPal\Api\Address;
+use PayPal\Api\Amount;
+use PayPal\Api\CreditCard;
+use PayPal\Api\FundingInstrument;
+use PayPal\Api\Payer;
+use PayPal\Api\Payment;
+use PayPal\Api\RedirectUrls;
+use PayPal\Api\Transaction;
+use PayPal\Rest\ApiContext;
+use PayPal\Auth\OAuthTokenCredential;
 
 
 class PayController extends Controller
 {
+    public $enableCsrfValidation = false;
+    public static $currency = [ 1=>'EUR', 2=>'USD' , 3 => 'GBP', 4 => 'RUB'];
+    public static $currency_rate = [ 1=>1, 2=>1.4 , 3 => 2, 4 => 50 ];
+    
     public function behaviors()
     {
         return [
             'access' => [
                 'class' => AccessControl::className(),
                 'rules' => [
+                    [
+                        'allow' => true,
+                        'actions'=>['ipn'],
+                        'roles' => ['?'],
+                    ],
                     [
                         'allow' => true,
                         'actions'=>['paypal','succecc_paypal'],
@@ -41,111 +64,125 @@ class PayController extends Controller
 	public function actionPaypal( $id )
 	{
             $model = User_payment::findOne($id);
-            Yii::$app->getResponse()->getCookies()->add( new Cookie([ 'name' => 'credit', 'value' => $model->credit,]));
+   //         Yii::$app->getResponse()->getCookies()->add( new Cookie([ 'name' => 'credit', 'value' => $model->credit,]));
+    
             return $this->render('paypal', ['model' => $model, ]);
 	}
 
-	
-	public function actionSuccecc_paypal()
-	{
-            var_dump($_POST);           
-            // payment_success.php
-             $paypalemail = "my@email.com";     // e-mail продавца
-             $adminemail  = "admin@email.com";  // e-mail  администратора
-             $currency    = "EUR";              // валюта
 
-             /********
-             запрашиваем подтверждение транзакции
-             ********/
-     /*        $postdata="";
-             foreach ($_POST as $key=>$value) $postdata.=$key."=".urlencode($value)."&";
-             $postdata .= "cmd=_notify-validate"; 
-             $curl = curl_init("https://www.paypal.com/cgi-bin/webscr");
-             curl_setopt ($curl, CURLOPT_HEADER, 0); 
-             curl_setopt ($curl, CURLOPT_POST, 1);
-             curl_setopt ($curl, CURLOPT_POSTFIELDS, $postdata);
-             curl_setopt ($curl, CURLOPT_SSL_VERIFYPEER, 0); 
-             curl_setopt ($curl, CURLOPT_RETURNTRANSFER, 1);
-             curl_setopt ($curl, CURLOPT_SSL_VERIFYHOST, 1);
-             $response = curl_exec ($curl);
-             curl_close ($curl);
-             if ($response != "VERIFIED") die("You should not do that ..."); 
+    public function actionSuccecc_paypal()
+    {
+        return $this->render('paypal_success');
+    }
 
-             /********
-             проверяем получателя платежа и тип транзакции, и выходим, если не наш аккаунт
-             в $paypalemail - наш  primary e-mail, поэтому проверяем receiver_email
-             ********/
-   /*          if ($_POST['receiver_email'] != $paypalemail 
-               || $_POST["txn_type"] != "web_accept")
-                 die("You should not be here ...");
+    public function actionCancel_paypal()
+    {
+        var_dump($_REQUEST);
+        return $this->render('paypal_cancel');
+    }
 
-             /*
-               здесь код, подключающийся к базе данных 
-             */ 
+    public function actionIpn()
+    {
+        $url_pay = ( \Yii::$app->params['SandboxFlag'] ) ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
+        // e-mail продавца
+        $paypalemail  = ( \Yii::$app->params['SandboxFlag'] ) ? "RabotaSurv-de@gmail.com" : "info@maniamarket.eu";
+        $currency     =  "EUR";// 'RUB';             // валюта
+        $paypalmode = 'sandbox'; //Sandbox for testing or empty '';
+        if ($_POST) {
+            $req = 'cmd=' . urlencode('_notify-validate');
+            foreach ($_POST as $key => $value) {
+                $value = urlencode(stripslashes($value));
+                $req .= "&$key=$value";
+            }
+            Yii::info($req, 'userMessage');
+            if($paypalmode=='sandbox')
+            {
+                $paypalmode     =   '.sandbox';
+            }
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, 'https://www'.$paypalmode.'.paypal.com/cgi-bin/webscr');
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $req);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Host: www'.$paypalmode.'.sandbox.paypal.com'));
+            $res = curl_exec($ch);
+            curl_close($ch);
 
-             /******** 
-               убедимся в том, что эта транзакция не 
-               была обработана ранее 
-             ********/
- /*            $r = mysql_query("SELECT order_id FROM orders WHERE txn_id='".$_POST["txn_id"]."'");
-             list($duplicate) = mysql_fetch_row($r);
-             mysql_free_result($r);
-             if ($duplicate) die ("I feel like I met you before ..."); 
-             /********
-               проверяем сумму платежа
-             ********/ 
+            if (strcmp ($res, "VERIFIED") == 0)
+            {
+
+             
+             switch ($_POST['payment_status']) {
+                // Платеж не прошел
+                case 'failed':  throw new BadRequestHttpException('Не пройдена валидация платежа на стороне PayPal');
+                 // Платеж отменен продавцом
+                case 'denied': throw new BadRequestHttpException('Платеж отменен продавцом');
+                // Деньги были возвращены покупателю
+                case 'refunded':  throw new BadRequestHttpException('Деньги были возвращены покупателю');
+                // Платеж успешно выполнен, оказываем услугу
+                case 'completed': break;
+            }
+             if ($_POST['receiver_email'] != $paypalemail || $_POST["txn_type"] != "web_accept") {
+                 Yii::info('You should not be here', 'userMessage');
+                 throw new BadRequestHttpException('You should not be here ...');
+             }
+
              $user_payment_id = intval($_POST['item_number']);
              $user_payment = User_payment::findOne($user_payment_id);
-             if( $user_payment->user_id != Yii::$app->user->id){
-                 die("Это не ваша платежка ... Please contact ".$adminemail);  
-             }
+             $adminemail = Yii::$app->params['adminEmail'];
              if( !$user_payment ){ // не найден такой платеж
                 mail($adminemail, "IPN error", "Unable to restore cart contents\r\nCart ID: ".
-                    $cart_id."\r\nTransaction ID: ".$_POST["txn_id"]);
-                die("I cannot find N payment ... Please contact ".$adminemail);                  
+                    $user_payment_id ."\r\nTransaction ID: ".$_POST["txn_id"]);
+                 Yii::info('Failed Payment', 'userMessage');
+                 throw new BadRequestHttpException('I cannot find N payment ... Please contact '.$adminemail);
+             }
+             
+//    убедимся в том, что эта транзакция не   была обработана ранее 
+             if(!is_null($user_payment->txn_id) ) {
+                 Yii::info('Yet pay ... txn_id='.$user_payment->txn_id, 'userMessage');
+                 BadRequestHttpException("Yet pay ... Please contact ".$adminemail);
              }
 
-        /*     if ($user_payment->credit != $_POST["mc_gross"] || $_POST["mc_currency"] != $currency)
+//     проверяем сумму платежа
+             if( ($user_payment->credit != $_POST['mc_gross']) || ($_POST["mc_currency"] != $currency))
              {
-               mail($adminemail, "IPN error", "Payment amount mismatch\r\nCart ID: "
+                mail($adminemail, "IPN error", "Payment amount mismatch\r\nCart ID: "
                  . $user_payment->id."\r\nTransaction ID: ".$_POST["txn_id"]);
-               die("Out of money? Please contact ".$adminemail);
-             }*/
-//  проверки завершены. 
+                 Yii::info('Failed Sum', 'userMessage');
+                 throw new BadRequestHttpException("Out of money? Please contact ".$adminemail);
+             }
+//  проверки завершены.
             $old = User_payment::findBySql('select u.* from {{user_payment}} as u where u.user_id = '.$user_payment->user_id
                     .' and u.txn_id IS NOT NULL order by u.id desc ')->one();
-//                 var_dump($old);                  exit();
             $user_payment->credit_sum = (( $old) ? $old->credit_sum : 0) + $user_payment->credit;
-//            $user_payment->txn_id = $_POST["txn_id"];
-            $user_payment->txn_id = 5;
+                Yii::info('step3', 'userMessage');
+
+            $user_payment->txn_id = $_POST["txn_id"];
             $user_payment->save();
-   //увеличение кредитов
+
+                //увеличение кредитов
             $user_credit = Setting::find()->where(['user_id' => $user_payment->user_id])->one();
             $user_credit->credit = $user_credit->credit + $user_payment->credit;
             $user_credit->save();
+ 
+            Yii::info('Validated', 'userMessage');
+            }
 
-             return $this->redirect(['invoice/index']);
+            echo 'success';
+        }
+           // return $this->redirect(['invoice/index']);
 //  mail($adminemail, "New order", "New order\r\nOrder ID: ". $order_id."\r\nTransaction ID: "
 //    .$_POST["txn_id"]);*/
-             
-  /* 
-    сообщаем, что заказ принят, благодарим за покупку и 
-    предлагаем купить еще что-нибудь */              exit(); 
-	}
-
+    }
 	
-	public function actionDelete($id)
-	{
-		$this->loadModel($id)->delete();
-
-		if(!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
-	}
-
+	
 	/**
 	 * Lists all models.
 	 */
-	public function actionIndex()
+	/*public function actionIndex()
 	{
             $dataProvider = new ActiveDataProvider([
                 'query' => Service::find(),
@@ -156,14 +193,5 @@ class PayController extends Controller
             if( yii::$app->user->identity->role==='superadmin' ) return $this->render('index_adm',array( 'dataProvider'=>$dataProvider, ));
             else  return $this->render('index',array( 'dataProvider'=>$dataProvider, ));
 	}
-
-	public function loadModel($id)
-	{
-            $model=Service::find()->where(['id' => $id])->one();
-            
-            if($model===null) throw new CHttpException(404,'The requested page does not exist.');
-            
-            return $model;
-	}
-
+*/
 }

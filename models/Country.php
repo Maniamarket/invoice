@@ -70,6 +70,27 @@ class Country extends \yii\db\ActiveRecord
     }
 
     /**
+     * @param int $lang Language id
+     * @return array
+     */
+    public static function list_Countries($lang = 1)
+    {
+        $models = self::find()->where(['lang_id'=>$lang])->orderBy('cid')->asArray()->all();
+        $array = ArrayHelper::map($models,'cid','name');
+        return $array;
+    }
+
+    /**
+     * @param int $lang Language id
+     * @return array
+     */
+    public function getNameByLocale()
+    {
+        $models = self::find()->where(['lang_id'=>Lang::$current->id, 'cid'=>$this->cid])->orderBy('cid')->one();
+        return  $models->name;
+    }
+
+    /**
      * @param $name
      * @return array|\yii\db\ActiveRecord[]
      */

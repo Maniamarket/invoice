@@ -8,8 +8,10 @@ $params = array(
     'currency' => array('1' => 'EUR', '2' => 'USD', '3' => 'GBP', '4' => 'RUR'),
     'imagePath' => '/images/',
     'logoPath' => 'images/companies/',
-    'is_cache' => 'false',
+    'creditPath' => 'images/payment_credit/',
+    'is_cache' => false,
     'paymentMode' => 'live',
+    'SandboxFlag' => true,
 );
 if (YII_ENV_DEV) {
     $params ['paymentMode'] = 'test';

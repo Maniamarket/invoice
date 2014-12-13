@@ -6,9 +6,10 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
-use app\models\Company;
 use yii\web\Request;
 use yii\web\UploadedFile;
+use app\models\Company;
+use app\models\Lang;
 
 class CompanyController extends Controller {
 
@@ -70,7 +71,7 @@ class CompanyController extends Controller {
 	    if ($model->save()) {
 		if ($file){
 		    $uploaded = $file->saveAs(Yii::$app->params['logoPath'].$file->name);
-		    $image=Yii::$app->image->load(Yii::$app->params['logoPath'].$file);		
+		    $image=Yii::$app->image->load(Yii::$app->params['logoPath'].$file);
 		    $image->resize(150);
 		    $image->save();
 		}
@@ -144,10 +145,6 @@ class CompanyController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
-/*        if (Yii::$app->user->can('admin'))  // "admin" является названием роли которое было создано через API "authManger"-а.
-            echo 'Hello, Admin!';
-        else echo 'fatal';*/
-
         $dataProvider = new ActiveDataProvider([
             'query' => Company::find(),
             'pagination' => [

@@ -33,7 +33,7 @@ if (\Yii::$app->user->can('superadmin')) {
 	'attributes'=>[
 		'id',
         'name',
-        'country',
+        'country_id',
         'street',
         'post_index',
         'phone',

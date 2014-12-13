@@ -74,7 +74,7 @@ if (!empty($model->company->logo)) {
     $pdf->Image($logo, '15', '25', '20', '0', '', '', '', true, 150);
 }
 //echo $logo;
-$html = $this->context->renderPartial('/invoice/template/'.$template, ['model' => $model]);
+$html = $this->context->renderPartial('/invoice/template/'.$template, ['model' => $model, 'isTranslit'=>$isTranslit]);
 
 // Print text using writeHTMLCell()
 $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
@@ -112,6 +112,11 @@ if(empty($model->is_pay)) {
 // Close and output PDF document
 // This method has several options, check the source code documentation for more information.
 $pdf->Output('yii2_tcpdf_example.pdf', 'I');
+
+/*$js = 'print(true);';
+$pdf->IncludeJS($js);
+$pdf->Output($pdffile, 'F');*/
+
 
 //============================================================+
 // END OF FILE

@@ -34,14 +34,14 @@ class Company extends ActiveRecord {
 
             ['name', 'string', 'max' => 255],
             [
-                ['name','country', 'city','street','phone','web_site','mail','vat_number','activity','resp_person'],
+                ['name', 'city','street','phone','web_site','mail','vat_number','activity','resp_person'],
                 'filter', 'filter' => 'trim'
             ],
             [
-                ['country', 'city','street','phone','web_site','mail','vat_number','activity','resp_person'],
+                ['city','street','phone','web_site','mail','vat_number','activity','resp_person'],
                 'string', 'max' => 100
             ],
-            ['post_index', 'integer', 'integerOnly' => true],
+            [['post_index','country_id'], 'integer', 'integerOnly' => true],
 	    ['file', 'file', 'extensions' => ['jpg','jpeg','png','gif']],
 	    // The following rule is used by search().
 	    // @todo Please remove those attributes that should not be searched.
@@ -78,6 +78,13 @@ class Company extends ActiveRecord {
 	    'activity' => 'Activity',
 	    'resp_person' => 'Resp Person',
 	);
+    }
+
+    public function getCountry()
+    {
+        return $this->hasOne('app\models\Country', ['cid' => 'country_id']);
+        // Первый параметр – это у нас имя класса, с которым мы настраиваем связь.
+        // Во втором параметре в виде массива задаётся имя удалённого PK ключа  (id) и FK из текущей таблицы модели (author_id), которые связываются между собой
     }
 
     /**

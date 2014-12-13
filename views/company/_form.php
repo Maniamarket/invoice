@@ -1,6 +1,9 @@
 <?php
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use yii\helpers\ArrayHelper;
+use app\models\Lang;
+use app\models\Country;
 /* @var $this CompanyController */
 /* @var $model Company */
 /* @var $form CActiveForm */
@@ -10,10 +13,6 @@ use yii\bootstrap\ActiveForm;
 
 <?php $form = ActiveForm::begin([
 	'id'=>'company-form',
-	// Please note: When you enable ajax validation, make sure the corresponding
-	// controller action is handling ajax validation correctly.
-	// There is a call to performAjaxValidation() commented in generated controller code.
-	// See class documentation of CActiveForm for details on this.
 	'enableAjaxValidation'=>false,
 /*    'fieldConfig' => [
         'template' => "{label}\n{beginWrapper}\n{input}\n{hint}\n{error}\n{endWrapper}",
@@ -41,12 +40,9 @@ use yii\bootstrap\ActiveForm;
     </div>
     <div class="form-group">
         <?php
-        echo $form->field($model, 'country', [
-            'inputOptions' => [
-                'placeholder' => $model->getAttributeLabel('country'),
+        echo $form->field($model, 'country_id',[ 'inputOptions' => [ 'placeholder' => $model->getAttributeLabel('country'),
                 'class' => 'form-control',
-            ],
-        ])->label(false);
+            ], ])->dropDownList( Country::list_Countries(Lang::$current->id))->label(false) ; 
         ?>
     </div>
     <div class="form-group">

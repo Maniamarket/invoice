@@ -25,6 +25,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php if( $type_user > 2){ ?>
         <th>Profit Admin</th>
         <th>Total Profit Admin</th>
+        <th>Income</th>
+        <th>My_profit</th>
         <?php } ?>
     </tr>
 <?php echo ListView::widget([

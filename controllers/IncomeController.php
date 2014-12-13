@@ -73,7 +73,7 @@ class IncomeController extends Controller
 	public function actionIndex()
 	{
             $dataProvider = new ActiveDataProvider([
-                'query' => Income::find(),
+                'query' => Income::find()->orderBy(['from'=>SORT_ASC]),
                 'pagination' => [
                     'pageSize' => 10,
                 ],
