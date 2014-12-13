@@ -26,10 +26,10 @@ class SiteController extends Controller {
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'signup', 'captcha'],
+                'only' => ['logout', 'signup',],
                 'rules' => [
                     [
-                        'actions' => ['signup', 'captcha'],
+                        'actions' => ['signup',],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
