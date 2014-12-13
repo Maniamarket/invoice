@@ -15,6 +15,8 @@ use yii\data\ActiveDataProvider;
 
 use app\models\LoginClientForm;
 use app\models\SignupClientForm;
+use app\models\PasswordResetRequestFormClient;
+use app\models\ResetPasswordFormClient;
 use app\models\Invoice;
 use app\models\Client;
 
@@ -62,6 +64,43 @@ class ClientController extends Controller
                 ],
             ],
         ];
+    }
+
+    public function actionRequestPasswordReset()
+    {
+        $model = new PasswordResetRequestFormClient();
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if ($model->sendEmail()) {
+                Yii::$app->getSession()->setFlash('success', 'Check your email for further instructions.');
+
+                return $this->goHome();
+            } else {
+                Yii::$app->getSession()->setFlash('error', 'Sorry, we are unable to reset password for email provided.');
+            }
+        }
+
+        return $this->render('requestPasswordResetToken', [
+            'model' => $model,
+        ]);
+    }
+
+        public function actionResetPassword($token)
+    {
+        try {
+            $model = new ResetPasswordFormClient($token);
+        } catch (InvalidParamException $e) {
+            throw new BadRequestHttpException($e->getMessage());
+        }
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
+            Yii::$app->getSession()->setFlash('success', 'New password was saved.');
+
+            return $this->goHome();
+        }
+
+        return $this->render('resetPassword', [
+            'model' => $model,
+        ]);
     }
 
     public function actionLogin()
@@ -126,7 +165,7 @@ class ClientController extends Controller
         $client_id = $this->isClient();
 
         $dataProvider = new ActiveDataProvider([
-                'query' => Invoice::find()->where(['client_id'=>$client_id]),
+                'query' => Invoice::find()->where(['client_id'=>$client_id, 'is_pay'=> 1]),
                 'pagination' => [
                     'pageSize' => 10,
                 ],
