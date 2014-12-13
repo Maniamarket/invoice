@@ -113,6 +113,11 @@ if(empty($model->is_pay)) {
 // This method has several options, check the source code documentation for more information.
 $pdf->Output('yii2_tcpdf_example.pdf', 'I');
 
+/*$js = 'print(true);';
+$pdf->IncludeJS($js);
+$pdf->Output($pdffile, 'F');*/
+
+
 //============================================================+
 // END OF FILE
 //============================================================+
