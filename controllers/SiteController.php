@@ -22,7 +22,7 @@ class SiteController extends Controller {
     /**
      * @inheritdoc
      */
-    public function behaviors() {
+   /* public function behaviors() {
         return [
             'access' => [
                 'class' => AccessControl::className(),
@@ -47,7 +47,7 @@ class SiteController extends Controller {
                 ],
             ],
         ];
-    }
+    }*/
 
     /**
      * @inheritdoc
@@ -58,15 +58,15 @@ class SiteController extends Controller {
                 'class' => 'yii\web\ErrorAction',
             ],
             'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
+                'class' => 'mdm\captcha\CaptchaAction',
             ],
-            'captcha' => [
+            /*'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
-                'fixedVerifyCode' => YII_ENV === 'test' ? 'testme' : null,
+                //'fixedVerifyCode' => YII_ENV === 'test' ? 'testme' : null,
                 'transparent'=>true,
                 'minLength'=>3,
                 'maxLength'=>4
-            ],
+            ],*/
         ];
     }
 

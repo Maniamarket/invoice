@@ -23,11 +23,8 @@
         "yurkinx/yii2-image": "dev-master",
         "marciocamello/yii2-paypal": "dev-master",
         "paypal/rest-api-sdk-php": "*",
-<<<<<<< HEAD
-	"mdmsoft/yii2-captcha": "1.0.0"
-=======
+        "mdmsoft/yii2-captcha": "1.0.0",
         "kartik-v/yii2-nav-x": "dev-master"
->>>>>>> origin/master
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",
