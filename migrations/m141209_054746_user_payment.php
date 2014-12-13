@@ -27,9 +27,8 @@ class m141209_054746_user_payment extends Migration
         $this->createIndex('idx_user_payment_user_id', '{{%user_payment}}', 'user_id');
 
         $this->batchInsert('{{%user_payment}}', ['id', 'user_id', 'credit', 'is_input', 'date', 'credit_sum', 'profit_parent'], [
-            [1, 4, 5, 1, '2014-12-09 11:33:43', '0.00', '0.00'],
-            [2, 4, 5, 1, '2014-12-09 11:36:14', '0.00', '0.00'],
-            [3, 4, 5, 1, '2014-12-09 11:38:32', '0.00', '0.00']
+            [1, 3, 50, 1, '2014-12-09 11:33:43', '50.00', '0.00'],
+            [2, 3, -20, 0, '2014-12-09 11:36:14', '30.00', '30.00'],
         ]);
     }
 
