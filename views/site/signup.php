@@ -1,6 +1,8 @@
 <?php
+
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use yii\captcha\Captcha;
 
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
@@ -17,12 +19,22 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-lg-5">
             <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
-                <?= $form->field($model, 'email') ?>
-                <?= $form->field($model, 'password')->passwordInput() ?>
-                <div class="form-group">
-                    <?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
-                </div>
-            <?php ActiveForm::end(); ?>
+            <?= $form->field($model, 'email') ?>
+            <?= $form->field($model, 'password')->passwordInput() ?>
+
+
+            <?=
+            $form->field($model, 'captcha')->widget(Captcha::className(), [
+                'captchaAction' => '/site/captcha',
+                'options' => ['class' => 'form-control'],
+                'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-9">{input}</div></div>',
+            ])
+            ?>
+
+            <div class="form-group">
+            <?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
+            </div>
+<?php ActiveForm::end(); ?>
         </div>
     </div>
 </div>

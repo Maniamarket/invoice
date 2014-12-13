@@ -1,4 +1,5 @@
 <?php
+
 namespace app\models;
 
 use app\models\User;
@@ -8,28 +9,32 @@ use Yii;
 /**
  * Signup form
  */
-class SignupForm extends Model
-{
-   // public $username;
+class SignupForm extends Model {
+
+    // public $username;
     public $email;
     public $password;
 
     /**
+     * @var string
+     */
+    public $captcha;
+
+    /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-        /*    ['username', 'filter', 'filter' => 'trim'],
-            ['username', 'required'],
-            ['username', 'unique', 'targetClass' => '\app\models\User', 'message' => 'This username has already been taken.'],
-            ['username', 'string', 'min' => 2, 'max' => 255],
-*/
+            /*    ['username', 'filter', 'filter' => 'trim'],
+              ['username', 'required'],
+              ['username', 'unique', 'targetClass' => '\app\models\User', 'message' => 'This username has already been taken.'],
+              ['username', 'string', 'min' => 2, 'max' => 255],
+             */
             ['email', 'filter', 'filter' => 'trim'],
-            ['email', 'required'],
+            [['email', 'captcha'], 'required'],
             ['email', 'email'],
+            ['captcha', 'captcha'],
             ['email', 'unique', 'targetClass' => '\app\models\User', 'message' => 'This email address has already been taken.'],
-
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
         ];
@@ -40,8 +45,7 @@ class SignupForm extends Model
      *
      * @return User|null the saved model or null if saving fails
      */
-    public function signup()
-    {
+    public function signup() {
         if ($this->validate()) {
             $user = new User();
             $user->email = $this->email;
@@ -51,13 +55,14 @@ class SignupForm extends Model
             $user->username = $user->id;
             $user->save();
             Yii::$app->mailer->compose('welcome', ['user' => $user])
-                ->setFrom('no-reply@site.ru')
-                ->setTo($user->email)
-                ->setSubject('Welcome')
-                ->send();
+                    ->setFrom('no-reply@site.ru')
+                    ->setTo($user->email)
+                    ->setSubject('Welcome')
+                    ->send();
             return $user;
         }
 
         return null;
     }
+
 }
