@@ -30,7 +30,7 @@ class m141207_115424_init_bd extends Migration
             'street' => Schema::TYPE_STRING . '(100) DEFAULT NULL',
             'post_index' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
             'phone' => Schema::TYPE_STRING . '(100) DEFAULT NULL',
-            'password' => Schema::TYPE_STRING . ' NOT NULL',
+            'passw' => Schema::TYPE_STRING . ' NOT NULL',
         ], $tableOptions);
 
         $this->createIndex('idx_client_user_id', '{{%client}}', 'user_id');
@@ -39,9 +39,9 @@ class m141207_115424_init_bd extends Migration
 
         $this->batchInsert('{{%client}}', ['id', 'name', 'user_id', 'email', 'email_confirm_token', 'password_hash',
             'password_reset_token', 'auth_key', 'created_at', 'updated_at', 'def_lang_id', 'country_id', 'city',
-            'street', 'post_index', 'phone', 'password'], [
-            [1, 'Fedorov', 3, '1@mu.ru', '', '$2y$13$iLuCWhxjnNoQ7E9bm4zlRe5g6okYUaSCfm8hJj11Iyv3gIL2qDTVS', '',
-                'LeKPQcSJPBrU9EsnTRg9rI8922OS7q6q', time(), time(), 1, 2, 'Moscwa', '', 2222, '', 'Ys7C'],
+            'street', 'post_index', 'phone', 'passw'], [
+            [1, 'Fedorov', 3, '1@mu.ru', '', '$2y$13$JtwKkB1lJbTEKDY3diXCOOEJZt/PeJKEqiA8AQxQWwdOiyARiPd62', '',
+                'LeKPQcSJPBrU9EsnTRg9rI8922OS7q6q', time(), time(), 1, 2, 'Moscwa', '', 2222, '', '111111'],
             [2, 'Alex', 3, '2@mu.ru', '', '$2y$13$8TnqmIT1jhnfjZiRdj8TFubVn8pC2KQNNgJoD80fhjPHCWWKYZ5Z2', '',
                 '1RDxdreA4EvNZBvfPb2Ad1Rc0h8WhMru', time(), time(), 1, 1, '', '', NULL, '', 'N6t'],
             [3, 'Belikov', 3, '3@mu.ru', '', '$2y$13$X.G4KFKIgbkWqFcDDXQGq.sn6xnanKNaDsuZ5kjEP3GW15HI1vAKO', '',
