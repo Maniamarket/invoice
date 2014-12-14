@@ -37,7 +37,7 @@ if (!$classic) {
 
     <input type="hidden" name="notify_url" value="<?php echo Url::toRoute(['ipn'],true); ?>">
 
-    <input type="submit" value="Платить через PayPal">
+    <input type="submit" value="РџР»Р°С‚РёС‚СЊ С‡РµСЂРµР· PayPal">
 
 </form>
 <?php } ?>

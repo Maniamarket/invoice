@@ -27,11 +27,11 @@ $this->params['breadcrumbs'][] = $this->title;
    </p>
 
     <div class="col-10">
-        <h3>Форма поиска</h3>
+        <h3>Р¤РѕСЂРјР° РїРѕРёСЃРєР°</h3>
         <?php echo Html::beginForm(['index'],'get',['id'=>'form-client-search']); ?>
-        <input name="name" id='name_search' type="text" placeholder="Введите имя... " data-url="<?php echo Url::toRoute(['client/ajax'])?>"
+        <input name="name" id='name_search' type="text" placeholder="Р’РІРµРґРёС‚Рµ РёРјСЏ... " data-url="<?php echo Url::toRoute(['client/ajax'])?>"
                value="<?php if(isset($qp['name'])) echo $qp['name']; ?>" class="col-5" />
-        <input type="submit" value="Поиск" class="btn btn-primary" />
+        <input type="submit" value="РџРѕРёСЃРє" class="btn btn-primary" />
         <?php echo Html::endForm(); ?>
     </div>
     <p>&nbsp;</p>
@@ -39,26 +39,26 @@ $this->params['breadcrumbs'][] = $this->title;
         <thead>
         <tr>
             <th>ID</th>
-            <th>Оплата</th>
+            <th>РћРїР»Р°С‚Р°</th>
             <th>Name
                 <?php if(isset($qp['name'])) {
                     if (isset($qp['orderby']) && $qp['orderby']=='asc') {
                         ?>
-                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true" title="По возрастанию"></span>
+                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true" title="РџРѕ РІРѕР·СЂР°СЃС‚Р°РЅРёСЋ"></span>
                     <?php } else { ?>
-                        <a href="<?php echo Url::toRoute(['client/index','name'=>$qp['name'], 'orderby'=>'asc']); ?>" title="По возрастанию"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
+                        <a href="<?php echo Url::toRoute(['client/index','name'=>$qp['name'], 'orderby'=>'asc']); ?>" title="РџРѕ РІРѕР·СЂР°СЃС‚Р°РЅРёСЋ"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
                     <?php }
                     if (isset($qp['orderby']) && $qp['orderby']=='desc') {
                         ?>
-                        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true" title="По убыванию"></span>
+                        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true" title="РџРѕ СѓР±С‹РІР°РЅРёСЋ"></span>
                     <?php } else { ?>
-                        <a href="<?php echo Url::toRoute(['client/index','name'=>$qp['name'], 'orderby'=>'desc']); ?>" title="По убыванию"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
+                        <a href="<?php echo Url::toRoute(['client/index','name'=>$qp['name'], 'orderby'=>'desc']); ?>" title="РџРѕ СѓР±С‹РІР°РЅРёСЋ"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
                     <?php }
                 }
                 else {
                     ?>
-                    <a href="<?php echo Url::to(''); ?>&name=&orderby=asc" title="По возрастанию"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
-                    <a href="<?php echo Url::to(''); ?>&name=&orderby=desc" title="По убыванию"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
+                    <a href="<?php echo Url::to(''); ?>&name=&orderby=asc" title="РџРѕ РІРѕР·СЂР°СЃС‚Р°РЅРёСЋ"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
+                    <a href="<?php echo Url::to(''); ?>&name=&orderby=desc" title="РџРѕ СѓР±С‹РІР°РЅРёСЋ"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
                 <?php
                 }
                 ?>

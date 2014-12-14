@@ -130,7 +130,7 @@ class ClientController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             if ($client = $model->signup()) {
                // var_dump(Yii::$app->session['password']);                exit();
-                Yii::$app->getSession()->setFlash('success', 'Клиент успешно зарегистрирован ');
+                Yii::$app->getSession()->setFlash('success', 'РљР»РёРµРЅС‚ СѓСЃРїРµС€РЅРѕ Р·Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°РЅ ');
                 return $this->redirect(['index']);
             }
         }
@@ -206,7 +206,7 @@ class ClientController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save())
         {
-            Yii::$app->getSession()->setFlash('success', 'Клиент успешно обновлен ');
+            Yii::$app->getSession()->setFlash('success', 'РљР»РёРµРЅС‚ СѓСЃРїРµС€РЅРѕ РѕР±РЅРѕРІР»РµРЅ ');
             if (!Yii::$app->user->isGuest)
                 return $this->redirect(['index']);
         }
@@ -237,7 +237,7 @@ class ClientController extends Controller
     // Match callback called! This page can be accessed only each October 31st
     public function actionSpecialCallback()
     {
-        echo 'Работает!';
+        echo 'Р Р°Р±РѕС‚Р°РµС‚!';
 //        return $this->render('happy-halloween');
     }
 

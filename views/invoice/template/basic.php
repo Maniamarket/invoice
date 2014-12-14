@@ -15,7 +15,7 @@ $lt = $isTranslit ? 'en-US' : Yii::$app->language;
         <tr><td><b><?= Yii::t('invoice', 'Seller', [], $lt) ?>: </b><?= $model->user->username ?></td>
             <td style="text-align: right;"><b><?= Yii::t('invoice', 'Buyer', [], $lt) ?>: </b><?= $isTranslit ? Translit::Translit($model->client->name):$model->client->name ?></td></tr>
     </table>
-    <h3 style="text-align: center;"><b><?= Yii::t('invoice', 'Invoice', [], $lt) ?> №: </b >MM100<?= $model->id ?></h3>
+    <h3 style="text-align: center;"><b><?= Yii::t('invoice', 'Invoice', [], $lt) ?> в„–: </b >MM100<?= $model->id ?></h3>
     <p>&nbsp;</p>
     <table>
         <tr>

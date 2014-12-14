@@ -109,7 +109,7 @@ class PaymentController extends Controller
 
     public function actionIpn()
     {
-//        Yii::info('Метод сработал', 'userMessage');
+//        Yii::info('РњРµС‚РѕРґ СЃСЂР°Р±РѕС‚Р°Р»', 'userMessage');
         $paypalmode = 'sandbox'; //Sandbox for testing or empty '';
         if ($_POST) {
             $req = 'cmd=' . urlencode('_notify-validate');
@@ -152,24 +152,24 @@ class PaymentController extends Controller
         echo 'success';
 /*        $ipn = new PPIPNMessage(array(['mode' => 'sandbox']),null,[]);
         if (!$ipn->validate()) {
-            throw new \Exception('Не пройдена валидация платежа на стороне PayPal');
+            throw new \Exception('РќРµ РїСЂРѕР№РґРµРЅР° РІР°Р»РёРґР°С†РёСЏ РїР»Р°С‚РµР¶Р° РЅР° СЃС‚РѕСЂРѕРЅРµ PayPal');
         }*/
-// $_GET['txn_id']          Ид платежа PayPal
-// $_GET['mc_gross']        Сумма платежа
-// $_GET['mc_currency']     Валюта платежа
-// $_GET['payer_email']     Еmail плательщика
-// $_GET['item_number1']    Ид первого товара
-// $_GET['payment_status']  Статус заказа
-// $_GET['receiver_email']  Email получателя
+// $_GET['txn_id']          РРґ РїР»Р°С‚РµР¶Р° PayPal
+// $_GET['mc_gross']        РЎСѓРјРјР° РїР»Р°С‚РµР¶Р°
+// $_GET['mc_currency']     Р’Р°Р»СЋС‚Р° РїР»Р°С‚РµР¶Р°
+// $_GET['payer_email']     Р•mail РїР»Р°С‚РµР»СЊС‰РёРєР°
+// $_GET['item_number1']    РРґ РїРµСЂРІРѕРіРѕ С‚РѕРІР°СЂР°
+// $_GET['payment_status']  РЎС‚Р°С‚СѓСЃ Р·Р°РєР°Р·Р°
+// $_GET['receiver_email']  Email РїРѕР»СѓС‡Р°С‚РµР»СЏ
         if (isset($_GET['payment_status'])) {
             switch ($_GET['payment_status']) {
-                // Платеж успешно выполнен, оказываем услугу
+                // РџР»Р°С‚РµР¶ СѓСЃРїРµС€РЅРѕ РІС‹РїРѕР»РЅРµРЅ, РѕРєР°Р·С‹РІР°РµРј СѓСЃР»СѓРіСѓ
                 case 'completed': echo 'completed'; break;
-                // Платеж не прошел
+                // РџР»Р°С‚РµР¶ РЅРµ РїСЂРѕС€РµР»
                 case 'failed': echo 'failed'; break;
-                // Платеж отменен продавцом
+                // РџР»Р°С‚РµР¶ РѕС‚РјРµРЅРµРЅ РїСЂРѕРґР°РІС†РѕРј
                 case 'denied': echo 'denied'; break;
-                // Деньги были возвращены покупателю
+                // Р”РµРЅСЊРіРё Р±С‹Р»Рё РІРѕР·РІСЂР°С‰РµРЅС‹ РїРѕРєСѓРїР°С‚РµР»СЋ
                 case 'refunded': echo 'refunded'; break;
             }
         }
@@ -201,7 +201,7 @@ class PaymentController extends Controller
     //        $amount->
             $item1 = new Item();
             $item1->setName('Buy Credits')->setCurrency('RUB')->setQuantity(1)->setPrice($price);
-    // Ид товара/услуги на вашей стороне
+    // РРґ С‚РѕРІР°СЂР°/СѓСЃР»СѓРіРё РЅР° РІР°С€РµР№ СЃС‚РѕСЂРѕРЅРµ
             $item1->setSku('1000');
             $itemList = new ItemList();
             $itemList->setItems(array($item1));
