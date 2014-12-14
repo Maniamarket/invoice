@@ -13,6 +13,7 @@ use Yii;
  */
 class Paymentbanktrans extends \yii\db\ActiveRecord {
 
+    public $username;
     /**
      * @inheritdoc
      */
@@ -25,7 +26,7 @@ class Paymentbanktrans extends \yii\db\ActiveRecord {
      */
     public function rules() {
 	return [
-	    [['message', 'file'], 'required'],
+	    [['message', 'file','sum'], 'required'],
 	    ['file', 'file', 'extensions' => ['jpg', 'jpeg', 'png', 'gif']],
 	];
     }
@@ -36,9 +37,12 @@ class Paymentbanktrans extends \yii\db\ActiveRecord {
     public function attributeLabels() {
 	return [
 	    'id' => 'ID',
-	    'user_id' => 'User',
+	    'username' => 'User',
+	    'sum' => 'Sum',	    
 	    'message' => 'Message',
 	    'file' => 'File',
+	    'status' => 'Status',
+	    'date' => 'Date',
 	];
     }
 
