@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 function sho($a) {
     echo '<pre>';
@@ -19,7 +19,7 @@ $config = [
     'bootstrap' => ['log'],
     'name' => 'Biling',
     'language' => 'ru-RU',
-    'language' => 'ru-RU',
+//    'language' => 'ru-RU',
     'components' => [
         'i18n' => [
             'translations' => [
@@ -64,9 +64,9 @@ $config = [
             'class' => 'cinghie\tcpdf\TCPDF',
         ],
 
-	'mailer' => [
+/*	'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
-        ],
+        ],*/
         /* 'paypal' => [
           'class' => 'ak\Paypal',
           'clientId' => 'AafqihCLD6RrQKhaE1nB672zsfVDIjRSHtKbmaGzFcSquWJzJ-cL_ISKrKXZ',
@@ -137,7 +137,7 @@ $config = [
             ],
         ],
         'db' => require(__DIR__ . '/db.php'),
-        'urlManager' => [
+/*        'urlManager' => [
             'class' => 'yii\web\UrlManager',
             'enablePrettyUrl' => true,
             'showScriptName' => false,
@@ -145,7 +145,7 @@ $config = [
                 ['pattern' => '<module:\w+>/<controller:\w+>/<action:\w+>', 'route' => '<module>/<controller>/<action>'],
                 ['pattern' => 'payments', 'route' => 'payments/default/index'],
             ],
-        ],
+        ],*/
     ],
     'params' => $params,
 ];

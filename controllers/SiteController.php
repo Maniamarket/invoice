@@ -57,15 +57,16 @@ class SiteController extends Controller {
             'error' => [
                 'class' => 'yii\web\ErrorAction',
             ],
-            /* 'captcha' => [
-              'class' => 'yii\captcha\CaptchaAction',
-              ], */
+/*             'captcha' => [
+                  'class' => 'yii\captcha\CaptchaAction',
+              ],*/
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
                 //'fixedVerifyCode' => YII_ENV === 'test' ? 'testme' : null,
                 'transparent' => true,
                 'minLength' => 3,
-                'maxLength' => 4
+                'maxLength' => 4,
+                'foreColor'=>0xE16020
             ],
         ];
     }
