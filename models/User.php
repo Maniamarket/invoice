@@ -203,7 +203,7 @@ class User extends ActiveRecord implements IdentityInterface
         $this->password_reset_token = null;
     }
 
-    /*Todo удалить, если не используется */
+    /*Todo СѓРґР°Р»РёС‚СЊ, РµСЃР»Рё РЅРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ */
     public function getStatusLabel($status = '')
     {
         $status = (empty($status)) ? $this->role : $status;
@@ -215,13 +215,13 @@ class User extends ActiveRecord implements IdentityInterface
         }
     }
 
-    /*Todo удалить, если не используется */
+    /*Todo СѓРґР°Р»РёС‚СЊ, РµСЃР»Рё РЅРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ */
     public function getRolesList()
     {
         return array(self::ROLE_USER => 'User');
     }
 
-    /*Todo удалить, если не используется */
+    /*Todo СѓРґР°Р»РёС‚СЊ, РµСЃР»Рё РЅРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ */
     public function getStatusList()
     {
        return array(self::STATUS_ACTIVE => 'Active', self::STATUS_INACTIVE => 'Inactive', self::STATUS_BANNED => 'Banned');
@@ -260,14 +260,14 @@ class User extends ActiveRecord implements IdentityInterface
     public function getSetting()
     {
         return $this->hasOne('app\models\Setting', array('user_id' => 'id'));
-        // Первый параметр – это у нас имя класса, с которым мы настраиваем связь.
-        // Во втором параметре в виде массива задаётся имя удалённого PK ключа  (id) и FK из текущей таблицы модели (author_id), которые связываются между собой
+        // РџРµСЂРІС‹Р№ РїР°СЂР°РјРµС‚СЂ вЂ“ СЌС‚Рѕ Сѓ РЅР°СЃ РёРјСЏ РєР»Р°СЃСЃР°, СЃ РєРѕС‚РѕСЂС‹Рј РјС‹ РЅР°СЃС‚СЂР°РёРІР°РµРј СЃРІСЏР·СЊ.
+        // Р’Рѕ РІС‚РѕСЂРѕРј РїР°СЂР°РјРµС‚СЂРµ РІ РІРёРґРµ РјР°СЃСЃРёРІР° Р·Р°РґР°С‘С‚СЃСЏ РёРјСЏ СѓРґР°Р»С‘РЅРЅРѕРіРѕ PK РєР»СЋС‡Р°  (id) Рё FK РёР· С‚РµРєСѓС‰РµР№ С‚Р°Р±Р»РёС†С‹ РјРѕРґРµР»Рё (author_id), РєРѕС‚РѕСЂС‹Рµ СЃРІСЏР·С‹РІР°СЋС‚СЃСЏ РјРµР¶РґСѓ СЃРѕР±РѕР№
     }
 
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
-        // установка роли пользователя
+        // СѓСЃС‚Р°РЅРѕРІРєР° СЂРѕР»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
         $auth = Yii::$app->authManager;
         $name = $this->role ? $this->role : self::ROLE_USER;
         $role = $auth->getRole($name);

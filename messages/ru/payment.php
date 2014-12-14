@@ -1,6 +1,6 @@
 <?php
 return [
     ////contact page    
-    'Name' => 'Имя',
+    'Name' => 'РРјСЏ',
     
 ];

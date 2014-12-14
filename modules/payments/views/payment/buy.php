@@ -66,7 +66,7 @@ $this->breadcrumbs = array(
     </div><!-- form -->
 </div>
 
-<?php /* Google AdWords для действия "Пополнение баланса" */ ?>
+<?php /* Google AdWords РґР»СЏ РґРµР№СЃС‚РІРёСЏ "РџРѕРїРѕР»РЅРµРЅРёРµ Р±Р°Р»Р°РЅСЃР°" */ ?>
 <script type="text/javascript">
     /* <![CDATA[ */
     var google_conversion_id = 990620359;

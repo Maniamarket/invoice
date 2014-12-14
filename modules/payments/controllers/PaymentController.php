@@ -46,13 +46,13 @@ class PaymentController extends Controller {
                 $history = new Models\PaymentHistory;
                 $history->amount = $model->out_summ;
                 $history->payment_system_id = 1;
-                $history->description = 'PayPal: пополнение на ' . $model->amount;
+                $history->description = 'PayPal: РїРѕРїРѕР»РЅРµРЅРёРµ РЅР° ' . $model->amount;
                 $history->curs = 1;
                 $history->equivalent = $model->amount * $history->curs;
                 $history->type = $model->type;
                 $history->save();
                 
-               // $model->inv_desc = 'По курсу ЦБ, с вас будет удержано ' . number_format($model->out_summ, 2, ',', ' ') . ' рублей. $1 = ' . $history->curs . ' RUR';
+               // $model->inv_desc = 'РџРѕ РєСѓСЂСЃСѓ Р¦Р‘, СЃ РІР°СЃ Р±СѓРґРµС‚ СѓРґРµСЂР¶Р°РЅРѕ ' . number_format($model->out_summ, 2, ',', ' ') . ' СЂСѓР±Р»РµР№. $1 = ' . $history->curs . ' RUR';
 
                 if ($history->save()) {
                     $model->inv_id = $history->id;
@@ -74,7 +74,7 @@ class PaymentController extends Controller {
     }
 
     public function actionResult() {
-        /* используется в случае успешного проведения оплаты */
+        /* РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РІ СЃР»СѓС‡Р°Рµ СѓСЃРїРµС€РЅРѕРіРѕ РїСЂРѕРІРµРґРµРЅРёСЏ РѕРїР»Р°С‚С‹ */
         $inv_id = Yii::$app->request->getParam('InvId', 0);
         $out_summ = Yii::$app->request->getParam('OutSum', 0);
         $signature = Yii::$app->request->getParam('SignatureValue', 0);
@@ -97,7 +97,7 @@ class PaymentController extends Controller {
     }
 
     public function actionSuccess() {
-        /* В случае успешного исполнения платежа Покупатель может перейти по данному адресу. */
+        /* Р’ СЃР»СѓС‡Р°Рµ СѓСЃРїРµС€РЅРѕРіРѕ РёСЃРїРѕР»РЅРµРЅРёСЏ РїР»Р°С‚РµР¶Р° РџРѕРєСѓРїР°С‚РµР»СЊ РјРѕР¶РµС‚ РїРµСЂРµР№С‚Рё РїРѕ РґР°РЅРЅРѕРјСѓ Р°РґСЂРµСЃСѓ. */
         $inv_id = Yii::$app->request->getParam('InvId', 0);
         $history = new PaymentHistory;
         $attributes = array();
@@ -113,8 +113,8 @@ class PaymentController extends Controller {
     }
 
     public function actionFail() {
-        /* В случае отказа от исполнения платежа Покупатель перенаправляется по данному адресу */
-        Yii::$app->user->setFlash('warning', 'Платеж отменен.');
+        /* Р’ СЃР»СѓС‡Р°Рµ РѕС‚РєР°Р·Р° РѕС‚ РёСЃРїРѕР»РЅРµРЅРёСЏ РїР»Р°С‚РµР¶Р° РџРѕРєСѓРїР°С‚РµР»СЊ РїРµСЂРµРЅР°РїСЂР°РІР»СЏРµС‚СЃСЏ РїРѕ РґР°РЅРЅРѕРјСѓ Р°РґСЂРµСЃСѓ */
+        Yii::$app->user->setFlash('warning', 'РџР»Р°С‚РµР¶ РѕС‚РјРµРЅРµРЅ.');
         $inv_id = Yii::$app->request->getParam('InvId', 0);
         $history = new PaymentHistory;
         $attributes = array();
@@ -143,7 +143,7 @@ class PaymentController extends Controller {
             $model->attributes = $_POST['PaymentForm'];
             if ($model->validate()) {
                 $summ = number_format(($model->out_summ * Yii::$app->cfg->getItem('RUR_USD')), 2, ',', ' ');
-                echo '<div class="flash-info">С вас будет удержано <b>' . $summ . '</b> рублей</div>';
+                echo '<div class="flash-info">РЎ РІР°СЃ Р±СѓРґРµС‚ СѓРґРµСЂР¶Р°РЅРѕ <b>' . $summ . '</b> СЂСѓР±Р»РµР№</div>';
             }
         }
     }
@@ -165,11 +165,11 @@ class PaymentController extends Controller {
 //        $headers.= "X-Mailer: PHP/" . phpversion() . "\n";
 //        $headers.= "MIME-Version: 1.0" . "\n";
 //        $headers.= "Content-type: text/html; charset=utf-8\n";
-//        $text = '1) Проект - Pay4Date.com<br />';
-//        $text.= '2) Сумма - $' . $summ . '<br />';
-//        $text.= '3) Система пополнения  - ' . $system . '<br />';
-//        $text.= '4) Дата  - ' . date('Y-m-d H:i:s') . '<br />';
-//        $text.= '5) Профиль пользователя  - ' . CHtml::link(Yii::$app->createUrl("/user/user_profile", array("id" => $user_id)), array("/user/user_profile", "id" => $user_id)) . '<br />';
-//        mail("service@hochumogu.com", '=?utf-8?B?' . base64_encode("Pay4Date: Оповещение о пополнении") . '?=', $text, $headers, '-fno-reply@pay4date.com');
+//        $text = '1) РџСЂРѕРµРєС‚ - Pay4Date.com<br />';
+//        $text.= '2) РЎСѓРјРјР° - $' . $summ . '<br />';
+//        $text.= '3) РЎРёСЃС‚РµРјР° РїРѕРїРѕР»РЅРµРЅРёСЏ  - ' . $system . '<br />';
+//        $text.= '4) Р”Р°С‚Р°  - ' . date('Y-m-d H:i:s') . '<br />';
+//        $text.= '5) РџСЂРѕС„РёР»СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ  - ' . CHtml::link(Yii::$app->createUrl("/user/user_profile", array("id" => $user_id)), array("/user/user_profile", "id" => $user_id)) . '<br />';
+//        mail("service@hochumogu.com", '=?utf-8?B?' . base64_encode("Pay4Date: РћРїРѕРІРµС‰РµРЅРёРµ Рѕ РїРѕРїРѕР»РЅРµРЅРёРё") . '?=', $text, $headers, '-fno-reply@pay4date.com');
 //    }
 }

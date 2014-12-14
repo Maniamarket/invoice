@@ -64,7 +64,7 @@ class LangController extends Controller
         $model = new Lang();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->getSession()->setFlash('success', 'Язык успешно создан');
+            Yii::$app->getSession()->setFlash('success', 'РЇР·С‹Рє СѓСЃРїРµС€РЅРѕ СЃРѕР·РґР°РЅ');
             return $this->redirect(['index', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -84,7 +84,7 @@ class LangController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->getSession()->setFlash('success', 'Язык успешно обновлен');
+            Yii::$app->getSession()->setFlash('success', 'РЇР·С‹Рє СѓСЃРїРµС€РЅРѕ РѕР±РЅРѕРІР»РµРЅ');
             return $this->redirect(['index']);
         } else {
             return $this->render('update', [
@@ -102,7 +102,7 @@ class LangController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-        Yii::$app->getSession()->setFlash('success', 'Язык успешно удален');
+        Yii::$app->getSession()->setFlash('success', 'РЇР·С‹Рє СѓСЃРїРµС€РЅРѕ СѓРґР°Р»РµРЅ');
         return $this->redirect(['index']);
     }
 

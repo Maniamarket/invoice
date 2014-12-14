@@ -28,10 +28,10 @@
         <div class="cl"></div>
 
         <div class="row">
-            <p class="note"><?php print Yii::t('mypurse', 'Funds’ withdrawal is made every first and third week of the month. The minimum withdrawal amount is ${minimum}.', array('{minimum}' => PayOutForm::PO_MINIMUM)) ?></p>
-            <p class="note">Для вывода доступны следующие кошельки Z, U, E, R</p>
-            <p class="note">На кошильки U, E, R сумма будет зачисленна в долларовом еквиваленте</p>
-            <!--<p class="note"><?php print Yii::t('mypurse', 'Don’t forget to include all the necessary payment details in the request form: account number for «WebMoney» service, account owner`s first name, last name and patronymic name.') ?></p>-->
+            <p class="note"><?php print Yii::t('mypurse', 'FundsвЂ™ withdrawal is made every first and third week of the month. The minimum withdrawal amount is ${minimum}.', array('{minimum}' => PayOutForm::PO_MINIMUM)) ?></p>
+            <p class="note">Р”Р»СЏ РІС‹РІРѕРґР° РґРѕСЃС‚СѓРїРЅС‹ СЃР»РµРґСѓСЋС‰РёРµ РєРѕС€РµР»СЊРєРё Z, U, E, R</p>
+            <p class="note">РќР° РєРѕС€РёР»СЊРєРё U, E, R СЃСѓРјРјР° Р±СѓРґРµС‚ Р·Р°С‡РёСЃР»РµРЅРЅР° РІ РґРѕР»Р»Р°СЂРѕРІРѕРј РµРєРІРёРІР°Р»РµРЅС‚Рµ</p>
+            <!--<p class="note"><?php print Yii::t('mypurse', 'DonвЂ™t forget to include all the necessary payment details in the request form: account number for В«WebMoneyВ» service, account owner`s first name, last name and patronymic name.') ?></p>-->
             <p class="note"><?php print Yii::t('mypurse', 'Once your request is processed You`ll get the e-mail notification {email}', array('{email}'=>CHtml::link($model->email, "mailto:$model->email"))) ?></p>
             <p class="note"><?php print Yii::t('mypurse', 'Thanks for doing business with us.') ?></p>
         </div>

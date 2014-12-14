@@ -97,7 +97,7 @@ class PagenService extends \yii\base\Component
     {
         $route['page'] = 1;
         $url = Url::toRoute($route);
-        $begin_str =  $this->link_html( 'в начало',$url );
+        $begin_str =  $this->link_html( 'РІ РЅР°С‡Р°Р»Рѕ',$url );
         return $begin_str;
     }
 
@@ -123,7 +123,7 @@ class PagenService extends \yii\base\Component
     {
         $route['page'] = $this->pages;
         $url = Url::toRoute($route);
-        $end_str = $this->link_html( 'в конец ',$url );
+        $end_str = $this->link_html( 'РІ РєРѕРЅРµС† ',$url );
         return $end_str;
     }
 
@@ -146,19 +146,19 @@ class PagenService extends \yii\base\Component
             $this->find_start_page( $page );
         //    ld('11 $this->end_page'.$this->end_page.' $this->pages= '.$this->pages);
             switch ( $this->end_page ):
-                case  $this->interval_page : { // в начало
+                case  $this->interval_page : { // РІ РЅР°С‡Р°Р»Рѕ
                     $begin_str = '';
                     $end_str = $this->puc_gt( $route );
                     $end_str .= $this->puc_end( $route );
                     break;
                 }
-                case  $this->pages : { // в конец
+                case  $this->pages : { // РІ РєРѕРЅРµС†
                     $begin_str = $this->puc_begin( $route );
                     $begin_str .= $this->puc_lt( $route );
                     $end_str = '';
                     break;
                 }
-                default : { // текущая страница
+                default : { // С‚РµРєСѓС‰Р°СЏ СЃС‚СЂР°РЅРёС†Р°
                     $begin_str = $this->puc_begin( $route );
                     $begin_str .= $this->puc_lt( $route );
                     $end_str = $this->puc_gt( $route );
@@ -168,7 +168,7 @@ class PagenService extends \yii\base\Component
         }
 
         $res = '<div class="pager-blue">'."\n"
-            .'<span class="pagination-label">Перейти к странице:</span> '."\n"
+            .'<span class="pagination-label">РџРµСЂРµР№С‚Рё Рє СЃС‚СЂР°РЅРёС†Рµ:</span> '."\n"
             .'<ul id="foot_pager" class="pagination">';
         $res .= $begin_str;
         for( $k = $this->start_page; $k <= $this->end_page; $k++)
