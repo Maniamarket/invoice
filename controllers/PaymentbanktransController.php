@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Paymentbanktrans;
+use app\models\Setting;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -42,7 +43,7 @@ class PaymentbanktransController extends Controller {
 	]);
 	
 	 if(Yii::$app->user->identity->role==='superadmin' ){
-	     return $this->render('index', [
+	     return $this->render('index_adm', [
 		    'dataProvider' => $dataProvider,
 		    'creditPath' => Yii::$app->params['creditPath'],
 		 ]);
@@ -55,6 +56,32 @@ class PaymentbanktransController extends Controller {
 
 	
 	
+    }
+    
+    public function actionApprove($id){
+	$credits = Setting::findOne(Yii::$app->user->id);
+	$payment = Paymentbanktrans::findOne($id);
+	$credits->credit = $payment->sum;
+	$payment->status = 1;
+	
+	$credits->update();
+	$payment->update();
+	
+	
+	$this->redirect(array('index'));
+    }
+    
+    public function actionCancel($id){
+	//$credits = Setting::findOne(Yii::$app->user->id);
+	$payment = Paymentbanktrans::findOne($id);
+	//$credits->credit = $payment->sum;
+	$payment->status = 2;
+	
+	//$credits->update();
+	$payment->update();
+	
+	
+	$this->redirect(array('index'));
     }
 
     /**

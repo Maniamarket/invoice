@@ -47,15 +47,13 @@ $this->params['breadcrumbs'][] = $this->title;
 		//'value'=>function($data) { return $data->status ? 0 : 'Отправлен' ? 1 : 'Принят' ? 2 : 'Отклонен';},		
 		//'value'=>['0'=>'Отправлен','1'=>'Принят','2'=>'Отклонен'],
 	    ],
-	    
-	    'date',
+	    [
+		'label' => 'date',
+		'value' => function($data) { return date("Y-m-d H:i:s",$data->date);},		
+	    ],	    
             [
 		'class' => 'yii\grid\ActionColumn',
-		'template' => '{update} {delete}',
-		'buttons'=>[
-                'delete'=>function($url, $model, $key){
-                    return "<a href='#' data-id='$key' onclick='return false;' data-rmu='$url' data-message='Are you sure delete $model->id' class='rm-btn'><span class='glyphicon glyphicon-trash'></span></a>";
-                }]
+		'template' => '{update} {delete}',		
 	    ],
 		
 			
