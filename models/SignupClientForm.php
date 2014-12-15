@@ -22,7 +22,7 @@ class SignupClientForm extends Model
             ['email', 'filter', 'filter' => 'trim'],
             ['email', 'required'],
             ['email', 'email'],
-            ['email', 'unique', 'targetClass' => '\app\models\User', 'message' => 'This email address has already been taken.'],
+            ['email', 'unique', 'targetClass' => '\app\models\Client', 'message' => 'This email address has already been taken.'],
         ];
     }
 
