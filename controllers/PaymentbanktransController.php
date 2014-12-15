@@ -148,7 +148,7 @@ class PaymentbanktransController extends Controller {
 		//echo Yii::$app->user->identity->email; exit;
 		Yii::$app->mailer->compose()
 			->setFrom(Yii::$app->user->identity->email)
-			->setTo('phpdev@xaker.ru')
+			->setTo(Yii::$app->params['adminEmail'])
 			->setSubject('get credit')
 			->setTextBody($model->message)
 			->attach(Yii::$app->params['creditPath'] . $file->name)
