@@ -24,16 +24,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            'id',
-	    [
-		'label' => 'username',
-		'value' => 'username',
-		'format' => 'raw',
-		'visible'=>Yii::$app->user->can('superadmin'),
-	    ],
+            'id',	    
             'message',
 	    [
-		'label' => 'image',
+		'attribute' => 'image',
 		'format' => 'raw',
 		//'value'=>function($data) { return $data->imageurl; },		
 		'value'=>function($data) { return Html::a('Attached image', $data->imageurl, ['target'=>'blank']); },		
@@ -42,13 +36,13 @@ $this->params['breadcrumbs'][] = $this->title;
 	    ],
 	    'sum',
 	    [
-		'label'=>'status',		
+		'attribute'=>'status',		
 		'value'=>function($data) { return $data->status;},		
 		//'value'=>function($data) { return $data->status ? 0 : 'Отправлен' ? 1 : 'Принят' ? 2 : 'Отклонен';},		
 		//'value'=>['0'=>'Отправлен','1'=>'Принят','2'=>'Отклонен'],
 	    ],
 	    [
-		'label' => 'date',
+		'attribute' => 'date',
 		'value' => function($data) { return date("Y-m-d H:i:s",$data->date);},		
 	    ],	    
             [

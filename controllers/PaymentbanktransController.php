@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Paymentbanktrans;
+use app\models\Transactionbanktrans;
 use app\models\Setting;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
@@ -57,31 +58,57 @@ class PaymentbanktransController extends Controller {
 	
 	
     }
-    
+    /**
+     * Approve user credit request.
+     * @param integer $id
+     * @return mixed
+     */
     public function actionApprove($id){
+	//подтверждаем банковский перевод и пишем в таблицу запрошенные кредиты
 	$credits = Setting::findOne(Yii::$app->user->id);
 	$payment = Paymentbanktrans::findOne($id);
-	$credits->credit = $payment->sum;
+	$credits->credit += $payment->sum;
 	$payment->status = 1;
 	
 	$credits->update();
 	$payment->update();
 	
+	//записываем в журнал транзакций
+	$this->writeTransaction($payment->id, $payment->status);
+	
+	$this->redirect(array('index'));
+    }
+    /**
+     * Cancel user credit request.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionCancel($id){
+	//отмена запроса кредитов банковским переводом
+	$payment = Paymentbanktrans::findOne($id);	
+	$payment->status = 2;		
+	$payment->update();
+	
+	//записываем в журнал транзакций
+	$this->writeTransaction($payment->id, $payment->status);
 	
 	$this->redirect(array('index'));
     }
     
-    public function actionCancel($id){
-	//$credits = Setting::findOne(Yii::$app->user->id);
-	$payment = Paymentbanktrans::findOne($id);
-	//$credits->credit = $payment->sum;
-	$payment->status = 2;
+    protected function writeTransaction($id, $status){
+	$transaction = new Transactionbanktrans;	
+	//$transaction = Transactionbanktrans::find();	
+	//echo '<pre>'; print_r($transaction); exit;
+	$transaction->t_id = $id;
+	$transaction->user_id = Yii::$app->user->id;
+	$transaction->status = $status;
+	$transaction->type = 0;
+	$transaction->date = time();
 	
-	//$credits->update();
-	$payment->update();
+	//echo '<pre>'; print_r($transaction); exit;
+	$transaction->save();
+	//echo '<pre>'; $transaction->getErrors();exit;
 	
-	
-	$this->redirect(array('index'));
     }
 
     /**

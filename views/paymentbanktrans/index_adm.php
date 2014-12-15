@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	    ['class' => 'yii\grid\SerialColumn'],
 	    'id',
 	    [
-		'label' => 'username',
+		'attribute' => 'username',
 		'value' => 'username',
 		'format' => 'raw',
 		'visible' => Yii::$app->user->can('superadmin'),
