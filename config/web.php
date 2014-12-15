@@ -19,7 +19,6 @@ $config = [
     'bootstrap' => ['log'],
     'name' => 'Biling',
     'language' => 'ru-RU',
-//    'language' => 'ru-RU',
     'components' => [
         'i18n' => [
             'translations' => [
