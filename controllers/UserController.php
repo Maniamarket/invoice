@@ -93,7 +93,7 @@ class UserController extends Controller {
 	    }
 	    return $this->render('buy', []);
 	} else
-	    echo 'Р­С‚Рѕ РЅРµ РґР»СЏ РіРѕСЃС‚РµР№';
+	    echo 'Это не для гостей';
     }
 
     /**
@@ -104,7 +104,7 @@ class UserController extends Controller {
         {
           $model = new User_payment;  
           if( $model->load(Yii::$app->request->post()) ){
-    //СѓРІРµР»РёС‡РµРЅРёРµ РєСЂРµРґРёС‚РѕРІ (РёСЃС‚РѕСЂРёСЏ)
+    //увеличение кредитов (история)
               $model->user_id = $id;
               $model->is_input = TRUE;
               $model->credit_sum = 0;
@@ -123,7 +123,7 @@ class UserController extends Controller {
           }  
           return $this->render('payment_credit',['model' => $model,'payment_id'=>$payment_id]);
         }
-        else echo 'Р­С‚Рѕ РЅРµ РґР»СЏ РіРѕСЃС‚РµР№';
+        else echo 'Это не для гостей';
 
    }
 
@@ -138,8 +138,8 @@ class UserController extends Controller {
            $credit = Setting::find()->where(['user_id'=>$invoice->user_id])->one();
            $price_tek = $price['vat'] + $price['tax'];
            if( $price_tek > $credit->credit) {
-               \Yii::$app->getSession()->setFlash('danger', 'Р’Р°Рј РЅР°РґРѕ РїРѕРїРѕР»РЅРёС‚СЊ РєСЂРµРґРёС‚С‹ РЅР° СЃСѓРјРјСѓ '.
-                       round($price['vat']+$price['tax']).' РєСЂРµРґРёС‚Р°');
+               \Yii::$app->getSession()->setFlash('danger', 'Вам надо пополнить кредиты на сумму '.
+                       round($price['vat']+$price['tax']).' кредита');
                return $this->redirect(['buy', 'id'=>$invoice->user_id]);
            }
            else{
@@ -147,7 +147,7 @@ class UserController extends Controller {
               $invoice->is_pay = TRUE; 
               
               if($credit->save() && $invoice->save() ){
-     //РѕРїР»Р°С‚Р° РЅР°Р»РѕРіРѕРІ (РёСЃС‚РѕСЂРёСЏ)
+     //оплата налогов (история)
                   $model = new User_payment;  
                   $model->user_id = $invoice->user_id;
                   $model->is_input = 0;
@@ -158,7 +158,7 @@ class UserController extends Controller {
                   $model->date = new Expression('NOW()');
 //              var_dump($old->credit_sum );     var_dump($model->credit_sum );              exit();
                   $model->save();
-     //СЃСѓРјРјР° РЅР°Р»РѕРіРѕРІ Р·Р° РјРµСЃСЏС†
+     //сумма налогов за месяц
                   $q = new Query;
                   $isDate =  new Expression('MONTH(`date`)=MONTH(NOW())');
                   $q ->select(['SUM(u.profit_parent) as sum'])->from('{{user_payment}} as u')
@@ -185,7 +185,7 @@ class UserController extends Controller {
                   $parent_manager->date = $user->date;
                   $paren = User::find()->where(['id'=>$user->parent_id])->one();
                   $parent_manager->parent_id = ( $paren )? $paren->parent_id : 0;
-                  if( ! $paren) { echo ' РґРѕР±Р°РІСЊ РІ Р±Р°Р·Сѓ user='.$user->parent_id; exit();}
+                  if( ! $paren) { echo ' добавь в базу user='.$user->parent_id; exit();}
                   elseif( $paren->role == 'manager')     $parent_manager->profit_manager = $res['sum'];
                   elseif($paren->role  == 'admin')  $parent_manager->profit_admin = $res['sum'];
                      
@@ -209,10 +209,10 @@ class UserController extends Controller {
                   
                   return $this->redirect(['invoice/index']);
               }
-              else echo 'СЃР±РѕР№ РїСЂС‚ СЃРЅСЏС‚РёРё РєСЂРµРґРёС‚РѕРІ';
+              else echo 'сбой прт снятии кредитов';
            }
         }
-        else echo 'Р­С‚Рѕ РЅРµ РІР°С€Р° С„Р°РєС‚СѓСЂР°';
+        else echo 'Это не ваша фактура';
    }
 
     /**

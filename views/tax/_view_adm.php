@@ -30,7 +30,7 @@ $view_element_td = 'td_tax_id'.$model->id;
            echo Html::a('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>',['delete', 'id'=>$model->id],
            [
              'title' => Yii::t('yii', 'Delete'),
-             'onclick'=>"if(confirm('Р’С‹ РґРµР№СЃС‚РІРёС‚РµР»СЊРЅРѕ С…РѕС‚РёС‚Рµ СѓРґР°Р»РёС‚СЊ?'))"
+             'onclick'=>"if(confirm('Вы действительно хотите удалить?'))"
             . "{ $('#".$view_element." ').dialog('open');//for jui dialog in my page
                 $.ajax({
                type     :'POST',

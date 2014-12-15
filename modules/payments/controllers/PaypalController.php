@@ -46,7 +46,7 @@ class PaypalController extends Controller {
                 $history->equivalent = $PaymentCurrency->getEquivalent($history->amount, $history->curs);
 
                 $history->payment_system_id = 1;
-                $history->description = 'РџРѕРїРѕР»РЅРµРЅРёРµ РЅР° ' . $history->amount . ' РєСЂРµРґРёС‚РѕРІ';
+                $history->description = 'Пополнение на ' . $history->amount . ' кредитов';
 
                 $history->type = Models\PaymentHistory::PT_PAYPAL;
                 $history->save();
@@ -88,7 +88,7 @@ class PaypalController extends Controller {
         curl_close($ch);
 
         if (strcmp($res, "VERIFIED") == 0) {
-            $pp_id = (int) $_POST['custom']; //РЅРѕРјРµСЂ СЃС‡РµС‚Р°
+            $pp_id = (int) $_POST['custom']; //номер счета
             $currency = $_POST['mc_currency'];
             $status = $_POST['payment_status'];
             $receiver_email = $_POST['receiver_email'];
@@ -98,7 +98,7 @@ class PaypalController extends Controller {
                 $record = $model->getNonCompleteById($pp_id);
 
                 if ($currency == $PaypalForm->defaultCurrency && $status == 'Completed' && $PaypalForm->businessEmail == $receiver_email && $record) {
-                    //TODO: РЎС‡РµС‚ РїРѕРґС‚РІРµСЂР¶РґРµРЅ - РїРѕРјРµС‚РёС‚СЊ Р·Р°РІРµСЂС€РµРЅРЅС‹Рј
+                    //TODO: Счет подтвержден - пометить завершенным
                     $record->complete = 1;
                     $record->save();
                     // EmailNotification::SendPaymentInfo($record);

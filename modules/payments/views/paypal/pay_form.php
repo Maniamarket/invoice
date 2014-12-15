@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= $form->field($model, 'currency')->dropDownList(ArrayHelper::map($activeCurrency, 'id', 'char_code'), ['prompt' => ' - ' . Yii::t('payment', 'Choose a currency') . ' - ']); ?>
             </div>
             <div class="form-group">                
-                <?= Html::submitButton('РџРѕРїРѕР»РЅРёС‚СЊ', ['class' => 'btn btn-primary', 'name' => 'payment-button']) ?>
+                <?= Html::submitButton('Пополнить', ['class' => 'btn btn-primary', 'name' => 'payment-button']) ?>
             </div>
             <?php ActiveForm::end(); ?>
         </div>

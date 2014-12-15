@@ -84,9 +84,9 @@ class PayController extends Controller
     public function actionIpn()
     {
         $url_pay = ( \Yii::$app->params['SandboxFlag'] ) ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
-        // e-mail РїСЂРѕРґР°РІС†Р°
+        // e-mail продавца
         $paypalemail  = ( \Yii::$app->params['SandboxFlag'] ) ? "RabotaSurv-de@gmail.com" : "info@maniamarket.eu";
-        $currency     =  "EUR";// 'RUB';             // РІР°Р»СЋС‚Р°
+        $currency     =  "EUR";// 'RUB';             // валюта
         $paypalmode = 'sandbox'; //Sandbox for testing or empty '';
         if ($_POST) {
             $req = 'cmd=' . urlencode('_notify-validate');
@@ -116,13 +116,13 @@ class PayController extends Controller
 
              
              switch ($_POST['payment_status']) {
-                // РџР»Р°С‚РµР¶ РЅРµ РїСЂРѕС€РµР»
-                case 'failed':  throw new BadRequestHttpException('РќРµ РїСЂРѕР№РґРµРЅР° РІР°Р»РёРґР°С†РёСЏ РїР»Р°С‚РµР¶Р° РЅР° СЃС‚РѕСЂРѕРЅРµ PayPal');
-                 // РџР»Р°С‚РµР¶ РѕС‚РјРµРЅРµРЅ РїСЂРѕРґР°РІС†РѕРј
-                case 'denied': throw new BadRequestHttpException('РџР»Р°С‚РµР¶ РѕС‚РјРµРЅРµРЅ РїСЂРѕРґР°РІС†РѕРј');
-                // Р”РµРЅСЊРіРё Р±С‹Р»Рё РІРѕР·РІСЂР°С‰РµРЅС‹ РїРѕРєСѓРїР°С‚РµР»СЋ
-                case 'refunded':  throw new BadRequestHttpException('Р”РµРЅСЊРіРё Р±С‹Р»Рё РІРѕР·РІСЂР°С‰РµРЅС‹ РїРѕРєСѓРїР°С‚РµР»СЋ');
-                // РџР»Р°С‚РµР¶ СѓСЃРїРµС€РЅРѕ РІС‹РїРѕР»РЅРµРЅ, РѕРєР°Р·С‹РІР°РµРј СѓСЃР»СѓРіСѓ
+                // Платеж не прошел
+                case 'failed':  throw new BadRequestHttpException('Не пройдена валидация платежа на стороне PayPal');
+                 // Платеж отменен продавцом
+                case 'denied': throw new BadRequestHttpException('Платеж отменен продавцом');
+                // Деньги были возвращены покупателю
+                case 'refunded':  throw new BadRequestHttpException('Деньги были возвращены покупателю');
+                // Платеж успешно выполнен, оказываем услугу
                 case 'completed': break;
             }
              if ($_POST['receiver_email'] != $paypalemail || $_POST["txn_type"] != "web_accept") {
@@ -133,20 +133,20 @@ class PayController extends Controller
              $user_payment_id = intval($_POST['item_number']);
              $user_payment = User_payment::findOne($user_payment_id);
              $adminemail = Yii::$app->params['adminEmail'];
-             if( !$user_payment ){ // РЅРµ РЅР°Р№РґРµРЅ С‚Р°РєРѕР№ РїР»Р°С‚РµР¶
+             if( !$user_payment ){ // не найден такой платеж
                 mail($adminemail, "IPN error", "Unable to restore cart contents\r\nCart ID: ".
                     $user_payment_id ."\r\nTransaction ID: ".$_POST["txn_id"]);
                  Yii::info('Failed Payment', 'userMessage');
                  throw new BadRequestHttpException('I cannot find N payment ... Please contact '.$adminemail);
              }
              
-//    СѓР±РµРґРёРјСЃСЏ РІ С‚РѕРј, С‡С‚Рѕ СЌС‚Р° С‚СЂР°РЅР·Р°РєС†РёСЏ РЅРµ   Р±С‹Р»Р° РѕР±СЂР°Р±РѕС‚Р°РЅР° СЂР°РЅРµРµ 
+//    убедимся в том, что эта транзакция не   была обработана ранее 
              if(!is_null($user_payment->txn_id) ) {
                  Yii::info('Yet pay ... txn_id='.$user_payment->txn_id, 'userMessage');
                  BadRequestHttpException("Yet pay ... Please contact ".$adminemail);
              }
 
-//     РїСЂРѕРІРµСЂСЏРµРј СЃСѓРјРјСѓ РїР»Р°С‚РµР¶Р°
+//     проверяем сумму платежа
              if( ($user_payment->credit != $_POST['mc_gross']) || ($_POST["mc_currency"] != $currency))
              {
                 mail($adminemail, "IPN error", "Payment amount mismatch\r\nCart ID: "
@@ -154,7 +154,7 @@ class PayController extends Controller
                  Yii::info('Failed Sum', 'userMessage');
                  throw new BadRequestHttpException("Out of money? Please contact ".$adminemail);
              }
-//  РїСЂРѕРІРµСЂРєРё Р·Р°РІРµСЂС€РµРЅС‹.
+//  проверки завершены.
             $old = User_payment::findBySql('select u.* from {{user_payment}} as u where u.user_id = '.$user_payment->user_id
                     .' and u.txn_id IS NOT NULL order by u.id desc ')->one();
             $user_payment->credit_sum = (( $old) ? $old->credit_sum : 0) + $user_payment->credit;
@@ -163,7 +163,7 @@ class PayController extends Controller
             $user_payment->txn_id = $_POST["txn_id"];
             $user_payment->save();
 
-                //СѓРІРµР»РёС‡РµРЅРёРµ РєСЂРµРґРёС‚РѕРІ
+                //увеличение кредитов
             $user_credit = Setting::find()->where(['user_id' => $user_payment->user_id])->one();
             $user_credit->credit = $user_credit->credit + $user_payment->credit;
             $user_credit->save();

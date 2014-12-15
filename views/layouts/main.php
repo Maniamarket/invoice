@@ -63,7 +63,7 @@ AppAsset::register($this);
                 ['label' => Yii::t('app', 'Services'), 'url' => ['/service/index'], 'visible' => !Yii::$app->user->isGuest],
                 ['label' => Yii::t('app', 'Taxes'), 'url' => '#', 'visible' => !Yii::$app->user->isGuest,
                     'items' => [
-//                        ['label' => 'РџРѕРґРѕС…РѕРґРЅС‹Р№', 'url' => ['/tax/index'], 'visible' => !Yii::$app->user->isGuest],
+//                        ['label' => 'Подоходный', 'url' => ['/tax/index'], 'visible' => !Yii::$app->user->isGuest],
                         ['label' => Yii::t('app', 'Tax'), 'url' => ['/user/set_tax'], 'visible' => Yii::$app->user->can('superadmin')],
                         ['label' => Yii::t('app', 'Vat'), 'url' => ['/vat/index'], 'visible' => !Yii::$app->user->isGuest],
                     ],

@@ -35,7 +35,7 @@ use app\models\Country;
         <?= $form->field($model, 'name') ?>
 	</div>
     <div class="form-group">
-        <label>Р›РѕРіРѕС‚РёРї</label>
+        <label>Логотип</label>
         <?php echo Html::activeFileInput($model,'file') ?>
     </div>
     <div class="form-group">

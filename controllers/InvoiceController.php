@@ -48,9 +48,9 @@ class InvoiceController extends Controller
         if ($model->user_id == Yii::$app->user->id) {
             $model->type = $template;
             if ($model->save())
-                Yii::$app->getSession()->setFlash('success', 'РЁР°Р±Р»РѕРЅ СѓСЃРїРµС€РЅРѕ СѓСЃС‚Р°РЅРѕРІР»РµРЅ ');
+                Yii::$app->getSession()->setFlash('success', 'Шаблон успешно установлен ');
             else
-                Yii::$app->getSession()->setFlash('danger', 'РќРµРёР·РІРµСЃС‚РЅР°СЏ РѕС€РёР±РєР°: '.$model->errors['type'][0]);
+                Yii::$app->getSession()->setFlash('danger', 'Неизвестная ошибка: '.$model->errors['type'][0]);
             return $this->redirect(['index']);
         } else {
             throw new ForbiddenHttpException('Access to the invoice is forbidden. You are not the owner of the invoice');

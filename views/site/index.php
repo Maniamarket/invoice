@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /* @var $this SiteController */
 
 $this->title='Billing';
