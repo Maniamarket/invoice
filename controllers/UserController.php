@@ -293,7 +293,7 @@ class UserController extends Controller {
                     . ' (select SUM( us_in.profit_admin) from user_income as us_in where us_in.user_id = u.id ) as sum_profit_admin, '
                     . ' (select SUM( us_in.profit_manager) from user_income as us_in where us_in.user_id = u.id ) as sum_profit_manager '
                     . 'from {{user}} as u '
-                    . 'left join {{user_income}} as ui ( u.id = ui.user_id  and MONTH(ui.date) = MONTH(NOW()))'
+                    . 'left join {{user_income}} as ui on ( u.id = ui.user_id  and MONTH(ui.date) = MONTH(NOW()))'
                     . '  where u.parent_id = '.Yii::$app->user->id.' and u.role = "admin" ');
         }
     }
