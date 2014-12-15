@@ -21,6 +21,8 @@ class m141209_102718_user_income extends Migration
             'parent_id' => Schema::TYPE_INTEGER . ' NOT NULL DEFAULT 0',
             'profit_manager' => Schema::TYPE_DECIMAL . '(12,2) NOT NULL DEFAULT 0.000',
             'profit_admin'  => Schema::TYPE_DECIMAL . '(12,2) NOT NULL DEFAULT 0.000',
+            'income'  => Schema::TYPE_DECIMAL . '(5,2) NOT NULL DEFAULT 0.000',
+            'my_profit'  => Schema::TYPE_DECIMAL . '(12,2) NOT NULL DEFAULT 0.000',
         ], $tableOptions);
 
         $this->createIndex('idx_user_income_user_id', '{{%user_income}}', 'user_id');
