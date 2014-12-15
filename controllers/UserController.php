@@ -265,21 +265,14 @@ class UserController extends Controller {
 /*        $query = new Query;
 	$query->select(['update_cache'])->from('{{user}}')->orderBy('update_cache',SORT_DESC)->offset(0)->limit(2);
 	$data = $query->createCommand()->queryAll();    */
-        $pagen_service = Yii::$app->pagenService;
-
-        $q = new Query;
-        $count = $q ->select(['count(*) as kol'])->from('{{user}}')->createCommand()->queryOne();
-        $q = new Query;
-        $q ->select(['u.*','s.surtax'])->from('{{user}} as u')
-                ->join('join','{{setting}} as s',' u.id = s.user_id ')
-                ->orderBy('id');
-    
-        $data_all = $pagen_service->getPaginat($count, $q,6,5,$page);
-        $datas = $data_all['values'];
-        $pages = $data_all['pages'];
-        $page = $data_all['page'];
-     
-        return $this->render('settax',['datas'=>$datas, 'pages'=> $pages, 'page' => $page ]);
+         $dataProvider = new ActiveDataProvider([
+                'query' => User::find(),
+                'pagination' => [
+                    'pageSize' => 10,
+                ],
+            ]);
+        return $this->render('settax',['dataProvider'=>$dataProvider]);
+//        return $this->render('settax',['datas'=>$datas, 'pages'=> $pages, 'page' => $page ]);
    }
 
     public function getQueri($type_user) {

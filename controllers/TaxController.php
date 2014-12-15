@@ -7,7 +7,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 use app\models\Tax;
-use yii\web\Request;
+use app\models\Setting;
 
 class TaxController extends Controller
 {
@@ -61,6 +61,23 @@ class TaxController extends Controller
                     $model->percent = $post['percent'];
                     $model->save();
                     echo $model->percent;
+                }
+	}
+
+	/**
+	 * Updates a particular model.
+	 * If update is successful, the browser will be redirected to the 'view' page.
+	 * @param integer $id the ID of the model to be updated
+	 */
+	public function actionUpdate_surtax($id)
+	{
+                if( Yii::$app->request->isAjax)
+                {      
+                    $model=  Setting::find()->where(['user_id'=>$id])->one();
+                    $post = Yii::$app->request->post();
+                    $model->surtax = $post['tax'];
+                    $model->save();
+                    echo $model->surtax;
                 }
 	}
 
