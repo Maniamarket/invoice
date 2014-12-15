@@ -287,24 +287,21 @@ class UserController extends Controller {
             case  1 : return User::findBySql('select u.id, u.name, ui.credit, ui.profit_manager,'
                     . ' (select SUM( us_in.credit) from user_income as us_in where us_in.user_id = u.id ) as sum_profit '
                     . 'from {{user}} as u '
-                    . 'left join {{user_income}} as ui  on u.id = ui.user_id '
-                    . '  where u.parent_id = '.Yii::$app->user->id.' and u.role = "user" '
-                    . ' and MONTH(ui.date) = MONTH(NOW())');
+                    . 'left join {{user_income}} as ui  on ( u.id = ui.user_id  and MONTH(ui.date) = MONTH(NOW()))'
+                    . '  where u.parent_id = '.Yii::$app->user->id.' and u.role = "user" ');
             case  2 : return User::findBySql('select u.id, u.name, ui.credit, ui.profit_manager, ui.income, my_profit,'
                     . ' (select SUM( us_in.credit) from user_income as us_in where us_in.user_id = u.id ) as sum_profit, '
                     . ' (select SUM( us_in.profit_manager) from user_income as us_in where us_in.user_id = u.id ) as sum_profit_manager '
                     . 'from {{user}} as u '
-                    . 'left join {{user_income}} as ui  on u.id = ui.user_id '
-                    . '  where u.parent_id = '.Yii::$app->user->id.' and u.role = "manager" '
-                    . ' and MONTH(ui.date) = MONTH(NOW())');
+                    . 'left join {{user_income}} as ui  on ( u.id = ui.user_id  and MONTH(ui.date) = MONTH(NOW()))'
+                    . '  where u.parent_id = '.Yii::$app->user->id.' and u.role = "manager" ');
             case  3 : return User::findBySql('select u.id, u.name, ui.credit, ui.profit_manager, ui.profit_admin,ui.income, my_profit,'
                     . ' (select SUM( us_in.credit) from user_income as us_in where us_in.user_id = u.id ) as sum_profit, '
                     . ' (select SUM( us_in.profit_admin) from user_income as us_in where us_in.user_id = u.id ) as sum_profit_admin, '
                     . ' (select SUM( us_in.profit_manager) from user_income as us_in where us_in.user_id = u.id ) as sum_profit_manager '
                     . 'from {{user}} as u '
-                    . 'left join {{user_income}} as ui  on u.id = ui.user_id '
-                    . '  where u.parent_id = '.Yii::$app->user->id.' and u.role = "admin" '
-                    . ' and MONTH(ui.date) = MONTH(NOW())');
+                    . 'left join {{user_income}} as ui ( u.id = ui.user_id  and MONTH(ui.date) = MONTH(NOW()))'
+                    . '  where u.parent_id = '.Yii::$app->user->id.' and u.role = "admin" ');
         }
     }
 

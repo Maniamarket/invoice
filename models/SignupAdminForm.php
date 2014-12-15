@@ -41,18 +41,24 @@ class SignupAdminForm extends Model
             $user->role = $role;
             $user->parent_id = $parent_id;
             $user->generateAuthKey();
-            $user->save();
-            $user->username = $user->id;
-            $user->name = $user->id;
-            $password = 'user_'.$user->id;
-            $user->setPassword($password);
-            $user->save();
-            Yii::$app->mailer->compose('welcome_admin', ['user' => $user,'password' => $password])
-                ->setFrom('no-reply@site.ru')
-                ->setTo($user->email)
-                ->setSubject('Welcome')
-                ->send();
-            return $user;
+            if( $user->save()){
+                $user->username = $user->id;
+                $user->name = $user->id;
+                $password = 'user_'.$user->id;
+                $user->setPassword($password);
+                if( $user->save())
+                Yii::$app->mailer->compose('welcome_admin', ['user' => $user,'password' => $password])
+                    ->setFrom('no-reply@site.ru')
+                    ->setTo($user->email)
+                    ->setSubject('Welcome')
+                    ->send();
+                else {
+                    echo 'no save user';                exit();
+                }
+                return $user;
+            }else {
+                    echo 'no save user';                exit();
+                }
         }
 
         return null;
