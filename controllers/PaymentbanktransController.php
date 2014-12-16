@@ -91,8 +91,10 @@ class PaymentbanktransController extends Controller {
      */
     public function actionApprove($id) {
 	//подтверждаем банковский перевод и пишем в таблицу запрошенные кредиты	
-	$credits = Setting::find()->where(['user_id' => $id])->one();
-	$payment = Paymentbanktrans::find()->where(['user_id' => $id])->one();
+	$payment = Paymentbanktrans::findOne($id);
+	$credits = Setting::find()->where(['user_id' => $payment->user_id])->one();
+	
+	
 	$credits->credit += $payment->sum;
 	$payment->status = 1;
 
@@ -100,7 +102,7 @@ class PaymentbanktransController extends Controller {
 	$payment->update();
 
 	//записываем в журнал транзакций
-	$this->writeTransaction($id, $payment->id, $payment->status);
+	$this->writeTransaction($payment->user_id, $payment->id, $payment->status);
 
 	$this->redirect(array('index'));
     }
@@ -112,20 +114,20 @@ class PaymentbanktransController extends Controller {
      */
     public function actionCancel($id) {
 	//отмена запроса кредитов банковским переводом
-	$payment = Paymentbanktrans::find()->where(['user_id' => $id])->one();
+	$payment = Paymentbanktrans::findOne($id);
 	$payment->status = 2;
 	$payment->update();
 
 	//записываем в журнал транзакций
-	$this->writeTransaction($id, $payment->id, $payment->status);
+	$this->writeTransaction($payment->user_id, $payment->id, $payment->status);
 
 	$this->redirect(array('index'));
     }
 
-    protected function writeTransaction($id, $tid, $status) {
+    protected function writeTransaction($uid, $tid, $status) {
 	$transaction = new Transactionbanktrans;	
 	$transaction->t_id = $tid;
-	$transaction->user_id = $id;
+	$transaction->user_id = $uid;
 	$transaction->status = $status;
 	$transaction->type = 0;
 	$transaction->date = time();
