@@ -38,76 +38,99 @@ class PaymentbanktransController extends Controller {
 	//$query = Paymentbanktrans::find()->where(['user_id' => Yii::$app->user->id])->one();
 	$dataProvider = new ActiveDataProvider([
 	    'query' => Paymentbanktrans::find()
-		->select('payment_bt.id,username,message,file,payment_bt.status, date,sum')
-		->join('inner join', 'user', 'user.id = payment_bt.user_id')
-		->where(['user_id' => Yii::$app->user->id])
+		    ->select('payment_bt.id,'
+			    . 'username,'
+			    . 'message,'
+			    . 'file,'
+			    . 'payment_bt.status,'
+			    . 'date,'
+			    . 'user_id,'
+			    . 'sum')
+		    ->join('inner join', 'user', 'user.id = payment_bt.user_id')
+		    ->where(['user_id' => Yii::$app->user->id])
 	]);
-	
-	 if(Yii::$app->user->identity->role==='superadmin' ){
-	     return $this->render('index_adm', [
-		    'dataProvider' => $dataProvider,
-		    'creditPath' => Yii::$app->params['creditPath'],
-		 ]);
-	 } else {
-	     return $this->render('index', [
-		    'dataProvider' => $dataProvider,
-		    'creditPath' => Yii::$app->params['creditPath'],
-		 ]);
-	 } 
 
-	
-	
+	if (Yii::$app->user->identity->role === 'superadmin') {
+	    $dataProvider = new ActiveDataProvider([
+		'query' => Paymentbanktrans::find()
+			->select('payment_bt.id,'
+				. 'username,'
+				. 'message,'
+				. 'file,'
+				. 'payment_bt.status,'
+				. 'date,'
+				. 'user_id,'
+				. 'sum')
+			->join('inner join', 'user', 'user.id = payment_bt.user_id')
+	    ]);
+
+
+	    return $this->render('index_adm', [
+			'dataProvider' => $dataProvider,
+			'creditPath' => Yii::$app->params['creditPath'],
+	    ]);
+	} else {
+	    $dataProvider = new ActiveDataProvider([
+		'query' => Paymentbanktrans::find()
+			->select('payment_bt.id,username,message,file,payment_bt.status, date,sum')
+			->join('inner join', 'user', 'user.id = payment_bt.user_id')
+			->where(['user_id' => Yii::$app->user->id])
+	    ]);
+
+	    return $this->render('index', [
+			'dataProvider' => $dataProvider,
+			'creditPath' => Yii::$app->params['creditPath'],
+	    ]);
+	}
     }
+
     /**
      * Approve user credit request.
      * @param integer $id
      * @return mixed
      */
-    public function actionApprove($id){
-	//подтверждаем банковский перевод и пишем в таблицу запрошенные кредиты
-	$credits = Setting::findOne(Yii::$app->user->id);
-	$payment = Paymentbanktrans::findOne($id);
+    public function actionApprove($id) {
+	//подтверждаем банковский перевод и пишем в таблицу запрошенные кредиты	
+	$credits = Setting::find()->where(['user_id' => $id])->one();
+	$payment = Paymentbanktrans::find()->where(['user_id' => $id])->one();
 	$credits->credit += $payment->sum;
 	$payment->status = 1;
-	
+
 	$credits->update();
 	$payment->update();
-	
+
 	//записываем в журнал транзакций
-	$this->writeTransaction($payment->id, $payment->status);
-	
+	$this->writeTransaction($id, $payment->id, $payment->status);
+
 	$this->redirect(array('index'));
     }
+
     /**
      * Cancel user credit request.
      * @param integer $id
      * @return mixed
      */
-    public function actionCancel($id){
+    public function actionCancel($id) {
 	//отмена запроса кредитов банковским переводом
-	$payment = Paymentbanktrans::findOne($id);	
-	$payment->status = 2;		
+	$payment = Paymentbanktrans::find()->where(['user_id' => $id])->one();
+	$payment->status = 2;
 	$payment->update();
-	
+
 	//записываем в журнал транзакций
-	$this->writeTransaction($payment->id, $payment->status);
-	
+	$this->writeTransaction($id, $payment->id, $payment->status);
+
 	$this->redirect(array('index'));
     }
-    
-    protected function writeTransaction($id, $status){
+
+    protected function writeTransaction($id, $tid, $status) {
 	$transaction = new Transactionbanktrans;	
-	//$transaction = Transactionbanktrans::find();	
-	//echo '<pre>'; print_r($transaction); exit;
-	$transaction->t_id = $id;
-	$transaction->user_id = Yii::$app->user->id;
+	$transaction->t_id = $tid;
+	$transaction->user_id = $id;
 	$transaction->status = $status;
 	$transaction->type = 0;
 	$transaction->date = time();
 	
-	//echo '<pre>'; print_r($transaction); exit;
 	$transaction->save();
-	//echo '<pre>'; $transaction->getErrors();exit;
 	
     }
 

@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-	<?= Html::a('Create Paymentbanktrans', ['create'], ['class' => 'btn btn-success']) ?>
+	<?php //Html::a('Create Paymentbanktrans', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
 
@@ -65,10 +65,10 @@ $this->params['breadcrumbs'][] = $this->title;
 		'format' => 'raw',
 		'value' => function ($data) {
 		    if(empty($data->status)){ 
-		    return '<a href="/paymentbanktrans/approve?id='.$data->id.'" title="Approve">'
+		    return '<a href="/paymentbanktrans/approve?id='.$data->user_id.'" title="Approve">'
 			    . '<span class="glyphicon glyphicon-ok"></span>'
 			    . '</a>&nbsp;&nbsp;'
-			    . '<a href="/paymentbanktrans/cancel?id='.$data->id.'" title="Cancel">'
+			    . '<a href="/paymentbanktrans/cancel?id='.$data->user_id.'" title="Cancel">'
 			    . '<span class="glyphicon glyphicon-remove"></span>'
 			    . '</a>';
 		    } else {

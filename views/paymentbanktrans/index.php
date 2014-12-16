@@ -31,15 +31,21 @@ $this->params['breadcrumbs'][] = $this->title;
 		'format' => 'raw',
 		//'value'=>function($data) { return $data->imageurl; },		
 		'value'=>function($data) { return Html::a('Attached image', $data->imageurl, ['target'=>'blank']); },		
-		//'value'=>Html::a('Create Paymentbanktrans', [function($data) { return $data->imageurl; }], ['data-toggle' => 'lightbox'])
-		//'value'=>Html::a('Create Paymentbanktrans', ['fun'], ['data-toggle' => 'lightbox'])
+		
 	    ],
 	    'sum',
 	    [
-		'attribute'=>'status',		
-		'value'=>function($data) { return $data->status;},		
-		//'value'=>function($data) { return $data->status ? 0 : 'Отправлен' ? 1 : 'Принят' ? 2 : 'Отклонен';},		
-		//'value'=>['0'=>'Отправлен','1'=>'Принят','2'=>'Отклонен'],
+		'attribute' => 'status',
+		'format' => 'html',
+		'value' => function($data) {
+		    switch($data->status){
+			case 0: return '<span class="label label-primary">Отправлен</span>';
+			case 1: return '<span class="label label-success">Принят</span>';
+			case 2: return '<span class="label label-danger">Отклонен</span>';
+			default: return '<span class="label label-danger">Ошибка</span>';
+		    }
+		},
+	    
 	    ],
 	    [
 		'attribute' => 'date',
