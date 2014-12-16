@@ -50,13 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	    [
 		'attribute' => 'date',
 		'value' => function($data) { return date("Y-m-d H:i:s",$data->date);},		
-	    ],	    
-            [
-		'class' => 'yii\grid\ActionColumn',
-		'template' => '{update} {delete}',		
-	    ],
-		
-			
+	    ],			
         ],
     ]); ?>
 
