@@ -18,13 +18,13 @@ class m141213_113055_payment_bt extends Migration
             'user_id' => Schema::TYPE_INTEGER . ' NOT NULL',
             'message' => Schema::TYPE_STRING . ' NOT NULL',
             'file' => Schema::TYPE_STRING . ' NOT NULL',
+            'sum' => Schema::TYPE_INTEGER . ' ',
+            'status' =>  'ENUM("0","1","2") NOT NULL DEFAULT "0"',
+            'date' =>  Schema::TYPE_INTEGER . ' ',
         ], $tableOptions);
 
         $this->createIndex('idx_payment_bt_user_id', '{{%payment_bt}}', 'user_id');
 
-        $this->batchInsert('{{%payment_bt}}', ['id', 'user_id', 'message', 'file'], [
-            [1, 4, 'подтверждение', 'Chrysanthemum.jpg'],
-        ]);
     }
 
     public function down()
