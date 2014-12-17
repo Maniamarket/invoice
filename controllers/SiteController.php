@@ -109,9 +109,9 @@ class SiteController extends Controller {
         public function actionSignup() {
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post())) {
-            if ($user = $model->signup()) {
+            if ($user = $model->signup()) {              
                 $model = new \app\models\Setting();
-                $model->user_id = Yii::$app->getUser()->id;
+                $model->user_id = $user->id;
                 $model->def_company_id = 0;
                 $model->def_lang_id = 0;
                 $model->bank_code = 'no';
