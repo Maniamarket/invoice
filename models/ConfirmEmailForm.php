@@ -1,12 +1,13 @@
 <?php
+
 namespace app\models;
 
 use yii\base\InvalidParamException;
 use yii\base\Model;
 use Yii;
 
-class ConfirmEmailForm extends Model
-{
+class ConfirmEmailForm extends Model {
+
     /**
      * @var User
      */
@@ -19,8 +20,7 @@ class ConfirmEmailForm extends Model
      * @param  array $config
      * @throws \yii\base\InvalidParamException if token is empty or not valid
      */
-    public function __construct($token, $config = [])
-    {
+    public function __construct($token, $config = []) {
         if (empty($token) || !is_string($token)) {
             throw new InvalidParamException('Отсутствует код подтверждения.');
         }
@@ -36,12 +36,12 @@ class ConfirmEmailForm extends Model
      *
      * @return boolean if password was reset.
      */
-    public function confirmEmail()
-    {
+    public function confirmEmail() {
         $user = $this->_user;
         $user->status = User::STATUS_ACTIVE;
         $user->removeEmailConfirmToken();
 
         return $user->save();
     }
+
 }

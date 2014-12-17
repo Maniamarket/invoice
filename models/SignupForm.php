@@ -54,11 +54,19 @@ class SignupForm extends Model {
             $user->save();
             $user->username = $user->id;
             $user->save();
-            Yii::$app->mailer->compose('welcome', ['user' => $user])
+            /*Yii::$app->mailer->compose('welcome', ['user' => $user])
                     ->setFrom('no-reply@site.ru')
                     ->setTo($user->email)
                     ->setSubject('Welcome')
+                    ->send();*/
+            
+            if ($user->save()) {
+                Yii::$app->mailer->compose('confirmEmail', ['user' => $user])
+                    ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
+                    ->setTo($this->email)
+                    ->setSubject('Email confirmation for ' . Yii::$app->name)
                     ->send();
+            }
             return $user;
         }
 

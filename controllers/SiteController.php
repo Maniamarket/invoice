@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use Yii;
+use app\modules\user\models\ConfirmEmailForm;
 use app\models\LoginForm;
 use app\models\PasswordResetRequestForm;
 use app\models\ResetPasswordForm;
@@ -13,6 +13,7 @@ use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use Yii;
 
 /**
  * Site controller
@@ -57,16 +58,16 @@ class SiteController extends Controller {
             'error' => [
                 'class' => 'yii\web\ErrorAction',
             ],
-/*             'captcha' => [
-                  'class' => 'yii\captcha\CaptchaAction',
-              ],*/
+            /*             'captcha' => [
+              'class' => 'yii\captcha\CaptchaAction',
+              ], */
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
                 //'fixedVerifyCode' => YII_ENV === 'test' ? 'testme' : null,
                 'transparent' => true,
                 'minLength' => 3,
                 'maxLength' => 4,
-                'foreColor'=>0xE16020
+                'foreColor' => 0xE16020
             ],
         ];
     }
@@ -88,6 +89,22 @@ class SiteController extends Controller {
                         'model' => $model,
             ]);
         }
+    }
+
+    public function actionConfirmEmail($token) {
+        try {
+            $model = new ConfirmEmailForm($token);
+        } catch (InvalidParamException $e) {
+            throw new BadRequestHttpException($e->getMessage());
+        }
+
+        if ($model->confirmEmail()) {
+            Yii::$app->getSession()->setFlash('success', 'Спасибо! Ваш Email успешно подтверждён.');
+        } else {
+            Yii::$app->getSession()->setFlash('error', 'Ошибка подтверждения Email.');
+        }
+
+        return $this->goHome();
     }
 
     public function actionLogout() {

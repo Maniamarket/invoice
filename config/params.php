@@ -1,5 +1,5 @@
 <?php
-
+        
 $params = array(
     'adminEmail' => 'admin@example.com',
     'supportEmail' => 'info@site.com',
