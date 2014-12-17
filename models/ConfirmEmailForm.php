@@ -44,4 +44,12 @@ class ConfirmEmailForm extends Model {
         return $user->save();
     }
 
+     /**
+     * Finds user by [[username]]
+     *
+     * @return User|null
+     */
+    public function getUser() {
+        return $this->_user;
+    }
 }

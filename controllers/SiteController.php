@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use app\modules\user\models\ConfirmEmailForm;
+use app\models\ConfirmEmailForm;
 use app\models\LoginForm;
 use app\models\PasswordResetRequestForm;
 use app\models\ResetPasswordForm;
@@ -27,10 +27,10 @@ class SiteController extends Controller {
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'signup',],
+                'only' => ['logout', 'signup', 'confirm-email'],
                 'rules' => [
                     [
-                        'actions' => ['signup',],
+                        'actions' => ['signup', 'confirm-email',],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -85,9 +85,7 @@ class SiteController extends Controller {
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
         } else {
-            return $this->render('login', [
-                        'model' => $model,
-            ]);
+            return $this->render('login', [ 'model' => $model,]);
         }
     }
 
@@ -100,6 +98,7 @@ class SiteController extends Controller {
 
         if ($model->confirmEmail()) {
             Yii::$app->getSession()->setFlash('success', 'Спасибо! Ваш Email успешно подтверждён.');
+            Yii::$app->user->login($model->getUser());
         } else {
             Yii::$app->getSession()->setFlash('error', 'Ошибка подтверждения Email.');
         }
@@ -107,6 +106,25 @@ class SiteController extends Controller {
         return $this->goHome();
     }
 
+        public function actionSignup() {
+        $model = new SignupForm();
+        if ($model->load(Yii::$app->request->post())) {
+            if ($user = $model->signup()) {
+                $model = new \app\models\Setting();
+                $model->user_id = Yii::$app->getUser()->id;
+                $model->def_company_id = 0;
+                $model->def_lang_id = 0;
+                $model->bank_code = 'no';
+                $model->account_number = 'no';
+                $model->save();
+                Yii::$app->getSession()->setFlash('success', 'Спасибо! на Ваш Email отправлено письмо для подтверждения.');
+                return $this->goHome();
+            }
+        }
+
+        return $this->render('signup', [ 'model' => $model,]);
+    }
+    
     public function actionLogout() {
         Yii::$app->user->logout();
 
@@ -134,32 +152,11 @@ class SiteController extends Controller {
         return $this->render('about');
     }
 
-    public function actionSignup() {
-        $model = new SignupForm();
-        if ($model->load(Yii::$app->request->post())) {
-            if ($user = $model->signup()) {
-                if (Yii::$app->getUser()->login($user)) {
-                    $model = new \app\models\Setting();
-                    $model->user_id = Yii::$app->getUser()->id;
-                    $model->def_company_id = 0;
-                    $model->def_lang_id = 0;
-                    $model->bank_code = 'no';
-                    $model->account_number = 'no';
-                    $model->save();
-                    return $this->goHome();
-                }
-            }
-        }
-
-        return $this->render('signup', [ 'model' => $model,]);
-    }
-
     public function actionRequestPasswordReset() {
         $model = new PasswordResetRequestForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
                 Yii::$app->getSession()->setFlash('success', 'Check your email for further instructions.');
-
                 return $this->goHome();
             } else {
                 Yii::$app->getSession()->setFlash('error', 'Sorry, we are unable to reset password for email provided.');

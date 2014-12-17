@@ -51,8 +51,9 @@ class SignupForm extends Model {
             $user->email = $this->email;
             $user->setPassword($this->password);
             $user->generateAuthKey();
+            $user->generateEmailConfirmToken();
             $user->save();
-            $user->username = $user->id;
+            $user->username = $user->id;            
             $user->save();
             /*Yii::$app->mailer->compose('welcome', ['user' => $user])
                     ->setFrom('no-reply@site.ru')
