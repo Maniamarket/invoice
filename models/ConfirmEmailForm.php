@@ -37,7 +37,7 @@ class ConfirmEmailForm extends Model {
      * @return boolean if password was reset.
      */
     public function confirmEmail() {
-        $user = $this->_user;
+        $user = $this->getUser();
         $user->status = User::STATUS_ACTIVE;
         $user->removeEmailConfirmToken();
 
@@ -50,6 +50,7 @@ class ConfirmEmailForm extends Model {
      * @return void
      */
     public function sendWelcomeEmail() {
+        $user = $this->getUser();
         Yii::$app->mailer->compose('welcome', ['user' => $user])
                 ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
                 ->setTo($user->email)
