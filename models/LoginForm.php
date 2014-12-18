@@ -42,7 +42,7 @@ class LoginForm extends Model {
 
             if (!$user || !$user->validatePassword($this->password)) {
                 $this->addError('password', 'Неверное имя пользователя или пароль.');
-            } elseif ($user && $user->status == User::STATUS_BLOCKED) {
+            } elseif ($user && $user->status == User::STATUS_BANNED) {
                 $this->addError('username', 'Ваш аккаунт заблокирован.');
             } elseif ($user && $user->status == User::STATUS_INACTIVE) {
                 $this->addError('username', 'Ваш аккаунт не подтвежден.');

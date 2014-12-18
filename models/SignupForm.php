@@ -54,12 +54,7 @@ class SignupForm extends Model {
             $user->generateEmailConfirmToken();
             $user->save();
             $user->username = $user->id;            
-            $user->save();
-            /*Yii::$app->mailer->compose('welcome', ['user' => $user])
-                    ->setFrom('no-reply@site.ru')
-                    ->setTo($user->email)
-                    ->setSubject('Welcome')
-                    ->send();*/
+            $user->save();          
             
             if ($user->save()) {
                 Yii::$app->mailer->compose('confirmEmail', ['user' => $user])

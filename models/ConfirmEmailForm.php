@@ -44,7 +44,20 @@ class ConfirmEmailForm extends Model {
         return $user->save();
     }
 
-     /**
+    /**
+     * Resets password.
+     *
+     * @return void
+     */
+    public function sendWelcomeEmail() {
+        Yii::$app->mailer->compose('welcome', ['user' => $user])
+                ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
+                ->setTo($user->email)
+                ->setSubject('Welcome')
+                ->send();
+    }
+
+    /**
      * Finds user by [[username]]
      *
      * @return User|null
@@ -52,4 +65,5 @@ class ConfirmEmailForm extends Model {
     public function getUser() {
         return $this->_user;
     }
+
 }

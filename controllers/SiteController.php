@@ -99,6 +99,7 @@ class SiteController extends Controller {
         if ($model->confirmEmail()) {
             Yii::$app->getSession()->setFlash('success', 'Спасибо! Ваш Email успешно подтверждён.');
             Yii::$app->user->login($model->getUser());
+            $model->sendWelcomeEmail();
         } else {
             Yii::$app->getSession()->setFlash('error', 'Ошибка подтверждения Email.');
         }
@@ -106,10 +107,10 @@ class SiteController extends Controller {
         return $this->goHome();
     }
 
-        public function actionSignup() {
+    public function actionSignup() {
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post())) {
-            if ($user = $model->signup()) {              
+            if ($user = $model->signup()) {
                 $model = new \app\models\Setting();
                 $model->user_id = $user->id;
                 $model->def_company_id = 0;
@@ -124,7 +125,7 @@ class SiteController extends Controller {
 
         return $this->render('signup', [ 'model' => $model,]);
     }
-    
+
     public function actionLogout() {
         Yii::$app->user->logout();
 
