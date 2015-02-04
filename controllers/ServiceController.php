@@ -65,9 +65,8 @@ class ServiceController extends Controller
 	public function actionDelete($id)
 	{
 		$this->loadModel($id)->delete();
-
 		if(!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : ['index']);
 	}
 
 	/**
@@ -77,9 +76,7 @@ class ServiceController extends Controller
 	{
             $dataProvider = new ActiveDataProvider([
                 'query' => Service::find(),
-                'pagination' => [
-                    'pageSize' => 10,
-                ],
+                'pagination' => [ 'pageSize' => 10,],
             ]);
             if( yii::$app->user->identity->role==='superadmin' ) return $this->render('index_adm',array( 'dataProvider'=>$dataProvider, ));
             else  return $this->render('index',array( 'dataProvider'=>$dataProvider, ));
@@ -89,7 +86,7 @@ class ServiceController extends Controller
 	{
             $model=Service::find()->where(['id' => $id])->one();
             
-            if($model===null) throw new CHttpException(404,'The requested page does not exist.');
+            if($model===null) throw new HttpException(404,'The requested page does not exist.');
             
             return $model;
 	}

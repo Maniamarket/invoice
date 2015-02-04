@@ -3,6 +3,8 @@
 namespace app\controllers;
 
 use Yii;
+use yii\base\Object;
+use yii\data\SqlDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -94,12 +96,17 @@ class InvoiceController extends Controller
      */
     public function actionIndex()
     {
+        $pageSize = ( isset($_GET['count_search'])) ? $_GET['count_search'] : 5;
+        $name_seach = ( isset($_GET['name'])) ? $_GET['name'] : '';
+        $query = Invoice::find()->where(['user_id'=> Yii::$app->user->id])->orderBy(['is_pay'=>SORT_ASC, 'id'=>SORT_DESC]);
+        if( $name_seach )  $query->andWhere(['like','name', $name_seach.'%',false]);
         $dataProvider = new ActiveDataProvider([
-            'query' => Invoice::find()->where(['user_id'=> Yii::$app->user->id])->orderBy(['is_pay'=>SORT_ASC, 'id'=>SORT_DESC]),
+            'query' => $query,
             'pagination' => [
-                'pageSize' => 3,
+                'pageSize' => $pageSize,
             ],
         ]);
+
         return $this->render('index', ['dataProvider' => $dataProvider]);
     }
     /**
