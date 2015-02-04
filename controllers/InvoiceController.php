@@ -98,8 +98,18 @@ class InvoiceController extends Controller
     {
         $pageSize = ( isset($_GET['count_search'])) ? $_GET['count_search'] : 5;
         $name_seach = ( isset($_GET['name'])) ? $_GET['name'] : '';
-        $query = Invoice::find()->where(['user_id'=> Yii::$app->user->id])->orderBy(['is_pay'=>SORT_ASC, 'id'=>SORT_DESC]);
+        $sort = ( isset($_GET['sort'])) ? $_GET['sort'] : '';
+        if( $sort && $sort[0] == '-') {
+            $sort = unsert($sort[0]);
+            $dir = SORT_DESC;
+        }
+        else  $dir = SORT_ASC;
+
+        $orderBy = ( $sort ) ? [$sort => $dir] :  ['is_pay'=>SORT_ASC, 'id'=>SORT_DESC];
+
+        $query = Invoice::find()->where(['user_id'=> Yii::$app->user->id])->orderBy( $orderBy );
         if( $name_seach )  $query->andWhere(['like','name', $name_seach.'%',false]);
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
@@ -107,7 +117,7 @@ class InvoiceController extends Controller
             ],
         ]);
 
-        return $this->render('index', ['dataProvider' => $dataProvider]);
+        return $this->render('index', ['dataProvider' => $dataProvider, '$pageSize' => $pageSize]);
     }
     /**
      * Displays a single Invoice model.
