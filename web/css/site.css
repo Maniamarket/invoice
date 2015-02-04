@@ -119,6 +119,9 @@ a.desc:after {
     text-transform: uppercase;
 }
 
+.table {
+    color: #5a5858;
+}
 .table thead tr{
     background: #d9c26c;
     color: #fff;
@@ -139,3 +142,18 @@ a.desc:after {
     background: #e7e7e7;
     padding: 4px 5px;
 }
+/*.invoce_pdf {
+    width: 25px;
+    height: 25px;
+    background-image: url('../images/invoice_pdf.png');
+}
+.invoce_valid {
+    width: 24px;
+    height: 25px;
+    background-image: url('../images/invoice_valid.png');
+}
+.invoce_invalid {
+     width: 24px;
+     height: 26px;
+     background-image: url('../images/invoice_invalid.png');
+ }*/

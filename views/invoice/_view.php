@@ -37,15 +37,15 @@ use yii\bootstrap\Modal;
             </span>
         <?php } ?>
     </td>
-    <td><?php if ($model->is_pay) echo 'фактура оплачена';
-              else echo Html::a('Оплатить', ['user/pay', 'id'=>$model->id],['title'=>'Pay']);;         
-     ?></td>
     <td><?php echo Html::encode($model->name); ?></td>
     <td><?php echo Html::encode($model->date); ?></td>
     <td><?php echo Html::encode($model->client->name); ?></td>
     <td><?php echo Html::encode($model->company->name); ?></td>
-    <td><?php echo Html::encode($model->price); ?></td>
     <td><?php echo Html::encode($model->price_service*$model->count); ?></td>
+    <td><?php echo Html::encode($model->price); ?></td>
+    <td><?php if ($model->is_pay) echo '<span class="invoce_valid"><img src="/images/invoice_valid.png" /></span>';
+        else echo Html::a('<img src="/images/invoice_invalid.png" />', ['user/pay', 'id'=>$model->id],['title'=>'Pay']);;
+        ?></td>
 <!--    <td><?php echo Html::encode($model->count); ?></td>
     <td><?php echo Html::encode($model->vat); ?></td>
     <td><?php echo Html::encode($model->tax); ?></td>

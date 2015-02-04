@@ -11,6 +11,7 @@ use yii\helpers\Url;
 
 $this->title = Yii::t('app', 'Invoices');
 $this->params['breadcrumbs'][] = $this->title;
+$options_page_size = [20,50,100,200,500];
 ?>
 <div class="invoice-index">
 
@@ -32,19 +33,23 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="input-group">
                 <div class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></div>
                 <input name="name" id='name_search' type="text" placeholder="Search... " data-url="<?php echo Url::toRoute(['client/ajax'])?>"
-                       value="<?php if(isset($qp['name'])) echo $qp['name']; ?>" class="form-control" />
+                       value="<?php if(isset($name_search)) echo $name_search; ?>" class="form-control" />
             </div>
         </div>
 <!--        <input type="submit" value="Поиск" class="btn btn-primary" />-->
         <div class="form-group pull-right">
             <div class="form-group">
                 <label for="count_search" class="control-label">Show</label>
-                <select class="form-control" name="count_search" id="count_search">
-                    <option>20</option>
-                    <option>50</option>
-                    <option>100</option>
-                    <option>200</option>
-                    <option>500</option>
+                <select class="form-control" name="count_search" id="count_search" onchange="$('#form-client-search').submit()">
+                    <?php foreach ($options_page_size as $opt) {
+                        if ($opt == $pageSize) {
+                            echo '<option selected>'.$opt.'</option>';
+                            }
+                        else {
+                            echo '<option>'.$opt.'</option>';
+                        }
+                    }
+                    ?>
                 </select>
             </div>
         </div>
@@ -101,7 +106,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
                 ?>
             </th>
-            <th>Оплата</th>
             <th>Name
                 <span class="glyphicon-menu-down" aria-hidden="true"></span>
                 <?php
@@ -160,6 +164,17 @@ $this->params['breadcrumbs'][] = $this->title;
             </th>
             <th>Net Total</th>
             <th>Grand Total</th>
+            <th>Valid
+                <?php
+                if ($sort=='is_pay' && $dir==SORT_ASC) {
+                    echo Html::a('<span class="triangl">&#9650;</span>',
+                        Url::toRoute(['invoice/index','sort'=>'-is_pay']));
+                }
+                else {
+                    echo '<a href="'.Url::toRoute(['invoice/index','sort'=>'is_pay']).'" ><span class="triangl">&#9660;</span></a>';
+                }
+                ?>
+            </th>
 <!--            <th>Count</th>
             <th>Vat</th>
             <th>Surtax</th>
