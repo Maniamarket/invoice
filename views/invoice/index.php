@@ -52,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <p>&nbsp;</p>
     <?php
- /*   echo GridView::widget([
+/*    echo GridView::widget([
         'dataProvider' => $dataProvider,
         'options'=>['id'=>'table-result-search'],
         'headerRowOptions'=>[
@@ -69,8 +69,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'label' => 'Company',
                 'format' => 'html',
                 'value' => function ($data) {
-                         return $data->getCompany()->asArray()->one()['name'];;
-/                   }
+                         return $data->getCompany()->asArray()->one()['name'];
+                   }
 
             ],
             [
@@ -90,10 +90,30 @@ $this->params['breadcrumbs'][] = $this->title;
         <thead>
         <tr>
             <th>#</th>
-            <th>ID</th>
+            <th>ID
+                <?php
+                if ($sort=='id' && $dir==SORT_ASC) {
+                    echo Html::a('<span class="triangl">&#9650;</span>',
+                        Url::toRoute(['invoice/index','sort'=>'-id']));
+                }
+                else {
+                    echo '<a href="'.Url::toRoute(['invoice/index','sort'=>'id']).'" ><span class="triangl">&#9660;</span></a>';
+                }
+                ?>
+            </th>
             <th>Оплата</th>
             <th>Name
-                <?php if(isset($qp['name'])) {
+                <span class="glyphicon-menu-down" aria-hidden="true"></span>
+                <?php
+                if ($sort=='name' && $dir==SORT_ASC) {
+                        echo Html::a('<span class="triangl">&#9650;</span>',
+                            Url::toRoute(['invoice/index','sort'=>'-name']));
+                }
+                else {
+                    echo '<a href="'.Url::toRoute(['invoice/index','sort'=>'name']).'" ><span class="triangl">&#9660;</span></a>';
+                }
+                ?>
+                <?php /*if(isset($qp['name'])) {
                     if (isset($qp['orderby']) && $qp['orderby']=='asc') {
                         ?>
                         <span class="glyphicon glyphicon-arrow-up" aria-hidden="true" title="По возрастанию"></span>
@@ -112,19 +132,39 @@ $this->params['breadcrumbs'][] = $this->title;
                     <a href="<?php echo Url::to(''); ?>&name=&orderby=asc" title="По возрастанию"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
                     <a href="<?php echo Url::to(''); ?>&name=&orderby=desc" title="По убыванию"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
                 <?php
+                }*/
+                ?>
+            </th>
+            <th>Date
+                <?php
+                if ($sort=='date' && $dir==SORT_ASC) {
+                    echo Html::a('<span class="triangl">&#9650;</span>',
+                        Url::toRoute(['invoice/index','sort'=>'-date']));
+                }
+                else {
+                    echo '<a href="'.Url::toRoute(['invoice/index','sort'=>'date']).'" ><span class="triangl">&#9660;</span></a>';
                 }
                 ?>
             </th>
             <th>Client</th>
-            <th>Date</th>
-            <th>Company</th>
-            <th>Service</th>
-            <th>Price Service</th>
-            <th>Count</th>
+            <th>Company
+                <?php
+                if ($sort=='company_id' && $dir==SORT_ASC) {
+                    echo Html::a('<span class="triangl">&#9650;</span>',
+                        Url::toRoute(['invoice/index','sort'=>'-company_id']));
+                }
+                else {
+                    echo '<a href="'.Url::toRoute(['invoice/index','sort'=>'company_id']).'" ><span class="triangl">&#9660;</span></a>';
+                }
+                ?>
+            </th>
+            <th>Net Total</th>
+            <th>Grand Total</th>
+<!--            <th>Count</th>
             <th>Vat</th>
             <th>Surtax</th>
             <th>Discount</th>
-            <th>Total Price</th>
+            <th>Total Price</th>-->
         </tr>
         </thead>
         <tbody>

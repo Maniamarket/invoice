@@ -133,3 +133,9 @@ a.desc:after {
 .table tr:last-child td{
     border-bottom: 1px solid #ddd;;
 }
+.triangl {
+    color: #000;
+    font-size: 8px;
+    background: #e7e7e7;
+    padding: 4px 5px;
+}

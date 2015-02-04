@@ -41,16 +41,16 @@ use yii\bootstrap\Modal;
               else echo Html::a('Оплатить', ['user/pay', 'id'=>$model->id],['title'=>'Pay']);;         
      ?></td>
     <td><?php echo Html::encode($model->name); ?></td>
-    <td><?php echo Html::encode($model->client->name); ?></td>
     <td><?php echo Html::encode($model->date); ?></td>
+    <td><?php echo Html::encode($model->client->name); ?></td>
     <td><?php echo Html::encode($model->company->name); ?></td>
-    <td><?php echo Html::encode($model->service->name); ?></td>
-    <td><?php echo Html::encode($model->price_service); ?></td>
-    <td><?php echo Html::encode($model->count); ?></td>
+    <td><?php echo Html::encode($model->price); ?></td>
+    <td><?php echo Html::encode($model->price_service*$model->count); ?></td>
+<!--    <td><?php echo Html::encode($model->count); ?></td>
     <td><?php echo Html::encode($model->vat); ?></td>
     <td><?php echo Html::encode($model->tax); ?></td>
     <td><?php echo Html::encode($model->discount); ?></td>
-    <td><?php echo Html::encode($model->price); ?></td>
+    <td><?php echo Html::encode($model->price); ?></td>-->
 </tr>
 
 
