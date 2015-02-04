@@ -89,7 +89,7 @@ class Invoice extends \yii\db\ActiveRecord
 
     public static function queryProvider($qp) {
         $query = self::find()->where(
-            [/*'user_id'=>  Yii::$app->user->id*/]
+            ['user_id'=>  Yii::$app->user->id]
         );
         if (isset($qp['name']))
         {

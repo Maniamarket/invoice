@@ -4,7 +4,7 @@ use yii\helpers\Url;
 use yii\bootstrap\Modal;
 ?>
 <tr>
-    <td>1</td>
+    <td><?= $number ?></td>
     <td>
         <?php echo Html::a('MM100'.$model->id,['tcpdf', 'id'=>$model->id]); ?>
         &nbsp;

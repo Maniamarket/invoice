@@ -51,6 +51,41 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php echo Html::endForm(); ?>
     </div>
     <p>&nbsp;</p>
+    <?php
+ /*   echo GridView::widget([
+        'dataProvider' => $dataProvider,
+        'options'=>['id'=>'table-result-search'],
+        'headerRowOptions'=>[
+            'class'=>'table_header',
+        ],
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
+            'id',
+            'date',
+            'name',
+        [
+            'attribute' => 'company_id',
+            'label' => 'Company',
+                'format' => 'html',
+                'value' => function ($data) {
+                         return $data->getCompany()->asArray()->one()['name'];;
+/                   }
+
+            ],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{update} {delete}',
+                'buttons'=>[
+                    'delete'=>function($url, $model, $key){
+                            return "<a href='#' data-id='$key' onclick='return false;' data-rmu='$url' data-message='Are you sure delete $model->name' class='rm-btn'><span class='glyphicon glyphicon-trash'></span></a>";
+                        }
+                ]
+            ],
+        ],
+    ]);*/
+
+    ?>
     <table class="table" id="table-result-search">
         <thead>
         <tr>
@@ -94,15 +129,15 @@ $this->params['breadcrumbs'][] = $this->title;
         </thead>
         <tbody>
         <?php
+            $t_page =  (isset(Yii::$app->request->queryParams['page']))?(Yii::$app->request->queryParams['page']-1)*$dataProvider->pagination->pageSize:0;
+            foreach ($dataProvider->models as $key=>$model) {
+                echo $this->render('_view', ['model'=>$model, 'number'=>$t_page+$key+1]);
+            }
 /*        echo ListView::widget([
             'dataProvider'=>$dataProvider,
             'itemView'=>'_view',
-        ]);*/
-        echo ListView::widget([
-            'dataProvider'=>$dataProvider,
-            'itemView'=>'_view',
             'layout'=>'{items}'
-        ])
+        ])*/
         ?>
         </tbody>
     </table>
@@ -110,6 +145,10 @@ $this->params['breadcrumbs'][] = $this->title;
     echo ListView::widget([
         'dataProvider'=>$dataProvider,
         'itemView'=>'_view',
+        'pager'=>[
+            'prevPageLabel'=>'Prev',
+            'lastPageLabel'=>'Next'
+        ],
         'layout'=>'{pager}'
     ])
     ?>
