@@ -1,3 +1,5 @@
+/*@import url("osans.css");*/
+
 html,
 body {
     height: 100%;
@@ -8,6 +10,7 @@ body {
     height: auto;
     margin: 0 auto -60px;
     padding: 0 0 60px;
+    font-family: 'Open Sans';
 }
 
 .wrap > .container {
@@ -104,4 +107,29 @@ a.desc:after {
 
 .remove-btn{
     cursor: pointer;
+}
+
+.title {
+    background-color: #24aa98;
+    color: #fff;
+    font-size: 25px;
+    font-family: 'Open Sans Condensed';
+    font-weight: bold;
+    padding: 10px;
+    text-transform: uppercase;
+}
+
+.table thead tr{
+    background: #d9c26c;
+    color: #fff;
+}
+.table tr td:first-child, .table tr th:first-child{
+    border-left: 1px solid #ddd;;
+    border-right: 1px solid #ddd;;
+}
+.table tr td:last-child, .table tr th:last-child{
+    border-right: 1px solid #ddd;;
+}
+.table tr:last-child td{
+    border-bottom: 1px solid #ddd;;
 }

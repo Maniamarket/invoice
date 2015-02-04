@@ -97,7 +97,7 @@ class InvoiceController extends Controller
         $dataProvider = new ActiveDataProvider([
             'query' => Invoice::find()->where(['user_id'=> Yii::$app->user->id])->orderBy(['is_pay'=>SORT_ASC, 'id'=>SORT_DESC]),
             'pagination' => [
-                'pageSize' => 20,
+                'pageSize' => 3,
             ],
         ]);
         return $this->render('index', ['dataProvider' => $dataProvider]);

@@ -543,51 +543,6 @@
             "time": "2014-11-23 19:04:08"
         },
         {
-            "name": "mdmsoft/yii2-captcha",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/mdmsoft/yii2-captcha.git",
-                "reference": "05ca0c0d890a8980454f2decf6bd3229689f62ad"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/mdmsoft/yii2-captcha/zipball/05ca0c0d890a8980454f2decf6bd3229689f62ad",
-                "reference": "05ca0c0d890a8980454f2decf6bd3229689f62ad",
-                "shasum": ""
-            },
-            "require": {
-                "yiisoft/yii2": "*"
-            },
-            "type": "yii2-extension",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "mdm\\captcha\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Misbahul D Munir",
-                    "email": "misbahuldmunir@gmail.com"
-                }
-            ],
-            "description": "Captcha with math equation",
-            "keywords": [
-                "captcha",
-                "yii"
-            ],
-            "time": "2014-11-01 05:02:21"
-        },
-        {
             "name": "mpdf/mpdf",
             "version": "v5.7.3",
             "source": {
@@ -1130,6 +1085,51 @@
                 "fixtures"
             ],
             "time": "2014-06-04 14:43:02"
+        },
+        {
+            "name": "mdmsoft/yii2-captcha",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mdmsoft/yii2-captcha.git",
+                "reference": "05ca0c0d890a8980454f2decf6bd3229689f62ad"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mdmsoft/yii2-captcha/zipball/05ca0c0d890a8980454f2decf6bd3229689f62ad",
+                "reference": "05ca0c0d890a8980454f2decf6bd3229689f62ad",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "mdm\\captcha\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Misbahul D Munir",
+                    "email": "misbahuldmunir@gmail.com"
+                }
+            ],
+            "description": "Captcha with math equation",
+            "keywords": [
+                "captcha",
+                "yii"
+            ],
+            "time": "2014-11-01 05:02:21"
         },
         {
             "name": "phpspec/php-diff",

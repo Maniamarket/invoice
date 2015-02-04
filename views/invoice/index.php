@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="invoice-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1 class="title"><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
@@ -27,17 +27,34 @@ $this->params['breadcrumbs'][] = $this->title;
    </p>
 
     <div class="col-10">
-        <h3>Форма поиска</h3>
-        <?php echo Html::beginForm(['index'],'get',['id'=>'form-client-search']); ?>
-        <input name="name" id='name_search' type="text" placeholder="Введите имя... " data-url="<?php echo Url::toRoute(['client/ajax'])?>"
-               value="<?php if(isset($qp['name'])) echo $qp['name']; ?>" class="col-5" />
-        <input type="submit" value="Поиск" class="btn btn-primary" />
+        <?php echo Html::beginForm(['index'],'get',['id'=>'form-client-search', 'class'=>"form-inline"]); ?>
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></div>
+                <input name="name" id='name_search' type="text" placeholder="Search... " data-url="<?php echo Url::toRoute(['client/ajax'])?>"
+                       value="<?php if(isset($qp['name'])) echo $qp['name']; ?>" class="form-control" />
+            </div>
+        </div>
+<!--        <input type="submit" value="Поиск" class="btn btn-primary" />-->
+        <div class="form-group pull-right">
+            <div class="form-group">
+                <label for="count_search" class="control-label">Show</label>
+                <select class="form-control" name="count_search" id="count_search">
+                    <option>20</option>
+                    <option>50</option>
+                    <option>100</option>
+                    <option>200</option>
+                    <option>500</option>
+                </select>
+            </div>
+        </div>
         <?php echo Html::endForm(); ?>
     </div>
     <p>&nbsp;</p>
-    <table class="table table-striped table-bordered" id="table-result-search">
+    <table class="table" id="table-result-search">
         <thead>
         <tr>
+            <th>#</th>
             <th>ID</th>
             <th>Оплата</th>
             <th>Name
@@ -77,11 +94,23 @@ $this->params['breadcrumbs'][] = $this->title;
         </thead>
         <tbody>
         <?php
+/*        echo ListView::widget([
+            'dataProvider'=>$dataProvider,
+            'itemView'=>'_view',
+        ]);*/
         echo ListView::widget([
             'dataProvider'=>$dataProvider,
             'itemView'=>'_view',
-        ]);
+            'layout'=>'{items}'
+        ])
         ?>
         </tbody>
     </table>
+    <?php
+    echo ListView::widget([
+        'dataProvider'=>$dataProvider,
+        'itemView'=>'_view',
+        'layout'=>'{pager}'
+    ])
+    ?>
 </div>
