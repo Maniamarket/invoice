@@ -15,7 +15,7 @@ use yii\web\AssetBundle;
  */
 class AppAsset extends AssetBundle
 {
-    public $sourcePath = '@web'; // копируется все содержимое, например папки css, js, fonts, images
+//    public $sourcePath = '@web'; // копируется все содержимое, например папки css, js, fonts, images
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [

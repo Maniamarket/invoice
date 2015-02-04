@@ -30,7 +30,12 @@ $options_page_size = [20,50,100,200,500];
     <div class="col-10">
         <?php echo Html::beginForm(['index'],'get',['id'=>'form-client-search', 'class'=>"form-inline"]); ?>
         <div class="form-group">
-            <div class="input-group">
+            <div class="input-group hint-container">
+                <div class="hint-content" id="hint-search">
+                    Each user can filter invoices per ID, per name, per company, per date  by pressing the button <span class="triangl">&#9660;</span> next to <br />
+                    the field’s title <br />
+                    or search through a live search.
+                </div>
                 <div class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></div>
                 <input name="name" id='name_search' type="text" placeholder="Search... " data-url="<?php echo Url::toRoute(['client/ajax'])?>"
                        value="<?php if(isset($name_search)) echo $name_search; ?>" class="form-control" />
@@ -150,7 +155,17 @@ $options_page_size = [20,50,100,200,500];
                 }
                 ?>
             </th>
-            <th>Client</th>
+            <th>Client
+                <?php
+                if ($sort=='client_name' && $dir==SORT_ASC) {
+                    echo Html::a('<span class="triangl">&#9650;</span>',
+                        Url::toRoute(['invoice/index','sort'=>'-client_name']));
+                }
+                else {
+                    echo '<a href="'.Url::toRoute(['invoice/index','sort'=>'client_name']).'" ><span class="triangl">&#9660;</span></a>';
+                }
+                ?>
+            </th>
             <th>Company
                 <?php
                 if ($sort=='company_id' && $dir==SORT_ASC) {
@@ -175,6 +190,7 @@ $options_page_size = [20,50,100,200,500];
                 }
                 ?>
             </th>
+            <th>&nbsp;</th>
 <!--            <th>Count</th>
             <th>Vat</th>
             <th>Surtax</th>
@@ -202,7 +218,7 @@ $options_page_size = [20,50,100,200,500];
         'itemView'=>'_view',
         'pager'=>[
             'prevPageLabel'=>'Prev',
-            'lastPageLabel'=>'Next'
+            'nextPageLabel'=>'Next'
         ],
         'layout'=>'{pager}'
     ])

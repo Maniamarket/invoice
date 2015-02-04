@@ -9,7 +9,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 
-<h1><?php echo Yii::t('app', $hearder); ?></h1>
+<h1 class="title"><?php echo Yii::t('app', $hearder); ?></h1>
 
 <?php echo Html::a('Создать', Url::toRoute(['create','type_user'=>$type_user]),['class'=>'btn-lg btn btn-success']) ?>
 <table class="table table-striped">

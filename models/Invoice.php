@@ -20,6 +20,7 @@ use Yii;
  */
 class Invoice extends \yii\db\ActiveRecord
 {
+    public $client_name;
     /**
      * @inheritdoc
      */

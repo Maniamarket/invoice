@@ -142,18 +142,36 @@ a.desc:after {
     background: #e7e7e7;
     padding: 4px 5px;
 }
-/*.invoce_pdf {
-    width: 25px;
-    height: 25px;
-    background-image: url('../images/invoice_pdf.png');
+.hint-container {
+    display: inline-block;
+    position: relative;
 }
-.invoce_valid {
-    width: 24px;
-    height: 25px;
-    background-image: url('../images/invoice_valid.png');
+.hint-container .hint-content {
+    position: absolute;
+    left: -20px; top: 140%;
+    min-width: 240px;
+    z-index: 1;
+    background: #edebeb;
+    color: #666666;
+    padding: 8px 12px;
+    border: 4px solid #fff;
+    font-size: 16px;
+    text-align: center;
+    -webkit-box-shadow: 4px 9px 5px 0px rgba(50, 50, 50, 0.35);
+    -moz-box-shadow:    4px 9px 5px 0px rgba(50, 50, 50, 0.35);
+    box-shadow:         4px 9px 5px 0px rgba(50, 50, 50, 0.35);
+    display: none;
 }
-.invoce_invalid {
-     width: 24px;
-     height: 26px;
-     background-image: url('../images/invoice_invalid.png');
- }*/
+#hint-search {
+    width: 930px;
+    background: #353636;
+    left: 20px; top: 100%;
+    color: #fff;
+}
+.hint-container:hover .hint-content {
+    display: block;
+}
+.list-view {
+    position: relative;
+    text-align: center;
+}
