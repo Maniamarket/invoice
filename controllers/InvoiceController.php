@@ -117,7 +117,7 @@ class InvoiceController extends Controller
             ],
         ]);
 
-        return $this->render('index', ['dataProvider' => $dataProvider, '$pageSize' => $pageSize]);
+        return $this->render('index', ['dataProvider' => $dataProvider, 'pageSize' => $pageSize, 'sort'=>$sort, 'dir'=>$dir]);
     }
     /**
      * Displays a single Invoice model.
