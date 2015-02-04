@@ -100,7 +100,7 @@ class InvoiceController extends Controller
         $name_seach = ( isset($_GET['name'])) ? $_GET['name'] : '';
         $sort = ( isset($_GET['sort'])) ? $_GET['sort'] : '';
         if( $sort && $sort[0] == '-') {
-            $sort = unsert($sort[0]);
+            $sort = substr($sort,1);
             $dir = SORT_DESC;
         }
         else  $dir = SORT_ASC;
@@ -117,7 +117,9 @@ class InvoiceController extends Controller
             ],
         ]);
 
-        return $this->render('index', ['dataProvider' => $dataProvider, 'pageSize' => $pageSize, 'sort'=>$sort, 'dir'=>$dir]);
+        return $this->render('index', ['dataProvider' => $dataProvider, 'pageSize' => $pageSize, 'sort'=>$sort, 'dir'=>$dir,
+            'name_search' => $name_seach
+        ] );
     }
     /**
      * Displays a single Invoice model.
