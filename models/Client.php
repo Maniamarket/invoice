@@ -52,8 +52,8 @@ class Client extends ActiveRecord implements IdentityInterface
             [['email'], 'required'],
             [['email'], 'unique'],
             ['email','email'],
-            [['city','street','phone','name','email'], 'filter', 'filter' => 'trim'],
-	        [['city','street','phone','name','email'], 'string', 'max' => 100],
+            [['city','street','phone','name','email','post_index'], 'filter', 'filter' => 'trim'],
+	        [['city','street','phone','name','email','post_index'], 'string', 'max' => 100],
             [['country_id'],'integer'],
         ];
     }

@@ -175,7 +175,12 @@ a.desc:after {
     position: relative;
     text-align: center;
 }
-.modal-pdf {
-    width: 800px;
-    height: 900px;
+button.close {
+    background-image: url('../images/popup_close.png');
+    width: 44px;
+    height: 38px;
+    opacity: 1;
+    color: #fff;
+    padding-right: 5px;
+    padding-bottom: 5px;
 }

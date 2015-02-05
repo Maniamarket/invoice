@@ -153,7 +153,7 @@ class m141207_115424_init_bd extends Migration
             'street' => Schema::TYPE_STRING . ' DEFAULT NULL',
             'post_index' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
             'phone' => Schema::TYPE_STRING . ' DEFAULT NULL',
-            'web_site' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
+            'web_site' => Schema::TYPE_STRING . ' DEFAULT NULL',
             'mail' => Schema::TYPE_STRING . ' DEFAULT NULL',
             'vat_number' => Schema::TYPE_STRING . ' DEFAULT NULL',
             'activity' => Schema::TYPE_STRING . ' DEFAULT NULL',

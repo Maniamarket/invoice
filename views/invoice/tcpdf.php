@@ -31,7 +31,9 @@ $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
 $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 
 // set default header data
-$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'Invoice in Pdf', 'Test Page', array(0,64,255), array(0,64,128));
+//$pdf->setPrintHeader(false);
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'Invoice in Pdf', 'Test Page', array(0,64,255), array(0,64,128));
+$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, '', '', array(0,64,255), array(255,255,255));
 $pdf->setFooterData(array(0,64,0), array(0,64,128));
 
 // set default monospaced font
@@ -41,6 +43,7 @@ $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
 $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
 $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+//$pdf->SetMargins(20, 25, 25);
 
 // set auto page breaks
 $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
@@ -57,7 +60,9 @@ $pdf->setFontSubsetting(true);
 // dejavusans is a UTF-8 Unicode font, if you only need to
 // print standard ASCII chars, you can use core fonts like
 // helvetica or times to reduce file size.
-$pdf->SetFont('dejavusans', '', 14, '', true);
+$fontname = $pdf->addTTFfont('css/osans/opensans-regular.ttf','TrueTypeUnicode','');
+$pdf->SetFont($fontname, '', 8, '', true);
+//$pdf->SetFont('dejavusans', '', 14, '', true);
 
 // Add a page
 // This method has several options, check the source code documentation for more information.
@@ -69,10 +74,11 @@ $pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'colo
 // Set some content to print
 //$html = "<h1>Yii2 TCPDF Works Fine!</h1>";
 // логотип компании
-if (!empty($model->company->logo)) {
+
+/*if (!empty($model->company->logo)) {
     $logo = 'images/companies/'.$model->company->logo;
     $pdf->Image($logo, '15', '25', '20', '0', '', '', '', true, 150);
-}
+}*/
 //echo $logo;
 $html = $this->context->renderPartial('/invoice/template/'.$template, ['model' => $model, 'isTranslit'=>$isTranslit]);
 
@@ -92,7 +98,8 @@ if(empty($model->is_pay)) {
     $myX = ( $myPageWidth / 2 ) - 90;  //WaterMark Positioning
     $myY = ( $myPageHeight / 2 ) -90;
 
-    $pdf->SetAlpha(0.29);
+//    $pdf->SetAlpha(0.29);
+    $pdf->SetAlpha(0.3);
     $pdf->Image(K_PATH_IMAGES.'xmark.png', $myX, $myY, $ImageW, $ImageH, '', '', '', true, 150);
 
     /*$pdf->setPage( 2 );

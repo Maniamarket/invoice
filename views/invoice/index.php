@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\ListView;
 use yii\helpers\Url;
+use yii\bootstrap\Modal;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\InvoiceSearch */
@@ -96,7 +97,20 @@ $options_page_size = [20,50,100,200,500];
         ],
     ]);*/
 
+
+    Modal::begin([
+        'header' => '&nbsp;',
+        'options'=>['id'=>'modal-pdf'],
+        'size' => 'modal-lg',
+ //       'toggleButton' => ['tag'=>'a', 'label' => '<img src="/images/invoice_pdf.png" />',
+ //           'style'=>'cursor:pointer;', 'title'=>'View in Pdf'],
+    ]);
+    echo '<div style="width:auto; height:600px;"> <iframe id="iframe-pdf" src="" width="860" height="600" align="left">
+    Ваш браузер не поддерживает плавающие фреймы!
+ </iframe></div>';
+    Modal::end();
     ?>
+
     <table class="table" id="table-result-search">
         <thead>
         <tr>
@@ -112,7 +126,7 @@ $options_page_size = [20,50,100,200,500];
                 }
                 ?>
             </th>
-            <th>Name
+<!--            <th>Name
                 <span class="glyphicon-menu-down" aria-hidden="true"></span>
                 <?php
                 if ($sort=='name' && $dir==SORT_ASC) {
@@ -144,7 +158,7 @@ $options_page_size = [20,50,100,200,500];
                 <?php
                 }*/
                 ?>
-            </th>
+            </th>-->
             <th>Date
                 <?php
                 if ($sort=='date' && $dir==SORT_ASC) {
@@ -156,7 +170,7 @@ $options_page_size = [20,50,100,200,500];
                 }
                 ?>
             </th>
-            <th>Client
+            <th>Name
                 <?php
                 if ($sort=='client_name' && $dir==SORT_ASC) {
                     echo Html::a('<span class="triangl">&#9650;</span>',

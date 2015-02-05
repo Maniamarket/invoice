@@ -72,7 +72,7 @@ class CompanyController extends Controller {
 		if ($file){
 		    $uploaded = $file->saveAs(Yii::$app->params['logoPath'].$file->name);
 		    $image=Yii::$app->image->load(Yii::$app->params['logoPath'].$file);
-		    $image->resize(150);
+		    $image->resize(265);
 		    $image->save();
 		}
 		$this->redirect(array('view', 'id' => $model->id));
@@ -106,7 +106,7 @@ class CompanyController extends Controller {
            if ($file){
 		    $uploaded = $file->saveAs(Yii::$app->params['logoPath'].$file->name);
 		    $image=Yii::$app->image->load(Yii::$app->params['logoPath'].$file);		
-		    $image->resize(150);
+		    $image->resize(265);
 		    $image->save();
 		}
             $this->redirect(array('view', 'id' => $model->id));
