@@ -98,6 +98,8 @@ class InvoiceController extends Controller
     {
         $pageSize = ( isset($_GET['count_search'])) ? $_GET['count_search'] : 5;
         $name_seach = ( isset($_GET['name'])) ? $_GET['name'] : '';
+        if( Yii::$app->request->isAjax )
+            $name_seach = ( isset($_Post['name'])) ? $_POST['name'] : '';
         $sort = ( isset($_GET['sort'])) ? $_GET['sort'] : '';
         if( $sort && $sort[0] == '-') {
             $sort = substr($sort,1);
@@ -107,19 +109,51 @@ class InvoiceController extends Controller
 
         $orderBy = ( $sort ) ? [$sort => $dir] :  ['is_pay'=>SORT_ASC, 'id'=>SORT_DESC];
 
-        $query = Invoice::find()->where(['user_id'=> Yii::$app->user->id])->orderBy( $orderBy );
-        if( $name_seach )  $query->andWhere(['like','name', $name_seach.'%',false]);
+        $query = Invoice::find()->select(['invoice.*', 'cl.name as client_name' ])->leftJoin('client as cl','invoice.client_id = cl.id');
+        $query->where(['invoice.user_id'=> Yii::$app->user->id])->orderBy( $orderBy );
+        if( $name_seach )  $query->andWhere(['like','cl.name', $name_seach.'%',false]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => [
-                'pageSize' => $pageSize,
-            ],
+            'pagination' => [ 'pageSize' => $pageSize,  ],
         ]);
 
-        return $this->render('index', ['dataProvider' => $dataProvider, 'pageSize' => $pageSize, 'sort'=>$sort, 'dir'=>$dir,
-            'name_search' => $name_seach
+        if( Yii::$app->request->isAjax ){
+            $t_page =  (isset(Yii::$app->request->queryParams['page']))?(Yii::$app->request->queryParams['page']-1)*$dataProvider->pagination->pageSize:0;
+            foreach ($dataProvider->models as $key=>$model) {
+                echo $this->render('_view', ['model'=>$model, 'number'=>$t_page+$key+1]);
+            }
+        }
+        else return $this->render('index', ['dataProvider' => $dataProvider, 'pageSize' => $pageSize, 'sort'=>$sort, 'dir'=>$dir,
+             'name_search' => $name_seach
         ] );
+    }
+
+    public function actionAjaxIndex()
+    {
+        if( Yii::$app->request->isAjax ){
+            $name_seach = ( isset($_Post['name'])) ? $_POST['name'] : '';
+            $pageSize = ( isset($_Post['count_search'])) ? $_Post['count_search'] : 5;
+            $sort = ( isset($_GET['sort'])) ? $_GET['sort'] : '';
+            $dir = ( isset($_GET['sort'])) ? $_GET['dir'] : SORT_ASC;
+
+            $orderBy = ( $sort ) ? [$sort => $dir] :  ['is_pay'=>SORT_ASC, 'id'=>SORT_DESC];
+
+            $query = Invoice::find()->select(['invoice.*', 'cl.name as client_name' ])->leftJoin('client as cl','invoice.client_id = cl.id');
+            $query->where(['invoice.user_id'=> Yii::$app->user->id])->orderBy( $orderBy );
+            if( $name_seach )  $query->andWhere(['like','cl.name', $name_seach.'%',false]);
+
+            $dataProvider = new ActiveDataProvider([
+                'query' => $query,
+                'pagination' => [ 'pageSize' => $pageSize,  ],
+            ]);
+
+            $t_page =  (isset(Yii::$app->request->queryParams['page']))?(Yii::$app->request->queryParams['page']-1)*$dataProvider->pagination->pageSize:0;
+            if( $dataProvider->models )
+                foreach ($dataProvider->models as $key=>$model) {
+                   echo $this->render('_view', ['model'=>$model, 'number'=>$t_page+$key+1]);
+                }
+        }
     }
     /**
      * Displays a single Invoice model.

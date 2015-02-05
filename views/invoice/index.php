@@ -37,7 +37,7 @@ $options_page_size = [20,50,100,200,500];
                     or search through a live search.
                 </div>
                 <div class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></div>
-                <input name="name" id='name_search' type="text" placeholder="Search... " data-url="<?php echo Url::toRoute(['client/ajax'])?>"
+                <input name="name" id='name_search' type="text" placeholder="Search... " data-url="<?php echo Url::toRoute(['invoice/ajaxindex'])?>"
                        value="<?php if(isset($name_search)) echo $name_search; ?>" class="form-control" />
             </div>
         </div>
@@ -198,7 +198,7 @@ $options_page_size = [20,50,100,200,500];
             <th>Total Price</th>-->
         </tr>
         </thead>
-        <tbody>
+        <tbody id="invoice_view">
         <?php
             $t_page =  (isset(Yii::$app->request->queryParams['page']))?(Yii::$app->request->queryParams['page']-1)*$dataProvider->pagination->pageSize:0;
             foreach ($dataProvider->models as $key=>$model) {
@@ -224,3 +224,7 @@ $options_page_size = [20,50,100,200,500];
     ])
     ?>
 </div>
+<?php
+/** @var \yii\data\ActiveDataProvider $dataProvider */
+Yii::$app->view->registerJsFile('@web/js/client.js');
+?>
