@@ -175,3 +175,7 @@ a.desc:after {
     position: relative;
     text-align: center;
 }
+.modal-pdf {
+    width: 800px;
+    height: 900px;
+}

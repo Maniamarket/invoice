@@ -129,7 +129,7 @@ class InvoiceController extends Controller
         ] );
     }
 
-    public function actionAjaxIndex()
+    public function actionAjax()
     {
         if( Yii::$app->request->isAjax ){
             $name_seach = ( isset($_Post['name'])) ? $_POST['name'] : '';

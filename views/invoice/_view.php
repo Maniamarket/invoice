@@ -44,7 +44,20 @@ the client must pay the VAT <br />
                    ],
                    ['encode'=>false]);
                Modal::end();
-               echo Html::a('<span class="glyphicon glyphicon-print" aria-hidden="true"></span>', ['tcpdf', 'id'=>$model->id],['title'=>'Print']);
+
+             Modal::begin([
+                 'header' => '&nbsp;',
+                 'options'=>['class'=>'modal-pdf'],
+                 'toggleButton' => ['tag'=>'a', 'label' => '<img src="/images/invoice_pdf.png" />',
+                     'style'=>'cursor:pointer;', 'title'=>'View in Pdf'],
+             ]);
+/*               echo ' <iframe src="'.Url::toRoute(['tcpdf', 'id'=>$model->id]).'" width="800" height="600" align="left">
+    Ваш браузер не поддерживает плавающие фреймы!
+ </iframe>';*/
+               Modal::end();
+//             echo Html::a('<img src="/images/invoice_pdf.png"', ['tcpdf', 'id'=>$model->id],['title'=>'View in Pdf']);
+             echo '&nbsp';
+               echo Html::a('<img src="/images/invoice_print.png"', ['tcpdf', 'id'=>$model->id,'print'=>1],['title'=>'Print']);
                echo '&nbsp';
                echo Html::a('<span style="color: purple;" class="glyphicon glyphicon-print" aria-hidden="true"></span>', ['tcpdf', 'id'=>$model->id, 'isTranslit'=>1],['title'=>'Print Translit']);
                ?>
