@@ -151,7 +151,7 @@ class InvoiceController extends Controller
             $t_page =  (isset(Yii::$app->request->queryParams['page']))?(Yii::$app->request->queryParams['page']-1)*$dataProvider->pagination->pageSize:0;
             if( $dataProvider->models )
                 foreach ($dataProvider->models as $key=>$model) {
-                   echo $this->render('_view', ['model'=>$model, 'number'=>$t_page+$key+1]);
+                   echo $this->renderPartial('_view', ['model'=>$model, 'number'=>$t_page+$key+1]);
                 }
         }
     }

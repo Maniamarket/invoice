@@ -226,5 +226,5 @@ $options_page_size = [20,50,100,200,500];
 </div>
 <?php
 /** @var \yii\data\ActiveDataProvider $dataProvider */
-Yii::$app->view->registerJsFile('@web/js/client.js');
+Yii::$app->view->registerJsFile('@web/js/invoice.js');
 ?>
