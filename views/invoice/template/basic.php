@@ -5,11 +5,13 @@ use yii\widgets\DetailView;
 use app\models\Translit;
 
 $lt = $isTranslit ? 'en-US' : Yii::$app->language;
+$country_name  = ($model->company->country) ? $model->company->country->name : 'no';
 ?>
 <div>
     <div style="width: 100%; height: 200px;"></div>
     <h2 style="text-transform: uppercase;"><?= $isTranslit ? Translit::Translit($model->company->name) : $model->company->name ?></h2>
-    <span><b><?= Yii::t('invoice', 'Country', [], $lt) ?>: </b><?= $isTranslit ? Translit::Translit($model->company->country->name) : $model->company->country->name ?></span>
+
+    <span><b><?= Yii::t('invoice', 'Country', [], $lt) ?>: </b><?= $isTranslit ? Translit::Translit($country_name ) : $country_name ?></span>
     <p>&nbsp;</p>
     <table>
         <tr><td><b><?= Yii::t('invoice', 'Seller', [], $lt) ?>: </b><?= $model->user->username ?></td>

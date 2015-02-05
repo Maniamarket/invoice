@@ -62,6 +62,7 @@ class InvoiceController extends Controller
     public function actionTcpdf($id, $isTranslit = 0)
     {
         $model = $this->findModel($id);
+     //   var_dump($model->company); exit;
         if ($model->user_id == Yii::$app->user->id) {
             $template = empty($model->type) ? 'basic' : $model->type;
             return $this->render('tcpdf', [
@@ -98,8 +99,6 @@ class InvoiceController extends Controller
     {
         $pageSize = ( isset($_GET['count_search'])) ? $_GET['count_search'] : 5;
         $name_seach = ( isset($_GET['name'])) ? $_GET['name'] : '';
-        if( Yii::$app->request->isAjax )
-            $name_seach = ( isset($_Post['name'])) ? $_POST['name'] : '';
         $sort = ( isset($_GET['sort'])) ? $_GET['sort'] : '';
         if( $sort && $sort[0] == '-') {
             $sort = substr($sort,1);
@@ -118,13 +117,7 @@ class InvoiceController extends Controller
             'pagination' => [ 'pageSize' => $pageSize,  ],
         ]);
 
-        if( Yii::$app->request->isAjax ){
-            $t_page =  (isset(Yii::$app->request->queryParams['page']))?(Yii::$app->request->queryParams['page']-1)*$dataProvider->pagination->pageSize:0;
-            foreach ($dataProvider->models as $key=>$model) {
-                echo $this->render('_view', ['model'=>$model, 'number'=>$t_page+$key+1]);
-            }
-        }
-        else return $this->render('index', ['dataProvider' => $dataProvider, 'pageSize' => $pageSize, 'sort'=>$sort, 'dir'=>$dir,
+        return $this->render('index', ['dataProvider' => $dataProvider, 'pageSize' => $pageSize, 'sort'=>$sort, 'dir'=>$dir,
              'name_search' => $name_seach
         ] );
     }
