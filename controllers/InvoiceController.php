@@ -2,19 +2,16 @@
 
 namespace app\controllers;
 
+use app\models\Setting;
+use app\models\User;
 use Yii;
-use yii\base\Object;
-use yii\data\SqlDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
-use yii\helpers\ArrayHelper;
-use yii\db\Expression;
 use yii\web\ForbiddenHttpException;
 use app\models\Invoice;
-use app\models\InvoiceSearch;
 use app\models\User_payment;
+use app\components\HelpKontrol;
 
 /**
  * InvoiceController implements the CRUD actions for Invoice model.
@@ -167,16 +164,29 @@ class InvoiceController extends Controller
      */
     public function actionCreate()
     {
-       $model = new Invoice;
+       if( isset($_POST['id_invoice'])) $model = $this->findModel($_POST['id_invoice']);
+       else {$model = new Invoice; $model->save(); }
+       $model->date = date("d/m/Y",  time());
+       $setting = Setting::findOne(Yii::$app->user->id);
+        $vat = $setting->vat;
+        $income_tax = $setting->surtax;
 
+//       $error = '';
         if ($model->load(Yii::$app->request->post()) ) {
-            $model->date = new Expression('NOW()');
-            $price = $model->price_service*$model->count;
-            $model->price = $price*(1+($model->vat + $model->tax - $model->discount)/100);
-            $model->user_id = Yii::$app->user->id;
-            if( $model->save()) return $this->redirect(['index']);
-        } 
-        return $this->render('create', ['model' => $model, ]);
+            $date = $model->date;
+            if( ! HelpKontrol::typ_date_time($date)){
+                $error = 'must d/m/Y';
+                $model->date = $date;
+            }
+            else{
+                $price = $model->price_service*$model->count;
+                $model->price = $price*(1+($model->vat + $model->tax - $model->discount)/100);
+                $model->user_id = Yii::$app->user->id;
+                if( $model->save()) return $this->redirect(['index']);
+            }
+            //var_dump($model->date); exit;
+        }
+        return $this->render('create', ['model' => $model, 'vat'=>$vat, 'income_tax'=>$income_tax ]);
     }
 
     /**

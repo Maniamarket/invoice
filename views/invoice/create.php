@@ -15,4 +15,4 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <h1><?= Html::encode($this->title) ?></h1>
 
-<?php  echo $this->context->renderPartial('_form', ['model'=>$model]); ?>
+<?php  echo $this->context->renderPartial('_form', ['model' => $model, 'vat' => $vat, 'income_tax'=>$income_tax]); ?>

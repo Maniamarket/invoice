@@ -34,14 +34,12 @@ class Invoice extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [[ 'client_id', 'name', 'company_id', 'service_id', 'price_service', 'vat', 'tax', 'discount'], 'required'],
-//            [['user_id', 'date', 'seller_id', 'sender_addr', 'recipient_addr', 'client_id', 'currency_id'], 'required'],
-//            [['user_id', 'seller_id', 'client_id', 'currency_id'], 'integer'],
-            [['user_id',  'client_id',  'count'], 'integer'],
+        //    [[ 'client_id', 'date', 'company_id', 'service_id', 'price_service', 'vat', 'tax', 'discount'], 'required'],
+            [['user_id',  'client_id'], 'integer'],
             ['type', 'default', 'value' => 'basic'],
             ['type', 'string', 'max' => 50],
-            [['vat',  'tax',  'discount', 'price_service'], 'integer', 'integerOnly'=>FALSE],
-            [['date','company_id', 'service_id'], 'safe'],
+            [['total_price', 'net_price'], 'integer', 'integerOnly'=>FALSE],
+            [['date','company_id','surtax'], 'safe'],
          //   [['number', 'bill_number'], 'string', 'max' => 32],
        //     [['sender_addr', 'recipient_addr'], 'string', 'max' => 128]
         ];
@@ -67,6 +65,20 @@ class Invoice extends \yii\db\ActiveRecord
         ];
     }
 
+    public function validateDate($attribute, $params)
+    {
+        $par=trim($this->$attribute);
+        var_dump($par); exit;
+        if (preg_match('/^([0-3]?[0-9])\/([01]?[0-9])\/([0-9]{4})$/',$par,$date))
+        { $day=$date[1]; $month=$date[2]; $year=$date[3];
+            if (checkdate($month,$day,$year) ) {return true;}
+        };
+        $this->addError($attribute, 'The country must be either "USA" or "Web".');
+        return false;
+  //      if (!in_array($this->$attribute, ['USA', 'Web'])) {
+  //          $this->addError($attribute, 'The country must be either "USA" or "Web".');
+ //       }
+    }
     public function getClient()
     {
         return $this->hasOne('app\models\Client', array('id' => 'client_id'));

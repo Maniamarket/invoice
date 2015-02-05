@@ -12,8 +12,8 @@ use yii\bootstrap\Modal;
     <td><?php echo Html::encode($model->date); ?></td>
     <td><?php echo Html::encode($model->client->name); ?></td>
     <td><?php echo Html::encode($model->company->name); ?></td>
-    <td><?php echo Html::encode($model->price_service*$model->count); ?>&euro;</td>
-    <td><?php echo Html::encode($model->price); ?>&euro; </td>
+    <td><?php echo Html::encode($model->net_price); ?>&euro;</td>
+    <td><?php echo Html::encode($model->total_price); ?>&euro; </td>
     <td><?php if ($model->is_pay) echo '<span class="invoce_valid hint-container"> <div class="hint-content">he Invoice is Valid</div><img src="/images/invoice_valid.png" /></span>';
         else echo '<a href="'.Url::toRoute(['user/pay', 'id'=>$model->id]).'"
         class="hint-container"><div class="hint-content">he Invoice is not Valid:<br />
@@ -55,11 +55,11 @@ the client must pay the VAT <br />
         <?php }  ?>
 
     </td>
-<!--    <td><?php echo Html::encode($model->count); ?></td>
-    <td><?php echo Html::encode($model->vat); ?></td>
-    <td><?php echo Html::encode($model->tax); ?></td>
-    <td><?php echo Html::encode($model->discount); ?></td>
-    <td><?php echo Html::encode($model->price); ?></td>-->
+<--
+    <td><?php //echo Html::encode($model->vat); ?></td>
+    <td><?php //echo Html::encode($model->tax); ?></td>
+    <td><?php //echo Html::encode($model->discount); ?></td>
+    <td><?php //echo Html::encode($model->price); ?></td>-->
 </tr>
 
 

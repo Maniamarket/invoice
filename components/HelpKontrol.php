@@ -3,49 +3,113 @@ namespace app\components;
 
 use Yii;
 use yii\base\Component;
-use yii\base\InvalidConfigException;
 
 
 class HelpKontrol  extends Component
 {
-    public function logMe($mess)
+    public static function update_cacheMe($table)
     {
-        $my_log = Yii::$app()->params['my_log_file'];
-        if ( ! file_exists($my_log) )
+        $kol = strlen(Yii::$app->db->tablePrefix);
+        $table_name = substr($table, $kol);
+//        echo 'ee  aaaaaa     '.$table_name;   exit;
+        $q = 'select * from {{%cache}} where tabl = "'.$table_name.'" order by value desc';
+        $res = Yii::$app->db->createCommand( $q )->queryAll();
+        if(is_array($res) && $count = count($res))
         {
-            $handle = fopen($my_log, "w+");
-            fclose($handle);
-        }
-        $str = date('[Y-m-d H:i:s]') . ' ' . $mess . "\r\n";
-        error_log($str, 3, $my_log);
-    }
-
-    public function generate_keyMe($key,$update)
-    {
-        $arr = array();
-        if ( is_array($update) && count($update)>0 )
-        {
-            foreach( $update as $nom=>$value)
+            $s = '';
+            foreach ($res as $val)
             {
-                $arr[] = $key.$value['update_cache'];
-                if( $nom>=1) break;
+                $cache_id = $val['name'].$val['value'];
+                Yii::$app->cache->delete($cache_id);
+                $s .= '"'.$val['tabl'].'",';
             }
+            $s = substr($s, 0, -1);
+            $now = time();
+            $q = 'update  {{%cache}}set value ='.$now.' where tabl in( '.$s.')';
+            Yii::$app->db->createCommand( $q )->execute();
         }
-        else $arr[] = $key;
-        return $arr;
     }
 
-    public function set_cacheMe($keys,$data,$duration,$key_del)
+
+    public static function set_cacheMe($cache_id,$data,$duration)
     {
-        Yii::$app->cache->set($keys[0],$data,$duration);
-        $key = $key_del.'_del';
-        $res = Yii::$app->cache->get($key);
-        if( $res )
-        {
-            Yii::$app->cache->delete($res);
-            Yii::$app->cache->delete('view_'.$res);
-        }
-        Yii::$app->cache->set($key,$keys[0],31536000);
+        Yii::$app->cache->set($cache_id,$data,$duration);
     }
+
+    public static function get_cacheMe($table,$sub_name = '')
+    {
+        $count = 1;
+        if( is_array($table) && $count = count($table))
+        {   $cache_id = $sub_name;
+            foreach ($table as $name) $cache_id .= '_'.$name;
+        }
+        else $cache_id = $sub_name.'_'.$table;
+
+        $q = 'select value from {{%cache}} where name = "'.$cache_id.'" order by value desc';
+        $res = Yii::$app->db->createCommand( $q )->queryAll();
+        if( $count != count($res))
+        {
+            $now = time();
+            if( is_array($table) && $count = count($table))
+            {
+                foreach ( $table as $name)
+                {
+                    $q = 'insert into {{%cache}} (tabl,name,value) values';
+                    $q .= ' ("'.$name.'","'.$cache_id.'",'.$now.')';
+                    $q .= ' ON DUPLICATE KEY UPDATE tabl = "'.$name.'"';
+                    $res = Yii::$app->db->createCommand($q)->execute();
+                }
+            }
+            else
+            {
+                $q = 'insert into {{%cache}} (tabl,name,value) values';
+                $q .= ' ("'.$table.'","'.$cache_id.'",'.$now.')';
+                $q .= ' ON DUPLICATE KEY UPDATE tabl = "'.$table.'"';
+                $res = Yii::$app->db->createCommand($q)->execute();
+            }
+            $cache_id .= $now;
+        }
+        else $cache_id .= $res[0]['value'];
+        //   var_dump($keys_cache);        var_dump(Yii::$app->cache->get($keys_cache[0])); exit;
+        return  ['data'=>Yii::$app->cache->get($cache_id),'key'=>$cache_id] ;
+    }
+
+    /*  public static function get_cacheMe($table,$sub = '')
+      {
+          $q = 'select update_cache from '.$table.' order by update_cache desc limit 0,2';
+          $update = Yii::$app->db->createCommand( $q )->queryAll();
+          $cache_id = $sub.'_'.$table;
+          $keys_cache = self::generate_keyMe($cache_id,$update);
+       //   var_dump($keys_cache);        var_dump(Yii::$app->cache->get($keys_cache[0])); exit;
+          return  ['data'=>Yii::$app->cache->get($keys_cache[0]),'keys_cache'=>$keys_cache];
+      }
+    */
+    public static function getRoute()
+    {
+        $params = Yii::$app->request->getQueryParams();
+        if (isset($r_params['r'])) { unset($r_params['r']); }
+        return  Url::toRoute(ArrayHelper::merge([''],$params));
+    }
+
+    public static  function typ_date_time(&$par)
+    { $par=trim($par);
+        if (preg_match('/^([0-3]?[0-9])\/([01]?[0-9])\/([0-9]{4})$/',$par,$date))
+        { $day=$date[1]; $month=$date[2]; $year=$date[3];
+            if (checkdate($month,$day,$year) ) {return true;}
+        };
+        return false;
+    }
+//      if (preg_match('/^([0-9]{4})-([01]?[0-9])-([0-3]?[0-9]-([0-9]{2}):([0-9]{2}):([0-9]{2}) )$/',$par,$date))
+
+    public static function date_time_all(&$par)
+    { $par=trim($par);
+        if (preg_match('/^([0-9]{4})-([01]?[0-9])-([0-3]?[0-9]) ([0-2]?[0-9]):([0-5]?[0-9]):([0-5]?[0-9])$/',$par,$date))
+        { $day=$date[3]; $month=$date[2]; $year=$date[1];
+            if (checkdate($month,$day,$year) && $date[4]<=23 ) {return true;}
+
+        };
+        return false;
+    }
+
 
 }  //////////////////////////////////////////

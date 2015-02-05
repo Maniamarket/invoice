@@ -23,7 +23,8 @@
         "yurkinx/yii2-image": "dev-master",
         "marciocamello/yii2-paypal": "dev-master",
         "paypal/rest-api-sdk-php": "*",
-        "kartik-v/yii2-nav-x": "dev-master"
+        "kartik-v/yii2-nav-x": "dev-master",
+        "yiisoft/yii2-jui": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

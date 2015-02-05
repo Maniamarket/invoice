@@ -110,17 +110,21 @@ class Setting extends ActiveRecord {
     }
 
     public static  function List_Vat() {
-	// @todo Please modify the following code to remove attributes that should not be searched.
         $company = Vat::find()->all();
-        $list = ArrayHelper::map($company,'id', 'percent'); 
-	return $list;
+        $list = ArrayHelper::map($company,'id', 'percent');
+        return $list;
+    }
+
+    public static  function List_Surtax() {
+        $tax = Tax::find()->all();
+        $list = ArrayHelper::map($tax,'id', 'percent');
+        return $list;
     }
 
     public static  function List_service() {
-	// @todo Please modify the following code to remove attributes that should not be searched.
         $company = Service::find()->all();
         $list = ArrayHelper::map($company,'id', 'name'); 
-	return $list;
+    	return $list;
     }
 
     public static  function List_client() {
