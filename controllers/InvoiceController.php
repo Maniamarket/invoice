@@ -132,8 +132,8 @@ class InvoiceController extends Controller
     public function actionAjax()
     {
         if( Yii::$app->request->isAjax ){
-            $name_seach = ( isset($_Post['name'])) ? $_POST['name'] : '';
-            $pageSize = ( isset($_Post['count_search'])) ? $_Post['count_search'] : 5;
+            $name_seach = ( isset($_POST['name'])) ? $_POST['name'] : '';
+            $pageSize = ( isset($_POST['count_search'])) ? $_POST['count_search'] : 5;
             $sort = ( isset($_GET['sort'])) ? $_GET['sort'] : '';
             $dir = ( isset($_GET['sort'])) ? $_GET['dir'] : SORT_ASC;
 

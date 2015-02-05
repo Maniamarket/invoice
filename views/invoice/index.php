@@ -37,7 +37,8 @@ $options_page_size = [20,50,100,200,500];
                     or search through a live search.
                 </div>
                 <div class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></div>
-                <input name="name" id='name_search' type="text" placeholder="Search... " data-url="<?php echo Url::toRoute(['invoice/ajax'])?>"
+                <input name="name" id='name_search' type="text" placeholder="Search... "
+                       data-url="<?php echo Url::toRoute(['invoice/ajax','sort'=>$sort,'dir'=>$dir])?>"
                        value="<?php if(isset($name_search)) echo $name_search; ?>" class="form-control" />
             </div>
         </div>
