@@ -7,13 +7,14 @@ return array(
     'Seller' => 'Seller',
     'Buyer' => 'Buyer',
     'Invoice' => 'Invoice',
-    'Service' => 'Service',
-    'Price' => 'Price',
-    'Count' => 'Count',
+    'Item Description' => 'Item Description',
+    'Unit Cost' => 'Unit Cost',
+    'Qty' => 'Qty',
     'Clear Price' => 'Clear Price',
     'Discount' => 'Discount',
     'Vat' => 'Vat',
     'Surtax' => 'Surtax',
     'Total' => 'Total',
+    'Total Cost'=>'Total Cost'
 
 );

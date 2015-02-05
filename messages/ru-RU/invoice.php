@@ -7,13 +7,14 @@ return array(
     'Seller' => 'Продавец',
     'Buyer' => 'Покупатель',
     'Invoice' => 'Счет-фактура',
-    'Service' => 'Наим.услуги',
-    'Price' => 'Цена',
-    'Count' => 'Количество',
+    'Item Description' => 'Наим.услуги',
+    'Unit Cost' => 'Цена',
+    'Qty' => 'Количество',
     'Clear Price' => 'Чистая цена',
     'Discount' => 'Скидки',
     'Vat' => 'НДС',
     'Surtax' => 'Под.налог',
     'Total' => 'Итого',
+    'Total Cost'=>'Общая цена'
 
 );
