@@ -3,22 +3,10 @@
 namespace app\models;
 
 use Yii;
+use yii\db\ActiveRecord;
 
-/**
- * This is the model class for table "invoice".
- *
- * @property integer $id
- * @property integer $user_id
- * @property string $number
- * @property string $date
- * @property integer $seller_id
- * @property string $sender_addr
- * @property string $recipient_addr
- * @property string $bill_number
- * @property integer $client_id
- * @property integer $currency_id
- */
-class Invoice extends \yii\db\ActiveRecord
+
+class Invoice extends ActiveRecord
 {
     /**
      * @inheritdoc
@@ -65,21 +53,7 @@ class Invoice extends \yii\db\ActiveRecord
         ];
     }
 
-    public function validateDate($attribute, $params)
-    {
-        $par=trim($this->$attribute);
-        var_dump($par); exit;
-        if (preg_match('/^([0-3]?[0-9])\/([01]?[0-9])\/([0-9]{4})$/',$par,$date))
-        { $day=$date[1]; $month=$date[2]; $year=$date[3];
-            if (checkdate($month,$day,$year) ) {return true;}
-        };
-        $this->addError($attribute, 'The country must be either "USA" or "Web".');
-        return false;
-  //      if (!in_array($this->$attribute, ['USA', 'Web'])) {
-  //          $this->addError($attribute, 'The country must be either "USA" or "Web".');
- //       }
-    }
-    public function getClient()
+   public function getClient()
     {
         return $this->hasOne('app\models\Client', array('id' => 'client_id'));
     }
@@ -92,11 +66,6 @@ class Invoice extends \yii\db\ActiveRecord
     public function getCompany()
     {
         return $this->hasOne('app\models\Company', array('id' => 'company_id'));
-    }
-
-    public function getService()
-    {
-        return $this->hasOne('app\models\Service', array('id' => 'service_id'));
     }
 
     public static function queryProvider($qp) {

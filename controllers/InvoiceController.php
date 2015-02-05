@@ -12,6 +12,7 @@ use yii\web\ForbiddenHttpException;
 use app\models\Invoice;
 use app\models\User_payment;
 use app\components\HelpKontrol;
+use app\models\Invoice_item;
 
 /**
  * InvoiceController implements the CRUD actions for Invoice model.
@@ -59,13 +60,14 @@ class InvoiceController extends Controller
     public function actionTcpdf($id, $isTranslit = 0)
     {
         $model = $this->findModel($id);
-     //   var_dump($model->company); exit;
+        $items = Invoice_item::findAll(['invoice_id'=>$id]);
         if ($model->user_id == Yii::$app->user->id) {
             $template = empty($model->type) ? 'basic' : $model->type;
             return $this->render('tcpdf', [
                 'model' => $model,
                 'template'=>$template,
-                'isTranslit'=>$isTranslit
+                'isTranslit'=>$isTranslit,
+                'items'=>$items
             ]);
         } else {
             throw new ForbiddenHttpException('Access to the invoice is forbidden. You are not the owner of the invoice');

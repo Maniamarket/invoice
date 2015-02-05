@@ -203,22 +203,24 @@ $country_name  = ($model->company->country) ? $model->company->country->name : '
             <th><b><?= Yii::t('invoice', 'Count', [], $lt) ?></b></th>
             <th style="text-align: right"><b><?= Yii::t('invoice', 'Clear Price', [], $lt) ?></b></th>
         </tr>
+    <?php foreach( $items as $item) {?>
         <tr>
-            <td><?= $isTranslit ? Translit::Translit($model->service->name) : $model->service->name ?></td>
-            <td><?= $model->price_service ?></td>
-            <td><?= $model->count ?></td>
-            <td style="text-align: right"><?= $model->price_service*$model->count ?></td>
+            <td><?= $isTranslit ? Translit::Translit($item->service->name) : $item->service->name ?></td>
+            <td><?= $item->price_service ?></td>
+            <td><?= $$item->count ?></td>
+            <td style="text-align: right"><?= $$item->price_service*$$item->count ?></td>
         </tr>
+     <?php } ?>
     </table>
     <hr />
     <table>
         <tr>
             <td colspan="4" style="text-align: right">
-                <span><b><?= Yii::t('invoice', 'Discount', [], $lt) ?>: </b><?= $model->discount ?>%</span><br />
-                <span><b><?= Yii::t('invoice', 'Vat', [], $lt) ?>: </b><?= $model->vat ?>%</span><br />
-                <span style="text-decoration: underline;"><b><?= Yii::t('invoice', 'Surtax', [], $lt) ?>: </b><?= $model->tax ?>%</span><br />
-                <span><b><?= Yii::t('invoice', 'Total', [], $lt) ?>: </b><?= $model->price ?></span><br />
-            </td>
+          <!--      <span><b><?= Yii::t('invoice', 'Discount', [], $lt) ?>: </b><?= 1//$model->discount ?>%</span><br />
+                <span><b><?= Yii::t('invoice', 'Vat', [], $lt) ?>: </b><?= 1//$model->vat ?>%</span><br />
+                <span style="text-decoration: underline;"><b><?= Yii::t('invoice', 'Surtax', [], $lt) ?>: </b><?= 1//$model->tax ?>%</span><br />
+                -->
+                <span><b><?= Yii::t('invoice', 'Total', [], $lt) ?>: </b><?= $model->total_price ?></span><br />            </td>
         </tr>
     </table>
 </div>

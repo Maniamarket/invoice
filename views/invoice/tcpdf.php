@@ -80,7 +80,7 @@ $pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'colo
     $pdf->Image($logo, '15', '25', '20', '0', '', '', '', true, 150);
 }*/
 //echo $logo;
-$html = $this->context->renderPartial('/invoice/template/'.$template, ['model' => $model, 'isTranslit'=>$isTranslit]);
+$html = $this->context->renderPartial('/invoice/template/'.$template, ['model' => $model, 'isTranslit'=>$isTranslit, 'items'=>$items]);
 
 // Print text using writeHTMLCell()
 $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
