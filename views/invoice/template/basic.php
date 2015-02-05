@@ -176,7 +176,10 @@ $country_name  = ($model->company->country) ? $model->company->country->name : '
                 <br />&nbsp;
             </td>
             <td width="150" style="border: 1px solid #757577;">
-
+                Invoice #: <br />
+                <?php
+                    echo 'MM100'.$model->id;
+                ?>
             </td>
         </tr>
     </table>

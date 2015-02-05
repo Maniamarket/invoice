@@ -8,7 +8,6 @@ use yii\bootstrap\Modal;
     <td>
         <?php echo Html::a('MM100'.$model->id,['tcpdf', 'id'=>$model->id]); ?>
     </td>
-<!--    <td><?php echo Html::encode($model->name); ?></td>-->
     <td><?php echo Html::encode($model->date); ?></td>
     <td><?php echo Html::encode($model->client->name); ?></td>
     <td><?php echo Html::encode($model->company->name); ?></td>
@@ -55,11 +54,6 @@ the client must pay the VAT <br />
         <?php }  ?>
 
     </td>
-<--
-    <td><?php //echo Html::encode($model->vat); ?></td>
-    <td><?php //echo Html::encode($model->tax); ?></td>
-    <td><?php //echo Html::encode($model->discount); ?></td>
-    <td><?php //echo Html::encode($model->price); ?></td>-->
 </tr>
 
 

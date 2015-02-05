@@ -126,39 +126,6 @@ $options_page_size = [20,50,100,200,500];
                 }
                 ?>
             </th>
-<!--            <th>Name
-                <span class="glyphicon-menu-down" aria-hidden="true"></span>
-                <?php
-                if ($sort=='name' && $dir==SORT_ASC) {
-                        echo Html::a('<span class="triangl">&#9650;</span>',
-                            Url::toRoute(['invoice/index','sort'=>'-name']));
-                }
-                else {
-                    echo '<a href="'.Url::toRoute(['invoice/index','sort'=>'name']).'" ><span class="triangl">&#9660;</span></a>';
-                }
-                ?>
-                <?php /*if(isset($qp['name'])) {
-                    if (isset($qp['orderby']) && $qp['orderby']=='asc') {
-                        ?>
-                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true" title="По возрастанию"></span>
-                    <?php } else { ?>
-                        <a href="<?php echo Url::toRoute(['client/index','name'=>$qp['name'], 'orderby'=>'asc']); ?>" title="По возрастанию"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
-                    <?php }
-                    if (isset($qp['orderby']) && $qp['orderby']=='desc') {
-                        ?>
-                        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true" title="По убыванию"></span>
-                    <?php } else { ?>
-                        <a href="<?php echo Url::toRoute(['client/index','name'=>$qp['name'], 'orderby'=>'desc']); ?>" title="По убыванию"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
-                    <?php }
-                }
-                else {
-                    ?>
-                    <a href="<?php echo Url::to(''); ?>&name=&orderby=asc" title="По возрастанию"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
-                    <a href="<?php echo Url::to(''); ?>&name=&orderby=desc" title="По убыванию"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
-                <?php
-                }*/
-                ?>
-            </th>-->
             <th>Date
                 <?php
                 if ($sort=='date' && $dir==SORT_ASC) {
