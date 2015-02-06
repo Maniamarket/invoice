@@ -172,9 +172,9 @@ class InvoiceController extends Controller
         $model->date = date("d/m/Y",  time());
         $setting = Setting::findOne(Yii::$app->user->id);
         $model->vat_id = $setting->def_vat_id;
-        $model->income_id = 1;
         $model->income = $setting->surtax;
         $items_error = [];
+        $itog = ['net'=>'', 'total'=>''];
         $model_item = 0;
 
         if( isset($_POST['submit'])){
@@ -188,6 +188,8 @@ class InvoiceController extends Controller
             $item->invoice_id = $model->id;
             $model_item = $item;
             $is_error = false;
+            $itog['net'] = $item->count*$item->price_service;
+            $itog['total'] = $item->total_price;
   //             var_dump($_POST); //exit;      //      var_dump($item->errors); exit;
             if( $item->save() ){
                 $model_item = 0;
@@ -198,6 +200,8 @@ class InvoiceController extends Controller
                         $item_t->total_price = $item_t->count*$item_t->price_service*(1+($vat->percent+$model->income+$item_t->discount)/100);
                         $items_error[] = ( $is = $item_t->save()) ? 0 : $item_t->errors;
                         if( !$is ) $is_error = true;
+                        $itog['net'] = $itog['net']+$item_t->count*$item_t->price_service;
+                        $itog['total'] = $itog['total']+$item_t->total_price;
                     }
                 }
                 if( !$is_error && ($_POST['submit'] == 'end' )){
@@ -213,14 +217,15 @@ class InvoiceController extends Controller
                     $model->net_price = $net;
                     $model->total_price = $total;
                     $model->user_id = Yii::$app->user->id;
-                    var_dump($model->attributes);
+               //     var_dump($model->attributes);
                     if( $model->save()) return $this->redirect(['index']);
                 }
             }
         }
         $items = Invoice_item::findAll(['invoice_id'=>$model->id]);
   //      var_dump($items); echo 'id='.$model->id;
-        return $this->render('create', ['model' => $model, 'model_item' => $model_item, 'items' => $items, 'items_error'=>$items_error ]);
+        return $this->render('create', ['model' => $model, 'model_item' => $model_item, 'itog'=>$itog,
+            'items' => $items, 'items_error'=>$items_error ]);
     }
 
     /**

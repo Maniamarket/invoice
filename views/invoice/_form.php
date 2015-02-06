@@ -142,26 +142,20 @@ use app\models\Setting;
             </td>
 
             <td id="item_total"  class="invoice-item">
-                <?php echo Html::label((($model_item) ? $model_item->total_price : ''),'')  ?>
+                <?php echo Html::label((($model_item) ? $model_item->total_price : ''),'', ['id'=>"total"])  ?>
             </td>
         </tr>
         <tr>
             <td>
-                <?php
-                echo Html::label(isset($model_item->errors['count']) ? $model_item->errors['count'][0] : '','',['style'=>'color : red']);
-                ?>
+                <?php echo Html::label(isset($model_item->errors['count']) ? $model_item->errors['count'][0] : '','',['style'=>'color : red']); ?>
             </td>
 
             <td>
-                <?php
-                echo Html::label(isset($model_item->errors['price_service']) ? $model_item->errors['price_service'][0] : '','',['style'=>'color : red']);
-                ?>
+                <?php echo Html::label(isset($model_item->errors['price_service']) ? $model_item->errors['price_service'][0] : '','',['style'=>'color : red']); ?>
             </td>
 
             <td>
-                <?php
-                echo Html::label(isset($model_item->errors['discount']) ? $model_item->errors['discount'][0] : '','',['style'=>'color : red']);
-                ?>
+            <?php  echo Html::label(isset($model_item->errors['discount']) ? $model_item->errors['discount'][0] : '','',['style'=>'color : red']); ?>
             </td>
 
             <td></td>
@@ -174,16 +168,25 @@ use app\models\Setting;
     </div>
 
 
-
-    <div class="form-group">
-        <?php echo $form->field($model, 'vat_id',['labelOptions'=>['class'=>'control-label col-md-2']])->dropDownList( Setting::List_Vat(),[])->label('Vat') ; ?>
+    <div class="form-group"> Net Price
+        <?php echo Html::label( $itog['net'],''); ?>
     </div>
 
+
     <div class="form-group">
-        <?php echo 'Income tax  '.$model->income;
-        //echo $form->field($model,'income',['labelOptions'=>['class'=>'control-label col-md-2']])->dropDownList( Setting::List_Surtax(),[])->label('Income tax') ; ?>
+        <?php echo $form->field($model, 'vat_id',[])->dropDownList( Setting::List_Vat(),['id'=>'vat'])->label('Vat') ; ?>
+    </div>
+
+    <div class="form-group"> Income Tax
+        <?php echo Html::label( $model->income,'');
         ?>
     </div>
+
+    <div class="form-group"> Total Price
+        <?php echo Html::label( $itog['total'],''); ?>
+    </div>
+
+
 
     <div class="row buttons">
 		<?php echo Html::submitButton($is_add ? 'Create' : 'Save',['class'=>'btn btn-success','name'=>'submit','value'=>'end']); ?>
@@ -192,4 +195,37 @@ use app\models\Setting;
     <?php ActiveForm::end(); ?>
 
 </div><!-- form -->
-<?php  Yii::$app->view->registerJsFile('@web/js/invoice.js'); ?>
+<?php//  Yii::$app->view->registerJsFile('@web/js/invoice_form.js'); ?>
+<script type="text/javascript">
+    function total_price(){
+        var income = <?php echo  $model->income ?> ;
+        var vat = $('#vat :selected').text();;
+        var count = $('#qty').val();
+        var price = $('#price').val();
+        var discount = $('#discount').val();
+        var net = price*count;
+        var total = net*(1+(vat+income-discount)/100);
+        $('#total').text(total);
+
+        var count_items =  <?php echo $count_items ?> ;
+        if( count_items ){
+            var id,net_itog = net;
+            for( var i=1; i<= count_items; i++){
+                id = '#qty'+(i-1).toString();       count = $(id).val();
+                id = '#price'+(i-1).toString();     price = $(id).val();
+                id = '#discount'+(i-1).toString();  discount = $(id).val();
+                net = price*count;
+                net_itog = net_itog + net;
+                total = total+net*(1+(vat+income-discount)/100);
+                alert('count='+count+' vat='+vat+ ' total  '+total);
+
+            }
+        }
+        return false;
+    }
+    $(document).on('change', '#qty', function (){
+            return total_price();
+        }
+    );
+
+</script>
