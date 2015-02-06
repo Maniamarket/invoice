@@ -157,42 +157,44 @@ use app\models\Setting;
 
             <td></td>
         </tr>
-
-
     </table>
     <div class="row buttons">
         <?php if( $is_add ) echo Html::submitButton('Add New service',['class'=>'btn btn-success','name'=>'submit','value'=>'add']); ?>
     </div>
 
 
-    <div class="form-group"> Net Price
-        <?php echo Html::label( $itog['net'],'', ['id'=>"net_itog"]); ?>
+    <div class="form-group" style="position: relative; right: 1px">
+        <table style="border: 1px solid #000000">
+            <thead><th></th><th></th></thead>
+            <tr style="border: 1px solid #000000">
+                <td> Net Price </td>
+                <td>  <?php echo Html::label( $itog['net'],'', ['id'=>"net_itog"]); ?>  </td>
+            </tr>
+            <tr  style="border: 1px solid #000000">
+                <td style="border: 1px solid #000000"> Vat </td>
+                <td style="border: 1px solid #000000"> <?php echo $form->field($model, 'vat_id',[])->dropDownList( Setting::List_Vat(),['id'=>'vat'])->label(false); ?> </td>
+            </tr>
+            <tr  style="border: 1px solid #000000">
+                <td style="border: 1px solid #000000"> Income Tax </td>
+                <td style="border: 1px solid #000000"> <?php echo Html::label( $model->income,'');?> </td>
+            </tr>
+            <tr  style="border: 1px solid #000000">
+                <td style="border: 1px solid #000000"> Grand Total </td>
+                <td style="border: 1px solid #000000"> <?php echo Html::label( $itog['total'],'', ['id'=>"total_itog"]); ?> </td>
+            </tr>
+        </table>
     </div>
 
+    <div class="clearfix"></div>
 
-    <div class="form-group">
-        <?php echo $form->field($model, 'vat_id',[])->dropDownList( Setting::List_Vat(),['id'=>'vat'])->label('Vat') ; ?>
-    </div>
-
-    <div class="form-group"> Income Tax
-        <?php echo Html::label( $model->income,'');
-        ?>
-    </div>
-
-    <div class="form-group"> Total Price
-        <?php echo Html::label( $itog['total'],'', ['id'=>"total_itog"]); ?>
-    </div>
-
-
-
-    <div class="row buttons">
-		<?php echo Html::submitButton($is_add ? 'Create' : 'Save',['class'=>'btn btn-success','name'=>'submit','value'=>'end']); ?>
+    <div class="row buttons" style="position: absolute; right: 1px" >
+        <?php echo Html::submitButton('Submit' ,['class'=>'btn btn-success','name'=>'submit','value'=>'end']); ?>
+        <?php echo Html::submitButton('Clear' ,['class'=>'btn btn-success','name'=>'submit','value'=>'cleare']); ?>
 	</div>
 
     <?php ActiveForm::end(); ?>
 
 </div><!-- form -->
-<?php//  Yii::$app->view->registerJsFile('@web/js/invoice_form.js'); ?>
 <script type="text/javascript">
     function total_price(elem){
         var a = $(elem).attr('id');
@@ -208,7 +210,7 @@ use app\models\Setting;
         var discount = $('#discount_'+a).val();
         var net = parseFloat(price*count);
         var total = net*(1+(parseFloat(vat)+parseFloat(income)-parseFloat(discount))/100);
- //    alert(total+' vat '+vat+' net '+net+ ' income '+income+' discount '+discount+' count= '+count+' prise= '+price);
+        //    alert(total+' vat '+vat+' net '+net+ ' income '+income+' discount '+discount+' count= '+count+' prise= '+price);
         $('#total_'+a).text(total);
 
         var count_items =  <?php echo $count_items ?> ;
