@@ -179,7 +179,6 @@ class InvoiceController extends Controller
 
         if( isset($_POST['submit'])){
             $model->load(Yii::$app->request->post());
-         //   var_dump($_POST); exit;
             $vat = Vat::findOne(['id'=>$model->vat_id]);
 
             $item = new Invoice_item;
@@ -189,9 +188,9 @@ class InvoiceController extends Controller
             $item->invoice_id = $model->id;
             $model_item = $item;
             $is_error = false;
-            $item->validate();
-      //      var_dump($item->errors); exit;
+  //             var_dump($_POST); //exit;      //      var_dump($item->errors); exit;
             if( $item->save() ){
+                $model_item = 0;
                 if( isset($_POST['items'])){
                     foreach( $_POST['items'] as $row){
                         $item_t =  Invoice_item::findOne($row['id']);
@@ -220,7 +219,7 @@ class InvoiceController extends Controller
             }
         }
         $items = Invoice_item::findAll(['invoice_id'=>$model->id]);
-     //   var_dump($items); echo 'id='.$model->id;
+  //      var_dump($items); echo 'id='.$model->id;
         return $this->render('create', ['model' => $model, 'model_item' => $model_item, 'items' => $items, 'items_error'=>$items_error ]);
     }
 

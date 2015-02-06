@@ -58,7 +58,7 @@ use app\models\Setting;
            echo Html::hiddenInput('items['.$key.'][id]',$item['id']);
        ?>
              <tr>
-                 <td>
+                 <td colspan="4">
                      <div class="form-group">
                          <?php  echo Html::label('Service','');  ?>
                          <?php  echo Html::dropDownList('items['.$key.'][service_id]',$item['service_id'], Setting::List_service()) ; ?>
@@ -66,46 +66,53 @@ use app\models\Setting;
                  </td>
              </tr>
              <tr>
-                 <td>
-                     <?php  echo Html::label('Qty','');  ?>
+                 <td>   <?php  echo Html::label('Qty','');  ?>           </td>
+                 <td>   <?php  echo Html::label('Unit Cost','');  ?>     </td>
+                 <td>   <?php  echo Html::label('Discount','');  ?>      </td>
+                 <td>   <?php echo Html::label('Total','')  ?>           </td>
+             </tr>
+             <tr>
+                 <td id="item_<?php echo($qty);?>"  class="invoice-item">
+                     <?php echo Html::textInput('items['.$key.'][count]',$item['count'], ['id'=>$qty]);
+                    // echo Html::label(isset($error['count']) ? $error['count'][0] : '','',['style'=>'color : red']);
+                     ?>
                  </td>
-                 <td>
-                     <?php  echo Html::label('Unit Cost','');  ?>
+
+                 <td id="item_<?php echo($price);?>"  class="invoice-item">
+                     <?php echo Html::textInput('items['.$key.'][price]',$item['price_service'], ['id'=>$price]);
+                   //  echo Html::label(isset($error['price_service']) ? $error['price_service'][0] : '','',['style'=>'color : red']);
+                     ?>
                  </td>
-                 <td>
-                     <?php  echo Html::label('Discount','');  ?>
+
+                 <td id="item_<?php echo($discount);?>"  class="invoice-item">
+                     <?php echo Html::textInput('items['.$key.'][discount]',$item['discount'], ['id'=>$discount]);
+                   //  echo Html::label( isset($error['discount']) ? $error['discount'][0] : '','',['style'=>'color : red']);
+                     ?>
                  </td>
-                 <td>
-                     <?php echo Html::label('Total','')  ?>
+
+                 <td id="item_<?php echo($total);?>"  class="invoice-item">
+                     <?php echo Html::label($item['total_price'],'', ['id'=>$total])  ?>
                  </td>
              </tr>
-           <tr>
-               <td id="item_<?php echo($qty);?>"  class="invoice-item">
-                   <?php echo Html::textInput('items['.$key.'][count]',$item['count'], ['id'=>$qty]);
-                         echo Html::label(isset($error['count']) ? $error['count'][0] : '','',['style'=>'color : red']);
-                   ?>
-               </td>
+             <tr>
+                 <td>
+                   <?php  echo Html::label(isset($error['count']) ? $error['count'][0] : '','',['style'=>'color : red']);  ?>
+                 </td>
 
-               <td id="item_<?php echo($price);?>"  class="invoice-item">
-                   <?php echo Html::textInput('items['.$key.'][price]',$item['price_service'], ['id'=>$price]);
-                         echo Html::label(isset($error['price_service']) ? $error['price_service'][0] : '','',['style'=>'color : red']);
-                   ?>
-               </td>
+                 <td>
+                   <?php  echo Html::label(isset($error['price_service']) ? $error['price_service'][0] : '','',['style'=>'color : red']);?>
+                 </td>
 
-               <td id="item_<?php echo($discount);?>"  class="invoice-item">
-                   <?php echo Html::textInput('items['.$key.'][discount]',$item['discount'], ['id'=>$discount]);
-                         echo Html::label( isset($error['discount']) ? $error['discount'][0] : '','',['style'=>'color : red']);
-                   ?>
-               </td>
+                 <td>
+                 <?php echo Html::label( isset($error['discount']) ? $error['discount'][0] : '','',['style'=>'color : red']);  ?>
+                 </td>
 
-               <td id="item_<?php echo($total);?>"  class="invoice-item">
-                   <?php echo Html::label($item['total_price'],'', ['id'=>$total])  ?>
-               </td>
-           </tr>
+                 <td></td>
+             </tr>
        <?php } ?>
 
         <tr>
-            <td>
+            <td colspan="4">
                 <div class="form-group">
                     <?php  echo Html::label('Service','');  ?> &nbsp;&nbsp;
                     <?php  echo Html::dropDownList('service_id',0, Setting::List_service()) ; ?>
@@ -114,42 +121,50 @@ use app\models\Setting;
         </tr>
 
         <tr>
-            <td>
-                <?php  echo Html::label('Qty','');  ?>
-            </td>
-
+            <td>  <?php  echo Html::label('Qty','');  ?> </td>
             <td>  <?php  echo Html::label('Unit Cost','');  ?>  </td>
-
-            <td>
-                <?php  echo Html::label('Discount','');  ?>
-            </td>
-
-            <td>
-                <?php echo Html::label('Total','')  ?>
-            </td>
+            <td>  <?php  echo Html::label('Discount','');  ?>   </td>
+            <td>  <?php echo Html::label('Total','')  ?>        </td>
         </tr>
         <tr>
             <td id="item_qty"  class="invoice-item">
-                <?php echo Html::textInput('count',(($model_item) ? $model_item->count : ''), ['id'=>"qty"]);
-                  echo Html::label(isset($model_item->errors['count']) ? $model_item->errors['count'][0] : '','',['style'=>'color : red']);
-                ?>
+                <?php echo Html::textInput('count',(($model_item) ? $model_item->count : ''), ['id'=>"qty"]); ?>
             </td>
 
             <td id="item_price"  class="invoice-item">
                 <?php echo Html::textInput('price_service',(($model_item) ? $model_item->price_service : ''), ['id'=>"price"]);
-                echo Html::label(isset($model_item->errors['price_service']) ? $model_item->errors['price_service'][0] : '','',['style'=>'color : red']);
                 ?>
             </td>
 
             <td id="item_discount"  class="invoice-item">
                 <?php echo Html::textInput('discount',(($model_item) ? $model_item->discount : ''), ['id'=>"discount"]);
-                echo Html::label(isset($model_item->errors['discount']) ? $model_item->errors['discount'][0] : '','',['style'=>'color : red']);
                 ?>
             </td>
 
             <td id="item_total"  class="invoice-item">
                 <?php echo Html::label((($model_item) ? $model_item->total_price : ''),'')  ?>
             </td>
+        </tr>
+        <tr>
+            <td>
+                <?php
+                echo Html::label(isset($model_item->errors['count']) ? $model_item->errors['count'][0] : '','',['style'=>'color : red']);
+                ?>
+            </td>
+
+            <td>
+                <?php
+                echo Html::label(isset($model_item->errors['price_service']) ? $model_item->errors['price_service'][0] : '','',['style'=>'color : red']);
+                ?>
+            </td>
+
+            <td>
+                <?php
+                echo Html::label(isset($model_item->errors['discount']) ? $model_item->errors['discount'][0] : '','',['style'=>'color : red']);
+                ?>
+            </td>
+
+            <td></td>
         </tr>
 
 
