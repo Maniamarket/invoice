@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "invoice".
@@ -18,7 +19,7 @@ use Yii;
  * @property integer $client_id
  * @property integer $currency_id
  */
-class Invoice_item extends \yii\db\ActiveRecord
+class Invoice_item extends ActiveRecord
 {
     /**
      * @inheritdoc
@@ -34,14 +35,9 @@ class Invoice_item extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-        //    [[ 'client_id', 'date', 'company_id', 'service_id', 'price_service', 'vat', 'tax', 'discount'], 'required'],
-            [['user_id',  'client_id'], 'integer'],
-            ['type', 'default', 'value' => 'basic'],
-            ['type', 'string', 'max' => 50],
-            [['total_price', 'net_price'], 'integer', 'integerOnly'=>FALSE],
-            [['date','company_id','surtax'], 'safe'],
-         //   [['number', 'bill_number'], 'string', 'max' => 32],
-       //     [['sender_addr', 'recipient_addr'], 'string', 'max' => 128]
+            [['invoice_id','service_id','count'], 'number','integerOnly' => true,'min' => '0'],
+            [['invoice_id','service_id','price_service','count','discount'], 'required'],
+            [['price_service','total_price','discount'], 'integer','integerOnly' => false,'min' => '0'],
         ];
     }
 

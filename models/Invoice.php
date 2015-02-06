@@ -22,12 +22,12 @@ class Invoice extends ActiveRecord
     public function rules()
     {
         return [
-        //    [[ 'client_id', 'date', 'company_id', 'service_id', 'price_service', 'vat', 'tax', 'discount'], 'required'],
-            [['user_id',  'client_id'], 'integer'],
+            [[ 'client_id', 'company_id' ], 'required'],
+            [['user_id',  'client_id', 'vat_id','company_id'], 'integer','min'=>1],
             ['type', 'default', 'value' => 'basic'],
             ['type', 'string', 'max' => 50],
-            [['total_price', 'net_price'], 'integer', 'integerOnly'=>FALSE],
-            [['date','company_id','surtax'], 'safe'],
+            [['total_price', 'net_price', 'income'], 'integer', 'integerOnly'=>FALSE],
+            [['date'], 'safe'],
          //   [['number', 'bill_number'], 'string', 'max' => 32],
        //     [['sender_addr', 'recipient_addr'], 'string', 'max' => 128]
         ];
@@ -41,7 +41,6 @@ class Invoice extends ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'user_id' => Yii::t('app', 'User ID'),
-            'count' => Yii::t('app', 'count'),
             'number' => Yii::t('app', 'Number'),
             'date' => Yii::t('app', 'Date'),
             'seller_id' => Yii::t('app', 'Seller ID'),

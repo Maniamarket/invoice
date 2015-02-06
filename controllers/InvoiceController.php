@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Setting;
 use app\models\User;
+use app\models\Vat;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -166,29 +167,61 @@ class InvoiceController extends Controller
      */
     public function actionCreate()
     {
-       if( isset($_POST['id_invoice'])) $model = $this->findModel($_POST['id_invoice']);
-       else {$model = new Invoice; $model->save(); }
-       $model->date = date("d/m/Y",  time());
-       $setting = Setting::findOne(Yii::$app->user->id);
-        $vat = $setting->vat;
-        $income_tax = $setting->surtax;
+        if( isset($_POST['id'])) $model = $this->findModel($_POST['id']);
+        else {$model = new Invoice;  $model->client_id =1;  $model->company_id =1; $model->save();  }
+        $model->date = date("d/m/Y",  time());
+        $setting = Setting::findOne(Yii::$app->user->id);
+        $model->vat_id = $setting->def_vat_id;
+        $model->income_id = 1;
+        $model->income = $setting->surtax;
+        $items_error = [];
+        $model_item = 0;
 
-//       $error = '';
-        if ($model->load(Yii::$app->request->post()) ) {
-            $date = $model->date;
-            if( ! HelpKontrol::typ_date_time($date)){
-                $error = 'must d/m/Y';
-                $model->date = $date;
+        if( isset($_POST['submit'])){
+            $model->load(Yii::$app->request->post());
+         //   var_dump($_POST); exit;
+            $vat = Vat::findOne(['id'=>$model->vat_id]);
+
+            $item = new Invoice_item;
+            $item->attributes = $_POST;
+
+            $item->total_price = $item->count*$item->price_service*(1+($vat->percent+$model->income+$item->discount)/100);
+            $item->invoice_id = $model->id;
+            $model_item = $item;
+            $is_error = false;
+            $item->validate();
+      //      var_dump($item->errors); exit;
+            if( $item->save() ){
+                if( isset($_POST['items'])){
+                    foreach( $_POST['items'] as $row){
+                        $item_t =  Invoice_item::findOne($row['id']);
+                        $item_t->attributes = $row;
+                        $item_t->total_price = $item_t->count*$item_t->price_service*(1+($vat->percent+$model->income+$item_t->discount)/100);
+                        $items_error[] = ( $is = $item_t->save()) ? 0 : $item_t->errors;
+                        if( !$is ) $is_error = true;
+                    }
+                }
+                if( !$is_error && ($_POST['submit'] == 'end' )){
+                    $items = Invoice_item::findAll(['invoice_id'=>$model->id]);
+                    $net = 0;
+                    $total = 0;
+                    foreach( $items as $row){
+                        $net_t = $row['count']*$row['price_service'];
+                        $net += $net_t;
+                        $total += $net_t*(1+ ($vat->id + $model->income - $row['discount'])/100);
+                    }
+
+                    $model->net_price = $net;
+                    $model->total_price = $total;
+                    $model->user_id = Yii::$app->user->id;
+                    var_dump($model->attributes);
+                    if( $model->save()) return $this->redirect(['index']);
+                }
             }
-            else{
-                $price = $model->price_service*$model->count;
-                $model->price = $price*(1+($model->vat + $model->tax - $model->discount)/100);
-                $model->user_id = Yii::$app->user->id;
-                if( $model->save()) return $this->redirect(['index']);
-            }
-            //var_dump($model->date); exit;
         }
-        return $this->render('create', ['model' => $model, 'vat'=>$vat, 'income_tax'=>$income_tax ]);
+        $items = Invoice_item::findAll(['invoice_id'=>$model->id]);
+     //   var_dump($items); echo 'id='.$model->id;
+        return $this->render('create', ['model' => $model, 'model_item' => $model_item, 'items' => $items, 'items_error'=>$items_error ]);
     }
 
     /**
