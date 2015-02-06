@@ -52,9 +52,14 @@ class Invoice extends ActiveRecord
         ];
     }
 
-   public function getClient()
+    public function getClient()
     {
         return $this->hasOne('app\models\Client', array('id' => 'client_id'));
+    }
+
+    public function getVat()
+    {
+        return $this->hasOne('app\models\Vat', array('id' => 'vat_id'));
     }
 
     public function getUser()

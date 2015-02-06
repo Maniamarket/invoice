@@ -38,8 +38,9 @@ the client must pay the VAT <br />
                ]);
                echo 'Выберите шаблон:';
                echo Html::ol([
-                       Html::a('Базовый',['settemplate','id'=>$model->id,'template'=>'basic']),
-                       Html::a('Дополнительный',['settemplate','id'=>$model->id,'template'=>'add'])
+                       Html::a('Третий',['settemplate','id'=>$model->id,'template'=>'basic']),
+                       Html::a('Второй',['settemplate','id'=>$model->id,'template'=>'second']),
+                       Html::a('Третий',['settemplate','id'=>$model->id,'template'=>'third'])
                    ],
                    ['encode'=>false]);
                Modal::end();
