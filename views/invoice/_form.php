@@ -49,10 +49,10 @@ use app\models\Setting;
        <?php
          $count_items = count($items);
          if( $count_items ) foreach( $items as $key=>$item ){
-             $qty = 'qty'.$key;
-             $price = 'price'.$key;
-             $discount = 'discount'.$key;
-             $total = 'total'.$key;
+             $qty = 'qty_'.$key;
+             $price = 'price_'.$key;
+             $discount = 'discount_'.$key;
+             $total = 'total_'.$key;
              $error = ( isset($items_error[$key])) ? $items_error[$key] : [];
 
            echo Html::hiddenInput('items['.$key.'][id]',$item['id']);
@@ -72,25 +72,22 @@ use app\models\Setting;
                  <td>   <?php echo Html::label('Total','')  ?>           </td>
              </tr>
              <tr>
-                 <td id="item_<?php echo($qty);?>"  class="invoice-item">
-                     <?php echo Html::textInput('items['.$key.'][count]',$item['count'], ['id'=>$qty]);
-                    // echo Html::label(isset($error['count']) ? $error['count'][0] : '','',['style'=>'color : red']);
+                 <td id="item_<?php echo($qty);?>" >
+                     <?php echo Html::textInput('items['.$key.'][count]',$item['count'], ['id'=>$qty,'class'=>"invoice-item"]);
                      ?>
                  </td>
 
-                 <td id="item_<?php echo($price);?>"  class="invoice-item">
-                     <?php echo Html::textInput('items['.$key.'][price]',$item['price_service'], ['id'=>$price]);
-                   //  echo Html::label(isset($error['price_service']) ? $error['price_service'][0] : '','',['style'=>'color : red']);
+                 <td id="item_<?php echo($price);?>" >
+                     <?php echo Html::textInput('items['.$key.'][price]',$item['price_service'], ['id'=>$price,'class'=>"invoice-item"]);
                      ?>
                  </td>
 
-                 <td id="item_<?php echo($discount);?>"  class="invoice-item">
-                     <?php echo Html::textInput('items['.$key.'][discount]',$item['discount'], ['id'=>$discount]);
-                   //  echo Html::label( isset($error['discount']) ? $error['discount'][0] : '','',['style'=>'color : red']);
+                 <td id="item_<?php echo($discount);?>" >
+                     <?php echo Html::textInput('items['.$key.'][discount]',$item['discount'], ['id'=>$discount,'class'=>"invoice-item"]);
                      ?>
                  </td>
 
-                 <td id="item_<?php echo($total);?>"  class="invoice-item">
+                 <td id="item_<?php echo($total);?>" >
                      <?php echo Html::label($item['total_price'],'', ['id'=>$total])  ?>
                  </td>
              </tr>
@@ -127,22 +124,22 @@ use app\models\Setting;
             <td>  <?php echo Html::label('Total','')  ?>        </td>
         </tr>
         <tr>
-            <td id="item_qty"  class="invoice-item">
-                <?php echo Html::textInput('count',(($model_item) ? $model_item->count : ''), ['id'=>"qty"]); ?>
+            <td id="item_qty" >
+                <?php echo Html::textInput('count',(($model_item) ? $model_item->count : ''), ['id'=>"qty_",'class'=>"invoice-item"]); ?>
             </td>
 
-            <td id="item_price"  class="invoice-item">
-                <?php echo Html::textInput('price_service',(($model_item) ? $model_item->price_service : ''), ['id'=>"price"]);
+            <td id="item_price" >
+                <?php echo Html::textInput('price_service',(($model_item) ? $model_item->price_service : ''), ['id'=>"price_",'class'=>"invoice-item"]);
                 ?>
             </td>
 
-            <td id="item_discount"  class="invoice-item">
-                <?php echo Html::textInput('discount',(($model_item) ? $model_item->discount : ''), ['id'=>"discount"]);
+            <td id="item_discount" >
+                <?php echo Html::textInput('discount',(($model_item) ? $model_item->discount : ''), ['id'=>"discount_",'class'=>"invoice-item"]);
                 ?>
             </td>
 
-            <td id="item_total"  class="invoice-item">
-                <?php echo Html::label((($model_item) ? $model_item->total_price : ''),'', ['id'=>"total"])  ?>
+            <td id="item_total" >
+                <?php echo Html::label((($model_item) ? $model_item->total_price : ''),'', ['id'=>"total_"])  ?>
             </td>
         </tr>
         <tr>
@@ -169,7 +166,7 @@ use app\models\Setting;
 
 
     <div class="form-group"> Net Price
-        <?php echo Html::label( $itog['net'],''); ?>
+        <?php echo Html::label( $itog['net'],'', ['id'=>"net_itog"]); ?>
     </div>
 
 
@@ -183,7 +180,7 @@ use app\models\Setting;
     </div>
 
     <div class="form-group"> Total Price
-        <?php echo Html::label( $itog['total'],''); ?>
+        <?php echo Html::label( $itog['total'],'', ['id'=>"total_itog"]); ?>
     </div>
 
 
@@ -197,34 +194,51 @@ use app\models\Setting;
 </div><!-- form -->
 <?php//  Yii::$app->view->registerJsFile('@web/js/invoice_form.js'); ?>
 <script type="text/javascript">
-    function total_price(){
+    function total_price(elem){
+        var a = $(elem).attr('id');
+        var mas = a.split('_');
+        var id = '';
         var income = <?php echo  $model->income ?> ;
         var vat = $('#vat :selected').text();;
-        var count = $('#qty').val();
-        var price = $('#price').val();
-        var discount = $('#discount').val();
-        var net = price*count;
-        var total = net*(1+(vat+income-discount)/100);
-        $('#total').text(total);
+
+        if( mas.length > 1 ) id = mas[1];
+        a = id.toString();
+        var count = $('#qty_'+a).val();
+        var price = $('#price_'+a).val();
+        var discount = $('#discount_'+a).val();
+        var net = parseFloat(price*count);
+        var total = net*(1+(parseFloat(vat)+parseFloat(income)-parseFloat(discount))/100);
+ //    alert(total+' vat '+vat+' net '+net+ ' income '+income+' discount '+discount+' count= '+count+' prise= '+price);
+        $('#total_'+a).text(total);
 
         var count_items =  <?php echo $count_items ?> ;
         if( count_items ){
-            var id,net_itog = net;
-            for( var i=1; i<= count_items; i++){
-                id = '#qty'+(i-1).toString();       count = $(id).val();
-                id = '#price'+(i-1).toString();     price = $(id).val();
-                id = '#discount'+(i-1).toString();  discount = $(id).val();
-                net = price*count;
-                net_itog = net_itog + net;
-                total = total+net*(1+(vat+income-discount)/100);
-                alert('count='+count+' vat='+vat+ ' total  '+total);
-
+            if( mas.length >1 ){
+                count = $('#qty_').val();
+                price = $('#price_').val();
+                discount = $('#discount_').val();
+                net = parseFloat(price*count);
+                total = net*(1+(parseFloat(vat)+parseFloat(income)-parseFloat(discount))/100);
             }
+            var net_itog = net;
+            for( var i=1; i<= count_items; i++){
+                var to = (i-1).toString();
+                count = $('#qty_'+ to).val();
+                price = $('#price_'+to).val();
+                discount = $('#discount_'+to).val();
+                net = parseFloat(price*count);
+                net_itog = net_itog + net;
+                total = total+net*(1+(parseFloat(vat)+parseFloat(income)-parseFloat(discount))/100);
+            }
+            net_itog = net_itog.toFixed(2);
+            total = total.toFixed(2);
+            $('#net_itog').text(net_itog);
+            $('#total_itog').text(total);
         }
         return false;
     }
-    $(document).on('change', '#qty', function (){
-            return total_price();
+    $(document).on('change', '.invoice-item', function (){
+            return total_price(this);
         }
     );
 
