@@ -87,11 +87,12 @@ $country_name  = ($model->company->country) ? $model->company->country->name : '
      <table>
         <tr>
             <td width="50"><img src="images/template1/invoice_to.png" width="42" /></td>
-            <td width="220" style="text-align: left;" colspan="2">
+            <td width="120" style="text-align: left;">
                 <h2 style="line-height:10px; text-transform: uppercase;">Invoice to</h2>
             </td>
+            <td width="100" rowspan="3"><?php if(!empty($model->client->avatar)) {echo '<img width="100" src="'.Yii::$app->params['avatarPath'].$model->client->avatar.'" />'; } ?></td>
         </tr>
-         <tr><td colspan="3">
+         <tr><td colspan="2">
                 <h2 style="text-transform: uppercase;"><?php if (!empty($model->client->company_name)) {
                     echo $isTranslit ? Translit::Translit($model->client->company_name) : $model->client->company_name;
                 } else {
@@ -101,7 +102,7 @@ $country_name  = ($model->company->country) ? $model->company->country->name : '
             </td>
         </tr>
          <tr>
-             <td width="200" colspan="3"><?php
+             <td width="200" colspan="2"><?php
                  echo $isTranslit ? Translit::Translit($model->client->street) : $model->client->street;
                  echo $isTranslit ? ', '.Translit::Translit($model->client->city) : ', '.$model->client->city;
                  echo ', '.$model->client->post_index;

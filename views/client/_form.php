@@ -54,6 +54,7 @@ use yii\helpers\BaseHtml;
             <?php echo $form->field($model, 'fax',['labelOptions'=>['class'=>'control-label col-md-4']])->textInput(); ?>
             <?php echo $form->field($model, 'web_site',['labelOptions'=>['class'=>'control-label col-md-4']])->textInput(); ?>
             <?php echo $form->field($model, 'def_lang_id',['labelOptions'=>['class'=>'control-label col-md-4']])->dropDownList(app\models\Setting::List_lang()); ?>
+            <?php echo $form->field($model, 'file',['labelOptions'=>['class'=>'control-label col-md-4']])->fileInput();  ?>
         </div>
     </div>
 

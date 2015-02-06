@@ -25,6 +25,7 @@ use yii\data\ActiveDataProvider;
  */
 class Client extends ActiveRecord implements IdentityInterface
 {
+    public $file;
     /**
      * @inheritdoc
      */
@@ -55,6 +56,8 @@ class Client extends ActiveRecord implements IdentityInterface
             [['city','street','phone','name','email','post_index','company_name','vat_number','tax_agency','fax','web_site'], 'filter', 'filter' => 'trim'],
 	        [['city','street','phone','name','email','post_index','company_name','vat_number','tax_agency','fax','web_site'], 'string', 'max' => 100],
             [['country_id','def_lang_id'],'integer'],
+            [['avatar'], 'safe'],
+            ['file', 'file', 'extensions' => ['jpg','jpeg','png','gif']],
         ];
     }
 
@@ -77,6 +80,7 @@ class Client extends ActiveRecord implements IdentityInterface
             'street' => Yii::t('app', 'Address'),
             'web_site' => Yii::t('app', 'Url'),
             'def_lang_id' => Yii::t('app', Yii::t('app', 'Language')),
+            'file' => Yii::t('app', Yii::t('app', 'Logo')),
             'inn' => Yii::t('app', 'Inn'),
         ];
     }

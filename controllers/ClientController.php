@@ -12,6 +12,7 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\data\ActiveDataProvider;
+use yii\web\UploadedFile;
 
 use app\models\LoginClientForm;
 use app\models\SignupClientForm;
@@ -204,8 +205,17 @@ class ClientController extends Controller
 	// Uncomment the following line if AJAX validation is needed
 	// $this->performAjaxValidation($model);
 
+        $file = UploadedFile::getInstance($model,'file');
+        if ($file)
+            $model->avatar = $file->name;
         if ($model->load(Yii::$app->request->post()) && $model->save())
         {
+            if ($file){
+                $uploaded = $file->saveAs(Yii::$app->params['avatarPath'].$file->name);
+                $image=Yii::$app->image->load(Yii::$app->params['avatarPath'].$file);
+                $image->resize(100);
+                $image->save();
+            }
             Yii::$app->getSession()->setFlash('success', 'Клиент успешно обновлен ');
             if (!Yii::$app->user->isGuest)
                 return $this->redirect(['index']);
