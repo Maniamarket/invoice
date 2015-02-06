@@ -175,7 +175,8 @@ $country_name  = ($model->company->country) ? $model->company->country->name : '
             <th style="border: 1px solid #24aa98;"><b><?= Yii::t('invoice', 'Discount', [], $lt) ?></b></th>
             <th style="border: 1px solid #24aa98; text-align: right"><b><?= Yii::t('invoice', 'Total Cost', [], $lt) ?></b></th>
         </tr>
-    <?php foreach( $items as $key=>$item) { ?>
+    <?php
+    foreach( $items as $key=>$item) { ?>
         <?php if ($key&1) { ?>
             <tr style="background-color: #efefef;">
         <?php } else { ?>
@@ -184,23 +185,57 @@ $country_name  = ($model->company->country) ? $model->company->country->name : '
             <td width="20"><?= $key+1 ?></td>
             <td><?= $isTranslit ? Translit::Translit($item->service->name) : $item->service->name ?></td>
             <td><?= $item->count ?></td>
-            <td><?= $item->price_service ?>&euro;</td>
-            <td><?= $item->discount ?></td>
-            <td style="text-align: right"><?= $item->price_service*$item->count*(1+($item->vat+$item->income-$item->discount)/100) ?>&euro;</td>
+            <td>&euro;<?= $item->price_service ?></td>
+            <td><?= $item->discount ?>%</td>
+            <td style="text-align: right">&euro;<?= $item->total_price ?></td>
         </tr>
      <?php } ?>
     </table>
     <hr />
-    <table>
-        <tr>
-            <td width="220" style="font-size: 12px; color: #fff; background-color: #acacac; line-height: 24px;">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Payment Method:</b> PayPal</td>
-            <td style="text-align: right">
-          <!--      <span><b><?= Yii::t('invoice', 'Discount', [], $lt) ?>: </b><?= 1//$model->discount ?>%</span><br />
-                <span><b><?= Yii::t('invoice', 'Vat', [], $lt) ?>: </b><?= 1//$model->vat ?>%</span><br />
-                <span style="text-decoration: underline;"><b><?= Yii::t('invoice', 'Surtax', [], $lt) ?>: </b><?= 1//$model->tax ?>%</span><br />
-                -->
-                <span><b><?= Yii::t('invoice', 'Total', [], $lt) ?>: </b><?= $model->total_price ?></span><br />            </td>
+    <table style="text-align: center; line-height: 40px; font-size: 12px;">
+        <?php
+        $key = count($items);
+        if ($key&1) { ?>
+        <tr style="background-color: #efefef;">
+            <?php } else { ?>
+        <tr style="background-color: #e1e1e1;">
+            <?php } ?>
+            <td width="340" rowspan="4" style="background-color: #fff;">
+                <p  style="font-size: 12px; color: #fff; background-color: #acacac; line-height: 24px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Payment Method:</b> PayPal</p></td>
+            <td width="170" style="text-align: right;">
+                <?= Yii::t('invoice', 'Net Price', [], $lt) ?>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td width="130" style="text-align: right;">
+                &euro;<?= $model->net_price ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        </tr><?php $key++;
+        if ($key&1) { ?>
+        <tr style="background-color: #efefef;">
+            <?php } else { ?>
+        <tr style="background-color: #e1e1e1;">
+            <?php } ?>
+            <td width="170" style="text-align: right;">
+                <?= Yii::t('invoice', 'VAT TAX', [], $lt) ?>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td width="130"  style="text-align: right;">
+                <?= $model->vat->percent ?>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        </tr><?php $key++;
+        if ($key&1) { ?>
+        <tr style="background-color: #efefef;">
+            <?php } else { ?>
+        <tr style="background-color: #e1e1e1;">
+            <?php } ?>
+            <td width="170" style="text-align: right;">
+                <?= Yii::t('invoice', 'Income TAX', [], $lt) ?>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td  width="130" style="text-align: right;">
+                <?= $model->income ?>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        </tr><?php $key++;
+        if ($key&1) { ?>
+        <tr style="background-color: #efefef;">
+            <?php } else { ?>
+        <tr style="background-color: #e1e1e1;">
+            <?php } ?>
+            <td width="170" style="text-align: right; background-color: #24aa98; color: #fff;">
+                <?= Yii::t('invoice', 'Total Due', [], $lt) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td width="130"  style="text-align: right; background-color: #24aa98; color: #fff;">
+                &euro;<?= $model->total_price ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
         </tr>
     </table>
 </div>

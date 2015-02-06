@@ -31,10 +31,11 @@ $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
 $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 
 // set default header data
-//$pdf->setPrintHeader(false);
+$pdf->setPrintHeader(false);
+$pdf->setPrintFooter(false);
 //$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'Invoice in Pdf', 'Test Page', array(0,64,255), array(0,64,128));
-$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, '', '', array(0,64,255), array(255,255,255));
-$pdf->setFooterData(array(0,64,0), array(0,64,128));
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, '', '', array(0,64,255), array(255,255,255));
+//$pdf->setFooterData(array(0,64,0), array(0,64,128));
 
 // set default monospaced font
 $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);

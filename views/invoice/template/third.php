@@ -172,7 +172,7 @@ $country_name  = ($model->company->country) ? $model->company->country->name : '
     </td></tr></table>
         <!--    <div style="width: 100%; height: 200px;"></div>-->
     <p>&nbsp;</p>
-    <table style="text-align: center; line-height: 40px; font-size: 12px;">
+    <table style="text-align: center; line-height: 40px; font-size: 12px; color: #616262;">
         <tr style="background-color: #ebebec; color: #867b6d;">
             <th width="20"><b>#</b></th>
             <th width="200"><b><?= Yii::t('invoice', 'Item Description', [], $lt) ?></b></th>
@@ -190,35 +190,39 @@ $country_name  = ($model->company->country) ? $model->company->country->name : '
             <td width="20"><?= $key+1 ?></td>
             <td><?= $isTranslit ? Translit::Translit($item->service->name) : $item->service->name ?></td>
             <td><?= $item->count ?></td>
-            <td><?= $item->price_service ?>&euro;</td>
-            <td><?= $item->discount ?></td>
-            <td style="text-align: right"><?= $item->total_price ?>&euro;</td>
+            <td>&euro;<?= $item->price_service ?></td>
+            <td><?= $item->discount ?>%</td>
+            <td style="text-align: right">&euro;<?= $item->total_price ?></td>
         </tr>
      <?php } ?>
     </table>
     <hr />
-    <table style="text-align: center; line-height: 40px; font-size: 12px;">
+    <table style="text-align: center; line-height: 30px; font-size: 12px;">
         <tr>
-            <td width="220" rowspan="4" style="font-size: 12px; color: #fff; background-color: #acacac; line-height: 24px;">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Payment Method:</b> PayPal</td>
-            <td style="text-align: right">
-                <span><b><?= Yii::t('invoice', 'Net Price', [], $lt) ?>: </b><?= $model->net_price ?></span><br />            </td>
+            <td width="340" rowspan="4">
+                <p  style="font-size: 12px; color: #fff; background-color: #acacac; line-height: 24px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Payment Method:</b> PayPal</p></td>
+            <td width="170" style="text-align: right; background-color: #ebebec; border-bottom: 4px solid #fff; border-left: 6px solid #b8aa97;">
+                <?= Yii::t('invoice', 'Net Price', [], $lt) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td width="130" style="text-align: right; background-color: #b8aa97; color: #fff;  border-bottom: 4px solid #fff;">
+                &euro;<?= $model->net_price ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
         </tr>
         <tr>
-            <td style="text-align: right">
-                <span><b><?= Yii::t('invoice', 'VAT TAX', [], $lt) ?>: </b><?= $model->vat->percent ?></span><br />            </td>
+            <td width="170" style="text-align: right; background-color: #ebebec; border-bottom: 4px solid #fff; border-left: 6px solid #b8aa97;">
+                <?= Yii::t('invoice', 'VAT TAX', [], $lt) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td width="130"  style="text-align: right; background-color: #b8aa97; color: #fff;  border-bottom: 4px solid #fff;">
+                <?= $model->vat->percent ?>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
         </tr>
         <tr>
-            <td style="text-align: right">
-                <span><b><?= Yii::t('invoice', 'Income TAX', [], $lt) ?>: </b><?= $model->income ?></span><br />            </td>
+            <td width="170" style="text-align: right; background-color: #ebebec; border-bottom: 4px solid #fff; border-left: 6px solid #b8aa97;">
+                <?= Yii::t('invoice', 'Income TAX', [], $lt) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td  width="130" style="text-align: right; background-color: #b8aa97; color: #fff;  border-bottom: 4px solid #fff;">
+                <?= $model->income ?>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
         </tr>
         <tr>
-            <td style="text-align: right">
-                <!--      <span><b><?= Yii::t('invoice', 'Discount', [], $lt) ?>: </b><?= 1//$model->discount ?>%</span><br />
-                <span><b><?= Yii::t('invoice', 'Vat', [], $lt) ?>: </b><?= 1//$model->vat ?>%</span><br />
-                <span style="text-decoration: underline;"><b><?= Yii::t('invoice', 'Surtax', [], $lt) ?>: </b><?= 1//$model->tax ?>%</span><br />
-                -->
-                <span><b><?= Yii::t('invoice', 'Total Due', [], $lt) ?>: </b><?= $model->total_price ?></span><br />            </td>
+            <td width="170" style="text-align: right; background-color: #a49785; color: #fff; border-left: 6px solid #b8aa97; border-bottom:  4px solid #fff;">
+                <?= Yii::t('invoice', 'Total Due', [], $lt) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td width="130"  style="text-align: right; background-color: #b8aa97; color: #fff; border-bottom: 4px solid #fff;">
+                &euro;<?= $model->total_price ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
         </tr>
     </table>
 </div>
