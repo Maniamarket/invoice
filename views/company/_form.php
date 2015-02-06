@@ -83,6 +83,15 @@ use app\models\Country;
     </div>
     <div class="form-group">
         <?php
+        echo $form->field($model, 'fax', [
+            'inputOptions' => [
+                'placeholder' => $model->getAttributeLabel('fax'),
+            ],
+        ])->label(false);
+        ?>
+    </div>
+    <div class="form-group">
+        <?php
         echo $form->field($model, 'web_site', [
             'inputOptions' => [
                 'placeholder' => $model->getAttributeLabel('web_site'),

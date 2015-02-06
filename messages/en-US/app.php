@@ -46,7 +46,20 @@ return array(
     'ClientsHeaderText' => 'Clients',
     'ClientViewText' => 'View Client',
     'ClientCreateText' => 'Create Client',
-    
+    'Client Profile' => 'Client Profile',
+    'Full Name' => 'Full Name',
+    'ID Number' => 'ID Number',
+    'Company Name' => 'Company Name',
+    'Zip' => 'Zip',
+    'Telephone' => 'Telephone',
+    'Fax' => 'Fax',
+    'Country' => 'Country',
+    'City' => 'City',
+    'Address' => 'Address',
+    'Url' => 'Url',
+    'Language' => 'Language',
+    'Personal Details' => 'Personal Details',
+    'Professional Details' => 'Professional Details',
     //// Invoice page
     'InvoiceHeaderText' => 'Invoices',
     'InvoiceHeaderCreateText' => 'Create Invoices',
@@ -76,4 +89,5 @@ return array(
     
     //// Setting page
     'SettingHeaderText' => 'Setting',
+
 );

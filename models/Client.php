@@ -52,9 +52,31 @@ class Client extends ActiveRecord implements IdentityInterface
             [['email'], 'required'],
             [['email'], 'unique'],
             ['email','email'],
-            [['city','street','phone','name','email','post_index'], 'filter', 'filter' => 'trim'],
-	        [['city','street','phone','name','email','post_index'], 'string', 'max' => 100],
-            [['country_id'],'integer'],
+            [['city','street','phone','name','email','post_index','company_name','vat_number','fax','web_site'], 'filter', 'filter' => 'trim'],
+	        [['city','street','phone','name','email','post_index','company_name','vat_number','fax','web_site'], 'string', 'max' => 100],
+            [['country_id','def_lang_id'],'integer'],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => Yii::t('app', 'ID Number'),
+            'name' => Yii::t('app', Yii::t('app', 'Full Name')),
+            'company_name' => Yii::t('app', Yii::t('app', 'Company Name')),
+            'vat_number' => Yii::t('app', Yii::t('app', 'Vat')),
+            'post_index' => Yii::t('app', Yii::t('app', 'Zip')),
+            'phone' => Yii::t('app', Yii::t('app', 'Telephone')),
+            'fax' => Yii::t('app', Yii::t('app', 'Fax')),
+            'country_id' => Yii::t('app', Yii::t('app', 'Country')),
+            'city' => Yii::t('app', Yii::t('app', 'City')),
+            'street' => Yii::t('app', 'Address'),
+            'web_site' => Yii::t('app', 'Url'),
+            'def_lang_id' => Yii::t('app', Yii::t('app', 'Language')),
+            'inn' => Yii::t('app', 'Inn'),
         ];
     }
 

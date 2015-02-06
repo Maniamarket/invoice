@@ -184,3 +184,30 @@ button.close {
     padding-right: 5px;
     padding-bottom: 5px;
 }
+.form {
+    padding-left: 15px;
+    font-size: 20px;
+}
+.form label {
+    font-size: 20px;
+    font-weight: normal;
+}
+.form .form-control {
+    font-size: 18px;
+    height: 40px;
+}
+.fieldset {
+    background-color: #d9c26c;
+    padding: 3px 8px;
+    width: 370px;
+    color: #fff;
+    font-size: 22px;
+    margin-top: 20px;
+}
+.fieldset-column {
+    width: 550px;
+}
+.btn-action {
+    background-color: #24aa98;
+    color: #fff;
+}

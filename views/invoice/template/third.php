@@ -50,6 +50,9 @@ $country_name  = ($model->company->country) ? $model->company->country->name : '
                 if (!empty($model->company->phone)) {
                     echo $model->company->phone;
                 }
+                if (!empty($model->company->fax)) {
+                    echo '<br />'.$model->company->fax;
+                }
                 ?>
             </td>
             <td width="30" style="text-align: center; border-top: 1px solid #c9c9c9; border-bottom: 1px solid #c9c9c9;"><img src="images/template3/separator.png" /></td>
@@ -94,7 +97,12 @@ $country_name  = ($model->company->country) ? $model->company->country->name : '
             </td>
         </tr>
          <tr><td colspan="3">
-                <h2 style="line-height:10px; text-transform: uppercase; font-size: 18px; font-weight: bold;"><?= $isTranslit ? Translit::Translit($model->client->name) : $model->client->name ?></h2>
+                 <h2 style="line-height:10px; text-transform: uppercase; font-size: 18px; font-weight: bold;"><?php if (!empty($model->client->company_name)) {
+                         echo $isTranslit ? Translit::Translit($model->client->company_name) : $model->client->company_name;
+                     } else {
+                         echo $isTranslit ? Translit::Translit($model->client->name) : $model->client->name;
+                     }
+                     ?></h2>
             </td>
         </tr>
          <tr><td colspan="3"><p>&nbsp;</p></td></tr>
