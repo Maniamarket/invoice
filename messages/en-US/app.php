@@ -50,6 +50,7 @@ return array(
     'Full Name' => 'Full Name',
     'ID Number' => 'ID Number',
     'Company Name' => 'Company Name',
+    'Tax Agency' => 'Tax Agency',
     'Zip' => 'Zip',
     'Telephone' => 'Telephone',
     'Fax' => 'Fax',

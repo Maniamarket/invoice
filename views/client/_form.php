@@ -43,6 +43,7 @@ use yii\helpers\BaseHtml;
         <div class="fieldset-column pull-left">
             <?php echo $form->field($model, 'company_name',['labelOptions'=>['class'=>'control-label col-md-4']])->textInput() ; ?>
             <?php echo $form->field($model, 'vat_number',['labelOptions'=>['class'=>'control-label col-md-4']])->textInput() ; ?>
+            <?php echo $form->field($model, 'tax_agency',['labelOptions'=>['class'=>'control-label col-md-4']])->textInput() ; ?>
             <?php echo $form->field($model, 'country_id',['labelOptions'=>['class'=>'control-label col-md-4']])->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\Country::getCountriesArray(2),'cid','name')); ?>
             <?php echo $form->field($model, 'city',['labelOptions'=>['class'=>'control-label col-md-4']])->textInput() ; ?>
             <?php echo $form->field($model, 'street',['labelOptions'=>['class'=>'control-label col-md-4']])->textInput(); ?>

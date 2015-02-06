@@ -34,11 +34,11 @@ class Company extends ActiveRecord {
 
             ['name', 'string', 'max' => 255],
             [
-                ['name', 'city','street','phone','fax','web_site','mail','vat_number','activity','resp_person'],
+                ['name', 'city','street','phone','phone2','fax','web_site','mail','vat_number','tax_agency','activity','resp_person'],
                 'filter', 'filter' => 'trim'
             ],
             [
-                ['city','street','phone','fax','web_site','mail','vat_number','activity','resp_person'],
+                ['city','street','phone','phone2','fax','web_site','mail','vat_number','tax_agency','activity','resp_person'],
                 'string', 'max' => 100
             ],
             [['post_index','country_id'], 'integer', 'integerOnly' => true],
@@ -72,12 +72,13 @@ class Company extends ActiveRecord {
 	    'street' => 'Street',
 	    'post_index' => 'Post Index',
         'phone' => 'Phone',
+        'phone2' => 'Phone Second',
         'fax' => 'Fax',
 	    'web_site' => 'Web Site',
 	    'mail' => 'Mail',
 	    'vat_number' => 'Vat Number',
 	    'activity' => 'Activity',
-	    'resp_person' => 'Resp Person',
+	    'tax_agency' => 'Tax Agency',
 	);
     }
 

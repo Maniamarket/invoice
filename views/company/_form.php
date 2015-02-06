@@ -119,6 +119,15 @@ use app\models\Country;
     </div>
     <div class="form-group">
         <?php
+        echo $form->field($model, 'tax_agency', [
+            'inputOptions' => [
+                'placeholder' => $model->getAttributeLabel('tax_agency'),
+            ],
+        ])->label(false);
+        ?>
+    </div>
+    <div class="form-group">
+        <?php
         echo $form->field($model, 'activity', [
             'inputOptions' => [
                 'placeholder' => $model->getAttributeLabel('activity'),

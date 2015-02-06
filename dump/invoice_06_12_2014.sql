@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1
--- Время создания: Фев 05 2015 г., 22:02
+-- Время создания: Фев 06 2015 г., 20:49
 -- Версия сервера: 5.6.13-log
 -- Версия PHP: 5.4.17
 
@@ -137,6 +137,11 @@ CREATE TABLE IF NOT EXISTS `client` (
   `created_at` int(11) NOT NULL,
   `updated_at` int(11) NOT NULL,
   `def_lang_id` int(11) NOT NULL DEFAULT '1',
+  `company_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `vat_number` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `tax_agency` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `fax` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `web_site` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `country_id` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `city` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `street` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -154,10 +159,10 @@ CREATE TABLE IF NOT EXISTS `client` (
 -- Дамп данных таблицы `client`
 --
 
-INSERT INTO `client` (`id`, `name`, `user_id`, `email`, `email_confirm_token`, `password_hash`, `password_reset_token`, `auth_key`, `created_at`, `updated_at`, `def_lang_id`, `country_id`, `city`, `street`, `post_index`, `phone`, `passw`) VALUES
-(1, 'Fedorov', 3, 'info@pegasosafety.gr', '', '$2y$13$JtwKkB1lJbTEKDY3diXCOOEJZt/PeJKEqiA8AQxQWwdOiyARiPd62', '', 'LeKPQcSJPBrU9EsnTRg9rI8922OS7q6q', 1418704796, 1423144808, 1, '71', 'Ampelokipoi Thessaloniki', 'Agion Panton 19', 56430, '+30. 2310 669857', '111111'),
-(2, 'Alex', 3, '2@mu.ru', '', '$2y$13$8TnqmIT1jhnfjZiRdj8TFubVn8pC2KQNNgJoD80fhjPHCWWKYZ5Z2', '', '1RDxdreA4EvNZBvfPb2Ad1Rc0h8WhMru', 1418704796, 1418704796, 1, '1', '', '', NULL, '', 'N6t'),
-(3, 'Belikov', 3, '3@mu.ru', '', '$2y$13$X.G4KFKIgbkWqFcDDXQGq.sn6xnanKNaDsuZ5kjEP3GW15HI1vAKO', '', 'BJCNW1HZeCltZ7LrDHoAooDxbj0UBywf', 1418704796, 1418704796, 1, '1', '', '', NULL, '', 'iud');
+INSERT INTO `client` (`id`, `name`, `user_id`, `email`, `email_confirm_token`, `password_hash`, `password_reset_token`, `auth_key`, `created_at`, `updated_at`, `def_lang_id`, `company_name`, `vat_number`, `tax_agency`, `fax`, `web_site`, `country_id`, `city`, `street`, `post_index`, `phone`, `passw`) VALUES
+(1, 'Fedorov', 3, 'info@pegasosafety.gr', '', '$2y$13$JtwKkB1lJbTEKDY3diXCOOEJZt/PeJKEqiA8AQxQWwdOiyARiPd62', '', 'LeKPQcSJPBrU9EsnTRg9rI8922OS7q6q', 1418704796, 1423241167, 1, 'Pegasos Safety', 'EL 587958789', 'Neapoli', '+30. 2310 669808', 'www.pegasosafety.gr', '71', 'Ampelokipoi Thessaloniki', 'Agion Panton 19', 56430, '+30. 2310 669857', '111111'),
+(2, 'Alex', 3, '2@mu.ru', '', '$2y$13$8TnqmIT1jhnfjZiRdj8TFubVn8pC2KQNNgJoD80fhjPHCWWKYZ5Z2', '', '1RDxdreA4EvNZBvfPb2Ad1Rc0h8WhMru', 1418704796, 1418704796, 1, '', '', '', '', '', '1', '', '', NULL, '', 'N6t'),
+(3, 'Belikov', 3, '3@mu.ru', '', '$2y$13$X.G4KFKIgbkWqFcDDXQGq.sn6xnanKNaDsuZ5kjEP3GW15HI1vAKO', '', 'BJCNW1HZeCltZ7LrDHoAooDxbj0UBywf', 1418704796, 1418704796, 1, '', '', '', '', '', '1', '', '', NULL, '', 'iud');
 
 -- --------------------------------------------------------
 
@@ -174,11 +179,13 @@ CREATE TABLE IF NOT EXISTS `company` (
   `street` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `post_index` int(11) DEFAULT NULL,
   `phone` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `phone2` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `fax` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `web_site` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `mail` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `vat_number` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `activity` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `resp_person` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `tax_agency` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
 
@@ -186,11 +193,11 @@ CREATE TABLE IF NOT EXISTS `company` (
 -- Дамп данных таблицы `company`
 --
 
-INSERT INTO `company` (`id`, `name`, `logo`, `country_id`, `city`, `street`, `post_index`, `phone`, `web_site`, `mail`, `vat_number`, `activity`, `resp_person`) VALUES
-(1, 'google', 'Google.jpg', 1, 'Moscow', 'Lenina 1', 60000, '22222222', '22', '22', '22', '22', '22'),
-(2, 'Exnethellas', 'exnethellas.png', 71, 'Stavroupoli Thessaloniki', 'Lagkada 301', 56430, '+30.2310519249', 'www.exnethellas.gr', 'info@exnethellas.gr', 'EL 985647895', '1', 'Neapoli'),
-(3, 'gregsys', '', NULL, '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(4, 'bmw', '', NULL, NULL, '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `company` (`id`, `name`, `logo`, `country_id`, `city`, `street`, `post_index`, `phone`, `phone2`, `fax`, `web_site`, `mail`, `vat_number`, `activity`, `tax_agency`) VALUES
+(1, 'google', 'Google.jpg', 1, 'Moscow', 'Lenina 1', 60000, '22222222', '', '', '22', '22', '22', '22', '22'),
+(2, 'Exnethellas', 'exnethellas.png', 71, 'Stavroupoli Thessaloniki', 'Lagkada 301', 56430, '+30.2310519249', '+30.2310660005', '+30.2310660444', 'www.exnethellas.gr', 'info@exnethellas.gr', 'EL 985647895', '1', 'Neapoli'),
+(3, 'gregsys', '', NULL, '1', NULL, NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL),
+(4, 'bmw', '', NULL, NULL, '1', NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -721,30 +728,35 @@ CREATE TABLE IF NOT EXISTS `invoice` (
   `company_id` int(11) NOT NULL DEFAULT '0',
   `net_price` decimal(12,2) NOT NULL DEFAULT '0.00',
   `total_price` decimal(14,2) NOT NULL,
+  `vat_id` int(11) NOT NULL,
+  `income` decimal(6,2) NOT NULL,
   `is_pay` tinyint(1) NOT NULL DEFAULT '0',
   `type` varchar(50) COLLATE utf8_unicode_ci DEFAULT 'basic',
   PRIMARY KEY (`id`),
   KEY `idx_invoice_user` (`user_id`),
   KEY `idx_invoice_client` (`client_id`),
   KEY `idx_invoice_company` (`company_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=15 ;
 
 --
 -- Дамп данных таблицы `invoice`
 --
 
-INSERT INTO `invoice` (`id`, `user_id`, `client_id`, `date`, `company_id`, `net_price`, `total_price`, `is_pay`, `type`) VALUES
-(1, 3, 1, '2014-12-05', 1, '200.00', '220.00', 1, 'basic'),
-(2, 3, 1, '2014-12-05', 1, '500.00', '550.00', 0, 'basic'),
-(3, 3, 1, '2015-02-04', 1, '10.00', '10.00', 0, 'basic'),
-(4, 3, 1, '2015-02-04', 1, '2.00', '4.00', 0, 'basic'),
-(5, 3, 2, '2015-02-04', 2, '3.00', '9.00', 0, 'basic'),
-(6, 3, 2, '2015-02-04', 3, '4.00', '16.00', 0, 'basic'),
-(7, 3, 2, '2015-02-04', 2, '5.00', '26.00', 0, 'basic'),
-(8, 3, 3, '2015-02-04', 3, '6.00', '38.00', 0, 'basic'),
-(9, 3, 2, '2015-02-04', 3, '7.00', '52.00', 0, 'basic'),
-(10, 3, 3, '2015-02-04', 3, '8.00', '69.00', 0, 'basic'),
-(11, 3, 1, '2015-02-04', 2, '9.00', '88.00', 0, 'basic');
+INSERT INTO `invoice` (`id`, `user_id`, `client_id`, `date`, `company_id`, `net_price`, `total_price`, `vat_id`, `income`, `is_pay`, `type`) VALUES
+(1, 3, 1, '2014-12-05', 1, '200.00', '220.00', 1, '0.00', 1, 'basic'),
+(2, 3, 1, '2014-12-05', 1, '500.00', '550.00', 1, '0.00', 0, 'basic'),
+(3, 3, 1, '2015-02-04', 1, '10.00', '10.00', 1, '0.00', 0, 'basic'),
+(4, 3, 1, '2015-02-04', 1, '2.00', '4.00', 1, '0.00', 0, 'basic'),
+(5, 3, 2, '2015-02-04', 2, '3.00', '9.00', 1, '0.00', 0, 'basic'),
+(6, 3, 2, '2015-02-04', 3, '4.00', '16.00', 1, '0.00', 0, 'basic'),
+(7, 3, 2, '2015-02-04', 2, '5.00', '26.00', 1, '0.00', 0, 'basic'),
+(8, 3, 3, '2015-02-04', 3, '6.00', '38.00', 1, '0.00', 0, 'basic'),
+(9, 3, 2, '2015-02-04', 3, '7.00', '52.00', 1, '0.00', 0, 'basic'),
+(10, 3, 3, '2015-02-04', 3, '8.00', '69.00', 1, '0.00', 0, 'basic'),
+(11, 3, 1, '2015-02-04', 2, '9.00', '88.00', 1, '12.00', 0, 'basic'),
+(12, 0, 1, '0000-00-00', 1, '0.00', '0.00', 0, '0.00', 0, 'basic'),
+(13, 0, 1, '0000-00-00', 1, '0.00', '0.00', 0, '0.00', 0, 'basic'),
+(14, 0, 1, '0000-00-00', 1, '0.00', '0.00', 0, '0.00', 0, 'third');
 
 -- --------------------------------------------------------
 
@@ -758,9 +770,7 @@ CREATE TABLE IF NOT EXISTS `invoice_item` (
   `service_id` int(11) NOT NULL,
   `count` int(11) NOT NULL,
   `price_service` decimal(14,2) NOT NULL,
-  `vat` decimal(6,2) NOT NULL,
   `discount` decimal(12,0) NOT NULL,
-  `income` decimal(12,2) NOT NULL,
   `total_price` decimal(14,2) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
@@ -769,11 +779,11 @@ CREATE TABLE IF NOT EXISTS `invoice_item` (
 -- Дамп данных таблицы `invoice_item`
 --
 
-INSERT INTO `invoice_item` (`id`, `invoice_id`, `service_id`, `count`, `price_service`, `vat`, `discount`, `income`, `total_price`) VALUES
-(1, 11, 1, 1, '1000.00', '1.00', '1', '1.00', '1377.60'),
-(2, 11, 2, 1, '1000.00', '1.00', '1', '1.00', '1377.60'),
-(3, 11, 3, 1, '1000.00', '1.00', '1', '1.00', '1377.60'),
-(4, 11, 4, 1, '1000.00', '1.00', '1', '1.00', '1377.60');
+INSERT INTO `invoice_item` (`id`, `invoice_id`, `service_id`, `count`, `price_service`, `discount`, `total_price`) VALUES
+(1, 11, 1, 1, '1000.00', '1', '1377.60'),
+(2, 11, 2, 1, '1000.00', '1', '1377.60'),
+(3, 11, 3, 1, '1000.00', '1', '1377.60'),
+(4, 11, 4, 1, '1000.00', '1', '1377.60');
 
 -- --------------------------------------------------------
 

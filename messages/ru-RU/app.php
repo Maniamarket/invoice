@@ -51,6 +51,7 @@ return [
     'Full Name' => 'Полное имя',
     'ID Number' => 'Номер ID',
     'Company Name' => 'Компания',
+    'Tax Agency' => 'Налоговый офис',
     'Zip' => 'Почтовый индекс',
     'Telephone' => 'Телефон',
     'Fax' => 'Факс',

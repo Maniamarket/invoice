@@ -40,8 +40,8 @@ $country_name  = ($model->company->country) ? $model->company->country->name : '
                 if (!empty($model->company->phone)) {
                     echo $model->company->phone;
                 }
-                if (!empty($model->company->fax)) {
-                    echo '<br />'.$model->company->fax;
+                if (!empty($model->company->phone2)) {
+                    echo '<br />'.$model->company->phone2;
                 }
             ?>
             </td>
@@ -50,8 +50,8 @@ $country_name  = ($model->company->country) ? $model->company->country->name : '
                 if (!empty($model->company->vat_number)) {
                     echo $model->company->vat_number;
                 }
-                if (!empty($model->company->resp_person)) {
-                    echo '<br />Tax Agency: '.$model->company->resp_person;
+                if (!empty($model->company->tax_agency)) {
+                    echo '<br />Tax Agency: '.$model->company->tax_agency;
                 }
                 ?>
             </td>
@@ -69,9 +69,15 @@ $country_name  = ($model->company->country) ? $model->company->country->name : '
                 ?>
             </td>
             <td width="30" style="text-align: right"><img src="images/template1/email.png" /></td>
-            <td width="100" colspan="2"><?php
+            <td width="100"><?php
                 if (!empty($model->company->mail)) {
                     echo $model->company->mail;
+                }
+                ?>
+            </td>
+            <td>fax: <?php
+                if (!empty($model->company->fax)) {
+                    echo $model->company->fax;
                 }
                 ?>
             </td>
@@ -114,7 +120,7 @@ $country_name  = ($model->company->country) ? $model->company->country->name : '
                  }
                  ?>
              </td>
-             <td width="120" style="line-height: 40px;">VAT:
+             <td width="140" style="line-height: 40px;">VAT:
                  <?php
                  if (!empty($model->client->vat_number)) {
                      echo $model->client->vat_number;
@@ -130,10 +136,26 @@ $country_name  = ($model->company->country) ? $model->company->country->name : '
                  }
                  ?>
              </td>
-             <td width="120">Tax Agency:
+             <td width="140">Tax Agency:
                  <?php
-                 if (!empty($model->client->vat_number)) {
-                     echo $model->client->vat_number;
+                 if (!empty($model->client->tax_agency)) {
+                     echo $model->client->tax_agency;
+                 }
+                 ?>
+             </td>
+         </tr>
+         <tr>
+             <td width="30" style="text-align: right; line-height: 40px;"><img src="images/template1/site.png" /></td>
+             <td width="120" style="line-height: 30px;"><?php
+                 if (!empty($model->client->web_site)) {
+                     echo $model->client->web_site;
+                 }
+                 ?>
+             </td>
+             <td width="140" style="line-height: 30px;">Fax:
+                 <?php
+                 if (!empty($model->client->fax)) {
+                     echo $model->client->fax;
                  }
                  ?>
              </td>

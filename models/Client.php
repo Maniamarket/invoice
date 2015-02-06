@@ -52,8 +52,8 @@ class Client extends ActiveRecord implements IdentityInterface
             [['email'], 'required'],
             [['email'], 'unique'],
             ['email','email'],
-            [['city','street','phone','name','email','post_index','company_name','vat_number','fax','web_site'], 'filter', 'filter' => 'trim'],
-	        [['city','street','phone','name','email','post_index','company_name','vat_number','fax','web_site'], 'string', 'max' => 100],
+            [['city','street','phone','name','email','post_index','company_name','vat_number','tax_agency','fax','web_site'], 'filter', 'filter' => 'trim'],
+	        [['city','street','phone','name','email','post_index','company_name','vat_number','tax_agency','fax','web_site'], 'string', 'max' => 100],
             [['country_id','def_lang_id'],'integer'],
         ];
     }
@@ -68,6 +68,7 @@ class Client extends ActiveRecord implements IdentityInterface
             'name' => Yii::t('app', Yii::t('app', 'Full Name')),
             'company_name' => Yii::t('app', Yii::t('app', 'Company Name')),
             'vat_number' => Yii::t('app', Yii::t('app', 'Vat')),
+            'tax_agency' => Yii::t('app', Yii::t('app', 'Tax Agency')),
             'post_index' => Yii::t('app', Yii::t('app', 'Zip')),
             'phone' => Yii::t('app', Yii::t('app', 'Telephone')),
             'fax' => Yii::t('app', Yii::t('app', 'Fax')),
