@@ -42,7 +42,11 @@ use app\models\Setting;
     </div>
 
     <div class="form-group">
-      <?php echo $form->field($model, 'client_id',['labelOptions'=>['class'=>'control-label col-md-2']])->dropDownList(app\models\Setting::List_client(),['prompt'=>'-Choose a Client-'])->hint('client')->label('client') ; ?>
+        <?php echo $form->field($model, 'client_id',['labelOptions'=>['class'=>'control-label col-md-2']])->dropDownList(Setting::List_client(),['prompt'=>'-Choose a Client-'])->hint('client')->label('client') ; ?>
+    </div>
+
+    <div class="form-group">
+        <?php echo $form->field($model, 'payment_id',['labelOptions'=>['class'=>'control-label col-md-2']])->dropDownList(Setting::List_payment(),['prompt'=>'-Choose a Payment-'])->hint('payment')->label('payment') ; ?>
     </div>
 
     <table>

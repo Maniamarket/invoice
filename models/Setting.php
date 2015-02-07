@@ -8,6 +8,7 @@ use yii\db\ActiveRecord;
 use app\models\Company;
 use app\models\Lang;
 use app\models\Vat;
+use app\models\Payment;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -128,14 +129,12 @@ class Setting extends ActiveRecord {
     }
 
     public static  function List_client() {
-	// @todo Please modify the following code to remove attributes that should not be searched.
         $client = Client::find()->where(['user_id' => Yii::$app->user->id])->all();
         $list = ArrayHelper::map($client,'id', 'name'); 
 	return $list;
     }
 
     public static  function List_payment() {
-	// @todo Please modify the following code to remove attributes that should not be searched.
         $payment = Payment::find()->all();
         $list = ArrayHelper::map($payment,'id', 'name'); 
 	return $list;

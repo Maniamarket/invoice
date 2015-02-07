@@ -134,19 +134,32 @@ class UserController extends Controller {
         $invoice = Invoice::findOne($id);
         if( $invoice->user_id == Yii::$app->user->id)
         {
-           $price = Invoice::getPriceTax($invoice);
-           $credit = Setting::find()->where(['user_id'=>$invoice->user_id])->one();
-           $price_tek = $price['vat'] + $price['tax'];
-           if( $price_tek > $credit->credit) {
+         //  $price = Invoice::getPriceTax($invoice);
+            $credit = Setting::find()->where(['user_id'=>$invoice->user_id])->one();
+            $vat = $invoice->vat->percent;
+            $income  = $invoice->income;
+            $price_tek = $vat + $income;
+            if( $price_tek > $credit->credit) {
                \Yii::$app->getSession()->setFlash('danger', 'Вам надо пополнить кредиты на сумму '.
-                       round($price['vat']+$price['tax']).' кредита');
+                       round($price_tek).' кредита');
                return $this->redirect(['buy', 'id'=>$invoice->user_id]);
-           }
-           else{
+            }
+            else{
               $credit->credit = $credit->credit - $price_tek; 
-              $invoice->is_pay = TRUE; 
-              
+              $invoice->is_pay = TRUE;
               if($credit->save() && $invoice->save() ){
+     //valid kod
+                  $q = 'select valid_kod from invoice order by valid_kod desc limit 0,1';
+                  $valid_kod = Yii::$app->db->createCommand($q)->queryScalar();
+                  $transaction = Yii::$app->db->beginTransaction();
+                  try {
+                      $invoice->valid_kod = $valid_kod+1;
+                      $invoice->save();
+                      $transaction->commit();
+                  } catch (Exception $e) {
+                      $transaction->rollBack();
+                      Yii::$app->getSession()->setFlash('danger', 'Error. Validation kod not save');
+                  }
      //оплата налогов (история)
                   $model = new User_payment;  
                   $model->user_id = $invoice->user_id;
@@ -154,9 +167,8 @@ class UserController extends Controller {
                   $model->credit = - $price_tek;
                   $old = User_payment::find()->where(['user_id'=>$invoice->user_id])->orderBy(['id'=>SORT_DESC])->one();
                   $model->credit_sum = $old->credit_sum - $price_tek;
-                  $model->profit_parent = $model->profit_parent + $price['tax'];
+                  $model->profit_parent = $model->profit_parent + $income;
                   $model->date = new Expression('NOW()');
-//              var_dump($old->credit_sum );     var_dump($model->credit_sum );              exit();
                   $model->save();
      //сумма налогов за месяц
                   $q = new Query;

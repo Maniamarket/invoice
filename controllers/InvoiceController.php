@@ -169,8 +169,8 @@ class InvoiceController extends Controller
     {
 //       var_dump('aaaa'); exit;
         if( isset($_POST['id'])) $model = $this->findModel($_POST['id']);
-        else {$model = new Invoice; $model->client_id = 1;  $model->company_id = 1; $model->save();  }
-        $model->client_id = 0;  $model->company_id = 0;
+        else {$model = new Invoice; $model->client_id = 1; $model->company_id = 1; $model->payment_id = 1; $model->save();  }
+        $model->client_id = 0;  $model->company_id = 0; $model->payment_id = 0;
         $model->date = date("d/m/Y",  time());
         $setting = Setting::findOne(Yii::$app->user->id);
         $model->vat_id = $setting->def_vat_id;
@@ -194,7 +194,6 @@ class InvoiceController extends Controller
                         $item_t =  Invoice_item::findOne($row['id']);
                         $item_t->attributes = $row;
                         $item_t->total_price = $item_t->count*$item_t->price_service*(1+($vat->percent+ $model->income- $item_t->discount)/100);
-                        var_dump($item_t->total_price); echo 'kol='.$item_t->count.' price='.$item_t->price_service.' vat=$vat->percent';
                         $items_error[] = ( $is = $item_t->save()) ? 0 : $item_t->errors;
                         if( !$is ) $is_error = true;
                         $itog['net'] = $itog['net']+$item_t->count*$item_t->price_service;
@@ -211,11 +210,10 @@ class InvoiceController extends Controller
                 $is_error = false;
                 $itog['net'] = $itog['net']+ $item->count*$item->price_service;
                 $itog['total'] = $itog['total'] + $item->total_price;
-                $item->validate();
-                //        var_dump($item->errors); exit;
-                if( $item->save() ){
-                    $model_item = 0;
-                    if( !$is_error && ($_POST['submit'] == 'end' )){
+
+                if( $_POST['submit'] == 'and' ){
+                    if( $item->save()) $model_item = 0;
+                }elseif( !$is_error && ($_POST['submit'] == 'end' )){
                         $items = Invoice_item::findAll(['invoice_id'=>$model->id]);
                         $net = 0;
                         $total = 0;
@@ -228,14 +226,11 @@ class InvoiceController extends Controller
                         $model->net_price = $net;
                         $model->total_price = $total;
                         $model->user_id = Yii::$app->user->id;
-                        //     var_dump($model->attributes);
-                        if( $model->save()) return $this->redirect(['index']);
-                    }
+                        if( $model->save() && $item->save()) return $this->redirect(['index']);
                 }
             }
         }
         $items = Invoice_item::findAll(['invoice_id'=>$model->id]);
-  //      var_dump($items); echo 'id='.$model->id;
         return $this->render('create', ['model' => $model, 'model_item' => $model_item, 'itog'=>$itog,
             'items' => $items, 'items_error'=>$items_error ]);
     }

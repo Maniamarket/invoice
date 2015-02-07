@@ -22,12 +22,12 @@ class Invoice extends ActiveRecord
     public function rules()
     {
         return [
-            [[ 'client_id', 'company_id' ], 'required'],
-            [['user_id',  'client_id', 'vat_id','company_id'], 'integer','min'=>1],
+            [[ 'client_id', 'company_id','payment_id' ], 'required'],
+            [['user_id',  'client_id', 'vat_id','company_id','payment_id'], 'integer','min'=>1],
             ['type', 'default', 'value' => 'basic'],
             ['type', 'string', 'max' => 50],
             [['total_price', 'net_price', 'income'], 'integer', 'integerOnly'=>FALSE],
-            [['date'], 'safe'],
+            [['date','valid_kod'], 'safe'],
          //   [['number', 'bill_number'], 'string', 'max' => 32],
        //     [['sender_addr', 'recipient_addr'], 'string', 'max' => 128]
         ];
@@ -89,12 +89,10 @@ class Invoice extends ActiveRecord
         return $query;
     }
     
-    public static function getPriceTax(Invoice $model)
+    /*public static function getPriceTax(Invoice $model)
     {
         $price = $model->price_service*$model->count;
         
         return ['vat'=>$price*$model->vat/100, 'tax'=>$price*$model->tax/100];
-    }
-
-
+    }*/
 }
