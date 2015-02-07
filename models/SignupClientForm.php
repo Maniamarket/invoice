@@ -61,8 +61,8 @@ class SignupClientForm extends Model
         $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         $count = mb_strlen($chars);
         $password = '';
-//        $desired_length = rand(8, 12);
-        $desired_length = rand(3, 4);
+        $desired_length = rand(8, 12);
+//        $desired_length = rand(3, 4);
 
         for($length = 0; $length < $desired_length; $length++) {
           $index = rand(0, $count - 1);

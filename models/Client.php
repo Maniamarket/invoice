@@ -26,6 +26,7 @@ use yii\data\ActiveDataProvider;
 class Client extends ActiveRecord implements IdentityInterface
 {
     public $file;
+    public $password_;
     /**
      * @inheritdoc
      */

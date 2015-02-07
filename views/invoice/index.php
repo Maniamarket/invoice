@@ -173,11 +173,6 @@ $options_page_size = [20,50,100,200,500];
                 ?>
             </th>
             <th>&nbsp;</th>
-<!--            <th>Count</th>
-            <th>Vat</th>
-            <th>Surtax</th>
-            <th>Discount</th>
-            <th>Total Price</th>-->
         </tr>
         </thead>
         <tbody id="invoice_view">

@@ -20,6 +20,7 @@ use app\models\PasswordResetRequestFormClient;
 use app\models\ResetPasswordFormClient;
 use app\models\Invoice;
 use app\models\Client;
+use app\models\Invoice_item;
 
 use yii\widgets\ListView;
 
@@ -164,25 +165,39 @@ class ClientController extends Controller
     public function actionInvoice()
     {
         $client_id = $this->isClient();
+        $pageSize = ( isset($_GET['count_search'])) ? $_GET['count_search'] : 5;
+        $sort = ( isset($_GET['sort'])) ? $_GET['sort'] : '';
+        if( $sort && $sort[0] == '-') {
+            $sort = substr($sort,1);
+            $dir = SORT_DESC;
+        }
+        else  $dir = SORT_ASC;
+
+        $orderBy = ( $sort ) ? [$sort => $dir] :  ['is_pay'=>SORT_ASC, 'id'=>SORT_DESC];
+
+        $query = Invoice::find()->select(['invoice.*', 'cl.name as client_name' ])->leftJoin('client as cl','invoice.client_id = cl.id');
+        $query->where(['invoice.client_id'=> $client_id ])->orderBy( $orderBy );
 
         $dataProvider = new ActiveDataProvider([
-                'query' => Invoice::find()->where(['client_id'=>$client_id, 'is_pay'=> 1]),
-                'pagination' => [
-                    'pageSize' => 10,
-                ],
+            'query' => $query,
+//                'query' => Invoice::find()->where(['client_id'=>$client_id, 'is_pay'=> 1]),
+                'pagination' => [ 'pageSize' => $pageSize,  ],
             ]);
-        return $this->render('invoice',array( 'dataProvider'=>$dataProvider, ));
+        return $this->render('invoice',['dataProvider'=>$dataProvider, 'pageSize' => $pageSize, 'sort'=>$sort, 'dir'=>$dir,
+            ]);
     }
 
     public function actionTcpdf($id, $isTranslit = 0)
     {
-        $model = Invoice::find()->where(['id'=>$id])->one();
+        $model = Invoice::findOne(['id'=>$id]);
+        $items = Invoice_item::findAll(['invoice_id'=>$id]);
         if ($model->client_id == $this->isClient()) {
-            $template = isset(Yii::$app->request->queryParams['template'])?Yii::$app->request->queryParams['template']:'basic';
+            $template = empty($model->type) ? 'basic' : $model->type;
             return $this->render('/invoice/tcpdf', [
                 'model' => $model,
                 'template'=>$template,
-                'isTranslit'=>$isTranslit
+                'isTranslit'=>$isTranslit,
+                'items'=>$items
             ]);
         } else {
             throw new ForbiddenHttpException('Access to the invoice is forbidden. You are not the owner of the invoice');
@@ -198,27 +213,33 @@ class ClientController extends Controller
         else {
             $this->layout='main';
             $model = $this->loadModel($id);
-            if($model->user_id!=Yii::$app->user->getId()){
+            if( $model->user_id != Yii::$app->user->id ){
                throw new ForbiddenHttpException('Client not found');
             }
         }
 	// Uncomment the following line if AJAX validation is needed
 	// $this->performAjaxValidation($model);
-
+        $model->password_ = '';
         $file = UploadedFile::getInstance($model,'file');
         if ($file)
             $model->avatar = $file->name;
-        if ($model->load(Yii::$app->request->post()) && $model->save())
-        {
-            if ($file){
-                $uploaded = $file->saveAs(Yii::$app->params['avatarPath'].$file->name);
-                $image=Yii::$app->image->load(Yii::$app->params['avatarPath'].$file);
-                $image->resize(100);
-                $image->save();
+
+        if ( $model->load(Yii::$app->request->post()) ){
+            $password_ = $_POST['Client']['password_'];
+            $model->setPassword($password_);
+            $model->generateAuthKey();
+            $model->passw = $password_;
+            if($model->save() ){
+                if ($file){
+                    $uploaded = $file->saveAs(Yii::$app->params['avatarPath'].$file->name);
+                    $image=Yii::$app->image->load(Yii::$app->params['avatarPath'].$file);
+                    $image->resize(100);
+                    $image->save();
+                }
+                Yii::$app->getSession()->setFlash('success', 'Клиент успешно обновлен ');
+                if (!Yii::$app->user->isGuest)
+                    return $this->redirect(['index']);
             }
-            Yii::$app->getSession()->setFlash('success', 'Клиент успешно обновлен ');
-            if (!Yii::$app->user->isGuest)
-                return $this->redirect(['index']);
         }
        return $this->render('update', ['model' => $model,]);
     }
@@ -254,7 +275,7 @@ class ClientController extends Controller
 
     public function loadModel($id) 
     {
-	$model= Client::find()->where(['id' => $id])->one();
+	    $model= Client::findOne(['id' => $id]);
         if($model===null) throw new HttpException(404,'The requested page does not exist.');
         return $model;
     }

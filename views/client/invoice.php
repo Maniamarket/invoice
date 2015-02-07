@@ -2,6 +2,7 @@
 use yii\widgets\ListView;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\bootstrap\Modal;
 
 
 /* @var $this ServiceController */
@@ -10,68 +11,117 @@ use yii\helpers\Url;
 $this->title=Yii::$app->name . ' - My Invoice';
 $this->params['breadcrumbs'][] = $this->title;
 
+$options_page_size = [20,50,100,200,500];
 ?>
-
 <div class="invoice-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <h1 class="title"><?= Html::encode($this->title) ?></h1>
 
     <div class="col-10">
-        <h3>Форма поиска</h3>
-        <?php echo Html::beginForm(['index'],'get',['id'=>'form-client-search']); ?>
-        <input name="name" id='name_search' type="text" placeholder="Введите имя... " data-url="<?php echo Url::toRoute(['client/ajax'])?>"
-               value="<?php if(isset($qp['name'])) echo $qp['name']; ?>" class="col-5" />
-        <input type="submit" value="Поиск" class="btn btn-primary" />
+        <?php echo Html::beginForm(['invoice'],'get',['id'=>'form-client-search', 'class'=>"form-inline"]); ?>
+        <div class="form-group pull-right">
+            <div class="form-group">
+                <label for="count_search" class="control-label">Show</label>
+                <select class="form-control" name="count_search" id="count_search" onchange="$('#form-client-search').submit()">
+                    <?php foreach ($options_page_size as $opt) {
+                        if ($opt == $pageSize) {
+                            echo '<option selected>'.$opt.'</option>';
+                        }
+                        else {
+                            echo '<option>'.$opt.'</option>';
+                        }
+                    }
+                    ?>
+                </select>
+            </div>
+        </div>
         <?php echo Html::endForm(); ?>
     </div>
     <p>&nbsp;</p>
-    <table class="table table-striped table-bordered" id="table-result-search">
+    <?php
+   Modal::begin([
+        'header' => '&nbsp;',
+        'options'=>['id'=>'modal-pdf'],
+        'size' => 'modal-lg',
+    ]);
+    echo '<div style="width:auto; height:600px;"> <iframe id="iframe-pdf" src="" width="860" height="600" align="left">
+    Ваш браузер не поддерживает плавающие фреймы!
+ </iframe></div>';
+    Modal::end();
+    ?>
+
+    <table class="table" id="table-result-search">
         <thead>
         <tr>
-            <th>ID</th>
-            <th>Name
-                <?php if(isset($qp['name'])) {
-                    if (isset($qp['orderby']) && $qp['orderby']=='asc') {
-                        ?>
-                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true" title="По возрастанию"></span>
-                    <?php } else { ?>
-                        <a href="<?php echo Url::toRoute(['client/index','name'=>$qp['name'], 'orderby'=>'asc']); ?>" title="По возрастанию"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
-                    <?php }
-                    if (isset($qp['orderby']) && $qp['orderby']=='desc') {
-                        ?>
-                        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true" title="По убыванию"></span>
-                    <?php } else { ?>
-                        <a href="<?php echo Url::toRoute(['client/index','name'=>$qp['name'], 'orderby'=>'desc']); ?>" title="По убыванию"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
-                    <?php }
+            <th>#</th>
+            <th>ID
+                <?php
+                if ($sort=='id' && $dir==SORT_ASC) {
+                    echo Html::a('<span class="triangl">&#9650;</span>',
+                        Url::toRoute(['client/invoice','sort'=>'-id']));
                 }
                 else {
-                    ?>
-                    <a href="<?php echo Url::to(''); ?>&name=&orderby=asc" title="По возрастанию"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a>
-                    <a href="<?php echo Url::to(''); ?>&name=&orderby=desc" title="По убыванию"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a>
-                <?php
+                    echo '<a href="'.Url::toRoute(['client/invoice','sort'=>'id']).'" ><span class="triangl">&#9660;</span></a>';
                 }
                 ?>
             </th>
-            <th>Client</th>
-            <th>Date</th>
-            <th>Company</th>
-            <th>Service</th>
-            <th>Price Service</th>
-            <th>Count</th>
-            <th>Vat</th>
-            <th>Discount</th>
+            <th>Date
+                <?php
+                if ($sort=='date' && $dir==SORT_ASC) {
+                    echo Html::a('<span class="triangl">&#9650;</span>',
+                        Url::toRoute(['client/invoice','sort'=>'-date']));
+                }
+                else {
+                    echo '<a href="'.Url::toRoute(['client/invoice','sort'=>'date']).'" ><span class="triangl">&#9660;</span></a>';
+                }
+                ?>
+            </th>
+            <th>Name </th>
+            <th>Company
+                <?php
+                if ($sort=='company_id' && $dir==SORT_ASC) {
+                    echo Html::a('<span class="triangl">&#9650;</span>',
+                        Url::toRoute(['client/invoice','sort'=>'-company_id']));
+                }
+                else {
+                    echo '<a href="'.Url::toRoute(['client/invoice','sort'=>'company_id']).'" ><span class="triangl">&#9660;</span></a>';
+                }
+                ?>
+            </th>
+            <th>Net Total</th>
+            <th>Grand Total</th>
+            <th>Valid
+                <?php
+                if ($sort=='is_pay' && $dir==SORT_ASC) {
+                    echo Html::a('<span class="triangl">&#9650;</span>',
+                        Url::toRoute(['client/invoice','sort'=>'-is_pay']));
+                }
+                else {
+                    echo '<a href="'.Url::toRoute(['client/invoice','sort'=>'is_pay']).'" ><span class="triangl">&#9660;</span></a>';
+                }
+                ?>
+            </th>
+            <th>&nbsp;</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="invoice_view">
         <?php
-        echo ListView::widget([
-            'dataProvider'=>$dataProvider,
-            'itemView'=>'_invoice',
-        ]);
+        $t_page =  (isset(Yii::$app->request->queryParams['page']))?(Yii::$app->request->queryParams['page']-1)*$dataProvider->pagination->pageSize:0;
+        foreach ($dataProvider->models as $key=>$model) {
+            echo $this->render('_invoice', ['model'=>$model, 'number'=>$t_page+$key+1]);
+        }
         ?>
         </tbody>
     </table>
-
- </div>
-
+    <?php
+    echo ListView::widget([
+        'dataProvider'=>$dataProvider,
+        'itemView'=>'_invoice',
+        'pager'=>[
+            'prevPageLabel'=>'Prev',
+            'nextPageLabel'=>'Next'
+        ],
+        'layout'=>'{pager}'
+    ])
+    ?>
+</div>
