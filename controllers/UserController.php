@@ -140,7 +140,7 @@ class UserController extends Controller {
             $income  = $invoice->income;
             $price_tek = $vat + $income;
             if( $price_tek > $credit->credit) {
-               \Yii::$app->getSession()->setFlash('danger', 'Вам надо пополнить кредиты на сумму '.
+               Yii::$app->getSession()->setFlash('danger', 'Вам надо пополнить кредиты на сумму '.
                        round($price_tek).' кредита');
                return $this->redirect(['buy', 'id'=>$invoice->user_id]);
             }
@@ -149,10 +149,11 @@ class UserController extends Controller {
               $invoice->is_pay = TRUE;
               if($credit->save() && $invoice->save() ){
      //valid kod
-                  $q = 'select valid_kod from invoice order by valid_kod desc limit 0,1';
-                  $valid_kod = Yii::$app->db->createCommand($q)->queryScalar();
                   $transaction = Yii::$app->db->beginTransaction();
                   try {
+                      $q = 'select valid_kod from invoice order by valid_kod desc limit 0,1';
+                      $valid_kod = Yii::$app->db->createCommand($q)->queryScalar();
+                      
                       $invoice->valid_kod = $valid_kod+1;
                       $invoice->save();
                       $transaction->commit();
