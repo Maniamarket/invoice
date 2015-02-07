@@ -31,7 +31,10 @@ the client must pay the VAT <br />
                     ['delete', 'id'=>$model->id],['title'=>'Delete', 'onClick'=>'return confirm("Вы действительно хотите удалить?")']); ?>
             </span>
         <?php } else { ?>
-               <?php Modal::begin([
+               <?php
+                  if( Yii::$app->user->can('superadmin') || Yii::$app->user->id == $model->user_id)
+                      echo Html::a('edit', ['update', 'id'=>$model->id],['title'=>'Edit']);
+               Modal::begin([
                    'header' => '<h2>Шаблон для печати</h2>',
                    'toggleButton' => ['tag'=>'a', 'label' => '<span class="glyphicon glyphicon-picture" aria-hidden="true"></span>',
                        'style'=>'cursor:pointer;', 'title'=>'Set Template'],
@@ -46,7 +49,7 @@ the client must pay the VAT <br />
                Modal::end();
 
              echo Html::a('<img src="/images/invoice_pdf.png"', ['tcpdf', 'id'=>$model->id],['title'=>'View in Pdf',
-             'onclick'=>'$("#iframe-pdf").attr("src","'.Url::toRoute(['tcpdf', 'id'=>$model->id]).'"); return false;', 'data-toggle'=>"modal", 'data-target'=>"#modal-pdf"]);
+                 'onclick'=>'$("#iframe-pdf").attr("src","'.Url::toRoute(['tcpdf', 'id'=>$model->id]).'"); return false;', 'data-toggle'=>"modal", 'data-target'=>"#modal-pdf"]);
              echo '&nbsp';
                echo Html::a('<img src="/images/invoice_print.png"', ['tcpdf', 'id'=>$model->id,'print'=>1],['title'=>'Print']);
                echo '&nbsp';

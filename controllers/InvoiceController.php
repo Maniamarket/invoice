@@ -97,7 +97,7 @@ class InvoiceController extends Controller
      */
     public function actionIndex()
     {
-        $pageSize = ( isset($_GET['count_search'])) ? $_GET['count_search'] : 5;
+        $pageSize = ( isset($_GET['count_search'])) ? $_GET['count_search'] : 20;
         $name_seach = ( isset($_GET['name'])) ? $_GET['name'] : '';
         $sort = ( isset($_GET['sort'])) ? $_GET['sort'] : '';
         if( $sort && $sort[0] == '-') {
@@ -109,7 +109,8 @@ class InvoiceController extends Controller
         $orderBy = ( $sort ) ? [$sort => $dir] :  ['is_pay'=>SORT_ASC, 'id'=>SORT_DESC];
 
         $query = Invoice::find()->select(['invoice.*', 'cl.name as client_name' ])->leftJoin('client as cl','invoice.client_id = cl.id');
-        $query->where(['invoice.user_id'=> Yii::$app->user->id])->orderBy( $orderBy );
+        if( Yii::$app->user->can('superadmin')) $query->orderBy( $orderBy );
+        else  $query->where(['invoice.user_id'=> Yii::$app->user->id])->orderBy( $orderBy );
         if( $name_seach )  $query->andWhere(['like','cl.name', $name_seach.'%',false]);
 
         $dataProvider = new ActiveDataProvider([
@@ -167,16 +168,17 @@ class InvoiceController extends Controller
      */
     public function actionCreate()
     {
-//       var_dump('aaaa'); exit;
+        if( ! isset( Yii::$app->session['create_invoice'])) Yii::$app->session['create_invoice'] = 1;
+
         if( isset($_POST['id'])) $model = $this->findModel($_POST['id']);
         else {$model = new Invoice; $model->client_id = 1; $model->company_id = 1; $model->payment_id = 1; $model->save();  }
         $model->client_id = 0;  $model->company_id = 0; $model->payment_id = 0;
-        $model->date = date("d/m/Y",  time());
+        $model->date = date("Y/m/d", time());
         $setting = Setting::findOne(Yii::$app->user->id);
         $model->vat_id = $setting->def_vat_id;
         $model->income = $setting->surtax;
         $items_error = [];
-        $itog = ['net'=>'', 'total'=>''];
+        $itog = ['net'=>0, 'total'=>0];
         $model_item = 0;
 
         if( isset($_POST['submit'])){
@@ -187,48 +189,37 @@ class InvoiceController extends Controller
             }else{
                 $model->load(Yii::$app->request->post());
                 $vat = Vat::findOne(['id'=>$model->vat_id]);
+                $is_error = false;
 
                 if( isset($_POST['items'])){
 
                     foreach( $_POST['items'] as $row){
                         $item_t =  Invoice_item::findOne($row['id']);
                         $item_t->attributes = $row;
-                        $item_t->total_price = $item_t->count*$item_t->price_service*(1+($vat->percent+ $model->income- $item_t->discount)/100);
+                        $net = ((int) $item_t->count)*( (int) $item_t->price_service);
+                        $item_t->total_price = $net*(1+( (int)$vat->percent+ (int)$model->income - (int)$item_t->discount)/100);
                         $items_error[] = ( $is = $item_t->save()) ? 0 : $item_t->errors;
                         if( !$is ) $is_error = true;
-                        $itog['net'] = $itog['net']+$item_t->count*$item_t->price_service;
+                        $itog['net'] = $itog['net']+$net;
                         $itog['total'] = $itog['total']+$item_t->total_price;
                     }
                 }
-
                 $item = new Invoice_item;
                 $item->attributes = $_POST;
-
-                $item->total_price = $item->count*$item->price_service*(1+($vat->percent+$model->income+$item->discount)/100);
+                $item->total_price = $item->count*$item->price_service*(1+($vat->percent + $model->income - $item->discount)/100);
                 $item->invoice_id = $model->id;
                 $model_item = $item;
-                $is_error = false;
-                $itog['net'] = $itog['net']+ $item->count*$item->price_service;
+                $itog['net'] = $itog['net']+ ((int) $item->count)*( (int) $item->price_service);
                 $itog['total'] = $itog['total'] + $item->total_price;
-
                 if( $_POST['submit'] == 'add' ){
-                    var_dump($item);
-                    if( $item->save()) $model_item = 0;
-                    var_dump($item->errors);
-                }elseif( !$is_error && ($_POST['submit'] == 'end' )){
-                        $items = Invoice_item::findAll(['invoice_id'=>$model->id]);
-                        $net = 0;
-                        $total = 0;
-                        foreach( $items as $row){
-                            $net_t = $row['count']*$row['price_service'];
-                            $net += $net_t;
-                            $total += $net_t*(1+ ($vat->id + $model->income - $row['discount'])/100);
-                        }
-
-                        $model->net_price = $net;
-                        $model->total_price = $total;
-                        $model->user_id = Yii::$app->user->id;
-                        if( $model->save() && $item->save()) return $this->redirect(['index']);
+                    if(Yii::$app->session['create_invoice']+1 == $_GET['create_invoice'] )
+                       if( $item->save()) {Yii::$app->session['create_invoice'] = Yii::$app->session['create_invoice']+1; $model_item = 0;}
+                }elseif( !$is_error && ($_POST['submit'] == 'end' ))
+                {
+                    $model->net_price = $itog['net'];
+                    $model->total_price = $itog['total'];
+                    $model->user_id = Yii::$app->user->id;
+                    if( $model->save() && $item->save()) return $this->redirect(['index']);
                 }
             }
         }
@@ -245,15 +236,63 @@ class InvoiceController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+        if( ! isset( Yii::$app->session['create_invoice']) || ! Yii::$app->session['create_invoice'] ){
+            Yii::$app->session['create_invoice'] = 1;
         }
+
+        $model = $this->findModel($id);
+        $model->date = date("Y/m/d", time());
+
+        $items_error = [];
+        $itog = ['net'=>$model->net_price, 'total'=>$model->total_price];
+        if( isset($_POST['submit'])){
+            if( $_POST['submit'] == 'cleare'){
+                $q = 'delete from invoice_item where invoice_id = '.$model->id;
+                Yii::$app->db->createCommand($q)->execute();
+            }else{
+                $model->load(Yii::$app->request->post());
+                $vat = Vat::findOne(['id'=>$model->vat_id]);
+                $is_error = false;
+
+                $itog = ['net'=>0, 'total'=>0];
+                if( isset($_POST['items']))
+                    foreach( $_POST['items'] as $row){
+                        $item_t =  Invoice_item::findOne($row['id']);
+                        $item_t->attributes = $row;
+                        $net = ((int) $item_t->count)*( (int) $item_t->price_service);
+                        $item_t->total_price = $net*(1+( (int) $vat->percent+ (int)$model->income - (int)$item_t->discount)/100);
+                        $items_error[] = ( $is = $item_t->save()) ? 0 : $item_t->errors;
+                        if( !$is ) $is_error = true;
+                        $itog['net'] = $itog['net'] + $net;
+                        $itog['total'] = $itog['total']+$item_t->total_price;
+  //echo 'total=';       var_dump($item_t->total_price);    echo'net=';                var_dump($itog['net']);
+                    }
+//exit;
+                if( $_POST['submit'] == 'add' ){
+                    if( (Yii::$app->session['create_invoice']+1) == $_GET['create_invoice'] )
+                    {
+                        $item = new Invoice_item;
+                        $item->count = 0;
+                        $item->price_service =0;
+                        $item->discount =0;
+                        $item->service_id = 1;
+
+                        $item->total_price = 0;
+                        $item->invoice_id = $model->id;
+                        if( $item->save()){
+                            Yii::$app->session['create_invoice'] = $_GET['create_invoice'];
+                        }
+                    }
+                }elseif( ! $is_error && ($_POST['submit'] == 'end' ))
+                {
+                    $model->net_price = $itog['net'];
+                    $model->total_price = $itog['total'];
+                    if( $model->save() ) return $this->redirect(['index']);
+                }
+            }
+        }
+        $items = Invoice_item::findAll(['invoice_id'=>$model->id]);
+        return $this->render('update', ['model' => $model, 'itog'=>$itog,'items' => $items, 'items_error'=>$items_error ]);
     }
 
     /**

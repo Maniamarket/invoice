@@ -3,12 +3,18 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use app\models\Setting;
+use yii\helpers\Url;
 ?>
 
 <div class="form">
 
-<?php $form = ActiveForm::begin([
-	'id'=>'invoice-form',
+<?php
+  $url = ( $is_add ) ? Url::toRoute(['invoice/create','create_invoice'=>(Yii::$app->session['create_invoice']+1)]) :
+      Url::toRoute(['invoice/update','id'=>$model->id, 'create_invoice'=>(Yii::$app->session['create_invoice']+1)]);
+
+    $form = ActiveForm::begin([
+    'id'=>'invoice-form',
+    'action'=> $url,
 	'enableAjaxValidation'=>false,
 	'options'=>['enctype'=>'multipart/form-data','class' => 'form-horizontal', 'role'=>'form'],
     'fieldConfig' => [
@@ -76,7 +82,7 @@ use app\models\Setting;
                  </td>
 
                  <td class="unit-cost" id="item_<?php echo($price);?>" >
-                     <?php echo Html::textInput('items['.$key.'][price]',$item['price_service'], ['id'=>$price,'class'=>"invoice-item form-control"]);
+                     <?php echo Html::textInput('items['.$key.'][price_service]',$item['price_service'], ['id'=>$price,'class'=>"invoice-item form-control"]);
                      ?>
                  </td>
 
@@ -106,7 +112,7 @@ use app\models\Setting;
 
                  <td></td>
              </tr>
-       <?php } ?>
+       <?php }  if( $is_add ) { ?>
 
         <tr>
             <td colspan="4" class="separator">
@@ -164,9 +170,10 @@ use app\models\Setting;
 
             <td></td>
         </tr>
+       <?php }  ?>
     </table>
     <div class="row buttons">
-        <?php if( $is_add ) echo Html::submitButton('+ Add New service',['class'=>'btn btn-grey','name'=>'submit','value'=>'add']); ?>
+        <?php  echo Html::submitButton('+ Add New service',['class'=>'btn btn-grey','name'=>'submit','value'=>'add']); ?>
     </div>
 
 
@@ -227,16 +234,18 @@ use app\models\Setting;
         total = total.toFixed(2);
         $('#total_'+a).val(total);
 
-        var count_items =  <?php echo $count_items ?> ;
-        if( count_items ){
-            if( mas.length >1 ){
+        var count_items =  <?php echo ($count_items) ? $count_items : 0; ?> ;
+        var is_add = <?php echo ($is_add) ? 1 : 0; ?>;
+        var net_itog;
+        total = 0; net_itog = 0;
+            if(  is_add  ){
                 count = $('#qty_').val();
                 price = $('#price_').val();
                 discount = $('#discount_').val();
                 net = parseFloat(price*count);
                 total = net*(1+(parseFloat(vat)+parseFloat(income)-parseFloat(discount))/100);
+                net_itog = net;
             }
-            var net_itog = net;
             for( var i=1; i<= count_items; i++){
                 var to = (i-1).toString();
                 count = $('#qty_'+ to).val();
@@ -246,11 +255,10 @@ use app\models\Setting;
                 net_itog = net_itog + net;
                 total = total+net*(1+(parseFloat(vat)+parseFloat(income)-parseFloat(discount))/100);
             }
-            net_itog = net_itog.toFixed(2);
             total = total.toFixed(2);
-            $('#net_itog').text(net_itog);
-            $('#total_itog').text(total);
-        }
+            net_itog = net_itog.toFixed(2);
+        $('#net_itog').text(net_itog);
+        $('#total_itog').text(total);
         return false;
     }
     $(document).on('change', '.invoice-item', function (){
