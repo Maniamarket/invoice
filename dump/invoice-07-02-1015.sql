@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1
--- Время создания: Фев 06 2015 г., 20:49
+-- Время создания: Фев 07 2015 г., 15:45
 -- Версия сервера: 5.6.13-log
 -- Версия PHP: 5.4.17
 
@@ -148,6 +148,7 @@ CREATE TABLE IF NOT EXISTS `client` (
   `post_index` int(11) DEFAULT NULL,
   `phone` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `passw` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `avatar` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_client_user_id` (`user_id`),
   KEY `idx_client_email` (`email`),
@@ -159,10 +160,10 @@ CREATE TABLE IF NOT EXISTS `client` (
 -- Дамп данных таблицы `client`
 --
 
-INSERT INTO `client` (`id`, `name`, `user_id`, `email`, `email_confirm_token`, `password_hash`, `password_reset_token`, `auth_key`, `created_at`, `updated_at`, `def_lang_id`, `company_name`, `vat_number`, `tax_agency`, `fax`, `web_site`, `country_id`, `city`, `street`, `post_index`, `phone`, `passw`) VALUES
-(1, 'Fedorov', 3, 'info@pegasosafety.gr', '', '$2y$13$JtwKkB1lJbTEKDY3diXCOOEJZt/PeJKEqiA8AQxQWwdOiyARiPd62', '', 'LeKPQcSJPBrU9EsnTRg9rI8922OS7q6q', 1418704796, 1423241167, 1, 'Pegasos Safety', 'EL 587958789', 'Neapoli', '+30. 2310 669808', 'www.pegasosafety.gr', '71', 'Ampelokipoi Thessaloniki', 'Agion Panton 19', 56430, '+30. 2310 669857', '111111'),
-(2, 'Alex', 3, '2@mu.ru', '', '$2y$13$8TnqmIT1jhnfjZiRdj8TFubVn8pC2KQNNgJoD80fhjPHCWWKYZ5Z2', '', '1RDxdreA4EvNZBvfPb2Ad1Rc0h8WhMru', 1418704796, 1418704796, 1, '', '', '', '', '', '1', '', '', NULL, '', 'N6t'),
-(3, 'Belikov', 3, '3@mu.ru', '', '$2y$13$X.G4KFKIgbkWqFcDDXQGq.sn6xnanKNaDsuZ5kjEP3GW15HI1vAKO', '', 'BJCNW1HZeCltZ7LrDHoAooDxbj0UBywf', 1418704796, 1418704796, 1, '', '', '', '', '', '1', '', '', NULL, '', 'iud');
+INSERT INTO `client` (`id`, `name`, `user_id`, `email`, `email_confirm_token`, `password_hash`, `password_reset_token`, `auth_key`, `created_at`, `updated_at`, `def_lang_id`, `company_name`, `vat_number`, `tax_agency`, `fax`, `web_site`, `country_id`, `city`, `street`, `post_index`, `phone`, `passw`, `avatar`) VALUES
+(1, 'Fedorov', 3, 'info@pegasosafety.gr', '', '$2y$13$JtwKkB1lJbTEKDY3diXCOOEJZt/PeJKEqiA8AQxQWwdOiyARiPd62', '', 'LeKPQcSJPBrU9EsnTRg9rI8922OS7q6q', 1418704796, 1423243577, 1, 'Pegasos Safety', 'EL 587958789', 'Neapoli', '+30. 2310 669808', 'www.pegasosafety.gr', '71', 'Ampelokipoi Thessaloniki', 'Agion Panton 19', 56430, '+30. 2310 669857', '111111', 'cat1.jpg'),
+(2, 'Alex', 3, '2@mu.ru', '', '$2y$13$8TnqmIT1jhnfjZiRdj8TFubVn8pC2KQNNgJoD80fhjPHCWWKYZ5Z2', '', '1RDxdreA4EvNZBvfPb2Ad1Rc0h8WhMru', 1418704796, 1418704796, 1, '', '', '', '', '', '1', '', '', NULL, '', 'N6t', ''),
+(3, 'Belikov', 3, '3@mu.ru', '', '$2y$13$X.G4KFKIgbkWqFcDDXQGq.sn6xnanKNaDsuZ5kjEP3GW15HI1vAKO', '', 'BJCNW1HZeCltZ7LrDHoAooDxbj0UBywf', 1418704796, 1418704796, 1, '', '', '', '', '', '1', '', '', NULL, '', 'iud', '');
 
 -- --------------------------------------------------------
 
@@ -731,32 +732,34 @@ CREATE TABLE IF NOT EXISTS `invoice` (
   `vat_id` int(11) NOT NULL,
   `income` decimal(6,2) NOT NULL,
   `is_pay` tinyint(1) NOT NULL DEFAULT '0',
+  `valid_kod` int(11) DEFAULT NULL,
   `type` varchar(50) COLLATE utf8_unicode_ci DEFAULT 'basic',
+  `payment_id` int(11) NOT NULL,
+  `notes` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `valid_kod` (`valid_kod`),
   KEY `idx_invoice_user` (`user_id`),
   KEY `idx_invoice_client` (`client_id`),
   KEY `idx_invoice_company` (`company_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=15 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=84 ;
 
 --
 -- Дамп данных таблицы `invoice`
 --
 
-INSERT INTO `invoice` (`id`, `user_id`, `client_id`, `date`, `company_id`, `net_price`, `total_price`, `vat_id`, `income`, `is_pay`, `type`) VALUES
-(1, 3, 1, '2014-12-05', 1, '200.00', '220.00', 1, '0.00', 1, 'basic'),
-(2, 3, 1, '2014-12-05', 1, '500.00', '550.00', 1, '0.00', 0, 'basic'),
-(3, 3, 1, '2015-02-04', 1, '10.00', '10.00', 1, '0.00', 0, 'basic'),
-(4, 3, 1, '2015-02-04', 1, '2.00', '4.00', 1, '0.00', 0, 'basic'),
-(5, 3, 2, '2015-02-04', 2, '3.00', '9.00', 1, '0.00', 0, 'basic'),
-(6, 3, 2, '2015-02-04', 3, '4.00', '16.00', 1, '0.00', 0, 'basic'),
-(7, 3, 2, '2015-02-04', 2, '5.00', '26.00', 1, '0.00', 0, 'basic'),
-(8, 3, 3, '2015-02-04', 3, '6.00', '38.00', 1, '0.00', 0, 'basic'),
-(9, 3, 2, '2015-02-04', 3, '7.00', '52.00', 1, '0.00', 0, 'basic'),
-(10, 3, 3, '2015-02-04', 3, '8.00', '69.00', 1, '0.00', 0, 'basic'),
-(11, 3, 1, '2015-02-04', 2, '9.00', '88.00', 1, '12.00', 0, 'basic'),
-(12, 0, 1, '0000-00-00', 1, '0.00', '0.00', 0, '0.00', 0, 'basic'),
-(13, 0, 1, '0000-00-00', 1, '0.00', '0.00', 0, '0.00', 0, 'basic'),
-(14, 0, 1, '0000-00-00', 1, '0.00', '0.00', 0, '0.00', 0, 'third');
+INSERT INTO `invoice` (`id`, `user_id`, `client_id`, `date`, `company_id`, `net_price`, `total_price`, `vat_id`, `income`, `is_pay`, `valid_kod`, `type`, `payment_id`, `notes`) VALUES
+(1, 3, 1, '2014-12-05', 1, '200.00', '220.00', 1, '0.00', 1, 1, 'third', 1, NULL),
+(2, 3, 1, '2014-12-05', 1, '500.00', '550.00', 1, '0.00', 0, 2, 'basic', 1, NULL),
+(3, 3, 1, '2015-02-04', 1, '10.00', '10.00', 1, '0.00', 0, 3, 'basic', 1, NULL),
+(4, 3, 1, '2015-02-04', 1, '2.00', '4.00', 1, '0.00', 0, 4, 'basic', 1, NULL),
+(5, 3, 2, '2015-02-04', 2, '3.00', '9.00', 1, '0.00', 0, 5, 'basic', 1, NULL),
+(6, 3, 2, '2015-02-04', 3, '4.00', '16.00', 1, '0.00', 0, 6, 'basic', 1, NULL),
+(7, 3, 2, '2015-02-04', 2, '5.00', '26.00', 1, '0.00', 0, 7, 'basic', 1, NULL),
+(8, 3, 3, '2015-02-04', 3, '6.00', '38.00', 1, '0.00', 1, 17, 'basic', 1, NULL),
+(9, 3, 2, '2015-02-04', 3, '7.00', '52.00', 1, '0.00', 1, 18, 'basic', 1, NULL),
+(10, 3, 3, '2015-02-04', 3, '8.00', '69.00', 1, '0.00', 0, 10, 'basic', 1, NULL),
+(11, 3, 1, '2015-02-04', 2, '9.00', '88.00', 1, '12.00', 0, 11, 'third', 1, NULL),
+(12, 0, 1, '0000-00-00', 1, '0.00', '0.00', 0, '0.00', 0, 12, 'basic', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -773,7 +776,7 @@ CREATE TABLE IF NOT EXISTS `invoice_item` (
   `discount` decimal(12,0) NOT NULL,
   `total_price` decimal(14,2) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=22 ;
 
 --
 -- Дамп данных таблицы `invoice_item`
@@ -942,7 +945,7 @@ CREATE TABLE IF NOT EXISTS `setting` (
 INSERT INTO `setting` (`user_id`, `name`, `credit`, `def_vat_id`, `def_company_id`, `def_lang_id`, `bank_code`, `account_number`, `last_login`, `is_on`, `country`, `city`, `street`, `post_index`, `phone`, `web_site`, `surtax`) VALUES
 (1, 'no', '0.00', 3, 2, 2, '1111111111', '1111111111', '2014-12-01 00:00:00', 1, 'yyyy', 'yyy', 'yyy', 999999, '67895909', 0, '5.00'),
 (2, 'no', '0.00', 1, 1, 1, 'no', 'no', '2014-12-04 12:39:39', 1, 'qq', 'qq', 'qq', 11, 'qq', 0, '5.00'),
-(3, 'aaaaa', '100.00', 1, 1, 1, 'no', 'no', '2014-12-04 09:21:05', 1, 'qq', 'qq', 'qq', 11111, 'qq', 0, '5.00'),
+(3, 'aaaaa', '96.00', 1, 1, 1, 'no', 'no', '2014-12-04 09:21:05', 1, 'qq', 'qq', 'qq', 11111, 'qq', 0, '5.00'),
 (4, 'aaaaa', '0.00', 1, 1, 1, 'no', 'no', '2014-12-04 09:21:05', 1, 'qq', 'qq', 'qq', 11111, 'qq', 0, '5.00'),
 (5, '', '0.00', 0, 0, 0, 'no', 'no', '0000-00-00 00:00:00', 1, '', '', '', NULL, '', NULL, NULL),
 (6, '', '0.00', 0, 0, 0, 'no', 'no', '0000-00-00 00:00:00', 1, '', '', '', NULL, '', NULL, NULL),
@@ -1115,7 +1118,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 INSERT INTO `user` (`id`, `username`, `name`, `password_hash`, `password_reset_token`, `email`, `email_confirm_token`, `auth_key`, `role`, `status`, `created_at`, `updated_at`, `parent_id`) VALUES
 (1, 'test', '', '$2y$13$B4DPxXs0/GKHt4Z81yiRM.DHwgr5tk4HNyorp1g8VmzWdDtEbMWJW', '', 'test@mail.ru', '', 'OSgDej5fe8zJdRy_N2AshqP3P2e5gTUL', 'user', 10, 1418704796, 1418704796, 0),
 (2, 'manager', '', '$2y$13$Ir6j3GVK.Fdh0l7cM8fsGO2QHCKxTNoKKnCZGlqm25KFXwXdR5kTK', '', 'manager@mail.ru', '', '0pIFtMFMleZ_CmZdK240ti2bNyJBH98L', 'manager', 10, 1418704796, 1418704796, 0),
-(3, 'admin', '', '$2y$13$9dqaQK3viYvdoAAI0Oy0XuUqfiSJ0saJXM2qYQ2A0TzA1QFV56Q6.', '', 'admin@mail.ru', '', 'pI8Z6XtcXeUKQKEJoPYBazoP5-qo3zmv', 'admin', 10, 1418704796, 1418704796, 0),
+(3, 'admin', '', '$2y$13$9dqaQK3viYvdoAAI0Oy0XuUqfiSJ0saJXM2qYQ2A0TzA1QFV56Q6.', '', 'admin@mail.ru', '', 'pI8Z6XtcXeUKQKEJoPYBazoP5-qo3zmv', 'admin', 10, 1418704796, 1418704796, 4),
 (4, 'superadmin', '', '$2y$13$Kqo/vATU4BSO9XT.Xm.jNOz.kIaUBBhCsHm.WHfauI5ZGkDkrXMvK', '', 'superadmin@mail.ru', '', 'MqtOr8ySQ7k2QFMEN3KhX3QBOEw9fDVD', 'superadmin', 10, 1418704796, 1418704796, 0),
 (5, '5', '', '$2y$13$ZiJ/xw0XC4MDNJyXngl7g.fJED1qW2XAIerQDNKZc684kdtNuAFbC', '', 'testuser1@mail.ru', 'iGJaegsHv0P6Gvmw0xHuRxKDwRXexc0i', 'Mhqg2-cSHDPL5qJhEByXVdk0QGvWd39d', 'user', 0, 1418879601, 1418879601, 0),
 (6, '6', '', '$2y$13$mmbwIil2nQv7ghNh5WwHYOa.yLHo49yqYRNJh7fbh.Q5H8ibOL/va', '', 'testuser2@mail.ru', '', 'WZoZlYrKZ79Zkv0Rvj9fm1JerWBf5CJz', 'user', 10, 1418886112, 1418886123, 0),
@@ -1140,14 +1143,16 @@ CREATE TABLE IF NOT EXISTS `user_income` (
   `my_profit` decimal(12,2) NOT NULL DEFAULT '0.00',
   PRIMARY KEY (`id`),
   KEY `idx_user_income_user_id` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
 
 --
 -- Дамп данных таблицы `user_income`
 --
 
 INSERT INTO `user_income` (`id`, `user_id`, `credit`, `date`, `parent_id`, `profit_manager`, `profit_admin`, `income`, `my_profit`) VALUES
-(1, 3, 30, '2014-12-09 14:16:23', 0, '0.00', '0.00', '0.00', '0.00');
+(1, 3, 30, '2014-12-09 14:16:23', 0, '0.00', '0.00', '0.00', '0.00'),
+(2, 3, 0, '2015-02-07 11:44:25', 4, '0.00', '0.00', '0.00', '0.00'),
+(3, 4, 0, '2015-02-07 11:44:25', 0, '0.00', '0.00', '0.00', '0.00');
 
 -- --------------------------------------------------------
 
@@ -1166,7 +1171,7 @@ CREATE TABLE IF NOT EXISTS `user_payment` (
   `profit_parent` decimal(12,2) NOT NULL DEFAULT '0.00',
   PRIMARY KEY (`id`),
   KEY `idx_user_payment_user_id` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
 
 --
 -- Дамп данных таблицы `user_payment`
@@ -1174,7 +1179,9 @@ CREATE TABLE IF NOT EXISTS `user_payment` (
 
 INSERT INTO `user_payment` (`id`, `txn_id`, `user_id`, `credit`, `is_input`, `date`, `credit_sum`, `profit_parent`) VALUES
 (1, NULL, 3, '50.00', 1, '2014-12-09 11:33:43', '50.00', '0.00'),
-(2, NULL, 3, '-20.00', 0, '2014-12-09 11:36:14', '30.00', '30.00');
+(2, NULL, 3, '-20.00', 0, '2014-12-09 11:36:14', '30.00', '30.00'),
+(3, NULL, 3, '-2.00', 0, '2015-02-07 11:43:23', '28.00', '0.00'),
+(4, NULL, 3, '-2.00', 0, '2015-02-07 11:44:25', '26.00', '0.00');
 
 -- --------------------------------------------------------
 

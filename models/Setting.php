@@ -140,6 +140,15 @@ class Setting extends ActiveRecord {
 	return $list;
     }
 
+    public static function List_Templates()
+    {
+        return [
+            'basic' => 'First Template',
+            'second' => 'Second Template',
+            'third' => 'Third Template',
+        ];
+    }
+
     /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!

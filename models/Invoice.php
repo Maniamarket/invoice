@@ -27,7 +27,7 @@ class Invoice extends ActiveRecord
             ['type', 'default', 'value' => 'basic'],
             ['type', 'string', 'max' => 50],
             [['total_price', 'net_price', 'income'], 'integer', 'integerOnly'=>FALSE],
-            [['date','valid_kod'], 'safe'],
+            [['date','valid_kod', 'notes'], 'safe'],
          //   [['number', 'bill_number'], 'string', 'max' => 32],
        //     [['sender_addr', 'recipient_addr'], 'string', 'max' => 128]
         ];
@@ -39,16 +39,19 @@ class Invoice extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
+            'id' => Yii::t('app', 'Invoice ID'),
             'user_id' => Yii::t('app', 'User ID'),
             'number' => Yii::t('app', 'Number'),
-            'date' => Yii::t('app', 'Date'),
+            'date' => Yii::t('app', 'Invoice Date'),
             'seller_id' => Yii::t('app', 'Seller ID'),
             'sender_addr' => Yii::t('app', 'Sender Addr'),
             'recipient_addr' => Yii::t('app', 'Recipient Addr'),
             'bill_number' => Yii::t('app', 'Bill Number'),
-            'client_id' => Yii::t('app', 'Client ID'),
-            'currency_id' => Yii::t('app', 'Currency ID'),
+            'company_id' => Yii::t('app', 'Company'),
+            'client_id' => Yii::t('app', 'Client'),
+            'payment_id' => Yii::t('app', 'Payment'),
+            'type' => Yii::t('app', 'Template'),
+            'notes' => Yii::t('app', 'Additional Notes'),
         ];
     }
 
@@ -88,7 +91,6 @@ class Invoice extends ActiveRecord
         }
         return $query;
     }
-    
     /*public static function getPriceTax(Invoice $model)
     {
         $price = $model->price_service*$model->count;

@@ -211,8 +211,10 @@ class InvoiceController extends Controller
                 $itog['net'] = $itog['net']+ $item->count*$item->price_service;
                 $itog['total'] = $itog['total'] + $item->total_price;
 
-                if( $_POST['submit'] == 'and' ){
+                if( $_POST['submit'] == 'add' ){
+                    var_dump($item);
                     if( $item->save()) $model_item = 0;
+                    var_dump($item->errors);
                 }elseif( !$is_error && ($_POST['submit'] == 'end' )){
                         $items = Invoice_item::findAll(['invoice_id'=>$model->id]);
                         $net = 0;

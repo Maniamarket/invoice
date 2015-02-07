@@ -196,6 +196,9 @@ button.close {
     font-size: 18px;
     height: 40px;
 }
+.form .buttons {
+    margin: 20px 0;
+}
 .fieldset {
     background-color: #d9c26c;
     padding: 3px 8px;
@@ -210,4 +213,68 @@ button.close {
 .btn-action {
     background-color: #24aa98;
     color: #fff;
+    font-size: 20px;
+}
+.btn-yellow {
+    background-color: #d9c26c;
+    color: #fff;
+    font-size: 20px;
+}
+.btn-action:hover, .btn-yellow:hover {
+    color: #ededed;
+}
+.btn-grey {
+    background: rgb(248,248,248); /* Old browsers */
+    background: -moz-linear-gradient(top,  rgba(248,248,248,1) 0%, rgba(221,221,221,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(248,248,248,1)), color-stop(100%,rgba(221,221,221,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  rgba(248,248,248,1) 0%,rgba(221,221,221,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  rgba(248,248,248,1) 0%,rgba(221,221,221,1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  rgba(248,248,248,1) 0%,rgba(221,221,221,1) 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  rgba(248,248,248,1) 0%,rgba(221,221,221,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', endColorstr='#dddddd',GradientType=0 ); /* IE6-9 */
+    color: #050505;
+    font-size: 13px;
+    padding: 6px 15px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    border: 1px solid #949494;
+    -moz-box-shadow:
+        0px 1px 3px rgba(000,000,000,0.5),
+        inset 0px 0px 2px rgba(255,255,255,1);
+    -webkit-box-shadow:
+        0px 1px 3px rgba(000,000,000,0.5),
+        inset 0px 0px 2px rgba(255,255,255,1);
+    box-shadow:
+        0px 1px 3px rgba(000,000,000,0.5),
+        inset 0px 0px 2px rgba(255,255,255,1);
+    text-shadow:
+        0px -1px 0px rgba(000,000,000,0.2),
+        0px 1px 0px rgba(255,255,255,1);
+}
+.invoice-service-items td {
+    text-align: center;
+    padding: 0 5px;
+}
+.invoice-service-items .separator {
+    padding-top: 20px;
+}
+
+.invoice-service-items .qty {
+    width: 200px;
+}
+.invoice-service-items .unit-cost, .invoice-service-items .discount, .invoice-service-items .total {
+    width: 280px;
+}
+.invoice-tax {
+    width: 340px;
+    float: right;
+}
+.invoice-tax .table td{
+    text-align: center;
+    vertical-align: middle;
+    font-size: 18px;
+}
+.invoice-tax .table td .form-group {
+    margin: 0;
 }
