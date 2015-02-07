@@ -202,6 +202,18 @@ class ClientController extends Controller
         return $this->renderPartial('ajax', ['dataProvider' => $dataProvider]);
     }
 
+    public function actionAjax_invoice($id) {
+ /*       if(!Yii::$app->request->isAjax) throw new ForbiddenHttpException('Url should be requested via ajax only');
+        $dataProvider = new ActiveDataProvider([
+            'query' => Client::queryProvider(Yii::$app->request->queryParams),
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+        ]);
+        return $this->renderPartial('ajax', ['dataProvider' => $dataProvider]);*/
+        echo '<h1>Таблица инвойсов клиента</h1>';
+    }
+
     public function actionInvoice()
     {
         $client_id = $this->isClient();

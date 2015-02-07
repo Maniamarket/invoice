@@ -220,6 +220,11 @@ button.close {
     color: #fff;
     font-size: 20px;
 }
+.title .btn-yellow {
+    text-transform: none;
+    font-size: 20px;
+    margin-top: -8px;
+}
 .btn-action:hover, .btn-yellow:hover {
     color: #ededed;
 }
@@ -289,4 +294,10 @@ button.close {
 }
 .invoice-tax .table td .form-group {
     margin: 0;
+}
+.invoice-index label{
+    font-weight: normal;
+}
+.form-search {
+    margin: 20px 0 4px ;
 }

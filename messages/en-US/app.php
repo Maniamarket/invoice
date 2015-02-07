@@ -43,6 +43,7 @@ return array(
     'main_page_text' => 'Your ID - ',
     
     //// Clients page
+    'Add Client' => 'Add Client',
     'ClientsHeaderText' => 'Clients',
     'ClientViewText' => 'View Client',
     'ClientCreateText' => 'Create Client',

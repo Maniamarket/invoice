@@ -44,6 +44,7 @@ return [
     'main_page_text' => 'Ваш ID - ',
     
     //// Clients page
+    'Add Client' => 'Добавить клиента',
     'ClientsHeaderText' => 'Клиенты',
     'ClientViewText' => 'Просмотр клиента',
     'ClientCreateText' => 'Создать клиент',

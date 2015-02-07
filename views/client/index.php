@@ -9,16 +9,18 @@ use yii\bootstrap\Modal;
 /* @var $searchModel app\models\InvoiceSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Invoices');
+$this->title = Yii::t('app', 'Clients');
 $this->params['breadcrumbs'][] = $this->title;
 $options_page_size = [20,50,100,200,500];
 ?>
 <div class="invoice-index">
 
-    <h1 class="title"><?= Html::encode($this->title) ?></h1>
+    <h1 class="title"><?= Html::encode($this->title) ?>
+        <?= Html::a(Yii::t('app','Add Client'),['create'],['class'=>'btn btn-yellow pull-right']) ?>
+    </h1>
+    <div class="clearfix"></div>
 
-
-    <div class="col-10">
+    <div class="col-10 form-search">
         <?php echo Html::beginForm(['index'],'get',['id'=>'form-client-search', 'class'=>"form-inline"]); ?>
         <div class="form-group">
             <div class="input-group hint-container">
@@ -56,12 +58,10 @@ $options_page_size = [20,50,100,200,500];
     <?php
     Modal::begin([
         'header' => '&nbsp;',
-        'options'=>['id'=>'modal-pdf'],
+        'options'=>['id'=>'modal-invoice'],
         'size' => 'modal-lg',
     ]);
-    echo '<div style="width:auto; height:600px;"> <iframe id="iframe-pdf" src="" width="860" height="600" align="left">
-    Ваш браузер не поддерживает плавающие фреймы!
- </iframe></div>';
+    echo '<div id="invoice_content"></div>';
     Modal::end();
     ?>
 
