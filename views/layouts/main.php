@@ -86,6 +86,7 @@ AppAsset::register($this);
                     ],
                     ['label' => Yii::t('app', 'Account'), 'url' => ['/setting/update'], 'visible' => !Yii::$app->user->isGuest,
                         'items' => [
+                            ['label' => Yii::t('app', 'Account'), 'url' => ['/setting/update'], 'visible' => !Yii::$app->user->isGuest],
                             ['label' => Yii::t('app', 'Payment'), 'url' => ['/payment/index'], 'visible' => !Yii::$app->user->isGuest,
                                 'items' => [
                                     ['label' => Yii::t('app', 'Pay Pal'), 'url' => ['/user/payment_credit', 'payment_id' => 2, 'id' => Yii::$app->user->id], 'visible' => !Yii::$app->user->isGuest],
