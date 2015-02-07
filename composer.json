@@ -24,7 +24,8 @@
         "marciocamello/yii2-paypal": "dev-master",
         "paypal/rest-api-sdk-php": "*",
         "kartik-v/yii2-nav-x": "dev-master",
-        "yiisoft/yii2-jui": "dev-master"
+        "yiisoft/yii2-jui": "dev-master",
+        "nex/yii2-chosen": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

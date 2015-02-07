@@ -252,6 +252,18 @@ button.close {
         0px -1px 0px rgba(000,000,000,0.2),
         0px 1px 0px rgba(255,255,255,1);
 }
+.chosen-container-single .chosen-single {
+    font-size: 20px;
+    height: 40px;
+    line-height: 40px;
+    background: url("../images/drop_down_arrow.png") no-repeat right top;
+}
+.chosen-container .chosen-results li {
+    line-height: 26px;
+}
+.chosen-container .chosen-results li:hover {
+    background-color: #d9c26c;
+}
 .invoice-service-items td {
     text-align: center;
     padding: 0 5px;

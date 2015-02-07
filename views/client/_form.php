@@ -2,6 +2,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\BaseHtml;
+use nex\chosen\Chosen;
 
 ?>
 
@@ -44,7 +45,15 @@ use yii\helpers\BaseHtml;
             <?php echo $form->field($model, 'company_name',['labelOptions'=>['class'=>'control-label col-md-4']])->textInput() ; ?>
             <?php echo $form->field($model, 'vat_number',['labelOptions'=>['class'=>'control-label col-md-4']])->textInput() ; ?>
             <?php echo $form->field($model, 'tax_agency',['labelOptions'=>['class'=>'control-label col-md-4']])->textInput() ; ?>
-            <?php echo $form->field($model, 'country_id',['labelOptions'=>['class'=>'control-label col-md-4']])->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\Country::getCountriesArray(2),'cid','name')); ?>
+            <?php echo $form->field($model, 'country_id',['labelOptions'=>['class'=>'control-label col-md-4']])->widget(
+                Chosen::className(), [
+                'items' => \yii\helpers\ArrayHelper::map(\app\models\Country::getCountriesArray(2),'cid','name'),
+                'disableSearch' => false,
+                'clientOptions' => [
+                    'search_contains' => true,
+                    'single_backstroke_delete' => false,
+                ],
+            ]); ?>
             <?php echo $form->field($model, 'city',['labelOptions'=>['class'=>'control-label col-md-4']])->textInput() ; ?>
             <?php echo $form->field($model, 'street',['labelOptions'=>['class'=>'control-label col-md-4']])->textInput(); ?>
         </div>

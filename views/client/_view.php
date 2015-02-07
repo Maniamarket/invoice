@@ -10,7 +10,7 @@ use yii\bootstrap\Modal;
     <td><?php echo Html::encode($model->vat_number); ?></td>
     <td><?php echo Html::encode($model->invoice); ?>&euro;</td>
     <td><?php echo Html::encode($model->total); ?>&euro; </td>
-    <td>Details</td>
+    <td><?= Html::a('details',['update', 'id'=>$model->id]) ?></td>
     <td>
         &nbsp;
            <?php
