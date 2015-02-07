@@ -8,6 +8,7 @@ use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use yii\helpers\ArrayHelper;
 use yii\data\ActiveDataProvider;
+use yii\db\Query;
 
 /**
  * Client model
@@ -27,6 +28,7 @@ class Client extends ActiveRecord implements IdentityInterface
 {
     public $file;
     public $password_;
+    public $invoice,$total;
     /**
      * @inheritdoc
      */
@@ -100,13 +102,13 @@ class Client extends ActiveRecord implements IdentityInterface
         // Во втором параметре в виде массива задаётся имя удалённого PK ключа  (id) и FK из текущей таблицы модели (author_id), которые связываются между собой
     }
 
-    public static function queryProvider($qp) {
-        $query = Client::find()->where(['user_id'=>  Yii::$app->user->id]);
+    /*public static function queryProvider($qp) {
+//        $query = Client::find()->where(['user_id'=>  Yii::$app->user->id]);
         //country id
         if (isset($qp['name']))
         {
             if ( !empty($qp['name'])){
-                $query->filterWhere(['like', 'name', $qp['name']]);
+                $q->filterWhere(['like', 'name', $qp['name']]);
                 $query->orFilterWhere(['like', 'email', $qp['name']]);
 
                 $cid = Country::getCountriesByName($qp['name']);
@@ -125,9 +127,11 @@ class Client extends ActiveRecord implements IdentityInterface
             }
 
         }
+        $query = $q->createCommand()->queryAll();
+        var_dump($query); exit;
         return $query;
     }
-
+*/
 
     /**
      * Creates data provider instance with search query applied

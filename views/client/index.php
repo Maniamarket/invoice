@@ -1,84 +1,141 @@
 <?php
-use yii\widgets\ListView;
 use yii\helpers\Html;
-use yii\helpers\Url;
 use yii\grid\GridView;
-use app\models\Country;
-use app\models\Lang;
+use yii\widgets\ListView;
+use yii\helpers\Url;
+use yii\bootstrap\Modal;
 
+/* @var $this yii\web\View */
+/* @var $searchModel app\models\InvoiceSearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
 
-/* @var yii\data\ActiveDataProvider $dataProvider */
-
-$this->title=Yii::$app->name . ' - My Client';
+$this->title = Yii::t('app', 'Invoices');
 $this->params['breadcrumbs'][] = $this->title;
-$langs = \yii\helpers\ArrayHelper::map(\app\models\Lang::find()->all(),'id','name');
-$arr = [0=>'-'];
-foreach($langs as $k => $v){
-    $arr[$k] = $v;
-}
-
+$options_page_size = [20,50,100,200,500];
 ?>
+<div class="invoice-index">
 
-<h1 class="title"><?php echo Yii::t('app', 'My Client'); ?></h1>
-<p></p><?php echo Html::a('Создать', Url::toRoute('create'),['class'=>'btn-lg btn btn-success']) ?></p>
-<div class="col-10">
-    <h3>Форма поиска</h3>
-    <div class="col-xs-4">
-        <input name="name" id="name_search" type="text" placeholder="Искать" data-url="<?php echo Url::toRoute(['client/ajax'])?>" class="form-control" />
-        <?=Html::dropDownList('Language',0,$arr,['class'=>'form-control','id'=>'lang_select']);?>
-        <input type="button" id="bsearch" value="Поиск" class="btn btn-primary col-xs-6" />
-        <input type="button" id="bclear" value="Очистить запрос" class="btn btn-warning col-xs-6" />
-        <span id="sort_by"></span>
+    <h1 class="title"><?= Html::encode($this->title) ?></h1>
+
+
+    <div class="col-10">
+        <?php echo Html::beginForm(['index'],'get',['id'=>'form-client-search', 'class'=>"form-inline"]); ?>
+        <div class="form-group">
+            <div class="input-group hint-container">
+                <div class="hint-content" id="hint-search">
+                    Each user can filter invoices per ID, per name, per company, per date  by pressing the button <span class="triangl">&#9660;</span> next to <br />
+                    the field’s title <br />
+                    or search through a live search.
+                </div>
+                <div class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></div>
+                <input name="name" id='name_search' type="text" placeholder="Search... "
+                       data-url="<?php echo Url::toRoute(['client/seach_ajax','sort'=>$sort,'dir'=>$dir])?>"
+                       value="<?php if(isset($name_search)) echo $name_search; ?>" class="form-control" />
+            </div>
+        </div>
+        <!--        <input type="submit" value="Поиск" class="btn btn-primary" />-->
+        <div class="form-group pull-right">
+            <div class="form-group">
+                <label for="count_search" class="control-label">Show</label>
+                <select class="form-control" name="count_search" id="count_search" onchange="$('#form-client-search').submit()">
+                    <?php foreach ($options_page_size as $opt) {
+                        if ($opt == $pageSize) {
+                            echo '<option selected>'.$opt.'</option>';
+                        }
+                        else {
+                            echo '<option>'.$opt.'</option>';
+                        }
+                    }
+                    ?>
+                </select>
+            </div>
+        </div>
+        <?php echo Html::endForm(); ?>
     </div>
-    <div class="clearfix"></div>
-</div>
-<p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <?php
+    Modal::begin([
+        'header' => '&nbsp;',
+        'options'=>['id'=>'modal-pdf'],
+        'size' => 'modal-lg',
+    ]);
+    echo '<div style="width:auto; height:600px;"> <iframe id="iframe-pdf" src="" width="860" height="600" align="left">
+    Ваш браузер не поддерживает плавающие фреймы!
+ </iframe></div>';
+    Modal::end();
+    ?>
 
-<?=
-GridView::widget([
-    'dataProvider' => $dataProvider,
-    'options'=>['id'=>'table-result-search'],
-    'headerRowOptions'=>[
-        'class'=>'table_header',
-    ],
-    'columns' => [
-
-        'id',
-        'name',
-        'email',
-        [
-            'attribute' => 'def_lang_id',
-            'format' => 'html',
-            'value' => function ($data) {
-                /** @var app\models\Client $data */
-                return $data->getLanguage()->asArray()->one()['name'];
-            }
-
-        ],        [
-            'attribute' => 'country_id',
-            'format' => 'html',
-            'value' => function ($data) {
-                /** @var app\models\Client $data */
-                    $cid = $data->getCountry()->asArray()->one()['cid'];
-                    return Country::find()->where(['lang_id'=>Lang::$current->id, 'cid'=>$cid])->orderBy('cid')->asArray()->one()['name'];
-//                return $data->getCountry()->asArray()->one()['name'];
-            }
-
-        ],
-        'city',
-        [
-            'class' => 'yii\grid\ActionColumn',
-            'template' => '{update} {delete}',
-            'buttons'=>[
-                'delete'=>function($url, $model, $key){
-                    return "<a href='#' data-id='$key' onclick='return false;' data-rmu='$url' data-message='Are you sure delete $model->name' class='rm-btn'><span class='glyphicon glyphicon-trash'></span></a>";
+    <table class="table" id="table-result-search">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>ID
+                <?php
+                if ($sort=='id' && $dir==SORT_ASC) {
+                    echo Html::a('<span class="triangl">&#9650;</span>', Url::toRoute(['client/index','sort'=>'-id']));
                 }
-            ]
+                else
+                    echo '<a href="'.Url::toRoute(['client/index','sort'=>'id']).'" ><span class="triangl">&#9660;</span></a>';
+                ?>
+            </th>
+            <th>Name
+                <?php
+                if ($sort=='name' && $dir==SORT_ASC) {
+                    echo Html::a('<span class="triangl">&#9650;</span>',Url::toRoute(['client/index','sort'=>'-name']));
+                }
+                else
+                    echo '<a href="'.Url::toRoute(['client/index','sort'=>'name']).'" ><span class="triangl">&#9660;</span></a>';
+                ?>
+            </th>
+            <th>Vat Number </th>
+            <th>Invoices
+                <?php
+                if ($sort=='invoice' && $dir==SORT_ASC) {
+                    echo Html::a('<span class="triangl">&#9650;</span>', Url::toRoute(['client/index','sort'=>'-invoice']));
+                }
+                else
+                    echo '<a href="'.Url::toRoute(['client/index','sort'=>'invoice']).'" ><span class="triangl">&#9660;</span></a>';
+                ?>
+            </th>
+            <th>Total Amount
+                <?php
+                if ($sort=='total' && $dir==SORT_ASC) {
+                    echo Html::a('<span class="triangl">&#9650;</span>',
+                        Url::toRoute(['client/index','sort'=>'-total']));
+                }
+                else {
+                    echo '<a href="'.Url::toRoute(['client/index','sort'=>'total']).'" ><span class="triangl">&#9660;</span></a>';
+                }
+                ?>
+            </th>
+            <th>Details
+            </th>
+            <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody id="invoice_view">
+        <?php
+        $t_page =  (isset(Yii::$app->request->queryParams['page']))?(Yii::$app->request->queryParams['page']-1)*$dataProvider->pagination->pageSize:0;
+        foreach ($dataProvider->models as $key=>$model) {
+            echo $this->render('_view', ['model'=>$model, 'number'=>$t_page+$key+1]);
+        }
+
+        ?>
+        </tbody>
+    </table>
+    <?php
+    echo ListView::widget([
+        'dataProvider'=>$dataProvider,
+        'itemView'=>'_view',
+        'pager'=>[
+            'prevPageLabel'=>'Prev',
+            'nextPageLabel'=>'Next'
         ],
-    ],
-]);
-?>
+        'layout'=>'{pager}'
+    ])
+    ?>
+</div>
 <?php
 /** @var \yii\data\ActiveDataProvider $dataProvider */
-    Yii::$app->view->registerJsFile('@web/js/client.js');
+Yii::$app->view->registerJsFile('@web/js/invoice.js');
 ?>

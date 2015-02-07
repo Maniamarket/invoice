@@ -3,6 +3,7 @@ namespace app\controllers;
 
 use Yii;
 use yii\base\InvalidParamException;
+use yii\data\SqlDataProvider;
 use yii\helpers\Url;
 use yii\web\HttpException;
 use yii\web\Session;
@@ -38,7 +39,7 @@ class ClientController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['login', 'invoice', 'tcpdf', 'logout', 'update', 'delete', 'index'],
+                'only' => ['login', 'invoice', 'tcpdf', 'logout', 'update', 'delete', 'index','seach_ajax'],
                 'rules' => [
                     [
                         'actions' => ['login', 'invoice', 'tcpdf'],
@@ -53,7 +54,7 @@ class ClientController extends Controller
                             }
                     ],
                     [
-                        'actions' => ['delete', 'index', 'ajax', 'update'],
+                        'actions' => ['delete', 'index', 'ajax', 'update','seach_ajax'],
                         'allow' => true,
                         'roles' => ['@']
                     ],
@@ -124,17 +125,70 @@ class ClientController extends Controller
 
         return $this->goHome();
     }
-    
-    
+
+    public function actionSeach_ajax()
+    {
+        if( Yii::$app->request->isAjax ){
+            $name_seach = ( isset($_POST['name'])) ? $_POST['name'] : '';
+            $pageSize = ( isset($_POST['count_search'])) ? $_POST['count_search'] : 5;
+            $sort = ( isset($_GET['sort'])) ? $_GET['sort'] : '';
+            $dir = ( isset($_GET['sort'])) ? $_GET['dir'] : SORT_ASC;
+
+            $orderBy = ( $sort ) ? [$sort => $dir] :  ['is_pay'=>SORT_ASC, 'id'=>SORT_DESC];
+
+            $query = Client::find()->select('client.id, client.name, client.vat_number, count(i.id) as invoice, SUM(i.total_price) as total');
+            $query->leftJoin('`invoice` i','client.id = i.client_id');
+            $query->where(['client.user_id'=>Yii::$app->user->id])->groupBy('i.client_id')->orderBy( $orderBy );
+            if( $name_seach )  $query->andWhere(['like','client.name', $name_seach.'%',false]);
+
+            $dataProvider = new ActiveDataProvider([
+                'query' => $query,
+                'pagination' => [ 'pageSize' => $pageSize,  ],
+            ]);
+
+            $t_page =  (isset(Yii::$app->request->queryParams['page']))?(Yii::$app->request->queryParams['page']-1)*$dataProvider->pagination->pageSize:0;
+            if( $dataProvider->models )
+                foreach ($dataProvider->models as $key=>$model) {
+                    echo $this->renderPartial('_view', ['model'=>$model, 'number'=>$t_page+$key+1]);
+                }
+        }
+    }
+
+
     public function actionIndex() {
         $this->layout='main';
+    /*    $q = new Query();
+        $q->select('c.id, c.name, c.vat_number, count(i.id) as invoice, SUM(i.total_price) as total ');
+        $q->from('client as c');
+        $q->leftJoin('`invoice` i','c.id = i.client_id');
+        $q->where(['c.user_id'=>$user]);
+        $q->groupBy('i.client_id');
+*/
+
+        $pageSize = ( isset($_GET['count_search'])) ? $_GET['count_search'] : 20;
+        $name_seach = ( isset($_GET['name'])) ? $_GET['name'] : '';
+
+        $sort = ( isset($_GET['sort'])) ? $_GET['sort'] : '';
+        if( $sort && $sort[0] == '-') {
+            $sort = substr($sort,1);
+            $dir = SORT_DESC;
+        }
+        else  $dir = SORT_ASC;
+
+        $orderBy = ( $sort ) ? [$sort => $dir] :  ['id'=>SORT_ASC];
+
+        $query = Client::find()->select('client.id, client.name, client.vat_number, count(i.id) as invoice, SUM(i.total_price) as total');
+        $query->leftJoin('`invoice` i','client.id = i.client_id');
+        $query->where(['client.user_id'=>Yii::$app->user->id])->groupBy('i.client_id')->orderBy( $orderBy );
+        if( $name_seach )  $query->andWhere(['like','client.name', $name_seach.'%',false]);
+
         $dataProvider = new ActiveDataProvider([
-            'query' => Client::queryProvider(Yii::$app->request->queryParams),
-            'pagination' => [
-                'pageSize' => 20
-            ],
+            'query' => $query,
+            'pagination' => [ 'pageSize' => $pageSize ],
         ]);
-        return $this->render('index', ['dataProvider' => $dataProvider]);
+       // var_dump($dataProvider->models[0]['invoice']); var_dump($dataProvider->models[0]['total']); exit;
+        return $this->render('index', ['dataProvider' => $dataProvider,'pageSize' => $pageSize, 'sort'=>$sort, 'dir'=>$dir,
+            'name_search' => $name_seach]);
     }
 
     public function actionAjax() {
