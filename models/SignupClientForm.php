@@ -57,7 +57,7 @@ class SignupClientForm extends Model
         return null;
     }
     
-    function generateRandomPassword() {
+    public static function generateRandomPassword() {
         $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         $count = mb_strlen($chars);
         $password = '';
