@@ -226,9 +226,11 @@ class ClientController extends Controller
 
         if ( $model->load(Yii::$app->request->post()) ){
             $password_ = $_POST['Client']['password_'];
-            $model->setPassword($password_);
-            $model->generateAuthKey();
-            $model->passw = $password_;
+            if( strlen($password_ ) > 0){
+                $model->setPassword($password_);
+                $model->generateAuthKey();
+                $model->passw = $password_;
+            }
             if($model->save() ){
                 if ($file){
                     $uploaded = $file->saveAs(Yii::$app->params['avatarPath'].$file->name);
