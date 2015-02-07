@@ -153,7 +153,7 @@ class UserController extends Controller {
                   try {
                       $q = 'select valid_kod from invoice order by valid_kod desc limit 0,1';
                       $valid_kod = Yii::$app->db->createCommand($q)->queryScalar();
-                      
+
                       $invoice->valid_kod = $valid_kod+1;
                       $invoice->save();
                       $transaction->commit();

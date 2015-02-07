@@ -126,20 +126,6 @@ class ClientController extends Controller
     }
     
     
-    public function actionCreate() {
-        $this->layout='main';
-        $model = new SignupClientForm();
-        if ($model->load(Yii::$app->request->post())) {
-            if ($client = $model->signup()) {
-               // var_dump(Yii::$app->session['password']);                exit();
-                Yii::$app->getSession()->setFlash('success', 'Клиент успешно зарегистрирован ');
-                return $this->redirect(['index']);
-            }
-        }
-
-        return $this->render('signup_client', ['model' => $model,]);
-    }
-
     public function actionIndex() {
         $this->layout='main';
         $dataProvider = new ActiveDataProvider([
@@ -202,6 +188,42 @@ class ClientController extends Controller
         } else {
             throw new ForbiddenHttpException('Access to the invoice is forbidden. You are not the owner of the invoice');
         }
+    }
+
+    public function actionCreate() {
+        $this->layout='main';
+//        $model = new SignupClientForm();
+        $model = new Client();
+
+        $file = UploadedFile::getInstance($model,'file');
+        if ($file)
+            $model->avatar = $file->name;
+
+        if ($model->load(Yii::$app->request->post())) {
+            $password_ = SignupClientForm::generateRandomPassword();
+            $model->setPassword($password_);
+            $model->generateAuthKey();
+            $model->passw = $password_;
+
+            $model->user_id = Yii::$app->user->id;
+            if($model->save() ){
+                if ($file){
+                    $uploaded = $file->saveAs(Yii::$app->params['avatarPath'].$file->name);
+                    $image=Yii::$app->image->load(Yii::$app->params['avatarPath'].$file);
+                    $image->resize(100);
+                    $image->save();
+                }
+                Yii::$app->getSession()->setFlash('success', 'Клиент успешно зарегистрирован ');
+                if (!Yii::$app->user->isGuest)
+                    return $this->redirect(['index']);
+            }
+           /* if ($client = $model->signup()) {
+                // var_dump(Yii::$app->session['password']);                exit();
+            }*/
+        }
+
+        return $this->render('create', ['model' => $model,]);
+//        return $this->render('signup_client', ['model' => $model,]);
     }
 
     public function actionUpdate($id=0)

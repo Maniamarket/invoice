@@ -33,7 +33,7 @@ use yii\helpers\BaseHtml;
         </div>
         <div class="fieldset-column pull-right">
             <?php echo $form->field($model, 'email',['labelOptions'=>['class'=>'control-label col-md-4']])->textInput() ; ?>
-            <?php echo $form->field($model, 'password_',['labelOptions'=>['class'=>'control-label col-md-4']])->textInput() ; ?>
+            <?php if( !$model->isNewRecord ) echo $form->field($model, 'password_',['labelOptions'=>['class'=>'control-label col-md-4']])->textInput() ; ?>
         </div>
     </div>
     <div class="form-group">
