@@ -220,7 +220,6 @@ $country_name  = ($model->company->country) ? $model->company->country->name : '
         </tr>
      <?php } ?>
     </table>
-    <hr />
     <table style="text-align: center; line-height: 40px; font-size: 12px;">
         <?php
         $key = count($items);
@@ -229,8 +228,20 @@ $country_name  = ($model->company->country) ? $model->company->country->name : '
             <?php } else { ?>
         <tr style="background-color: #e1e1e1;">
             <?php } ?>
-            <td width="340" rowspan="4" style="background-color: #fff;">
-                <p  style="font-size: 12px; color: #fff; background-color: #acacac; line-height: 24px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Payment Method:</b> PayPal</p></td>
+            <td width="300" style="text-align:left; color: #fff; background-color: #fff;">
+                <table>
+                    <tr style="line-height: 10px;"><td colspan="3"></td></tr>
+                    <tr style="line-height: 20px;">
+                      <td width="33" style="background-color:  #24aa98; color: #fff;"><img src="images/template2/payment.png" width="33" /></td>
+                      <td width="150" style="background-color:  #24aa98; color: #fff;">
+                            <b><?= Yii::t('invoice', 'Payment Method', [], $lt) ?>:</b>
+                      </td>
+                      <td> <?= Yii::t('invoice', 'Cash', [], $lt) ?></td>
+                    </tr>
+                    <tr style="line-height: 10px;"><td colspan="3" style="text-align: left"><img src="images/template2/payment_triangl.png" width="33" /></td></tr>
+                </table>
+            </td>
+            <td width="40" style="background-color: #fff;"></td>
             <td width="170" style="text-align: right;">
                 <?= Yii::t('invoice', 'Net Price', [], $lt) ?>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
             <td width="130" style="text-align: right;">
@@ -241,6 +252,11 @@ $country_name  = ($model->company->country) ? $model->company->country->name : '
             <?php } else { ?>
         <tr style="background-color: #e1e1e1;">
             <?php } ?>
+            <td width="340" style="text-align:left; background-color: #fff;">
+                <?php if ($model->is_pay) { ?>
+                    <p style="text-transform: uppercase; line-height: 10px;"><?= Yii::t('invoice', 'Validation Number', [], $lt) ?>:  <?= $model->valid_kod ?></p>
+                <?php } ?>
+            </td>
             <td width="170" style="text-align: right;">
                 <?= Yii::t('invoice', 'VAT TAX', [], $lt) ?>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
             <td width="130"  style="text-align: right;">
@@ -251,6 +267,8 @@ $country_name  = ($model->company->country) ? $model->company->country->name : '
             <?php } else { ?>
         <tr style="background-color: #e1e1e1;">
             <?php } ?>
+            <td width="260" style="background-color: #fff;"></td>
+            <td width="80" style="background-color: #fff;"></td>
             <td width="170" style="text-align: right;">
                 <?= Yii::t('invoice', 'Income TAX', [], $lt) ?>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
             <td  width="130" style="text-align: right;">
@@ -261,6 +279,8 @@ $country_name  = ($model->company->country) ? $model->company->country->name : '
             <?php } else { ?>
         <tr style="background-color: #e1e1e1;">
             <?php } ?>
+            <td width="260" style="background-color: #fff;"></td>
+            <td width="80" style="background-color: #fff;"></td>
             <td width="170" style="text-align: right; background-color: #24aa98; color: #fff;">
                 <?= Yii::t('invoice', 'Total Due', [], $lt) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
             <td width="130"  style="text-align: right; background-color: #24aa98; color: #fff;">

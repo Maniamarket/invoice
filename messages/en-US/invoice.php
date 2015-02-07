@@ -15,6 +15,9 @@ return array(
     'Vat' => 'Vat',
     'Surtax' => 'Surtax',
     'Total' => 'Total',
-    'Total Cost'=>'Total Cost'
+    'Total Cost'=>'Total Cost',
+    'Payment Method'=>'Payment Method',
+    'Cash'=>'Cash',
+    'Validation Number'=>'Validation Number',
 
 );

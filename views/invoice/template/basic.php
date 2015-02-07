@@ -22,7 +22,7 @@ $country_name  = ($model->company->country) ? $model->company->country->name : '
             <?php
                 if (!empty($model->company->logo)) {
                     $logo = '/images/companies/'.$model->company->logo;
-                    echo '<img src="'.$logo.'" width="200" />';
+                    echo '<img src="'.$logo.'" width="200" height="52" />';
 //                $pdf->Image($logo, '15', '25', '20', '0', '', '', '', true, 150);
                 }
              ?>
@@ -231,29 +231,39 @@ $country_name  = ($model->company->country) ? $model->company->country->name : '
         </tr>
      <?php } ?>
     </table>
-    <hr />
 <table style="text-align: center; line-height: 30px; font-size: 12px;">
     <tr>
-        <td width="340" rowspan="4" style="background-color: #fff;">
-            <p  style="font-size: 12px; color: #fff; background-color: #acacac; line-height: 24px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Payment Method:</b> PayPal</p></td>
+        <td width="260" style="text-align:left; color: #fff; background-color: #acacac; line-height: 24px;">
+            <b><?= Yii::t('invoice', 'Payment Method', [], $lt) ?>:</b> <b><?= Yii::t('invoice', 'Cash', [], $lt) ?></b></td>
+        <td width="80" style="background-color: #fff;"></td>
         <td width="170" style="text-align: right;">
             <?= Yii::t('invoice', 'Net Price', [], $lt) ?>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
         <td width="130" style="text-align: right;">
             <?= $model->net_price ?>&euro;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
     </tr>
     <tr>
+        <td width="260" style="text-align:left; background-color: #fff;">
+            <?php if ($model->is_pay) { ?>
+                <p style="text-transform: uppercase; line-height: 10px;"><?= Yii::t('invoice', 'Validation Number', [], $lt) ?>:  <?= $model->valid_kod ?></p>
+            <?php } ?>
+        </td>
+        <td width="80" style="background-color: #fff;"></td>
         <td width="170" style="text-align: right;">
             <?= Yii::t('invoice', 'VAT TAX', [], $lt) ?>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
         <td width="130"  style="text-align: right;">
             <?= $model->vat->percent ?>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
     </tr>
     <tr>
+        <td width="260" style="background-color: #fff;"></td>
+        <td width="80" style="background-color: #fff;"></td>
         <td width="170" style="text-align: right;">
             <?= Yii::t('invoice', 'Income TAX', [], $lt) ?>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
         <td  width="130" style="text-align: right;">
             <?= $model->income ?>%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
     </tr>
     <tr>
+        <td width="260" style="background-color: #fff;"></td>
+        <td width="80" style="background-color: #fff;"></td>
         <td width="170" style="text-align: right; background-color: #757577; color: #fff;">
             <?= Yii::t('invoice', 'Total Due', [], $lt) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
         <td width="130"  style="text-align: right; background-color: #757577; color: #fff;">

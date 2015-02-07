@@ -15,6 +15,9 @@ return array(
     'Vat' => 'НДС',
     'Surtax' => 'Под.налог',
     'Total' => 'Итого',
-    'Total Cost'=>'Общая цена'
+    'Total Cost'=>'Общая цена',
+    'Payment Method'=>'Метод оплаты',
+    'Cash'=>'Наличные',
+    'Validation Number'=>'Код валидации',
 
 );
