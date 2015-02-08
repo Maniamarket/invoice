@@ -122,8 +122,14 @@ class HelpKontrol  extends Component
     }
 
     public static function typ_email(&$par)
-    { $par=trim($par);
-        if (preg_match('/^[a-zA-Z][-\._a-zA-Z0-9]+@(?:[a-zA-Z0-9][-a-zA-Z0-9]+\.)+[a-zA-Z]{2,6}$/',$par)) {return true; }
+    {   $par=trim($par);
+        if (preg_match('/^[a-zA-Z_]+@[a-zA-Z0-9_^\.]+\.[a-zA-Z]{2,6}$/',$par)) {return true; }
+        else  return false;
+    }
+
+    public static function typ_email_seach(&$par)
+    {   $par=trim($par);
+        if (preg_match('/^[a-zA-Z_]+@[a-zA-Z0-9_\.]*$/',$par)) {return true; }
         else  return false;
     }
 
