@@ -3,6 +3,7 @@ namespace app\models;
 
 use Yii;
 use \yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "company".
@@ -89,6 +90,14 @@ class Company extends ActiveRecord {
         // Во втором параметре в виде массива задаётся имя удалённого PK ключа  (id) и FK из текущей таблицы модели (author_id), которые связываются между собой
     }
 
+    public static function list_company_field( $input, $field_name )
+    {
+        $company = Company::find()->select('id,'.$field_name)->where(['like',$field_name, $input.'%',false])->all();
+        $list = ArrayHelper::map($company,'id', $field_name);
+        return $list;
+    }
+
+
     /**
      * Retrieves a list of models based on the current search/filter conditions.
      *
@@ -121,7 +130,7 @@ class Company extends ActiveRecord {
      * @return Company the static model class
      */
     public static function model($className = __CLASS__) {
-	return parent::model($className);
+    	return parent::model($className);
     }
 
 }

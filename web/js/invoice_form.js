@@ -15,7 +15,7 @@
             total_itog = total_itog + total;
             $('#total_'+to).val(total.toFixed(2));
         }
-   alert('count='+count+' price='+price+' disc='+discount+' net_it='+net_itog+' total='+total);
+ //  alert('count='+count+' price='+price+' disc='+discount+' net_it='+net_itog+' total='+total);
         if( is_add ){
             count = $('#qty_').val();
             price = $('#price_').val();
@@ -31,6 +31,21 @@
         $('#net_itog').text(net_itog);
         $('#total_itog').text(total_itog);
 
-  alert('is_add='+is_add+' item='+count_items);
+ // alert('is_add='+is_add+' item='+count_items);
         return false;
     }
+
+    function list_company_ajax(url){
+        var input_word = $('#company_name').val();
+//     alert('input_word='+input_word);
+        $.ajax({
+            url: url,
+            method: 'POST',
+            data: { input_word : input_word },
+            success: function (data) {
+                $('#list_company').empty().html(data);
+            }
+        });
+        return false;
+    }
+

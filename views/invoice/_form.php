@@ -4,8 +4,33 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use app\models\Setting;
 use yii\helpers\Url;
-?>
 
+ $_name = '{';
+ foreach ( Setting::List_company() as $key=>$val) $_name .= $key.':"'.$val.'",';
+$_name = ( $_name == '{' ) ? '{}' : substr($_name, 0,-1).'}';
+
+//var_dump($_name); exit;
+
+?>
+<script type="text/javascript">
+    var name = <?php echo $_name; ?>;
+    var mac_name;
+    if( name ) mac_name = name.split(':');
+    else mac_name = 0;
+/*    for (var key in name) {
+        	    alert(key+':'+name[key])
+        	}*/
+//    alert(name[1]);
+/*        jQuery(document).ready(function(){
+$("#address-country_id").change( function(){
+jQuery.get( '<?php //echo $url_region.'?id='; ?>'+jQuery('#address-country_id :selected').val() ,
+function( data ) {
+jQuery("#state").replaceWith(data);
+}
+);
+});
+});*/
+</script>
 <div class="form">
 
 <?php
@@ -32,8 +57,14 @@ use yii\helpers\Url;
         </div>
         <?php echo $form->field($model, 'date',['labelOptions'=>['class'=>'control-label col-md-3']])->textInput(['disabled'=>'disabled']) ; ?>
         <?php echo $form->field($model, 'company_id',['labelOptions'=>['class'=>'control-label col-md-3'],
-                    'template' => "{label}\n<div class=\"col-md-8\">{input}</div>\n<div class=\"col-md-offset-2 col-md-6\">{error}</div>",
-                ])->dropDownList(Setting::List_company(),['prompt'=>'-Choose a Company-']); ?>
+            'template' => "{label}\n<div class=\"col-md-8\">{input}</div>\n<div class=\"col-md-offset-2 col-md-6\">{error}</div>",
+        ])->dropDownList(Setting::List_company(),['prompt'=>'-Choose a Company-','id'=>'list_company']); ?>
+
+        <?php
+          $url_company = Url::toRoute(['invoice/ajax_company']);
+          echo Html::textInput('input_company','',['id'=>'company_name', 'onkeyup'=>'list_company_ajax("'.$url_company.'")']);
+        ?>
+
         <?php echo $form->field($model, 'client_id',['labelOptions'=>['class'=>'control-label col-md-3'],
             'template' => "{label}\n<div class=\"col-md-8\">{input}</div>\n<div class=\"col-md-offset-2 col-md-6\">{error}</div>",
         ])->dropDownList(Setting::List_client(),['prompt'=>'-Choose a Client-']); ?>

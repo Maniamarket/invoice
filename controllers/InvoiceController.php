@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Company;
 use app\models\Setting;
 use app\models\User;
 use app\models\Vat;
@@ -145,8 +146,35 @@ class InvoiceController extends Controller
             $t_page =  (isset(Yii::$app->request->queryParams['page']))?(Yii::$app->request->queryParams['page']-1)*$dataProvider->pagination->pageSize:0;
             if( $dataProvider->models )
                 foreach ($dataProvider->models as $key=>$model) {
-                   echo $this->renderPartial('_view', ['model'=>$model, 'number'=>$t_page+$key+1]);
+                    echo $this->renderPartial('_view', ['model'=>$model, 'number'=>$t_page+$key+1]);
                 }
+        }
+    }
+
+    public function actionAjax_company()
+    {
+        if( Yii::$app->request->isAjax ){
+            $input = ($_POST['input_word']);
+            $is_find = false;
+            $res_mac = []; $mac = [];
+            if( HelpKontrol::typ_name($input) ) {
+                $mac = Company::list_company_field( $input, 'name' );
+            }
+            if( is_array($mac) && count($mac)) { $res_mac = $mac; $is_find = true;}
+
+            if( !$is_find && HelpKontrol::typ_phone( $input )){
+                $mac = Company::list_company_field( $input, 'phone' );
+                if( !is_array($mac) || !count($mac)) $mac = Company::list_company_field( $input, 'phone2' );
+            }
+            if( is_array($mac) && count($mac)) { $res_mac = $mac; $is_find = true;}
+
+            $i = 0;
+            foreach( $res_mac as $key=>$val)
+            {
+                if( $i == 0 ) echo '<option selected="" value="'.$key.'">'.$val.'</option>';
+                else  echo '<option  value="'.$key.'">'.$val.'</option>';
+                $i++;
+            }
         }
     }
     /**
@@ -239,7 +267,11 @@ class InvoiceController extends Controller
         if( ! isset( Yii::$app->session['create_invoice']) || ! Yii::$app->session['create_invoice'] ){
             Yii::$app->session['create_invoice'] = 1;
         }
-
+/*  $mac = Company::list_company_field( '2', 'name' );
+        if( is_array($mac) && count($mac)){    var_dump($mac); echo 'qqqq';}
+    $mac = Company::list_company_field( '2', 'phone' );
+        var_dump($mac);exit;
+*/
         $model = $this->findModel($id);
         $model->date = date("Y/m/d", time());
 

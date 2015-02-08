@@ -74,16 +74,6 @@ class HelpKontrol  extends Component
         return  ['data'=>Yii::$app->cache->get($cache_id),'key'=>$cache_id] ;
     }
 
-    /*  public static function get_cacheMe($table,$sub = '')
-      {
-          $q = 'select update_cache from '.$table.' order by update_cache desc limit 0,2';
-          $update = Yii::$app->db->createCommand( $q )->queryAll();
-          $cache_id = $sub.'_'.$table;
-          $keys_cache = self::generate_keyMe($cache_id,$update);
-       //   var_dump($keys_cache);        var_dump(Yii::$app->cache->get($keys_cache[0])); exit;
-          return  ['data'=>Yii::$app->cache->get($keys_cache[0]),'keys_cache'=>$keys_cache];
-      }
-    */
     public static function getRoute()
     {
         $params = Yii::$app->request->getQueryParams();
@@ -111,5 +101,24 @@ class HelpKontrol  extends Component
         return false;
     }
 
+    public static function typ_name(&$par)
+    {
+        $par=preg_replace("/[ ]+/i", ' ',$par);
+        $par=trim($par);
+        if (preg_match("/^[a-zA-Z]+/i",$par) )
+//            if (preg_match("/^[\s\da-zA-Zа-яА-Я]+/i",$par) )
+        {
+            return true;
+        }
+        else  return false;
+    }
+
+    public static function typ_phone(&$par)
+    {
+        $par=preg_replace("/[ ]+/i", ' ',$par);
+        $par=trim($par);
+        if (preg_match("/^[0-9|+]?[0-9]+/i",$par) ) return true;
+        else  return false;
+    }
 
 }  //////////////////////////////////////////
