@@ -51,11 +51,10 @@
                 })
 //                console.log(list_option);
                 $(elem).next().empty().html('<ul>'+list_option+'</ul>');
-                $(elem).next().children('.dropdown-ajax-result li').each(function() {
+                $(elem).next().children('ul').children('li').each(function() {
                     $(this).click(function() {
                         $(this).closest('.dropdown-ajax-result').prev().val($(this).text());
                         $(this).closest('.dropdown-ajax-result').prev().prev().val($(this).attr('data-val'));
-                                                 alert($(this).attr('data-val'));
                         $(this).closest('.dropdown-ajax-result').hide();
                     });
                 })

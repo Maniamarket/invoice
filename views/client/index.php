@@ -57,7 +57,7 @@ $options_page_size = [20,50,100,200,500];
     <p>&nbsp;</p>
     <?php
     Modal::begin([
-        'header' => '&nbsp;',
+        'header' => '<span class="text-green">'.Yii::t('app', 'Invoices').'</span>',
         'options'=>['id'=>'modal-invoice'],
         'size' => 'modal-lg',
     ]);

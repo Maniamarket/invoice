@@ -175,7 +175,7 @@ a.desc:after {
     position: relative;
     text-align: center;
 }
-button.close {
+.modal-dialog button.close {
     background-image: url('../images/popup_close.png');
     width: 44px;
     height: 38px;
@@ -333,4 +333,17 @@ button.close {
 }
 .form-search {
     margin: 20px 0 4px ;
+}
+#modal-invoice .modal-content {
+    padding: 10px;
+}
+#modal-invoice .modal-header {
+    background-color: #ece9e9;
+}
+#modal-invoice .modal-body {
+    background-color: #ece9e9;
+}
+.text-green {
+    color: #24aa98;
+    font-size: 25px;
 }

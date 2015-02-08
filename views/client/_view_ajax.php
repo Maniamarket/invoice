@@ -4,10 +4,8 @@ use yii\helpers\Html;
 ?>
 <tr>
     <td><?= $number ?></td>
-    <td>
-        <?php echo Html::a('MM100'.$model->id,['tcpdf', 'id'=>$model->id]); ?>
-    </td>
-    <td><?php echo Html::encode($model->date); ?></td>
+    <td><?php echo Html::encode('MM100'.$model->id); ?></td>
+    <td><?php echo Html::encode(date('d/m/Y',strtotime($model->date))); ?></td>
     <td><?php echo Html::encode($model->client->name); ?></td>
     <td><?php echo Html::encode($model->company->name); ?></td>
     <td><?php echo Html::encode($model->net_price); ?>&euro;</td>
