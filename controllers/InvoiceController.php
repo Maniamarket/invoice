@@ -162,6 +162,11 @@ class InvoiceController extends Controller
             }
             if( is_array($mac) && count($mac)) { $res_mac = $mac; $is_find = true;}
 
+            if( HelpKontrol::typ_email($input) ) {
+                $mac = Company::list_company_field( $input, 'mail' );
+            }
+            if( is_array($mac) && count($mac)) { $res_mac = $mac; $is_find = true;}
+
             if( !$is_find && HelpKontrol::typ_phone( $input )){
                 $mac = Company::list_company_field( $input, 'phone' );
                 if( !is_array($mac) || !count($mac)) $mac = Company::list_company_field( $input, 'phone2' );
