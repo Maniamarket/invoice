@@ -105,7 +105,7 @@ class HelpKontrol  extends Component
     {
         $par=preg_replace("/[ ]+/i", ' ',$par);
         $par=trim($par);
-        if (preg_match("/^[a-zA-Z]+/i",$par) )
+        if (preg_match("/^[a-zA-Z]{1,4}[a-zA-Z0-9]*/i",$par) )
 //            if (preg_match("/^[\s\da-zA-Zа-яА-Я]+/i",$par) )
         {
             return true;

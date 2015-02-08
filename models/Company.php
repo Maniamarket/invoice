@@ -92,8 +92,19 @@ class Company extends ActiveRecord {
 
     public static function list_company_field( $input, $field_name )
     {
-        $company = Company::find()->select('id,'.$field_name)->where(['like',$field_name, $input.'%',false])->all();
-        $list = ArrayHelper::map($company,'id', $field_name);
+        if( $field_name == 'name') {
+            $company = Company::find()->select('id,'.$field_name)->where(['like',$field_name, $input.'%',false])->all();
+            $list = ArrayHelper::map($company,'id', $field_name);
+        }
+        else {
+            $company = Company::find()->select('id, '.$field_name.',name' )->where(['like',$field_name, $input.'%',false])->all();
+            $list1 = ArrayHelper::map($company,'id', $field_name);
+            $list2 = ArrayHelper::map($company,'id', 'name');
+            $list = [];
+            foreach( $list1 as $key=>$val){
+                $list[$key] = $list1[$key].' '.$list2[$key];
+            }
+        }
         return $list;
     }
 

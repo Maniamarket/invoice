@@ -269,9 +269,10 @@ class InvoiceController extends Controller
         }
 /*  $mac = Company::list_company_field( '2', 'name' );
         if( is_array($mac) && count($mac)){    var_dump($mac); echo 'qqqq';}
-    $mac = Company::list_company_field( '2', 'phone' );
-        var_dump($mac);exit;
-*/
+   $mac = Company::list_company_field( '2', 'phone' );
+    //    $mac = Company::list_company_field( 'g', 'name' );
+     //   var_dump($mac);exit;
+//*/
         $model = $this->findModel($id);
         $model->date = date("Y/m/d", time());
 
