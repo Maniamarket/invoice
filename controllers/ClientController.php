@@ -203,15 +203,15 @@ class ClientController extends Controller
     }
 
     public function actionAjax_invoice($id) {
- /*       if(!Yii::$app->request->isAjax) throw new ForbiddenHttpException('Url should be requested via ajax only');
+        if(!Yii::$app->request->isAjax) throw new ForbiddenHttpException('Url should be requested via ajax only');
+
+        $query = Invoice::find()->select(['invoice.*', 'cl.name as client_name' ])->leftJoin('client as cl','invoice.client_id = cl.id');
+        $query->where(['invoice.client_id'=> $id ])->orderBy(['date'=>SORT_DESC] );
         $dataProvider = new ActiveDataProvider([
-            'query' => Client::queryProvider(Yii::$app->request->queryParams),
-            'pagination' => [
-                'pageSize' => 20,
-            ],
+            'query' => $query,
+            'pagination' => [ 'pageSize' => 100,  ],
         ]);
-        return $this->renderPartial('ajax', ['dataProvider' => $dataProvider]);*/
-        echo '<h1>Таблица инвойсов клиента</h1>';
+        return $this->renderPartial('ajax_invoice', ['dataProvider' => $dataProvider]);
     }
 
     public function actionInvoice()
@@ -232,9 +232,8 @@ class ClientController extends Controller
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-//                'query' => Invoice::find()->where(['client_id'=>$client_id, 'is_pay'=> 1]),
-                'pagination' => [ 'pageSize' => $pageSize,  ],
-            ]);
+            'pagination' => [ 'pageSize' => $pageSize,  ],
+        ]);
         return $this->render('invoice',['dataProvider'=>$dataProvider, 'pageSize' => $pageSize, 'sort'=>$sort, 'dir'=>$dir,
             ]);
     }
