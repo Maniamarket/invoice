@@ -133,6 +133,12 @@ class HelpKontrol  extends Component
         else  return false;
     }
 
+    public static function get_lang(&$par)
+    {   $par=trim($par);
+        if (preg_match('/^[а-яА-Я_]+$/',$par)) return 'ru';
+        else  return 'en';
+    }
+
 
 
 }  //////////////////////////////////////////

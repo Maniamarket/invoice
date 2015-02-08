@@ -147,13 +147,9 @@ class CompanyController extends Controller {
     public function actionIndex() {
         $dataProvider = new ActiveDataProvider([
             'query' => Company::find(),
-            'pagination' => [
-                'pageSize' => 20,
-            ],
+            'pagination' => [ 'pageSize' => 20,],
         ]);
-        return $this->render('index', array(
-            'dataProvider' => $dataProvider,
-        ));
+        return $this->render('index', [ 'dataProvider' => $dataProvider,]);
     }
 
     /**

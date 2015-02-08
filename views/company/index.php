@@ -35,7 +35,7 @@ if (\Yii::$app->user->can('superadmin')) {
         <th>Mail</th>
         <th>Vat Number</th>
         <th>Activity</th>
-        <th>Resp Person</th>
+        <th>Tax_agency</th>
     </tr>
 <?php echo ListView::widget([
 	'dataProvider'=>$dataProvider,

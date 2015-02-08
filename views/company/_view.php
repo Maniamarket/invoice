@@ -29,5 +29,5 @@ use yii\helpers\Html;
     <td><?php echo Html::encode($model->mail); ?></td>
     <td><?php echo Html::encode($model->vat_number); ?></td>
     <td><?php echo Html::encode($model->activity); ?></td>
-    <td><?php echo Html::encode($model->resp_person); ?></td>
+    <td><?php echo Html::encode($model->tax_agency); ?></td>
 </tr>

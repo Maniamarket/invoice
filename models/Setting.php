@@ -97,14 +97,12 @@ class Setting extends ActiveRecord {
     }
 
     public static  function List_company() {
-	// @todo Please modify the following code to remove attributes that should not be searched.
         $company = Company::find()->all();
         $list = ArrayHelper::map($company,'id', 'name'); 
 	return $list;
     }
 
     public static  function List_lang() {
-	// @todo Please modify the following code to remove attributes that should not be searched.
         $company = Lang::find()->all();
         $list = ArrayHelper::map($company,'id', 'name'); 
 	return $list;

@@ -157,30 +157,31 @@ class InvoiceController extends Controller
             $input = ($_POST['input_word']);
             $is_find = false;
             $res_mac = []; $mac = [];
-            $field_check = [ 1=>['name','tax_agency'], 2=>['mail'], 3=>['phone','phone2']];
-            foreach( $field_check as $key=>$val){
-               foreach( $val as $name){
-                    switch ($key){
-                        case 1: if( HelpKontrol::typ_name($input) )
-                                     $mac = Company::list_company_field( $input, $name );
-                                 break;
-                        case 2: if( HelpKontrol::typ_email_seach($input) )
-                                $mac = Company::list_company_field( $input, $name );
-                                break;
-                        case 3:  if( HelpKontrol::typ_phone($input) )
-                                $mac = Company::list_company_field( $input, $name );
-                                break;
-                    }
+            $field_check = [ 1=>['name','tax_agency','country_id'], 2=>['mail'], 3=>['phone','phone2']];
+            if( $input){
+                foreach( $field_check as $key=>$val){
+                   foreach( $val as $name){
+                        switch ($key){
+                            case 1: if( HelpKontrol::typ_name($input) )
+                                         $mac = Company::list_company_field( $input, $name );
+                                     break;
+                            case 2: if( HelpKontrol::typ_email_seach($input) )
+                                    $mac = Company::list_company_field( $input, $name );
+                                    break;
+                            case 3:  if( HelpKontrol::typ_phone($input) )
+                                    $mac = Company::list_company_field( $input, $name );
+                                    break;
+                        }
 
-                    if( is_array($mac) && count($mac)){
+                        if( is_array($mac) && count($mac)){
 
-                       $res_mac = $mac; $is_find = true;
-                       break;
+                           $res_mac = $mac; $is_find = true;
+                           break;
+                        }
                     }
+                    if( $is_find) break;
                 }
-                if( $is_find) break;
-            }
-
+            }else $res_mac = Setting::List_company();
             $i = 0;
             foreach( $res_mac as $key=>$val)
             {
@@ -280,10 +281,11 @@ class InvoiceController extends Controller
         if( ! isset( Yii::$app->session['create_invoice']) || ! Yii::$app->session['create_invoice'] ){
             Yii::$app->session['create_invoice'] = 1;
         }
-/*    $input = 'a';
+/*    $input = 'ru';
     $is_find = false;
     $res_mac = []; $mac = [];
-    $field_check = [ 1=>['name','tax_agency'], 2=>['mail'], 3=>['phone','phone2']];
+    $field_check = [ 1=>['name','tax_agency','country_id'], 2=>['mail'], 3=>['phone','phone2']];
+
     foreach( $field_check as $key=>$val){
         echo('key='.$key); var_dump($val);
         foreach( $val as $name){
@@ -304,7 +306,8 @@ class InvoiceController extends Controller
             }
         }
         if( $is_find) break;
-    }   var_dump($res_mac); exit;*/
+    }   var_dump($res_mac); exit;
+*/
     $model = $this->findModel($id);
         $model->date = date("Y/m/d", time());
 
