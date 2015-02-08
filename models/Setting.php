@@ -130,7 +130,7 @@ class Setting extends ActiveRecord {
 
     public static  function List_client() {
         $client = Client::find()->where(['user_id' => Yii::$app->user->id])->all();
-        $list = ArrayHelper::map($client,'id', 'name'); 
+        $list = ArrayHelper::map($client,'id', 'name');
 	return $list;
     }
 

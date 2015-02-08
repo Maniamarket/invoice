@@ -187,7 +187,8 @@ use yii\helpers\Url;
                 <td> Vat </td>
                 <td> <?php echo $form->field($model, 'vat_id',[
                         'template' => "{label}\n<div class=\"col-md-8\">{input}</div>\n<div class=\"col-md-8\">{error}</div>"
-                    ])->dropDownList( Setting::List_Vat(),['id'=>'vat', 'class'=>'form-control'])->label(false); ?> </td>
+                    ])->dropDownList( Setting::List_Vat(),['id'=>'vat', 'class'=>'form-control',
+                      'onchange'=>'set_itog("'.$is_add.'","'.$count_items.'","'.$model->income.'")'])->label(false); ?> </td>
             </tr>
             <tr>
                 <td> Income Tax </td>
@@ -215,13 +216,17 @@ use yii\helpers\Url;
     <?php ActiveForm::end(); ?>
 
 </div><!-- form -->
+<?php
+/** @var \yii\data\ActiveDataProvider $dataProvider */
+Yii::$app->view->registerJsFile('@web/js/invoice_form.js');
+?>
 <script type="text/javascript">
     function total_price(elem){
         var a = $(elem).attr('id');
         var mas = a.split('_');
         var id = '';
         var income = <?php echo  $model->income ?> ;
-        var vat = $('#vat :selected').text();;
+        var vat = $('#vat :selected').text();
 
         if( mas.length > 1 ) id = mas[1];
         a = id.toString();
