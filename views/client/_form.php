@@ -3,6 +3,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\BaseHtml;
 use nex\chosen\Chosen;
+use yii\jui\AutoComplete;
 
 ?>
 
@@ -45,7 +46,8 @@ use nex\chosen\Chosen;
             <?php echo $form->field($model, 'company_name',['labelOptions'=>['class'=>'control-label col-md-4']])->textInput() ; ?>
             <?php echo $form->field($model, 'vat_number',['labelOptions'=>['class'=>'control-label col-md-4']])->textInput() ; ?>
             <?php echo $form->field($model, 'tax_agency',['labelOptions'=>['class'=>'control-label col-md-4']])->textInput() ; ?>
-            <?php echo $form->field($model, 'country_id',['labelOptions'=>['class'=>'control-label col-md-4']])->widget(
+            <?php
+/*            echo $form->field($model, 'country_id',['labelOptions'=>['class'=>'control-label col-md-4']])->widget(
                 Chosen::className(), [
                 'items' => \yii\helpers\ArrayHelper::map(\app\models\Country::getCountriesArray(2),'cid','name'),
                 'disableSearch' => false,
@@ -53,7 +55,58 @@ use nex\chosen\Chosen;
                     'search_contains' => true,
                     'single_backstroke_delete' => false,
                 ],
-            ]); ?>
+            ]);*/
+             /*           echo $form->field($model, 'country_id',['labelOptions'=>['class'=>'control-label col-md-4']])->widget(
+                AutoComplete::className(), [
+//                'source' => \yii\helpers\ArrayHelper::map(\app\models\Country::getCountriesArray(2),'cid','name'),
+//                'disableSearch' => false,
+                'clientOptions' => [
+                    'source' => ['USA', 'RUS'],// \yii\helpers\ArrayHelper::map(\app\models\Country::getCountriesArray(2),'cid','name'),
+ //                   'single_backstroke_delete' => false,
+                ],
+            ]);*/
+            echo $form->field($model, 'country_id',['labelOptions'=>['class'=>'control-label col-md-4']])->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\Country::getCountriesArray(2),'cid','name'),['class'=>'dropdown-ajax']);
+
+            ?>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $('.dropdown-ajax').parent().css('position: relative');
+                    $('.dropdown-ajax').each(function(){
+                        $(this).parent().append(
+                            '<input type="text" class="form-control dropdown-ajax-search" value="'+$(this).children('option:selected').text()+'" />'
+                        );
+                        var list_option = '';
+                        $(this).children('option').each(function(){
+                            list_option = list_option +'<li data-val="'+$(this).val()+'">'+$(this).text()+'</li>';
+                        })
+                        $(this).parent().append('<div class="dropdown-ajax-result"><ul>'+list_option+'</ul></div>');
+                    })
+                    $('.dropdown-ajax-search').each(function() {
+                        $(this).focus(function() {
+                            $(this).next().show();
+                        });
+                        $(this).blur(function() {
+                            if (!$(this).next().is(':hover')) {
+                                $(this).next().hide();
+                            }
+                        });
+                    })
+                    $('.dropdown-ajax-result li').each(function() {
+                        $(this).click(function() {
+                            $(this).closest('.dropdown-ajax-result').prev().val($(this).text());
+                            $(this).closest('.dropdown-ajax-result').prev().prev().val($(this).attr('data-val'));
+   //                         alert($(this).attr('data-val'));
+                            $(this).closest('.dropdown-ajax-result').hide();
+                        });
+                    })
+/*                    $(document).on('focus','.dropdown-ajax-search' ,function(){
+                        alert('sddd');
+                        $('.dropdown-ajax-result').show();
+                    }).on('blur','.dropdown-ajax-search', function(){
+                        $('.dropdown-ajax-result').hide();
+                    })*/
+                })
+            </script>
             <?php echo $form->field($model, 'city',['labelOptions'=>['class'=>'control-label col-md-4']])->textInput() ; ?>
             <?php echo $form->field($model, 'street',['labelOptions'=>['class'=>'control-label col-md-4']])->textInput(); ?>
         </div>

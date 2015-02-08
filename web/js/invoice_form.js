@@ -35,17 +35,66 @@
         return false;
     }
 
-    function list_company_ajax(url){
-        var input_word = $('#company_name').val();
+    function list_company_ajax(url, elem){
+//        var input_word = $('#company_name').val();
+        var input_word = $(elem).val();
 //     alert('input_word='+input_word);
         $.ajax({
             url: url,
             method: 'POST',
             data: { input_word : input_word },
             success: function (data) {
-                $('#list_company').empty().html(data);
+                $(elem).prev().empty().html(data);
+                var list_option = '';
+                $(elem).prev().children('option').each(function(){
+                    list_option = list_option +'<li data-val="'+$(this).val()+'">'+$(this).text()+'</li>';
+                })
+//                console.log(list_option);
+                $(elem).next().empty().html('<ul>'+list_option+'</ul>');
+                $(elem).next().children('.dropdown-ajax-result li').each(function() {
+                    $(this).click(function() {
+                        $(this).closest('.dropdown-ajax-result').prev().val($(this).text());
+                        $(this).closest('.dropdown-ajax-result').prev().prev().val($(this).attr('data-val'));
+                                                 alert($(this).attr('data-val'));
+                        $(this).closest('.dropdown-ajax-result').hide();
+                    });
+                })
             }
         });
         return false;
     }
 
+    $(document).ready(function () {
+        $('.dropdown-ajax').parent().css('position: relative');
+        $('.dropdown-ajax').each(function(){
+            $(this).parent().append(
+                '<input type="text" class="form-control dropdown-ajax-search" value="'+$(this).children('option:selected').text()+'" />'
+            );
+            var list_option = '';
+            $(this).children('option').each(function(){
+                list_option = list_option +'<li data-val="'+$(this).val()+'">'+$(this).text()+'</li>';
+            })
+            $(this).parent().append('<div class="dropdown-ajax-result"><ul>'+list_option+'</ul></div>');
+        })
+        $('.dropdown-ajax-search').each(function() {
+            $(this).focus(function() {
+                $(this).next().show();
+            });
+            $(this).blur(function() {
+                if (!$(this).next().is(':hover')) {
+                    $(this).next().hide();
+                }
+            });
+            $(this).keyup(function() {
+                list_company_ajax($(this).prev().attr('data-url'), this);
+            });
+        })
+        $('.dropdown-ajax-result li').each(function() {
+            $(this).click(function() {
+                $(this).closest('.dropdown-ajax-result').prev().val($(this).text());
+                $(this).closest('.dropdown-ajax-result').prev().prev().val($(this).attr('data-val'));
+                //                         alert($(this).attr('data-val'));
+                $(this).closest('.dropdown-ajax-result').hide();
+            });
+        })
+    })

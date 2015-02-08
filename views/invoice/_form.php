@@ -56,13 +56,17 @@ jQuery("#state").replaceWith(data);
             <div class="col-md-offset-2 col-md-6"><p class="help-block help-block-error"></p></div>
         </div>
         <?php echo $form->field($model, 'date',['labelOptions'=>['class'=>'control-label col-md-3']])->textInput(['disabled'=>'disabled']) ; ?>
-        <?php echo $form->field($model, 'company_id',['labelOptions'=>['class'=>'control-label col-md-3'],
+        <?php /*echo $form->field($model, 'company_id',['labelOptions'=>['class'=>'control-label col-md-3'],
             'template' => "{label}\n<div class=\"col-md-8\">{input}</div>\n<div class=\"col-md-offset-2 col-md-6\">{error}</div>",
-        ])->dropDownList(Setting::List_company(),['prompt'=>'-Choose a Company-','id'=>'list_company']); ?>
+        ])->dropDownList(Setting::List_company(),['prompt'=>'-Choose a Company-','id'=>'list_company']); */
+        ?>
 
         <?php
           $url_company = Url::toRoute(['invoice/ajax_company']);
-          echo Html::textInput('input_company','',['id'=>'company_name', 'onkeyup'=>'list_company_ajax("'.$url_company.'")']);
+            echo $form->field($model, 'company_id',['labelOptions'=>['class'=>'control-label col-md-3'],
+                'template' => "{label}\n<div class=\"col-md-8\">{input}</div>\n<div class=\"col-md-offset-2 col-md-6\">{error}</div>",
+            ])->dropDownList(Setting::List_company(),['class'=>'dropdown-ajax','id'=>'company_name','data-url'=>$url_company]);
+//          echo Html::textInput('input_company','',['id'=>'company_name', 'onkeyup'=>'list_company_ajax("'.$url_company.'")']);
         ?>
 
         <?php echo $form->field($model, 'client_id',['labelOptions'=>['class'=>'control-label col-md-3'],
@@ -251,6 +255,7 @@ jQuery("#state").replaceWith(data);
 /** @var \yii\data\ActiveDataProvider $dataProvider */
 Yii::$app->view->registerJsFile('@web/js/invoice_form.js');
 ?>
+
 <script type="text/javascript">
     function total_price(elem){
         var a = $(elem).attr('id');

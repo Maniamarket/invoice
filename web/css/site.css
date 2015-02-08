@@ -269,6 +269,39 @@ button.close {
 .chosen-container .chosen-results li:hover {
     background-color: #d9c26c;
 }
+.dropdown-ajax {
+    display: none;
+}
+.dropdown-ajax-search {
+    cursor: pointer;
+    background: url("../images/drop_down_arrow.png") no-repeat right top;
+}
+.dropdown-ajax-result {
+    position: absolute;
+    display: none;
+    z-index: 98;
+    background-color: #fbfbfb;
+    border: 1px solid #d1d1d1;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    overflow: auto;
+    max-height: 300px;
+    width: calc(100% - 30px);
+}
+.dropdown-ajax-result ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.dropdown-ajax-result ul li{
+    cursor: pointer;
+    line-height: 40px;
+    padding: 5px 10px;
+}
+.dropdown-ajax-result ul li:hover {
+    background-color: #d9c26c;
+}
 .invoice-service-items td {
     text-align: center;
     padding: 0 5px;
