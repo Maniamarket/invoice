@@ -288,6 +288,7 @@ a.desc:after {
     overflow: auto;
     max-height: 300px;
     width: calc(100% - 30px);
+    margin-top: 20px;
 }
 .dropdown-ajax-result ul {
     list-style: none;
@@ -301,6 +302,22 @@ a.desc:after {
 }
 .dropdown-ajax-result ul li:hover {
     background-color: #d9c26c;
+}
+.dropdown-ajax-result + .triangl {
+    background: url("../images/drop_down_triangl.png") no-repeat;
+    position: absolute;
+    top: 48px;
+    right: 36px;
+    z-index: 99;
+    width: 19px;
+    height: 13px;
+    display: none;
+}
+.field-invoice-company_id .dropdown-ajax-result ul li{
+    background: url("../images/drop_down_user_noselect.png") no-repeat top right;
+}
+.field-invoice-company_id .dropdown-ajax-result ul li:hover{
+    background: url("../images/drop_down_user.png") no-repeat top right #d9c26c;
 }
 .invoice-service-items td {
     text-align: center;
