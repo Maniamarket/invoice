@@ -111,16 +111,17 @@ class Client extends ActiveRecord implements IdentityInterface
             case 'country_id':
                 $client = Country::find()->select('c.id,country.name,c.name as client')->innerJoin('client c','country.cid = c.country_id')
                     ->where(['like','country.name', $input.'%',false])->all();
-                $list1 = ArrayHelper::map($client,'id', 'name');
+//                $list = [];
+//                $list1 = ArrayHelper::map($client,'id', 'name');
                 $list2 = ArrayHelper::map($client,'id', 'client');
-                $list = [];
-                foreach( $list1 as $key=>$val) $list[$key] = $list1[$key].' '.$list2[$key];
+  //              foreach( $list1 as $key=>$val) $list[$key] = $list1[$key].' '.$list2[$key];
+                $list = $list2;
                 break;
             default :  $client = client::find()->select('id, '.$field_name.',name' )->where(['like',$field_name, $input.'%',false])->all();
-            $list1 = ArrayHelper::map($client,'id', $field_name);
+  //          $list1 = ArrayHelper::map($client,'id', $field_name);
             $list2 = ArrayHelper::map($client,'id', 'name');
-            $list = [];
-            foreach( $list1 as $key=>$val) $list[$key] = $list1[$key].' '.$list2[$key];
+            $list = $list2;
+//            foreach( $list1 as $key=>$val) $list[$key] = $list1[$key].' '.$list2[$key];
         }
         return $list;
     }

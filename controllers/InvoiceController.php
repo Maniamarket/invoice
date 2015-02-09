@@ -165,6 +165,7 @@ class InvoiceController extends Controller
                 else  echo '<option  value="'.$key.'">'.$val.'</option>';
                 $i++;
             }
+            if( !$i ) echo '<option selected="" value="0">Not found</option>';
         }
     }
 
@@ -181,6 +182,7 @@ class InvoiceController extends Controller
                 else  echo '<option  value="'.$key.'">'.$val.'</option>';
                 $i++;
             }
+            if( !$i ) echo '<option selected="" value="0">Not found</option>';
         }
     }
 

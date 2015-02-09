@@ -100,16 +100,18 @@ class Company extends ActiveRecord {
             case 'country_id':
                         $company = Country::find()->select('c.id,country.name,c.name as company')->innerJoin('company c','country.cid = c.country_id')
                                   ->where(['like','country.name', $input.'%',false])->all();
-                        $list1 = ArrayHelper::map($company,'id', 'name');
+        //                $list = [];
+                      //  $list1 = ArrayHelper::map($company,'id', 'name');
                         $list2 = ArrayHelper::map($company,'id', 'company');
-                        $list = [];
-                        foreach( $list1 as $key=>$val) $list[$key] = $list1[$key].' '.$list2[$key];
+                        //foreach( $list1 as $key=>$val) $list[$key] = $list1[$key].' '.$list2[$key];
+                        $list = $list2;
                         break;
             default :  $company = Company::find()->select('id, '.$field_name.',name' )->where(['like',$field_name, $input.'%',false])->all();
-                       $list1 = ArrayHelper::map($company,'id', $field_name);
+           //            $list = [];
+            //           $list1 = ArrayHelper::map($company,'id', $field_name);
                        $list2 = ArrayHelper::map($company,'id', 'name');
-                       $list = [];
-                       foreach( $list1 as $key=>$val) $list[$key] = $list1[$key].' '.$list2[$key];
+                       $list = $list2;
+           //            foreach( $list1 as $key=>$val) $list[$key] = $list1[$key].' '.$list2[$key];
         }
         return $list;
     }
