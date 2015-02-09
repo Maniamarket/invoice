@@ -98,6 +98,11 @@ return array(
     'TaxSettingText' => 'Tax Setting',
     
     //// Setting page
-    'SettingHeaderText' => 'Setting',
+    'Settings Update' => 'Settings Update',
+    'Invoice Details' => 'Invoice Details',
+    'Default Income Tax, %' => 'Default Income Tax, %',
+    'Default Template' => 'Default Template',
+    'Default VAT, %' => 'Default VAT, %',
+    'Default Company' => 'Default Company',
 
 );

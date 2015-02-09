@@ -110,7 +110,6 @@ $options_page_size = [20,50,100,200,500];
             </th>
             <th>Details
             </th>
-            <th>&nbsp;</th>
         </tr>
         </thead>
         <tbody id="invoice_view">

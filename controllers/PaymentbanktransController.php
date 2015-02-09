@@ -160,32 +160,32 @@ class PaymentbanktransController extends Controller {
 	    $model->attributes = $_POST['Paymentbanktrans'];
 
 	    $file = UploadedFile::getInstance($model, 'file');
+        if (!empty($file)) {
+            $model->file = $file->name;
+            $model->user_id = Yii::$app->user->id;
+            $model->date = time();
+            $model->status = 0;
 
-	    $model->file = $file->name;
-	    $model->user_id = Yii::$app->user->id;
-	    $model->date = time();
-	    $model->status = 0;
-
-	    if ($model->validate() && $file) {
-		$model->save();
-		$file->saveAs(Yii::$app->params['creditPath'] . $file->name);
-		//@todo send mail to superadmin
-		//echo Yii::$app->user->identity->email; exit;
-		Yii::$app->mailer->compose()
-			->setFrom(Yii::$app->user->identity->email)
-			->setTo(Yii::$app->params['adminEmail'])
-			->setSubject('get credit')
-			->setTextBody($model->message)
-			->attach(Yii::$app->params['creditPath'] . $file->name)
-			->send();
-		Yii::$app->getSession()->setFlash('successCreditPay', 'Your message send to superadmin');
-		$this->redirect(array('create', 'id' => $model->id));
+            if ($model->validate() && $file) {
+            $model->save();
+            $file->saveAs(Yii::$app->params['creditPath'] . $file->name);
+            //@todo send mail to superadmin
+            //echo Yii::$app->user->identity->email; exit;
+            Yii::$app->mailer->compose()
+                ->setFrom(Yii::$app->user->identity->email)
+                ->setTo(Yii::$app->params['adminEmail'])
+                ->setSubject('get credit')
+                ->setTextBody($model->message)
+                ->attach(Yii::$app->params['creditPath'] . $file->name)
+                ->send();
+            Yii::$app->getSession()->setFlash('successCreditPay', 'Your message send to superadmin');
+            $this->redirect(array('index', 'id' => $model->id));
+            }
 	    }
-	} else {
-	    return $this->render('create', [
-			'model' => $model,
-	    ]);
 	}
+    return $this->render('create', [
+        'model' => $model,
+    ]);
     }
 
     /**

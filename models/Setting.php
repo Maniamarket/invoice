@@ -37,8 +37,8 @@ class Setting extends ActiveRecord {
 	    [['def_company_id','bank_code', 'account_number','def_lang_id'], 'required'],
 	    [['def_vat_id','post_index'], 'integer'],
 	    [['credit','surtax'], 'integer','integerOnly'=>FALSE],
-        [['bank_code', 'account_number','country','city','street','phone','web_site','name'], 'filter', 'filter' => 'trim'],
-	    [['bank_code', 'account_number','country','city','street','phone','web_site','name'], 'string', 'max' => 100],
+        [['bank_code', 'account_number','country','city','street','phone','web_site','name','def_template'], 'filter', 'filter' => 'trim'],
+	    [['bank_code', 'account_number','country','city','street','phone','web_site','name','def_template'], 'string', 'max' => 100],
 	    // The following rule is used by search().
 	    // @todo Please remove those attributes that should not be searched.
 	   [['credit', 'def_vat_id', 'def_company_id', 'def_lang_id'], 'safe', 'on' => 'search'],
@@ -60,11 +60,13 @@ class Setting extends ActiveRecord {
      */
     public function attributeLabels() {
 	return array(
-	    'user_id' => 'User',
-	    'credit' => 'Credit',
-	    'vat' => 'VAT %',
-	    'def_company_id' => 'Default Company',
-	    'def_lang_id' => 'Default Language',
+	    'user_id' => Yii::t('app', 'ID Number'),
+	    'credit' => Yii::t('app', 'Credits'),
+        'def_template' => Yii::t('app', 'Default Template'),
+        'def_vat_id' =>  Yii::t('app', 'Default VAT, %'),
+        'surtax' => 'Default Income Tax, %',
+	    'def_company_id' => Yii::t('app', 'Default Company'),
+	    'def_lang_id' => Yii::t('app', 'Default Language'),
 	);
     }
 

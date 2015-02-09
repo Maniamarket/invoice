@@ -102,5 +102,10 @@ return [
     'TaxSettingText' => 'Настройки налогов',
     
     //// Setting page
-    'SettingHeaderText' => 'Настройки',
+    'Settings Update' => 'Настройки',
+    'Invoice Details' => 'Данные счет-фактуры',
+    'Default Income Tax, %' => 'Подоходный налог по умолчанию, %',
+    'Default Template' => 'Шаблон по умолчанию',
+    'Default VAT, %' => 'НДС по умолчанию, %',
+    'Default Company' => 'Компания по умолчанию',
 ];

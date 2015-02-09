@@ -351,14 +351,18 @@ a.desc:after {
 .form-search {
     margin: 20px 0 4px ;
 }
-#modal-invoice .modal-content {
+#modal-invoice .modal-content, #modal-credits .modal-content{
     padding: 10px;
 }
-#modal-invoice .modal-header {
+#modal-invoice .modal-header, #modal-credits .modal-header {
     background-color: #ece9e9;
 }
-#modal-invoice .modal-body {
+#modal-invoice .modal-body, #modal-credits .modal-body {
     background-color: #ece9e9;
+}
+#modal-credits .modal-dialog{
+/*    bottom: 10px;*/
+    top: 400px;
 }
 .text-green {
     color: #24aa98;

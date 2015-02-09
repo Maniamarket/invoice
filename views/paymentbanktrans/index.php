@@ -12,6 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 <div class="paymentbanktrans-index">
+    <strong><?= Yii::$app->session->getFlash('successCreditPay'); ?></strong>
 
     <h1><?= Html::encode($this->title) ?></h1>
 
