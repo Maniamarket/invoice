@@ -41,7 +41,7 @@ if (\Yii::$app->user->can('superadmin')) {
         'mail',
         'vat_number',
         'activity',
-        'resp_person',
+        'tax_agency',
 	],
 ]); ?>
 

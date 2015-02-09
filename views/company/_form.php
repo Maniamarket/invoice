@@ -83,6 +83,15 @@ use app\models\Country;
     </div>
     <div class="form-group">
         <?php
+        echo $form->field($model, 'phone2', [
+            'inputOptions' => [
+                'placeholder' => $model->getAttributeLabel('phone2'),
+            ],
+        ])->label(false);
+        ?>
+    </div>
+    <div class="form-group">
+        <?php
         echo $form->field($model, 'fax', [
             'inputOptions' => [
                 'placeholder' => $model->getAttributeLabel('fax'),
@@ -135,16 +144,6 @@ use app\models\Country;
         ])->label(false);
         ?>
     </div>
-    <div class="form-group">
-        <?php
-        echo $form->field($model, 'resp_person', [
-            'inputOptions' => [
-                'placeholder' => $model->getAttributeLabel('resp_person'),
-            ],
-        ])->label(false);
-        ?>
-    </div>
-
 	<div class="row buttons">
 		<?php echo Html::submitButton($model->isNewRecord ? 'Create' : 'Save',['class'=>'btn btn-success']); ?>
 	</div>

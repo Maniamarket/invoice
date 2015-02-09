@@ -6,7 +6,7 @@ use yii\helpers\Url;
 /* @var $this CompanyController */
 /* @var $dataProvider ActiveDataProvider */
 
-$this->title=Yii::$app->name . ' - Companies';
+$this->title= Yii::t('app','Companies');
 $this->params['breadcrumbs'][] = $this->title;
 
 /*$this->menu=array(
@@ -15,13 +15,14 @@ $this->params['breadcrumbs'][] = $this->title;
 );*/
 ?>
 
-<h1>Companies</h1>
+<h1 class="title"><?= $this->title ?></h1>
 <?php
 if (\Yii::$app->user->can('superadmin')) {
     echo Html::a('Создать', Url::toRoute('create'),['class'=>'btn-lg btn btn-success']);
  }
 ?>
-<table class="table table-striped">
+<table class="table">
+    <thead>
     <tr>
         <th>ID</th>
         <th>Name</th>
@@ -37,8 +38,11 @@ if (\Yii::$app->user->can('superadmin')) {
         <th>Activity</th>
         <th>Tax_agency</th>
     </tr>
+    </thead>
+    <tbody>
 <?php echo ListView::widget([
 	'dataProvider'=>$dataProvider,
 	'itemView'=>'_view',
 ]); ?>
+    </tbody>
 </table>
