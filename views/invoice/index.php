@@ -16,19 +16,11 @@ $options_page_size = [20,50,100,200,500];
 ?>
 <div class="invoice-index">
 
-    <h1 class="title"><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?= Html::a(Yii::t('app', 'Create {modelClass}', [ 'modelClass' => 'Invoice',]), ['create'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a(Yii::t('app', 'Buy credit' ), ['user/buy', 'id' => Yii::$app->user->id], ['class' => 'btn btn-success']) ?>
-        <?= Html::a(Yii::t('app', 'History credit' ), ['history'], ['class' => 'btn btn-success']) ?>
-   </p>
-    <p>
-        <b>Credits: </b><?= Yii::$app->user->identity->setting->credit ?>
-   </p>
-
-    <div class="col-10">
+    <h1 class="title"><?= Html::encode($this->title) ?>
+        <?= Html::a(Yii::t('app', 'Create Invoice'),['create'],['class'=>'btn btn-yellow pull-right']) ?>
+    </h1>
+    <div class="clearfix"></div>
+    <div class="form-search">
         <?php echo Html::beginForm(['index'],'get',['id'=>'form-client-search', 'class'=>"form-inline"]); ?>
         <div class="form-group">
             <div class="input-group hint-container">

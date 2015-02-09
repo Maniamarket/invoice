@@ -60,7 +60,7 @@ class InvoiceController extends Controller
         }
     }
 
-    public function actionTcpdf($id, $isTranslit = 0)
+    public function actionTcpdf($id, $isTranslit = 0, $print=0)
     {
         $model = $this->findModel($id);
         $items = Invoice_item::findAll(['invoice_id'=>$id]);
@@ -70,6 +70,7 @@ class InvoiceController extends Controller
                 'model' => $model,
                 'template'=>$template,
                 'isTranslit'=>$isTranslit,
+                'isPrint' => $print,
                 'items'=>$items
             ]);
         } else {

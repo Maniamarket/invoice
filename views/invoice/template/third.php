@@ -95,9 +95,10 @@ $country_name  = ($model->company->country) ? $model->company->country->name : '
      <table>
         <tr>
             <td width="35"><img src="images/template3/invoice_to.png" width="27" /></td>
-            <td width="220" style="text-align: left;" colspan="2">
+            <td width="120" style="text-align: left;" colspan="2">
                 <h2 style="line-height:8px; color: #b7a997; font-size: 20px;">Invoice TO</h2>
             </td>
+            <td width="100" rowspan="4"><?php if(!empty($model->client->avatar)) {echo '<img width="100" src="'.Yii::$app->params['avatarPath'].$model->client->avatar.'" />'; } ?></td>
         </tr>
          <tr><td colspan="3">
                  <h2 style="line-height:10px; text-transform: uppercase; font-size: 18px; font-weight: bold;"><?php if (!empty($model->client->company_name)) {

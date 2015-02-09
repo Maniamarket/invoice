@@ -6,9 +6,9 @@ use yii\bootstrap\Modal;
 <tr>
     <td><?= $number ?></td>
     <td>
-        <?php echo Html::a('MM100'.$model->id,['tcpdf', 'id'=>$model->id]); ?>
+        <?php echo Html::encode('MM100'.$model->id); ?>
     </td>
-    <td><?php echo Html::encode($model->date); ?></td>
+    <td><?php echo Html::encode(date('d/m/Y', strtotime($model->date))); ?></td>
     <td><?php echo Html::encode($model->client->name); ?></td>
     <td><?php echo Html::encode($model->company->name); ?></td>
     <td><?php echo Html::encode($model->net_price); ?>&euro;</td>
@@ -22,7 +22,7 @@ the client must pay the VAT <br />
     <td>
         &nbsp;
         <?php
-         if (\Yii::$app->user->can('superadmin')){ ?>
+         if (Yii::$app->user->can('superadmin') || ((Yii::$app->user->id == $model->user_id) && !$model->is_pay)){ ?>
             <span class="pull-right">
                 <?php echo Html::a('<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>',
                     ['update', 'id'=>$model->id],['title'=>'Update']); ?>
@@ -30,11 +30,10 @@ the client must pay the VAT <br />
                 <?php echo Html::a('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>',
                     ['delete', 'id'=>$model->id],['title'=>'Delete', 'onClick'=>'return confirm("Вы действительно хотите удалить?")']); ?>
             </span>
-        <?php } else { ?>
-               <?php
-                  if( Yii::$app->user->can('superadmin') || Yii::$app->user->id == $model->user_id)
-                      echo Html::a('edit', ['update', 'id'=>$model->id],['title'=>'Edit']);
-               Modal::begin([
+        <?php }
+        //                  if( Yii::$app->user->can('superadmin') || Yii::$app->user->id == $model->user_id)
+ //                     echo Html::a('edit', ['update', 'id'=>$model->id],['title'=>'Edit']);
+/*               Modal::begin([
                    'header' => '<h2>Шаблон для печати</h2>',
                    'toggleButton' => ['tag'=>'a', 'label' => '<span class="glyphicon glyphicon-picture" aria-hidden="true"></span>',
                        'style'=>'cursor:pointer;', 'title'=>'Set Template'],
@@ -46,7 +45,7 @@ the client must pay the VAT <br />
                        Html::a('Третий',['settemplate','id'=>$model->id,'template'=>'third'])
                    ],
                    ['encode'=>false]);
-               Modal::end();
+               Modal::end();*/
 
              echo Html::a('<img src="/images/invoice_pdf.png"', ['tcpdf', 'id'=>$model->id],['title'=>'View in Pdf',
                  'onclick'=>'$("#iframe-pdf").attr("src","'.Url::toRoute(['tcpdf', 'id'=>$model->id]).'"); return false;', 'data-toggle'=>"modal", 'data-target'=>"#modal-pdf"]);
@@ -55,7 +54,6 @@ the client must pay the VAT <br />
                echo '&nbsp';
                echo Html::a('<span style="color: purple;" class="glyphicon glyphicon-print" aria-hidden="true"></span>', ['tcpdf', 'id'=>$model->id, 'isTranslit'=>1],['title'=>'Print Translit']);
                ?>
-        <?php }  ?>
 
     </td>
 </tr>

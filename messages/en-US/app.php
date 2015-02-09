@@ -70,6 +70,7 @@ return array(
     'Payment' => 'Payment',
     'Template' => 'Template',
     'Service' => 'Service',
+    'History' => 'History',
     'Additional Notes' => 'Additional Notes',
     'InvoiceHeaderText' => 'Invoices',
     'InvoiceHeaderCreateText' => 'Create Invoices',

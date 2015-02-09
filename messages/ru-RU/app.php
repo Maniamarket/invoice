@@ -71,6 +71,7 @@ return [
     'Payment' => 'Платежная система',
     'Template' => 'Шаблон',
     'Service' => 'Услуга',
+    'History' => 'История',
     'Additional Notes' => 'Дополнительные замечания',
     'Invoices' => 'Счет-фактуры',
     'From' => 'От',

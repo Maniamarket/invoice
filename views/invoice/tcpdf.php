@@ -117,13 +117,15 @@ if(empty($model->is_pay)) {
 
     $pdf->SetAlpha(1); //Reset Alpha Setings
 }
+if ($isPrint) {
+    $js = 'print(true);';
+    $pdf->IncludeJS($js);
+}
 // Close and output PDF document
 // This method has several options, check the source code documentation for more information.
 $pdf->Output('yii2_tcpdf_example.pdf', 'I');
 
-/*$js = 'print(true);';
-$pdf->IncludeJS($js);
-$pdf->Output($pdffile, 'F');*/
+/*$pdf->Output($pdffile, 'F');*/
 
 
 //============================================================+

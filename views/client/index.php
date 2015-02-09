@@ -20,7 +20,7 @@ $options_page_size = [20,50,100,200,500];
     </h1>
     <div class="clearfix"></div>
 
-    <div class="col-10 form-search">
+    <div class="form-search">
         <?php echo Html::beginForm(['index'],'get',['id'=>'form-client-search', 'class'=>"form-inline"]); ?>
         <div class="form-group">
             <div class="input-group hint-container">
