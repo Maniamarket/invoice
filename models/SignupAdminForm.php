@@ -45,7 +45,9 @@ class SignupAdminForm extends Model
                 $user->username = $user->id;
                 $user->name = $user->id;
                 $password = 'user_'.$user->id;
+                $user->pass = $password;
                 $user->setPassword($password);
+                $user->validate();
                 if( $user->save())
                 Yii::$app->mailer->compose('welcome_admin', ['user' => $user,'password' => $password])
                     ->setFrom('no-reply@site.ru')
@@ -60,7 +62,6 @@ class SignupAdminForm extends Model
                     echo 'no save user';                exit();
                 }
         }
-
         return null;
     }
 }

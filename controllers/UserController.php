@@ -23,7 +23,7 @@ class UserController extends Controller {
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['create', 'index', 'set_tax', 'update'],
+//                'only' => ['create', 'index', 'set_tax', 'update'],
                 'rules' => [
                     [
                         'actions' => ['create', 'index', 'profit'],
@@ -52,27 +52,25 @@ class UserController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate($type_user) {
-	$model = new \app\models\SignupAdminForm();
+	    $model = new \app\models\SignupAdminForm();
+        $setting = new Setting();
         if ($model->load(Yii::$app->request->post())) {
-            $id_t = \yii::$app->user->id;
+            $id_t = yii::$app->user->id;
             $role = $this->getRole($type_user);
-            if ($user = $model->signup($role,$id_t)) {
+            if ( $user = $model->signup($role,$id_t )) {
+                $user->status = 10;
+                $user->save();
                 if (Yii::$app->getUser()->login($user)) {
-                    $model = new \app\models\Setting();
-                    $model->user_id = Yii::$app->getUser()->id;
-                    $model->def_company_id = 0;
-                    $model->def_lang_id = 0;
-                    $model->bank_code = 'no';
-                    $model->account_number = 'no';
-                    $model->save();
-                    
-                    $user = $this->loadModel($id_t);
-                    Yii::$app->getUser()->login($user); 
-                    return $this->redirect(['index', 'type_user' => $type_user]);
+                    $setting->load(Yii::$app->request->post());
+                    $setting->user_id = Yii::$app->getUser()->id;
+                    $setting->def_lang_id = 1;
+                    $setting->bank_code = 'no';
+                    $setting->account_number = 'no';
+                    if( $setting->save()) return $this->redirect(['index', 'type_user' => $type_user]);
                 }
             }
         }
-        return $this->render('signup', [ 'model' => $model]);
+        return $this->render('signup', [ 'model' => $model,'setting'=>$setting]);
 
     }
 
