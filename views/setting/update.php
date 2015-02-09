@@ -4,6 +4,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <h1 class="title"><?php echo $this->title; ?></h1>
 
-<?php echo $this->context->renderPartial('_form', array('model'=>$model)); ?>
+<?php echo $this->context->renderPartial('_form', ['model'=>$model, 'user'=>$user]); ?>
 
 

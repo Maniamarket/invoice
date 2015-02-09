@@ -35,7 +35,7 @@ class User extends ActiveRecord implements IdentityInterface {
     const ROLE_SUPERADMIN = 'superadmin';
 
     public $credit, $sum_profit, $profit_manager, $profit_admin, $income, $my_profit, $sum_profit_manager, $sum_profit_admin;
-
+    public $password_;
     /**
      * @inheritdoc
      */
@@ -65,6 +65,13 @@ class User extends ActiveRecord implements IdentityInterface {
             [['email', 'username'], 'unique'],
             ['email', 'email'],
         ];
+    }
+
+    public function attributeLabels() {
+        return array(
+            'username' => Yii::t('app', 'Login'),
+            'email' => Yii::t('app', 'Email'),
+        );
     }
 
     /**

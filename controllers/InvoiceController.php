@@ -217,7 +217,7 @@ class InvoiceController extends Controller
             if( $table == 1) $res_mac = Setting::List_company();
             else $res_mac = Setting::List_client();
         }
-            
+
         return $res_mac;
     }
 
@@ -242,13 +242,16 @@ class InvoiceController extends Controller
     {
         if( ! isset( Yii::$app->session['create_invoice'])) Yii::$app->session['create_invoice'] = 1;
 
+        $setting = Setting::findOne(Yii::$app->user->id);
         if( isset($_POST['id'])) $model = $this->findModel($_POST['id']);
-        else {$model = new Invoice; $model->client_id = 1; $model->company_id = 1; $model->payment_id = 1; $model->save();  }
+        else {$model = new Invoice; $model->client_id = 1;
+            $model->company_id = $setting->def_company_id; $model->payment_id = 1; $model->save();
+        }
         $model->client_id = 0;  $model->company_id = 0; $model->payment_id = 0;
         $model->date = date("Y/m/d", time());
-        $setting = Setting::findOne(Yii::$app->user->id);
         $model->vat_id = $setting->def_vat_id;
         $model->income = $setting->surtax;
+        $model->type = $setting->def_template;
         $items_error = [];
         $itog = ['net'=>0, 'total'=>0];
         $model_item = 0;
@@ -311,12 +314,6 @@ class InvoiceController extends Controller
         if( ! isset( Yii::$app->session['create_invoice']) || ! Yii::$app->session['create_invoice'] ){
             Yii::$app->session['create_invoice'] = 1;
         }
-   /* $input = 'b';
-        $field_check = [ 1=>['name','tax_agency'], 2=>['email'], 3=>['phone'], 4=>['country_id']];
-        $res_mac = $this->get_list($input,$field_check,2);
-
-       var_dump($res_mac); exit;
-//*/
         $model = $this->findModel($id);
         $model->date = date("Y/m/d", time());
 

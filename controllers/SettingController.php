@@ -4,12 +4,10 @@ namespace app\controllers;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
-use yii\filters\VerbFilter;
-use yii\data\ActiveDataProvider;
-use yii\web\Request;
 use yii\web\HttpException;
 use app\models\Setting;
-
+use app\models\User;
+use yii\db\Query;
 class SettingController extends Controller {
 
     public function behaviors()
@@ -45,18 +43,20 @@ class SettingController extends Controller {
     public function actionUpdate()
     {
         $model = $this->loadModel(Yii::$app->user->id);
-	// Uncomment the following line if AJAX validation is needed
-	// $this->performAjaxValidation($model);
-
-	if ($model->load(Yii::$app->request->post()) && $model->save()) 
-         {  
-            return $this->redirect(['site/index']);   
+        $user = User::findOne(['id'=>Yii::$app->user->id]);
+        if( isset($_POST['User']['password_']) && $password_= $_POST['User']['password_'] ){
+            $user->setPassword($password_);
+            $user->generateAuthKey();
+        }
+    	if ($model->load(Yii::$app->request->post()) && $model->save() && $user->load(Yii::$app->request->post()) && $user->save() )
+         {
+             return $this->redirect(['site/index']);
          }
-        else  return $this->render('update', ['model' => $model,]);
+        return $this->render('update', ['model' => $model, 'user'=>$user]);
     }
 
     public function loadModel($id) {
-	$model= Setting::find()->where(['user_id' => $id])->one();
+	     $model= Setting::findOne(['user_id' => $id]);
         
         if($model===null) throw new HttpException(404,'The requested page does not exist.');
         return $model;

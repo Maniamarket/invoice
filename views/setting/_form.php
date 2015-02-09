@@ -13,7 +13,11 @@ use yii\helpers\Url;
     $form=ActiveForm::begin( [
 	'id'=>'service-form',
 	// Please note: When you enable ajax validation, make sure the corresponding
-	// controller action is handling ajax validation correctly.
+                     //echo $form->field($user, 'username',['labelOptions'=>['class'=>'control-label col-md-4'], 'template' => "{label}\n<div class=\"col-md-7\">{input}</div>\n<div class=\"col-md-offset-2 col-md-7\">{error}</div>"])->textInput() ;
+    // echo Html::textInput('login',$login,[]) ;
+    // if(isset($user->errors['username'][0])) echo $user->errors['username'][0];
+
+    // controller action is handling ajax validation correctly.
 	// There is a call to performAjaxValidation() commented in generated controller code.
 	// See class documentation of CActiveForm for details on this.
 	'enableAjaxValidation'=>false,
@@ -30,14 +34,14 @@ use yii\helpers\Url;
     </div>
     <div class="row">
         <div class="fieldset-column pull-left">
-            <?php //echo $form->field($model, 'login',['labelOptions'=>['class'=>'control-label col-md-4'],'template' => "{label}\n<div class=\"col-md-7\">{input}</div>\n<div class=\"col-md-offset-2 col-md-7\">{error}</div>"])->textInput() ; ?>
+            <?php echo $form->field($user, 'username',['labelOptions'=>['class'=>'control-label col-md-4'],'template' => "{label}\n<div class=\"col-md-7\">{input}</div>\n<div class=\"col-md-offset-2 col-md-7\">{error}</div>"])->textInput() ; ?>
             <?php echo $form->field($model, 'user_id',['labelOptions'=>['class'=>'control-label col-md-4'],
                 'template' => "{label}\n<div class=\"col-md-7\">{input}</div>\n<div class=\"col-md-offset-2 col-md-7\">{error}</div>"]
             )->textInput(['disabled'=>'disabled']) ; ?>
         </div>
         <div class="fieldset-column pull-right">
-            <?php //echo $form->field($model, 'email',['labelOptions'=>['class'=>'control-label col-md-4'], 'template' => "{label}\n<div class=\"col-md-7\">{input}</div>\n<div class=\"col-md-offset-2 col-md-7\">{error}</div>"])->textInput() ; ?>
-            <?php //if( !$model->isNewRecord ) echo $form->field($model, 'password_',['labelOptions'=>['class'=>'control-label col-md-4'], 'template' => "{label}\n<div class=\"col-md-7\">{input}</div>\n<div class=\"col-md-offset-2 col-md-7\">{error}</div>"])->textInput() ; ?>
+            <?php  echo $form->field($user, 'email',['labelOptions'=>['class'=>'control-label col-md-4'], 'template' => "{label}\n<div class=\"col-md-7\">{input}</div>\n<div class=\"col-md-offset-2 col-md-7\">{error}</div>"])->textInput() ; ?>
+            <?php  echo $form->field($user, 'password_',['labelOptions'=>['class'=>'control-label col-md-4'], 'template' => "{label}\n<div class=\"col-md-7\">{input}</div>\n<div class=\"col-md-offset-2 col-md-7\">{error}</div>"])->textInput() ; ?>
         </div>
     </div>
 
