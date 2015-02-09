@@ -133,10 +133,10 @@ class UserController extends Controller {
         if( $invoice->user_id == Yii::$app->user->id)
         {
          //  $price = Invoice::getPriceTax($invoice);
-            $credit = Setting::find()->where(['user_id'=>$invoice->user_id])->one();
+            $credit = Setting::findOne(['user_id'=>$invoice->user_id]);
             $vat = $invoice->vat->percent;
             $income  = $invoice->income;
-            $price_tek = $vat + $income;
+            $price_tek = $invoice->net_price*($vat + $income)/100;
             if( $price_tek > $credit->credit) {
                Yii::$app->getSession()->setFlash('danger', 'Вам надо пополнить кредиты на сумму '.
                        round($price_tek).' кредита');
@@ -165,8 +165,15 @@ class UserController extends Controller {
                   $model->is_input = 0;
                   $model->credit = - $price_tek;
                   $old = User_payment::find()->where(['user_id'=>$invoice->user_id])->orderBy(['id'=>SORT_DESC])->one();
-                  $model->credit_sum = $old->credit_sum - $price_tek;
-                  $model->profit_parent = $model->profit_parent + $income;
+                  if( $old ){
+                      $model->credit_sum =  $old->credit_sum - $price_tek;
+                      $model->profit_parent = $model->profit_parent + $invoice->net_price*$income/100;
+                  }else{
+                      $model->credit_sum =  - $price_tek;
+                      $model->profit_parent = $invoice->net_price*$income/100;
+                  }
+//
+  //                $model->profit_parent =  ( $old ) ? $old->profit_parent : 0;
                   $model->date = new Expression('NOW()');
                   $model->save();
      //сумма налогов за месяц

@@ -9,9 +9,9 @@ use app\models\Setting;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\web\Request;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
+use app\models\User_payment;
 
 /**
  * PaymentbanktransController implements the CRUD actions for Paymentbanktrans model.
@@ -33,56 +33,25 @@ class PaymentbanktransController extends Controller {
      * Lists all Paymentbanktrans models.
      * @return mixed
      */
-    public function actionIndex() {
-	//$this->()
-	//$query = Paymentbanktrans::find()->where(['user_id' => Yii::$app->user->id])->one();
-	$dataProvider = new ActiveDataProvider([
-	    'query' => Paymentbanktrans::find()
-		    ->select('payment_bt.id,'
-			    . 'username,'
-			    . 'message,'
-			    . 'file,'
-			    . 'payment_bt.status,'
-			    . 'date,'
-			    . 'user_id,'
-			    . 'sum')
-		    ->join('inner join', 'user', 'user.id = payment_bt.user_id')
-		    ->where(['user_id' => Yii::$app->user->id])
-	]);
-
-	if (Yii::$app->user->identity->role === 'superadmin') {
-	    $dataProvider = new ActiveDataProvider([
-		'query' => Paymentbanktrans::find()
-			->select('payment_bt.id,'
-				. 'username,'
-				. 'message,'
-				. 'file,'
-				. 'payment_bt.status,'
-				. 'date,'
-				. 'user_id,'
-				. 'sum')
-			->join('inner join', 'user', 'user.id = payment_bt.user_id')
-	    ]);
-
-
-	    return $this->render('index_adm', [
-			'dataProvider' => $dataProvider,
-			'creditPath' => Yii::$app->params['creditPath'],
-	    ]);
-	} else {
-	    $dataProvider = new ActiveDataProvider([
-		'query' => Paymentbanktrans::find()
-			->select('payment_bt.id,username,message,file,payment_bt.status, date,sum')
-			->join('inner join', 'user', 'user.id = payment_bt.user_id')
-			->where(['user_id' => Yii::$app->user->id])
-	    ]);
-
-	    return $this->render('index', [
-			'dataProvider' => $dataProvider,
-			'creditPath' => Yii::$app->params['creditPath'],
-	    ]);
-	}
-    }
+    public function actionIndex()
+    {
+    	if (Yii::$app->user->identity->role === 'superadmin') {
+	    	$query = Paymentbanktrans::find()->select('payment_bt.id,username,message,file, payment_bt.status,date,user_id,sum')
+                ->join('inner join', 'user', 'user.id = payment_bt.user_id');
+        } else {
+            $query = Paymentbanktrans::find()->select('payment_bt.id,username,message,file,payment_bt.status, date,sum')
+                ->join('inner join', 'user', 'user.id = payment_bt.user_id')
+                ->where(['user_id' => Yii::$app->user->id]);
+        }
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [ 'pageSize' => 10, ],
+        ]);
+        if (Yii::$app->user->identity->role === 'superadmin')
+          return $this->render('index_adm', [ 'dataProvider' => $dataProvider,  'creditPath' => Yii::$app->params['creditPath'], ]);
+        else
+          return $this->render('index', [ 'dataProvider' => $dataProvider,  'creditPath' => Yii::$app->params['creditPath'], ]);
+        }
 
     /**
      * Approve user credit request.
@@ -92,20 +61,29 @@ class PaymentbanktransController extends Controller {
     public function actionApprove($id) {
 	//подтверждаем банковский перевод и пишем в таблицу запрошенные кредиты	
 	$payment = Paymentbanktrans::findOne($id);
-	$credits = Setting::find()->where(['user_id' => $payment->user_id])->one();
-	
-	
+	$credits = Setting::findOne(['user_id' => $payment->user_id]);
+
 	$credits->credit += $payment->sum;
 	$payment->status = 1;
+ //оплата налогов (история)
+    $model = new User_payment;
+    $model->user_id = $payment->user_id;
+    $model->is_input = 1;
+    $model->credit = $payment->sum;
+    $old = User_payment::find()->where(['user_id'=>$payment->user_id])->orderBy(['id'=>SORT_DESC])->one();
+        $model->credit_sum =  ( $old ) ? ($old->credit_sum + $payment->sum) : $payment->sum;
+        $model->profit_parent =  ( $old ) ? $old->profit_parent : 0;
+    $model->date = date("Y/m/d", time());
+    $model->txn_id = 0;
+    if( $model->save()){
+        $credits->update();
+        $payment->update();
 
-	$credits->update();
-	$payment->update();
-
-	//записываем в журнал транзакций
-	$this->writeTransaction($payment->user_id, $payment->id, $payment->status);
-
-	$this->redirect(array('index'));
+        //записываем в журнал транзакций
+        $this->writeTransaction($payment->user_id, $payment->id, $payment->status);
+        $this->redirect(['index']);
     }
+ }
 
     /**
      * Cancel user credit request.

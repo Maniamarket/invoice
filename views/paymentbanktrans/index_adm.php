@@ -35,12 +35,9 @@ $this->params['breadcrumbs'][] = $this->title;
 	    [
 		'label' => 'image',
 		'format' => 'raw',
-		//'value'=>function($data) { return $data->imageurl; },		
 		'value' => function($data) {
 	    return Html::a('Attached image', $data->imageurl, ['target' => 'blank']);
 	},
-	    //'value'=>Html::a('Create Paymentbanktrans', [function($data) { return $data->imageurl; }], ['data-toggle' => 'lightbox'])
-	    //'value'=>Html::a('Create Paymentbanktrans', ['fun'], ['data-toggle' => 'lightbox'])
 	    ],
 	    'sum',
 	    [

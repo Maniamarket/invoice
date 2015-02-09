@@ -88,9 +88,7 @@ class InvoiceController extends Controller
         $dataProvider = new ActiveDataProvider([
             'query' => User_payment::findBySql('select u.* from {{user_payment}} as u '
                     . '  where u.user_id = '.Yii::$app->user->id.' and u.txn_id IS NOT NULL order by u.id desc'),
-            'pagination' => [
-                'pageSize' => 20,
-            ],
+            'pagination' => [ 'pageSize' => 20, ],
         ]);
         return $this->render('history', ['dataProvider' => $dataProvider]);
     }
