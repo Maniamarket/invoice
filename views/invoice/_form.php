@@ -69,9 +69,12 @@ jQuery("#state").replaceWith(data);
 //          echo Html::textInput('input_company','',['id'=>'company_name', 'onkeyup'=>'list_company_ajax("'.$url_company.'")']);
         ?>
 
-        <?php echo $form->field($model, 'client_id',['labelOptions'=>['class'=>'control-label col-md-3'],
+        <?php
+          $url_client = Url::toRoute(['invoice/ajax_client']);
+           echo $form->field($model, 'client_id',['labelOptions'=>['class'=>'control-label col-md-3'],
             'template' => "{label}\n<div class=\"col-md-8\">{input}</div>\n<div class=\"col-md-offset-2 col-md-6\">{error}</div>",
-        ])->dropDownList(Setting::List_client(),['prompt'=>'-Choose a Client-']); ?>
+        ])->dropDownList(Setting::List_client(),['class'=>'dropdown-ajax','id'=>'client_name','data-url'=>$url_client]); ?>
+
         <?php echo $form->field($model, 'payment_id',['labelOptions'=>['class'=>'control-label col-md-3'],
             'template' => "{label}\n<div class=\"col-md-8\">{input}</div>\n<div class=\"col-md-offset-2 col-md-6\">{error}</div>",
         ])->dropDownList(Setting::List_payment(),['prompt'=>'-Choose a Payment-']); ?>

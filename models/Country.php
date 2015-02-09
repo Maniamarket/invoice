@@ -17,7 +17,7 @@ use yii\helpers\ArrayHelper;
  */
 class Country extends \yii\db\ActiveRecord
 {
-    public $company;
+    public $company,$client;
     /**
      * @inheritdoc
      */

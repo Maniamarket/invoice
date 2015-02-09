@@ -102,36 +102,29 @@ class Client extends ActiveRecord implements IdentityInterface
         // Во втором параметре в виде массива задаётся имя удалённого PK ключа  (id) и FK из текущей таблицы модели (author_id), которые связываются между собой
     }
 
-    /*public static function queryProvider($qp) {
-//        $query = Client::find()->where(['user_id'=>  Yii::$app->user->id]);
-        //country id
-        if (isset($qp['name']))
-        {
-            if ( !empty($qp['name'])){
-                $q->filterWhere(['like', 'name', $qp['name']]);
-                $query->orFilterWhere(['like', 'email', $qp['name']]);
-
-                $cid = Country::getCountriesByName($qp['name']);
-                $arr = [];
-                foreach($cid as $c){
-                    array_push($arr,$c['cid']);
-                }
-                $query->orFilterWhere(['in', 'country_id', $arr]);
-            }
-            if ( !empty($qp['lang']))
-                $query->andFilterWhere(['like','def_lang_id',$qp['lang']]);
-
-            if (isset($qp['orderby'])) {
-                $orderBy = ($qp['orderby']=='asc')? SORT_ASC:SORT_DESC;
-                $query->orderBy(['name'=>$orderBy]);
-            }
-
+    public static function list_client_field( $input, $field_name )
+    {
+        switch ( $field_name ){
+            case 'name': $client = client::find()->select('id,name')->where(['like','name', $input.'%',false])->all();
+                $list = ArrayHelper::map($client,'id', 'name');
+                break;
+            case 'country_id':
+                $client = Country::find()->select('c.id,country.name,c.name as client')->innerJoin('client c','country.cid = c.country_id')
+                    ->where(['like','country.name', $input.'%',false])->all();
+                $list1 = ArrayHelper::map($client,'id', 'name');
+                $list2 = ArrayHelper::map($client,'id', 'client');
+                $list = [];
+                foreach( $list1 as $key=>$val) $list[$key] = $list1[$key].' '.$list2[$key];
+                break;
+            default :  $client = client::find()->select('id, '.$field_name.',name' )->where(['like',$field_name, $input.'%',false])->all();
+            $list1 = ArrayHelper::map($client,'id', $field_name);
+            $list2 = ArrayHelper::map($client,'id', 'name');
+            $list = [];
+            foreach( $list1 as $key=>$val) $list[$key] = $list1[$key].' '.$list2[$key];
         }
-        $query = $q->createCommand()->queryAll();
-        var_dump($query); exit;
-        return $query;
+        return $list;
     }
-*/
+
 
     /**
      * Creates data provider instance with search query applied

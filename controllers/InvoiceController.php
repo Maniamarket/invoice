@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Client;
 use app\models\Company;
 use app\models\Setting;
 use app\models\User;
@@ -155,33 +156,8 @@ class InvoiceController extends Controller
     {
         if( Yii::$app->request->isAjax ){
             $input = ($_POST['input_word']);
-            $is_find = false;
-            $res_mac = []; $mac = [];
-            $field_check = [ 1=>['name','tax_agency','country_id'], 2=>['mail'], 3=>['phone','phone2']];
-            if( $input){
-                foreach( $field_check as $key=>$val){
-                   foreach( $val as $name){
-                        switch ($key){
-                            case 1: if( HelpKontrol::typ_name($input) )
-                                         $mac = Company::list_company_field( $input, $name );
-                                     break;
-                            case 2: if( HelpKontrol::typ_email_seach($input) )
-                                    $mac = Company::list_company_field( $input, $name );
-                                    break;
-                            case 3:  if( HelpKontrol::typ_phone($input) )
-                                    $mac = Company::list_company_field( $input, $name );
-                                    break;
-                        }
-
-                        if( is_array($mac) && count($mac)){
-
-                           $res_mac = $mac; $is_find = true;
-                           break;
-                        }
-                    }
-                    if( $is_find) break;
-                }
-            }else $res_mac = Setting::List_company();
+            $field_check = [ 1=>['name','tax_agency'], 2=>['mail'], 3=>['phone','phone2'], 4=>['country_id']];
+            $res_mac = $this->get_list($input,$field_check);
             $i = 0;
             foreach( $res_mac as $key=>$val)
             {
@@ -191,6 +167,60 @@ class InvoiceController extends Controller
             }
         }
     }
+
+    public function actionAjax_client()
+    {
+        if( Yii::$app->request->isAjax ){
+            $input = ($_POST['input_word']);
+            $field_check = [ 1=>['name','tax_agency'], 2=>['email'], 3=>['phone'], 4=>['country_id']];
+            $res_mac = $this->get_list($input,$field_check,2);
+            $i = 0;
+            foreach( $res_mac as $key=>$val)
+            {
+                if( $i == 0 ) echo '<option selected="" value="'.$key.'">'.$val.'</option>';
+                else  echo '<option  value="'.$key.'">'.$val.'</option>';
+                $i++;
+            }
+        }
+    }
+
+    public function get_list($input,$field_check, $table = 1){
+        if( $input){
+            $is_find = false;
+            $res_mac = []; $mac = [];
+            foreach( $field_check as $key=>$val){
+                $is_typ =false;
+                foreach( $val as $name){
+                    switch ($key){
+                        case 1: if( HelpKontrol::typ_name($input) ) $is_typ = true;
+                            break;
+                        case 2: if( HelpKontrol::typ_email_seach($input) ) $is_typ = true;
+                            break;
+                        case 3:  if( HelpKontrol::typ_phone($input) ) $is_typ = true;
+                            break;
+                        case 4:  if( HelpKontrol::typ_name_all($input) ) $is_typ = true;
+                            break;
+                    }
+
+                    if( $is_typ){
+                        if( $table == 1) $mac = Company::list_company_field( $input, $name );
+                        else $mac = Client::list_client_field( $input, $name );
+                        if( is_array($mac) && count($mac)){
+                            $res_mac = $mac; $is_find = true;
+                            break;
+                        }
+                    }
+                }
+                if( $is_find) break;
+            }
+        }else{
+            if( $table == 1) $res_mac = Setting::List_company();
+            else $res_mac = Setting::List_client();
+        }
+            
+        return $res_mac;
+    }
+
     /**
      * Displays a single Invoice model.
      * @param integer $id
@@ -281,34 +311,13 @@ class InvoiceController extends Controller
         if( ! isset( Yii::$app->session['create_invoice']) || ! Yii::$app->session['create_invoice'] ){
             Yii::$app->session['create_invoice'] = 1;
         }
-/*    $input = 'ru';
-    $is_find = false;
-    $res_mac = []; $mac = [];
-    $field_check = [ 1=>['name','tax_agency','country_id'], 2=>['mail'], 3=>['phone','phone2']];
+   /* $input = 'b';
+        $field_check = [ 1=>['name','tax_agency'], 2=>['email'], 3=>['phone'], 4=>['country_id']];
+        $res_mac = $this->get_list($input,$field_check,2);
 
-    foreach( $field_check as $key=>$val){
-        echo('key='.$key); var_dump($val);
-        foreach( $val as $name){
-            switch ($key){
-                case 1: if( HelpKontrol::typ_name($input) )
-                    $mac = Company::list_company_field( $input, $name );
-                    break;
-                case 2: if( HelpKontrol::typ_email_seach($input) )
-                    $mac = Company::list_company_field( $input, $name );
-                    break;
-                case 3:  if( HelpKontrol::typ_phone($input) )
-                    $mac = Company::list_company_field( $input, $name );
-                    break;
-            }
-            if( is_array($mac) && count($mac)){
-                $res_mac = $mac; $is_find = true;
-                break;
-            }
-        }
-        if( $is_find) break;
-    }   var_dump($res_mac); exit;
-*/
-    $model = $this->findModel($id);
+       var_dump($res_mac); exit;
+//*/
+        $model = $this->findModel($id);
         $model->date = date("Y/m/d", time());
 
         $items_error = [];

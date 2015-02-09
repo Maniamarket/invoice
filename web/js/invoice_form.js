@@ -100,3 +100,33 @@
             });
         })
     })
+
+/*    function list_client_ajax(url, elem){
+        var input_word = $(elem).val();
+     alert('input_word='+input_word);
+        $.ajax({
+            url: url,
+            method: 'POST',
+            data: { input_word : input_word },
+            success: function (data) {
+                $(elem).prev().empty().html(data);
+                var list_option = '';
+                $(elem).prev().children('option').each(function(){
+                    list_option = list_option +'<li data-val="'+$(this).val()+'">'+$(this).text()+'</li>';
+                })
+//                console.log(list_option);
+                $(elem).next().empty().html('<ul>'+list_option+'</ul>');
+                $(elem).next().children('ul').children('li').each(function() {
+                    $(this).click(function() {
+                        $(this).closest('.dropdown-ajax-result').prev().val($(this).text());
+                        $(this).closest('.dropdown-ajax-result').prev().prev().val($(this).attr('data-val'));
+                        $(this).closest('.dropdown-ajax-result').hide();
+                        $(this).closest('.dropdown-ajax-result').next().hide();
+                    });
+                })
+            }
+        });
+        return false;
+    }
+*/
+

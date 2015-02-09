@@ -113,6 +113,18 @@ class HelpKontrol  extends Component
         else  return false;
     }
 
+    public static function typ_name_all(&$par)
+    {
+        $par=preg_replace("/[ ]+/i", ' ',$par);
+        $par=trim($par);
+        if (preg_match("/^[a-zA-Zа-яА-Я]{1,4}[a-zA-Zа-яА-Я0-9]*/i",$par) )
+//            if (preg_match("/^[\s\da-zA-Zа-яА-Я]+/i",$par) )
+        {
+            return true;
+        }
+        else  return false;
+    }
+
     public static function typ_phone(&$par)
     {
         $par=preg_replace("/[ ]+/i", ' ',$par);
