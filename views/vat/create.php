@@ -15,6 +15,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <?php echo Html::a('Список НДС', Url::toRoute('index'),['class'=>'btn-lg btn btn-primary']) ?>
 
-<h1>Create Vat</h1>
+<h1 class="title">Create Vat</h1>
 
 <?php  echo $this->context->renderPartial('_form', ['model'=>$model]); ?>

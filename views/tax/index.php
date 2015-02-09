@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <h1 class="title"><?php echo Yii::t('app', 'Surtax'); ?></h1>
 
-<table class="table table-striped">
+<table class="table">
     <tr>
         <th>ID</th>
         <th>Percent</th>

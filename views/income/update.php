@@ -11,6 +11,6 @@ $this->params['breadcrumbs'][]= 'Update';
 
 <?php echo Html::a('Список комиссий', Url::toRoute('index'),['class'=>'btn-lg btn btn-primary']) ?>
 
-<h1>Update Income <?php echo $model->id; ?></h1>
+<h1 class="title">Update Income <?php echo $model->id; ?></h1>
 
 <?php echo $this->context->renderPartial('_form', ['model'=>$model]); ?>

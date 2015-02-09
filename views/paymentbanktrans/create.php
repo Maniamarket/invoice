@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
   <strong><?= Yii::$app->session->getFlash('successCreditPay'); ?></strong>
 
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1 class="title"><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
         'model' => $model,

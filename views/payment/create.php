@@ -15,6 +15,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <?php echo Html::a('List Payments', Url::toRoute('index'),['class'=>'btn-lg btn btn-primary']) ?>
 
-<h1>Create Payment</h1>
+<h1 class="title">Create Payment</h1>
 
 <?php  echo $this->context->renderPartial('_form', ['model'=>$model]); ?>

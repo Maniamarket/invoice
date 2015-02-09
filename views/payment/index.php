@@ -13,16 +13,20 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 
-<h1><?php echo Yii::t('app', 'PaymentHeaderText'); ?></h1>
+<h1 class="title"><?php echo Yii::t('app', 'Payments'); ?></h1>
 
-<table class="table table-striped">
+<table class="table">
+    <thead>
     <tr>
         <th>ID</th>
         <th>Name</th>
     </tr>
+    </thead>
+    <tbody>
 <?php echo ListView::widget([
 	'dataProvider'=>$dataProvider,
 	'itemView'=>'_view',
 ]); ?>
+    </tbody>
 </table>
 

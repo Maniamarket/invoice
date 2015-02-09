@@ -23,7 +23,7 @@ class UserController extends Controller {
         return [
             'access' => [
                 'class' => AccessControl::className(),
-//                'only' => ['create', 'index', 'set_tax', 'update'],
+                'only' => ['create', 'index', 'set_tax', 'update'],
                 'rules' => [
                     [
                         'actions' => ['create', 'index', 'profit'],
@@ -323,9 +323,10 @@ class UserController extends Controller {
 
     public function getHeader($type_user) {
         switch ( $type_user ){
-            case  1 : return 'My Users';
-            case  2 : return 'My Managers';
-            case  3 : return 'My Admins';
+            case  1 : return Yii::t('app', 'My Users');
+            case  2 : return Yii::t('app', 'My Managers');
+            case  3 : return Yii::t('app', 'My Admins');
+            case  4 : return Yii::t('app', 'All Users');
         }
     }    
 
