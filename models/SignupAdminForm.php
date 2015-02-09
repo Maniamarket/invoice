@@ -45,7 +45,6 @@ class SignupAdminForm extends Model
                 $user->username = $user->id;
                 $user->name = $user->id;
                 $password = 'user_'.$user->id;
-                $user->pass = $password;
                 $user->setPassword($password);
                 $user->validate();
                 if( $user->save())
