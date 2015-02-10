@@ -29,7 +29,7 @@ class Transactionbanktrans extends \yii\db\ActiveRecord {
      */
     public function rules() {
 	return [
-	    [['t_id', 'user_id', 'status', 'type', 'date'], 'required'],
+	    [['t_id', 'user_id', 'status', 'date'], 'required'],
 	    [['t_id', 'user_id', 'date'], 'integer'],	    
 	];
     }
@@ -43,7 +43,6 @@ class Transactionbanktrans extends \yii\db\ActiveRecord {
 	    't_id' => 'Transaction ID',
 	    'user_id' => 'Username',
 	    'status' => 'Status',
-	    'type' => 'Type',
 	    'date' => 'Date',
 	];
     }
