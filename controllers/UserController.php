@@ -163,7 +163,8 @@ class UserController extends Controller {
                   $model = new User_payment;  
                   $model->user_id = $invoice->user_id;
                   $model->is_input = 0;
-                  $model->credit = - $price_tek;
+                  $model->credit = - $invoice->net_price*$income/100;
+                  $model->txn_id = -$invoice->id;
                   $old = User_payment::find()->where(['user_id'=>$invoice->user_id])->orderBy(['id'=>SORT_DESC])->one();
                   if( $old ){
                       $model->credit_sum =  $old->credit_sum - $price_tek;
@@ -172,11 +173,11 @@ class UserController extends Controller {
                       $model->credit_sum =  - $price_tek;
                       $model->profit_parent = $invoice->net_price*$income/100;
                   }
-//
-  //                $model->profit_parent =  ( $old ) ? $old->profit_parent : 0;
                   $model->date = new Expression('NOW()');
                   $model->save();
-     //сумма налогов за месяц
+                  Yii::$app->getSession()->setFlash('success', 'Invoice payment №MM100'.$invoice->id);
+
+                  //сумма налогов за месяц
                   $q = new Query;
                   $isDate =  new Expression('MONTH(`date`)=MONTH(NOW())');
                   $q ->select(['SUM(u.profit_parent) as sum'])->from('{{user_payment}} as u')

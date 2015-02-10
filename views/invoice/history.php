@@ -25,6 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <th>Credits</th>
             <th>Date</th>
             <th>Credit summ </th>
+            <th>Operation </th>
         </tr>
         </thead>
         <tbody>
