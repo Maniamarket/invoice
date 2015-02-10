@@ -88,7 +88,12 @@ AppAsset::register($this);
                     ['label' => Yii::t('app', 'Account'), 'url' => ['/setting/update'], 'visible' => !Yii::$app->user->isGuest,
                         'items' => [
                             ['label' => Yii::t('app', 'Account'), 'url' => ['/setting/update'], 'visible' => !Yii::$app->user->isGuest],
-                            ['label' => Yii::t('app', 'History'), 'url' => ['/invoice/history'], 'visible' => !Yii::$app->user->isGuest],
+                            ['label' => Yii::t('app', 'History'), 'url' => ['/invoice/history'], 'visible' => ( !Yii::$app->user->isGuest && !Yii::$app->user->can('superadmin')),
+                                'items' => [
+                                    ['label' => Yii::t('app', 'History credit'), 'url' => ['/invoice/history'], 'visible' => !Yii::$app->user->isGuest],
+                                    ['label' => Yii::t('app', 'History Bank transfer'), 'url' => ['/paymentbanktrans/history'], 'visible' => !Yii::$app->user->isGuest],
+                                ],
+                            ],
                             ['label' => Yii::t('app', 'Payment'), 'url' => ['/payment/index'], 'visible' => !Yii::$app->user->isGuest,
                                 'items' => [
                                     ['label' => Yii::t('app', 'Pay Pal'), 'url' => ['/user/payment_credit', 'payment_id' => 2, 'id' => Yii::$app->user->id], 'visible' => !Yii::$app->user->isGuest],

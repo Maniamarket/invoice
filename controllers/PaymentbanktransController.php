@@ -12,6 +12,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use app\models\User_payment;
+use yii\db\Query;
 
 /**
  * PaymentbanktransController implements the CRUD actions for Paymentbanktrans model.
@@ -107,7 +108,6 @@ class PaymentbanktransController extends Controller {
 	$transaction->t_id = $tid;
 	$transaction->user_id = $uid;
 	$transaction->status = $status;
-	$transaction->type = 0;
 	$transaction->date = time();
 	
 	$transaction->save();
@@ -132,7 +132,6 @@ class PaymentbanktransController extends Controller {
      */
     public function actionCreate() {
 	$model = new Paymentbanktrans();
-	//$user = User::find()->where(['id' => Yii::$app->user->id])->one();
 
 	if (Yii::$app->request->isPost) {
 	    $model->attributes = $_POST['Paymentbanktrans'];
@@ -147,8 +146,6 @@ class PaymentbanktransController extends Controller {
             if ($model->validate() && $file) {
             $model->save();
             $file->saveAs(Yii::$app->params['creditPath'] . $file->name);
-            //@todo send mail to superadmin
-            //echo Yii::$app->user->identity->email; exit;
             Yii::$app->mailer->compose()
                 ->setFrom(Yii::$app->user->identity->email)
                 ->setTo(Yii::$app->params['adminEmail'])
@@ -157,15 +154,25 @@ class PaymentbanktransController extends Controller {
                 ->attach(Yii::$app->params['creditPath'] . $file->name)
                 ->send();
             Yii::$app->getSession()->setFlash('successCreditPay', 'Your message send to superadmin');
-            $this->redirect(array('index', 'id' => $model->id));
-            }
+            $this->writeTransaction($model->user_id, $model->id, 0 );
+
+             $this->redirect(array('index', 'id' => $model->id));
+           }
 	    }
 	}
-    return $this->render('create', [
-        'model' => $model,
-    ]);
+     return $this->render('create', [ 'model' => $model,   ]);
     }
 
+    public function actionHistory()
+    {
+     //   $q = new Query();
+       // $q->select('t.*')->from('transaction_banktransfer t')->where(['t.user_id'=>Yii::$app->user->id])->orderBy(['t.id'=>SORT_DESC]);
+        $dataProvider = new ActiveDataProvider([
+            'query' => Transactionbanktrans::find()->where(['user_id'=>Yii::$app->user->id])->orderBy(['id'=>SORT_DESC]),
+            'pagination' => [ 'pageSize' => 5, ],
+        ]);
+        return $this->render('history', ['dataProvider' => $dataProvider]);
+    }
     /**
      * Updates an existing Paymentbanktrans model.
      * If update is successful, the browser will be redirected to the 'view' page.

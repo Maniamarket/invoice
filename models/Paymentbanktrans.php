@@ -26,7 +26,7 @@ class Paymentbanktrans extends \yii\db\ActiveRecord {
      */
     public function rules() {
 	return [
-	    [['message', 'file','sum'], 'required'],
+        [['message', 'file','sum'], 'required'],
 	    ['file', 'file', 'extensions' => ['jpg', 'jpeg', 'png', 'gif']],
 	];
     }

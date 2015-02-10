@@ -86,9 +86,9 @@ class InvoiceController extends Controller
     public function actionHistory()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => User_payment::findBySql('select u.* from {{user_payment}} as u '
-                    . '  where u.user_id = '.Yii::$app->user->id.' and u.txn_id IS NOT NULL order by u.id desc'),
-            'pagination' => [ 'pageSize' => 20, ],
+            'query' => User_payment::find()->select('u.*')->from('user_payment u')
+                ->where(['u.user_id'=>Yii::$app->user->id])->andWhere('u.txn_id IS NOT NULL')->orderBy(['u.id'=>SORT_DESC]),
+            'pagination' => [ 'pageSize' => 5, ],
         ]);
         return $this->render('history', ['dataProvider' => $dataProvider]);
     }
