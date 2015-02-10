@@ -83,14 +83,15 @@ class InvoiceController extends Controller
      * Lists all Invoice models.
      * @return mixed
      */
-    public function actionHistory()
+    public function actionHistory( $id=0 )
     {
+        $user = ( $id == 0 ) ? Yii::$app->user->id : $id;
         $dataProvider = new ActiveDataProvider([
             'query' => User_payment::find()->select('u.*')->from('user_payment u')
-                ->where(['u.user_id'=>Yii::$app->user->id])->andWhere('u.txn_id IS NOT NULL')->orderBy(['u.id'=>SORT_DESC]),
+                ->where(['u.user_id'=>$user ])->andWhere('u.txn_id IS NOT NULL')->orderBy(['u.id'=>SORT_DESC]),
             'pagination' => [ 'pageSize' => 5, ],
         ]);
-        return $this->render('history', ['dataProvider' => $dataProvider]);
+        return $this->render('history', ['dataProvider' => $dataProvider, 'user'=>$user ]);
     }
     /**
      * Lists all Invoice models.

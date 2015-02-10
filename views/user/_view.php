@@ -28,7 +28,19 @@ $view_element_td = 'td_tax_id'.$model->id;
              })}; return false; ",
                 ]);
             ?>
-       </td>
+        </td>
+        <td>
+            <?php
+            $url = Url::toRoute(['invoice/history','id'=>$model->id]);
+            echo Html::a('go history credit',$url,  [  ]);
+            ?>
+        </td>
+        <td>
+            <?php
+            $url = Url::toRoute(['paymentbanktrans/history','id'=>$model->id]);
+            echo Html::a('go history bank transfer',$url,  [  ]);
+            ?>
+        </td>
     <?php } ?>
     <?php  if( $type_user > 1  && $type_user < 4){ ;?>
         <td><?php  echo ($model->profit_manager) ?></td>

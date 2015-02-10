@@ -16,6 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1 class="title"><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <h5> User id = <?php echo $user; ?> </h5>
 
     <p>&nbsp;</p>
     <table class="table table-striped table-bordered" id="table-result-search">

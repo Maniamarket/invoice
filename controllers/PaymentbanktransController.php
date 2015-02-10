@@ -163,15 +163,16 @@ class PaymentbanktransController extends Controller {
      return $this->render('create', [ 'model' => $model,   ]);
     }
 
-    public function actionHistory()
+    public function actionHistory( $id = 0)
     {
      //   $q = new Query();
        // $q->select('t.*')->from('transaction_banktransfer t')->where(['t.user_id'=>Yii::$app->user->id])->orderBy(['t.id'=>SORT_DESC]);
+        $user = ( $id == 0 ) ? Yii::$app->user->id : $id;
         $dataProvider = new ActiveDataProvider([
-            'query' => Transactionbanktrans::find()->where(['user_id'=>Yii::$app->user->id])->orderBy(['id'=>SORT_DESC]),
+            'query' => Transactionbanktrans::find()->where(['user_id'=>$user])->orderBy(['id'=>SORT_DESC]),
             'pagination' => [ 'pageSize' => 5, ],
         ]);
-        return $this->render('history', ['dataProvider' => $dataProvider]);
+        return $this->render('history', ['dataProvider' => $dataProvider,'user'=>$user]);
     }
     /**
      * Updates an existing Paymentbanktrans model.
