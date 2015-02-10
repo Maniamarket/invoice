@@ -14,12 +14,9 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="invoice-index">
 
-    <h1 class="title"><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-    <h5> User id = <?php echo $user; ?> </h5>
-
-    <p>&nbsp;</p>
-    <table class="table table-striped table-bordered" id="table-result-search">
+    <h1 class="title"><?= Html::encode($this->title) ?>
+    <?php if (Yii::$app->user->id != $user) echo ' User # '.$user; ?></h1>
+    <table class="table" id="table-result-search">
         <thead>
         <tr>
             <th>ID</th>

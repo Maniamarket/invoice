@@ -282,9 +282,6 @@ class ClientController extends Controller
                 if (!Yii::$app->user->isGuest)
                     return $this->redirect(['index']);
             }
-           /* if ($client = $model->signup()) {
-                // var_dump(Yii::$app->session['password']);                exit();
-            }*/
         }
 
         return $this->render('create', ['model' => $model,]);
