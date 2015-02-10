@@ -158,7 +158,7 @@ class PaymentbanktransController extends Controller {
 
              $this->redirect(array('index', 'id' => $model->id));
            }
-	    }
+	    }else $model->addError('file','file not choosen');
 	}
      return $this->render('create', [ 'model' => $model,   ]);
     }

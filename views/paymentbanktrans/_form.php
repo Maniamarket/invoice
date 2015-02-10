@@ -18,12 +18,10 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'sum')->textInput(['maxlength' => 10]) ?>  
     <?= $form->field($model, 'message')->textInput(['maxlength' => 255]) ?>
-    
-    
-    <label>Attach file</label>
-    
-    <?= Html::activeFileInput($model,'file'); ?>
-    
+
+
+    <?= $form->field($model, 'file')->fileInput(); ?>
+
     <br>
 
     <div class="form-group">

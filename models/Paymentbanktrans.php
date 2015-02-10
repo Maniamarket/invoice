@@ -40,7 +40,7 @@ class Paymentbanktrans extends \yii\db\ActiveRecord {
 	    'username' => 'User',
 	    'sum' => 'Sum',	    
 	    'message' => 'Message',
-	    'file' => 'File',
+	    'file' => 'Attach file',
 	    'status' => 'Status',
 	    'date' => 'Date',
 	];
