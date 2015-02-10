@@ -30,16 +30,36 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php if( $type_user > 2 && $type_user < 4){ ?>
         <th>Profit Admin</th>
         <th>Total Profit Admin</th>
+        <?php } ?>
+        <?php if( $type_user > 1 && $type_user < 4){ ?>
         <th>Income</th>
         <th>My_profit</th>
         <?php } ?>
     </tr>
     </thead>
     <tbody>
-<?php echo ListView::widget([
+<?php
+    foreach ($dataProvider->models as $key=>$model) {
+       echo $this->render('_view', ['model'=>$model,'type_user'=>$type_user ]);
+    }
+/*echo ListView::widget([
 	'dataProvider'=>$dataProvider,
 	'itemView'=>'_view',
         'viewParams'=>['type_user'=>$type_user],
-]); ?>
+    'layout'=>'{items}'
+]);*/
+?>
     </tbody>
 </table>
+
+<?php
+echo ListView::widget([
+    'dataProvider'=>$dataProvider,
+    'itemView'=>'_view',
+    'pager'=>[
+        'prevPageLabel'=>'Prev',
+        'nextPageLabel'=>'Next'
+    ],
+    'layout'=>'{pager}'
+])
+?>

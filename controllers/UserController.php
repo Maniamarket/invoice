@@ -244,11 +244,9 @@ class UserController extends Controller {
         $query = $this->getQueri($type_user);
         $dataProvider = new ActiveDataProvider([
                 'query' => $query,
-                'pagination' => [
-                    'pageSize' => 10,
-                ],
+                'pagination' => [ 'pageSize' => 6, ],
             ]);
-       //     var_dump($dataProvider);            exit();
+ //  var_dump($dataProvider->models);            exit();
         $hearder = $this->getHeader($type_user);
         return $this->render('index',['dataProvider'=>$dataProvider, 'hearder' => $hearder, 'type_user' => $type_user ]);
    }
@@ -280,9 +278,6 @@ class UserController extends Controller {
      * Lists all models.
      */
     public function actionSet_tax( $page = 1) {
-/*        $query = new Query;
-	$query->select(['update_cache'])->from('{{user}}')->orderBy('update_cache',SORT_DESC)->offset(0)->limit(2);
-	$data = $query->createCommand()->queryAll();    */
          $dataProvider = new ActiveDataProvider([
                 'query' => User::find(),
                 'pagination' => [
@@ -290,34 +285,35 @@ class UserController extends Controller {
                 ],
             ]);
         return $this->render('settax',['dataProvider'=>$dataProvider]);
-//        return $this->render('settax',['datas'=>$datas, 'pages'=> $pages, 'page' => $page ]);
    }
 
     public function getQueri($type_user) {
         switch ( $type_user ){
-            case  1 : return User::findBySql('select u.id, u.name, ui.credit, ui.profit_manager,'
-                    . ' (select SUM( us_in.credit) from user_income as us_in where us_in.user_id = u.id ) as sum_profit '
-                    . 'from {{user}} as u '
-                    . 'left join {{user_income}} as ui  on ( u.id = ui.user_id  and MONTH(ui.date) = MONTH(NOW()))'
-                    . '  where u.parent_id = '.Yii::$app->user->id.' and u.role = "user" ');
-            case  2 : return User::findBySql('select u.id, u.name, ui.credit, ui.profit_manager, ui.income, ui.my_profit,'
-                    . ' (select SUM( us_in.credit) from user_income as us_in where us_in.user_id = u.id ) as sum_profit, '
-                    . ' (select SUM( us_in.profit_manager) from user_income as us_in where us_in.user_id = u.id ) as sum_profit_manager '
-                    . 'from {{user}} as u '
-                    . 'left join {{user_income}} as ui  on ( u.id = ui.user_id  and MONTH(ui.date) = MONTH(NOW()))'
-                    . '  where u.parent_id = '.Yii::$app->user->id.' and u.role = "manager" ');
-            case  3 : return User::findBySql('select u.id, u.name, ui.credit, ui.profit_manager, ui.profit_admin,ui.income, ui.my_profit,'
+            case  1 : $res = User::find()->select('u.id, u.name, ui.credit, ui.profit_manager,'
+                    . ' (select SUM( us_in.credit) from user_income as us_in where us_in.user_id = u.id ) as sum_profit ')
+                    ->from('user u')->leftJoin('user_income ui','u.id = ui.user_id  and MONTH(ui.date) = MONTH(NOW()) ');
+                   if( Yii::$app->user->identity->role !== 'superadmin') $res->where(['u.parent_id' => Yii::$app->user->id,
+                       'u.role' => "user"]);
+                   return $res;
+            case  2 : $res = User::find()->select('u.id, u.name, ui.credit, ui.profit_manager, ui.income, ui.my_profit,'
+                . ' (select SUM( us_in.credit) from user_income as us_in where us_in.user_id = u.id ) as sum_profit, '
+                . ' (select SUM( us_in.profit_manager) from user_income as us_in where us_in.user_id = u.id ) as sum_profit_manager')
+                ->from('user u')->leftJoin('user_income ui','u.id = ui.user_id  and MONTH(ui.date) = MONTH(NOW()) ');
+                if( Yii::$app->user->identity->role !== 'superadmin') $res->where(['u.parent_id' => Yii::$app->user->id,
+                    'u.role' => "manager"]);
+                  return $res;
+            case  3 : $res = User::find()->select('u.id, u.name, ui.credit, ui.profit_manager, ui.profit_admin,ui.income, ui.my_profit,'
                 . ' (select SUM( us_in.credit) from user_income as us_in where us_in.user_id = u.id ) as sum_profit, '
                 . ' (select SUM( us_in.profit_admin) from user_income as us_in where us_in.user_id = u.id ) as sum_profit_admin, '
-                . ' (select SUM( us_in.profit_manager) from user_income as us_in where us_in.user_id = u.id ) as sum_profit_manager '
-                . 'from {{user}} as u '
-                . 'left join {{user_income}} as ui on ( u.id = ui.user_id  and MONTH(ui.date) = MONTH(NOW()))'
-                . '  where u.parent_id = '.Yii::$app->user->id.' and u.role = "admin" ');
-            case  4 : return User::findBySql('select u.id, u.name, ui.credit, ui.profit_manager, s.surtax,'
-                . ' (select SUM( us_in.credit) from user_income as us_in where us_in.user_id = u.id ) as sum_profit '
-                . 'from {{user}} as u '
-                . 'left join {{user_income}} as ui  on ( u.id = ui.user_id  and MONTH(ui.date) = MONTH(NOW())) '
-                . 'left join {{setting}} as s  on ( u.id = s.user_id )' );
+                . ' (select SUM( us_in.profit_manager) from user_income as us_in where us_in.user_id = u.id ) as sum_profit_manager')
+                ->from('user u')->leftJoin('user_income ui','u.id = ui.user_id  and MONTH(ui.date) = MONTH(NOW()) ')
+                ->where(['u.role' => 'admin']);
+                return $res;
+            case  4 : $res = User::find()->select('u.id, u.name, ui.credit, ui.profit_manager, s.surtax,'
+                . ' (select SUM( us_in.credit) from user_income as us_in where us_in.user_id = u.id ) as sum_profit')
+                ->from('user u')->leftJoin('user_income ui','u.id = ui.user_id  and MONTH(ui.date) = MONTH(NOW()) ')
+                ->leftJoin('setting s', 'u.id = s.user_id' ) ;
+                return $res;
         }
     }
 
