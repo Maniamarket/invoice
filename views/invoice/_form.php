@@ -109,8 +109,8 @@ jQuery("#state").replaceWith(data);
              </tr>
              <tr>
                  <td class="qty">   <?php  echo Html::label(Yii::t('invoice','Qty'),'');  ?>           </td>
-                 <td class="unit-cost">   <?php  echo Html::label(Yii::t('invoice','Unit Cost'),'');  ?>     </td>
-                 <td class="discount">   <?php  echo Html::label(Yii::t('invoice','Discount'),'');  ?>      </td>
+                 <td class="unit-cost">   <?php  echo Html::label(Yii::t('invoice','Unit Cost').', &euro;','');  ?>     </td>
+                 <td class="discount">   <?php  echo Html::label(Yii::t('invoice','Discount').', %','');  ?>      </td>
                  <td class="total">   <?php echo Html::label(Yii::t('invoice','Total'),'')  ?>           </td>
              </tr>
              <tr>
@@ -168,8 +168,8 @@ jQuery("#state").replaceWith(data);
 
         <tr>
             <td class="qty">  <?php  echo Html::label(Yii::t('invoice','Qty'),'');  ?> </td>
-            <td class="unit-cost">  <?php  echo Html::label(Yii::t('invoice','Unit Cost'),'');  ?>  </td>
-            <td class="discount">  <?php  echo Html::label(Yii::t('invoice','Discount'),'');  ?>   </td>
+            <td class="unit-cost">  <?php  echo Html::label(Yii::t('invoice','Unit Cost').', &euro;','');  ?>  </td>
+            <td class="discount">  <?php  echo Html::label(Yii::t('invoice','Discount').', %','');  ?>   </td>
             <td class="total">  <?php echo Html::label(Yii::t('invoice','Total'),'')  ?>        </td>
         </tr>
         <tr>
