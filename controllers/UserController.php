@@ -145,7 +145,7 @@ class UserController extends Controller {
                         $model->credit_sum = ( $old ) ? $old->credit_sum + $add_credit : $add_credit;
                         $model->date = new Expression('NOW()');
                         $model->save();
-                        Yii::$app->getSession()->setFlash('success', 'Add credit'.$add_credit);
+                        Yii::$app->getSession()->setFlash('success', 'Success. Add credit '.$add_credit.' for user #'.$id);
 
                         return $this->redirect(['index','type_user'=>4]);
                     }
