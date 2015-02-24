@@ -97,7 +97,24 @@
                 //                         alert($(this).attr('data-val'));
                 $(this).closest('.dropdown-ajax-result').hide();
                 $(this).closest('.dropdown-ajax-result').next().hide();
-            });
+
+                $.ajax({
+                    url: 'ajax_country',
+                    method: 'POST',
+                    data: { company_id : $('#company_name').val(), client_id : $('#client_name').val()},
+                    success: function (data) {
+                        if( data == '0'){
+                            $('#vat').val(1);
+                            $('#vat').attr('disabled', 'disabled');
+                        }
+                        else {
+                            $('#vat').removeAttr('disabled');
+
+                        }
+                    }
+
+                 });
+            })
         })
     })
 

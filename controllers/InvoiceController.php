@@ -373,6 +373,19 @@ class InvoiceController extends Controller
         return $this->render('update', ['model' => $model, 'itog'=>$itog,'items' => $items, 'items_error'=>$items_error ]);
     }
 
+    public function actionAjax_country()
+    {
+        if( Yii::$app->request->isAjax ){
+            $company_id = $_POST['company_id'];
+            $cliendt_id = $_POST['client_id'];
+            $client = Client::findById($cliendt_id);
+            $company = Client::findById($company_id);
+            echo ( $client->country_id == $company->country_id) ? '0' : '1';
+        }
+    }
+
+
+
     /**
      * Deletes an existing Invoice model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
