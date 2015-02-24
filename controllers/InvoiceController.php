@@ -64,7 +64,7 @@ class InvoiceController extends Controller
     {
         $model = $this->findModel($id);
         $items = Invoice_item::findAll(['invoice_id'=>$id]);
-        if ($model->user_id == Yii::$app->user->id) {
+        if (($model->user_id == Yii::$app->user->id) || Yii::$app->user->can('superadmin')) {
             $template = empty($model->type) ? 'basic' : $model->type;
             return $this->render('tcpdf', [
                 'model' => $model,
