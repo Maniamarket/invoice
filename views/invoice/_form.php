@@ -174,16 +174,16 @@ jQuery("#state").replaceWith(data);
         </tr>
         <tr>
             <td class="qty" id="item_qty" >
-                <?php echo Html::textInput('count',(($model_item) ? $model_item->count : ''), ['id'=>"qty_",'class'=>"invoice-item form-control"]); ?>
+                <?php echo Html::textInput('count',(($model_item) ? $model_item->count : 1), ['id'=>"qty_",'class'=>"invoice-item form-control"]); ?>
             </td>
 
             <td class="unit-cost" id="item_price" >
-                <?php echo Html::textInput('price_service',(($model_item) ? $model_item->price_service : ''), ['id'=>"price_",'class'=>"invoice-item form-control"]);
+                <?php echo Html::textInput('price_service',(($model_item) ? $model_item->price_service : 0), ['id'=>"price_",'class'=>"invoice-item form-control"]);
                 ?>
             </td>
 
             <td  class="discount" id="item_discount" >
-                <?php echo Html::textInput('discount',(($model_item) ? $model_item->discount : ''), ['id'=>"discount_",'class'=>"invoice-item form-control"]);
+                <?php echo Html::textInput('discount',(($model_item) ? $model_item->discount : 0), ['id'=>"discount_",'class'=>"invoice-item form-control"]);
                 ?>
             </td>
 

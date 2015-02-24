@@ -285,6 +285,8 @@ class InvoiceController extends Controller
                 $item->attributes = $_POST;
                 $item->total_price = $item->count*$item->price_service*(1+($vat->percent + $model->income - $item->discount)/100);
                 $item->invoice_id = $model->id;
+                $item->discount = 0;
+
                 $model_item = $item;
                 $itog['net'] = $itog['net']+ ((int) $item->count)*( (int) $item->price_service);
                 $itog['total'] = $itog['total'] + $item->total_price;
