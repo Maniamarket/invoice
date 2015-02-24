@@ -10,7 +10,8 @@ use yii\bootstrap\Modal;
     <td><?php echo Html::encode($model->credit_sum); ?></td>
     <td><?php
         if( $model->txn_id < 0)  echo '- from invoice '.$model->txn_id;
-        elseif(  $model->txn_id > 0 )  echo 'paypal';
+        elseif(  $model->txn_id > 1 )  echo 'paypal';
+        elseif(  $model->txn_id == 1 )  echo 'super_admin';
         else 'bank trans';
         ?>
     </td>

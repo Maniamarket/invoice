@@ -24,6 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <th>Edit Income tax</th>
             <th>History credit</th>
             <th>History bank transfer</th>
+            <th>Add credit</th>
         <?php } ?>
         <?php if( $type_user > 1 && $type_user < 4 ){ ?>
         <th>Profit Manager</th>

@@ -70,7 +70,6 @@ class UserController extends Controller {
             }
         }
         return $this->render('signup', [ 'model' => $model,'setting'=>$setting]);
-
     }
 
     /**
@@ -99,30 +98,63 @@ class UserController extends Controller {
     public function actionPayment_credit($id, $payment_id) {
         if( $id == Yii::$app->user->id)
         {
-          $model = new User_payment;  
-          if( $model->load(Yii::$app->request->post()) ){
-    //увеличение кредитов (история)
-              $model->user_id = $id;
-              $model->is_input = TRUE;
-              $model->credit_sum = 0;
-              $model->profit_parent = $model->profit_parent + 0;
-              $model->date = new Expression('NOW()');
-              
-              if( $model->save()){
-                switch ( $payment_id ){
-                  case  1 : break;
-                  case  2 :  return $this->redirect(['pay/paypal','id' => $model->id ]);
-                  case  1 : break;
-                }                
-                   
-                return $this->redirect(['invoice/index']);
-              }
-          }  
-          return $this->render('payment_credit',['model' => $model,'payment_id'=>$payment_id]);
+            $model = new User_payment;
+            if( $model->load(Yii::$app->request->post()) ){
+                //увеличение кредитов (история)
+                $model->user_id = $id;
+                $model->is_input = TRUE;
+                $model->credit_sum = 0;
+                $model->profit_parent = $model->profit_parent + 0;
+                $model->date = new Expression('NOW()');
+
+                if( $model->save()){
+                    switch ( $payment_id ){
+                        case  1 : break;
+                        case  2 :  return $this->redirect(['pay/paypal','id' => $model->id ]);
+                        case  1 : break;
+                    }
+
+                    return $this->redirect(['invoice/index']);
+                }
+            }
+            return $this->render('payment_credit',['model' => $model,'payment_id'=>$payment_id]);
         }
         else echo 'Это не для гостей';
 
-   }
+    }
+
+    /**
+     * Lists all models.
+     */
+    public function actionAdd_credit($id) {
+            $model = Setting::findOne(['user_id'=>$id]);
+            $add_credit = 0;
+            $error = '';
+            if( isset($_POST['add_credit']) ){
+                $add_credit = $_POST['add_credit'];
+                if( is_numeric( $add_credit)){
+                    $model->credit = $model->credit + $add_credit;
+                    if( $model->save()){
+                        $model = new User_payment;
+                        $model->user_id = $id;
+                        $model->is_input = 1;
+                        $model->credit = $add_credit;
+                        $model->profit_parent = $model->profit_parent + 0;
+                        $model->txn_id = 1;
+                        $old = User_payment::find()->where(['user_id'=>$id])->orderBy(['id'=>SORT_DESC])->one();
+                        $model->credit_sum = ( $old ) ? $old->credit_sum + $add_credit : $add_credit;
+                        $model->date = new Expression('NOW()');
+                        $model->save();
+                        Yii::$app->getSession()->setFlash('success', 'Add credit'.$add_credit);
+
+                        return $this->redirect(['index','type_user'=>4]);
+                    }
+                }
+                else $error = 'Error! must number';
+            }
+
+            return $this->render('add_credit',['model' => $model, 'add_credit'=>$add_credit, 'error'=>$error]);
+    }
 
     /**
      * Lists all models.
@@ -131,7 +163,6 @@ class UserController extends Controller {
         $invoice = Invoice::findOne($id);
         if( $invoice->user_id == Yii::$app->user->id)
         {
-         //  $price = Invoice::getPriceTax($invoice);
             $credit = Setting::findOne(['user_id'=>$invoice->user_id]);
             $vat = $invoice->vat->percent;
             $income  = $invoice->income;
