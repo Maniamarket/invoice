@@ -84,6 +84,18 @@ class Company extends ActiveRecord {
 	);
     }
 
+    /**
+     * Finds user by id
+     *
+     * @param string $username
+     * @return static|null
+     */
+    public static function findById($id)
+    {
+        return static::findOne(['id' => $id ]);
+    }
+
+
     public function getCountry()
     {
         return $this->hasOne('app\models\Country', ['cid' => 'country_id']);

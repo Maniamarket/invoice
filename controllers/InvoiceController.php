@@ -379,7 +379,7 @@ class InvoiceController extends Controller
             $company_id = $_POST['company_id'];
             $cliendt_id = $_POST['client_id'];
             $client = Client::findById($cliendt_id);
-            $company = Client::findById($company_id);
+            $company = Company::findById($company_id);
             echo ( $client->country_id == $company->country_id) ? '1' : '0';
         }
     }
