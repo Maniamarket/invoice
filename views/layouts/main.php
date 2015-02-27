@@ -115,6 +115,9 @@ AppAsset::register($this);
             ?>
 
             <div class="container">
+                <?php if (!Yii::$app->user->isGuest) { ?>
+                <div id="user_credits"><?= Yii::t('app', 'On your account') ?>: <?= Yii::$app->user->identity->setting->credit ?> credits</div>
+                <?php } ?>
                 <?=
                 Breadcrumbs::widget([
                     'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],

@@ -7,6 +7,7 @@ return array(
     'Body' => 'Body',
     'verifyCode' => 'verifyCode',
     'Submit' => 'Submit',
+    'On your account' => 'On your account',
     
     ////main menu 
     'Home' => 'Home',

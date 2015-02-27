@@ -368,3 +368,8 @@ a.desc:after {
     color: #24aa98;
     font-size: 25px;
 }
+#user_credits {
+    float: right;
+    padding-top: 6px;
+    padding-right: 14px;
+}

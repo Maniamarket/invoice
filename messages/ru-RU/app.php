@@ -8,7 +8,8 @@ return [
     'Body' => 'Текст',
     'verifyCode' => 'Код верификации',
     'Submit' => 'Отправить',
-    
+    'On your account' => 'На вашем счете',
+
     ////main menu 
     'Home' => 'Главная',
     'Users' => 'Пользователи',
