@@ -278,6 +278,11 @@ class ClientController extends Controller
                     $image->resize(100);
                     $image->save();
                 }
+                Yii::$app->mailer->compose('welcome_client', ['user' => $model, 'password' => $password_])
+                    ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
+                    ->setTo($model->email)
+                    ->setSubject('Email confirmation for ' . Yii::$app->name)
+                    ->send();
                 Yii::$app->getSession()->setFlash('success', 'Клиент успешно зарегистрирован ');
                 if (!Yii::$app->user->isGuest)
                     return $this->redirect(['index']);
