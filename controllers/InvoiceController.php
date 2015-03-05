@@ -269,7 +269,6 @@ class InvoiceController extends Controller
                 $is_error = false;
 
                 if( isset($_POST['items'])){
-
                     foreach( $_POST['items'] as $row){
                         $item_t =  Invoice_item::findOne($row['id']);
                         $item_t->attributes = $row;
@@ -285,7 +284,6 @@ class InvoiceController extends Controller
                 $item->attributes = $_POST;
                 $item->total_price = $item->count*$item->price_service*(1+($vat->percent + $model->income - $item->discount)/100);
                 $item->invoice_id = $model->id;
-                $item->discount = 0;
 
                 $model_item = $item;
                 $itog['net'] = $itog['net']+ ((int) $item->count)*( (int) $item->price_service);
