@@ -34,13 +34,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'template' => "{label}\n<div class=\"col-md-7\">{input}</div>\n<div class=\"col-md-offset-2 col-md-7\">{error}</div>"]
             )->textInput(['disabled'=>'disabled']) ; ?>
             <?php  echo $form->field($user, 'role',['labelOptions'=>['class'=>'control-label col-md-4'], 'template' => "{label}\n<div class=\"col-md-7\">{input}</div>\n<div class=\"col-md-offset-2 col-md-7\">{error}</div>"])
-                ->dropDownList(User::getRoleArray(),[]); ?>
+                ->dropDownList(User::getRoleArray(),['id'=>'role_id']); ?>
         </div>
         <div class="fieldset-column pull-right">
             <?php  echo $form->field($user, 'email',['labelOptions'=>['class'=>'control-label col-md-4'], 'template' => "{label}\n<div class=\"col-md-7\">{input}</div>\n<div class=\"col-md-offset-2 col-md-7\">{error}</div>"])->textInput(); ?>
             <?php  echo $form->field($user, 'password_',['labelOptions'=>['class'=>'control-label col-md-4'], 'template' => "{label}\n<div class=\"col-md-7\">{input}</div>\n<div class=\"col-md-offset-2 col-md-7\">{error}</div>"])->textInput(); ?>
             <?php  echo $form->field($user, 'parent_id',['labelOptions'=>['class'=>'control-label col-md-4'], 'template' => "{label}\n<div class=\"col-md-7\">{input}</div>\n<div class=\"col-md-offset-2 col-md-7\">{error}</div>"])
-                ->dropDownList(User::getParentArray(),[]); ?>
+                ->dropDownList(User::getParentArray($user->role),['id'=>'parent_id']); ?>
         </div>
     </div>
 
@@ -76,3 +76,20 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php  ActiveForm::end(); ?>
 
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#role_id").change(function() {
+            var role = $("#role_id").val();
+              //  alert('role-'+role);
+            $.ajax({
+                url: '<?= Url::toRoute('setting/ajax_parent') ?>',
+                method: 'post',
+                data: { role:role },
+                success: function (data) {
+                    $("#parent_id").empty().html(data);
+                }
+            });
+            })
+    })
+</script>

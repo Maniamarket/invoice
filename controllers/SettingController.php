@@ -60,12 +60,13 @@ class SettingController extends Controller {
             $model = $this->loadModel($id);
             $user = User::findOne(['id'=>$id]);
             if( isset($_POST['User']['password_'])  ){
-//                if( isset($_POST['User']['password_']) && $password_= $_POST['User']['password_'] ){
-           //     $user->setPassword($password_);
-             //   $user->generateAuthKey();
+                if( $password_= $_POST['User']['password_'] ){
+                     $user->setPassword($password_);
+                     $user->generateAuthKey();
+                }
                 $user->role = $_POST['User']['role'];
                 $user->parent_id = $_POST['User']['parent_id'];
-                if ( $user->save() ) return $this->redirect(['site/index']);
+                if ( $user->save() ) return $this->redirect(['user/index','type_user'=>4]);
             }
             return $this->render('edit', ['model' => $model, 'user'=>$user ]);
         }
@@ -73,6 +74,20 @@ class SettingController extends Controller {
     }
 
 
+    public function actionAjax_parent() {
+        if( Yii::$app->request->isAjax ){
+            $role = $_POST['role'];
+            $parent = User::getParentArray($role);
+            $i = 0;
+            foreach( $parent as $key=>$val)
+            {
+                if( $i == 0 ) echo '<option selected="" value="'.$key.'">'.$val.'</option>';
+                else  echo '<option  value="'.$key.'">'.$val.'</option>';
+                $i++;
+            }
+         //   if( !$i ) echo '<option selected="" value="0">Not found</option>';
+        }
+    }
 
     public function loadModel($id) {
 	     $model= Setting::findOne(['user_id' => $id]);

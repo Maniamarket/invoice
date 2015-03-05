@@ -248,8 +248,17 @@ class User extends ActiveRecord implements IdentityInterface {
     /**
      * @return array Parentarray.
      */
-    public static function getParentArray() {
-        $parent = User::find()->all();
+    public static function getParentArray($role) {
+        switch ($role) {
+            case 'user' : $where = 'role = "manager" or role = "admin" ';
+                break;
+            case 'manager' : $where = 'role = "admin" ';
+                break;
+            case 'admin' : $where = 'role = "superadmin" ';
+                break;
+           default : $where = 'role = "superadmin" ';
+        }
+        $parent = User::find()->where($where)->all();
         return ArrayHelper::map($parent, 'id', 'username');
     }
 
