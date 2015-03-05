@@ -245,6 +245,14 @@ class User extends ActiveRecord implements IdentityInterface {
         return ArrayHelper::map(Yii::$app->authManager->getRoles(), 'name', 'description');
     }
 
+    /**
+     * @return array Parentarray.
+     */
+    public static function getParentArray() {
+        $parent = User::find()->all();
+        return ArrayHelper::map($parent, 'id', 'username');
+    }
+
     public function getSetting() {
         return $this->hasOne('app\models\Setting', array('user_id' => 'id'));
         // Первый параметр – это у нас имя класса, с которым мы настраиваем связь.

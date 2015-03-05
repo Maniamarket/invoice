@@ -55,6 +55,25 @@ class SettingController extends Controller {
         return $this->render('update', ['model' => $model, 'user'=>$user]);
     }
 
+    public function actionEdit($id) {
+        if( Yii::$app->user->can('superadmin') ){
+            $model = $this->loadModel($id);
+            $user = User::findOne(['id'=>$id]);
+            if( isset($_POST['User']['password_'])  ){
+//                if( isset($_POST['User']['password_']) && $password_= $_POST['User']['password_'] ){
+           //     $user->setPassword($password_);
+             //   $user->generateAuthKey();
+                $user->role = $_POST['User']['role'];
+                $user->parent_id = $_POST['User']['parent_id'];
+                if ( $user->save() ) return $this->redirect(['site/index']);
+            }
+            return $this->render('edit', ['model' => $model, 'user'=>$user ]);
+        }
+        else  return $this->redirect(['site/index']);
+    }
+
+
+
     public function loadModel($id) {
 	     $model= Setting::findOne(['user_id' => $id]);
         

@@ -44,7 +44,13 @@ $view_element_td = 'td_tax_id'.$model->id;
         <td>
             <?php
             $url = Url::toRoute(['user/add_credit','id'=>$model->id]);
-            echo Html::a('add credit',$url,  [  ]);
+            echo Html::a('add credit',$url, []);
+            ?>
+        </td>
+        <td>
+            <?php
+            $url = Url::toRoute(['setting/edit','id'=>$model->id]);
+            echo Html::a('edit',$url, []);
             ?>
         </td>
     <?php } ?>

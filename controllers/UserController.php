@@ -276,7 +276,6 @@ class UserController extends Controller {
                 'query' => $query,
                 'pagination' => [ 'pageSize' => 6, ],
             ]);
- //  var_dump($dataProvider->models);            exit();
         $hearder = $this->getHeader($type_user);
         return $this->render('index',['dataProvider'=>$dataProvider, 'hearder' => $hearder, 'type_user' => $type_user ]);
    }
@@ -295,14 +294,14 @@ class UserController extends Controller {
    }
 
     public function actionUpdate($user_id) {
-           if( Yii::$app->request->isAjax)
-                {      
-                    $model = Setting::findOne(['user_id' => $user_id]);
-                    $model->surtax = $_POST['surtax'];
-                    $model->save();
-                    echo $model->surtax;
-                }
-   }
+        if( Yii::$app->request->isAjax)
+        {
+            $model = Setting::findOne(['user_id' => $user_id]);
+            $model->surtax = $_POST['surtax'];
+            $model->save();
+            echo $model->surtax;
+        }
+    }
 
     /**
      * Lists all models.
