@@ -47,12 +47,6 @@ $view_element_td = 'td_tax_id'.$model->id;
             echo Html::a('add credit',$url, []);
             ?>
         </td>
-        <td>
-            <?php
-            $url = Url::toRoute(['setting/edit','id'=>$model->id]);
-            echo Html::a('edit',$url, []);
-            ?>
-        </td>
     <?php } ?>
     <?php  if( $type_user > 1  && $type_user < 4){ ;?>
         <td><?php  echo ($model->profit_manager) ?></td>
@@ -67,7 +61,7 @@ $view_element_td = 'td_tax_id'.$model->id;
         <td><?php  echo ($model->my_profit) ?></td>
      <?php } ?>
        <td>
-    <?php  if( $type_user == 3 ){ ;?>
+    <?php  if( $type_user >= 1 ){ ;?>
     <?php
       $url = Url::toRoute(['setting/edit','id'=>$model->id]);
       echo Html::a('edit',$url, []);

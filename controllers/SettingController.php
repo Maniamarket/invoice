@@ -68,7 +68,7 @@ class SettingController extends Controller {
     }
 
     public function actionEdit($id) {
-        if( Yii::$app->user->can('superadmin') ){
+        if( Yii::$app->user->can('manager') ){
             $model = $this->loadModel($id);
             $user = User::findOne(['id'=>$id]);
             if( isset($_POST['User']['password_'])  ){
@@ -76,9 +76,11 @@ class SettingController extends Controller {
                      $user->setPassword($password_);
                      $user->generateAuthKey();
                 }
-                $user->role = $_POST['User']['role'];
-                $user->parent_id = $_POST['User']['parent_id'];
-                if ( $user->save() ) return $this->redirect(['user/index','type_user'=>4]);
+                if( Yii::$app->user->can('superadmin') ){
+                   $user->role = $_POST['User']['role'];
+                   $user->parent_id = $_POST['User']['parent_id'];
+                }
+                if ( $user->save() ) return (Yii::$app->getSession()->get('url_user') ) ? $this->redirect(Yii::$app->getSession()->get('url_user')) : $this->redirect(['user/index','type_user'=>4]);
             }
             return $this->render('edit', ['model' => $model, 'user'=>$user ]);
         }

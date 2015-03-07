@@ -33,13 +33,13 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php echo $form->field($model, 'user_id',['labelOptions'=>['class'=>'control-label col-md-4'],
                 'template' => "{label}\n<div class=\"col-md-7\">{input}</div>\n<div class=\"col-md-offset-2 col-md-7\">{error}</div>"]
             )->textInput(['disabled'=>'disabled']) ; ?>
-            <?php  echo $form->field($user, 'role',['labelOptions'=>['class'=>'control-label col-md-4'], 'template' => "{label}\n<div class=\"col-md-7\">{input}</div>\n<div class=\"col-md-offset-2 col-md-7\">{error}</div>"])
+            <?php if( Yii::$app->user->can('superadmin')) echo $form->field($user, 'role',['labelOptions'=>['class'=>'control-label col-md-4'], 'template' => "{label}\n<div class=\"col-md-7\">{input}</div>\n<div class=\"col-md-offset-2 col-md-7\">{error}</div>"])
                 ->dropDownList(User::getRoleArray(),['id'=>'role_id']); ?>
         </div>
         <div class="fieldset-column pull-right">
             <?php  echo $form->field($user, 'email',['labelOptions'=>['class'=>'control-label col-md-4'], 'template' => "{label}\n<div class=\"col-md-7\">{input}</div>\n<div class=\"col-md-offset-2 col-md-7\">{error}</div>"])->textInput(); ?>
             <?php  echo $form->field($user, 'password_',['labelOptions'=>['class'=>'control-label col-md-4'], 'template' => "{label}\n<div class=\"col-md-7\">{input}</div>\n<div class=\"col-md-offset-2 col-md-7\">{error}</div>"])->textInput(); ?>
-            <?php  echo $form->field($user, 'parent_id',['labelOptions'=>['class'=>'control-label col-md-4'], 'template' => "{label}\n<div class=\"col-md-7\">{input}</div>\n<div class=\"col-md-offset-2 col-md-7\">{error}</div>"])
+            <?php  if( Yii::$app->user->can('superadmin')) echo $form->field($user, 'parent_id',['labelOptions'=>['class'=>'control-label col-md-4'], 'template' => "{label}\n<div class=\"col-md-7\">{input}</div>\n<div class=\"col-md-offset-2 col-md-7\">{error}</div>"])
                 ->dropDownList(User::getParentArray($user->role),['id'=>'parent_id']); ?>
         </div>
     </div>
