@@ -13,6 +13,7 @@ $params = array(
     'is_cache' => false,
     'paymentMode' => 'live',
     'SandboxFlag' => true,
+    'paypal_percent' => 0.035,
 );
 if (YII_ENV_DEV) {
     $params ['paymentMode'] = 'test';

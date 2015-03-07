@@ -147,8 +147,8 @@ class PayController extends Controller
              }
 
 //     проверяем сумму платежа
-             $number = $user_payment->credit*(1+0.035);
-             if( (number_format($number, 2, '.', '') != $_POST['mc_gross']) || ($_POST["mc_currency"] != $currency))
+             $number = $user_payment->credit*(1+Yii::$app->params['paypal_percent']);
+             if( (ceil($number*100)/100 != $_POST['mc_gross']) || ($_POST["mc_currency"] != $currency))
              {
                 mail($adminemail, "IPN error", "Payment amount mismatch\r\nCart ID: "
                  . $user_payment->id."\r\nTransaction ID: ".$_POST["txn_id"]);

@@ -2,16 +2,15 @@ $(document).ready(function () {
     cost = $("#cost_id").val();
     payment = $("#payment_credits").val();
     if( payment == 2 ){
-        final_cost = cost*(1+0.035);
-        $("#final_id").val(final_cost.toFixed(2));
-    } //            alert(final_cost);
-
+        final_cost = Math.ceil(cost*(1+paypal_percent)*100)/100;
+        $("#final_id").val(final_cost);
+    }
     $("#cost_id").blur(function() {
         cost = $("#cost_id").val();
         $("#credit_id").val(cost);
         if( payment == 2 ){
-            final_cost = cost*(1+0.035);
-            final_cost = final_cost.toFixed(2);
+            final_cost = Math.ceil(cost*(1+paypal_percent)*100)/100;
+//            final_cost = final_cost.toFixed(2);
             $("#final_id").val(final_cost);
         }
     });

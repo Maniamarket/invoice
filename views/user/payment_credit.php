@@ -61,6 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <script type="text/javascript">
     var active_payment = <?= $payment_id ?>;
+    var paypal_percent = <?= Yii::$app->params['paypal_percent']; ?>;
     var url_card = '<?= Url::toRoute(['/user/buy', 'id' => Yii::$app->user->id, 'payment_id' => 1], true) ?>';
     var url_paypal = '<?= Url::toRoute(['/user/payment_credit', 'id' => Yii::$app->user->id, 'payment_id' => 2], true) ?>';
     var url_bank = '<?= Url::toRoute(['/paymentbanktrans/create','payment_id' => 3], true) ?>';
