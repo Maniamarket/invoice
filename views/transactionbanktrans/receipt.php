@@ -14,7 +14,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'title')->textInput() ?>
 
-    <?= $form->field($model, 'file')->fileInput(); ?>
+    <?= $form->field($model, 'file')->fileInput()->hint('add logo'); ?>
 
     <?= $form->field($model, 'description')->textInput() ?>
 
