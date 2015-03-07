@@ -6,9 +6,11 @@ use app\models\Receipt;
 use Yii;
 use app\models\Transactionbanktrans;
 use yii\data\ActiveDataProvider;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * TransactionBanktransferController implements the CRUD actions for TransactionBanktransfer model.
@@ -95,16 +97,25 @@ class TransactionbanktransController extends Controller {
     }
 
     public function actionReceipt() {
-        $model = Receipt::findOne([''])$this->findModel($id);
+        $model = Receipt::findOne(['user_id'=>Yii::$app->user->id]);
+        if( ! $model) $model = new Receipt();
+        $model->user_id = Yii::$app->user->id;
 
+        $file = UploadedFile::getInstance($model,'file');
+        if ($file)
+            $model->logo = $file->name;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            if ($file){
+                $uploaded = $file->saveAs(Yii::$app->params['avatarPath'].$file->name);
+                $image=Yii::$app->image->load(Yii::$app->params['avatarPath'].$file);
+                $image->resize(100);
+                $image->save();
+            }
+            Yii::$app->getSession()->setFlash('success', 'The receipt is successfully updated');
+            return $this->redirect(Url::toRoute('site/index'));
         } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            return $this->render('receipt', ['model' => $model, ]);
         }
-//        var_dump('aaaa');
     }
 
     /**

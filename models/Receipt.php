@@ -32,9 +32,12 @@ class Receipt extends ActiveRecord {
      */
     public function rules() {
         return [
-            [['user_id','title', 'logo','desription'], 'required'],
-            [['title', 'logo','desription'], 'string', 'max' => 200],
-          ];
+            [['user_id','title', 'description'], 'required'],
+            [['title', 'description'], 'string', 'max' => 200],
+            [['logo'], 'safe'],
+            ['file', 'file', 'extensions' => ['jpg','jpeg','png','gif']],
+
+        ];
     }
 
     /**
