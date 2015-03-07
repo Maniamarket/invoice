@@ -132,6 +132,7 @@ class PaymentbanktransController extends Controller {
      */
     public function actionCreate() {
 	$model = new Paymentbanktrans();
+    $model->sum = (isset($_REQUEST['cost'])) ? $_REQUEST['cost'] : 0;
 
 	if (Yii::$app->request->isPost) {
 	    $model->attributes = $_POST['Paymentbanktrans'];
@@ -160,7 +161,7 @@ class PaymentbanktransController extends Controller {
            }
 	    }else $model->addError('file','file not choosen');
 	}
-     return $this->render('create', [ 'model' => $model,   ]);
+     return $this->render('create', [ 'model' => $model, 'payment_id'=> 3  ]);
     }
 
     public function actionHistory( $id = 0)

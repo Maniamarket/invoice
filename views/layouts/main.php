@@ -63,7 +63,6 @@ AppAsset::register($this);
                     ['label' => Yii::t('app', 'Clients'), 'url' => ['/client/index'], 'visible' => !Yii::$app->user->isGuest],
                     ['label' => Yii::t('app', 'Invoice'), 'url' => ['/invoice/index'], 'visible' => !Yii::$app->user->isGuest],
                     ['label' => Yii::t('app', 'Companies'), 'url' => ['/company/index'], 'visible' => !Yii::$app->user->isGuest],
-                    ['label' => Yii::t('app', 'Services'), 'url' => ['/service/index'], 'visible' => !Yii::$app->user->isGuest],
                     ['label' => Yii::t('app', 'Taxes'), 'url' => '#', 'visible' => !Yii::$app->user->isGuest,
                         'items' => [
 //                        ['label' => 'Подоходный', 'url' => ['/tax/index'], 'visible' => !Yii::$app->user->isGuest],
@@ -73,6 +72,7 @@ AppAsset::register($this);
                     ],
                     ['label' => Yii::t('app', 'Settings'), 'url' => '#', 'visible' => !Yii::$app->user->isGuest,
                         'items' => [
+                            ['label' => Yii::t('app', 'Services'), 'url' => ['/service/index'], 'visible' => !Yii::$app->user->isGuest],
                             ['label' => Yii::t('app', 'Payment'), 'url' => ['/payment/index'], 'visible' => !Yii::$app->user->isGuest,
 //							'items' => [
 //								['label' => Yii::t('app', 'Pay Pal'), 'url' => ['/payment/index'], 'visible' => !Yii::$app->user->isGuest],
@@ -95,13 +95,14 @@ AppAsset::register($this);
                                     ['label' => Yii::t('app', 'History Bank transfer'), 'url' => ['/paymentbanktrans/history'], 'visible' => !Yii::$app->user->isGuest],
                                 ],
                             ],
-                            ['label' => Yii::t('app', 'Payment'), 'url' => ['/payment/index'], 'visible' => !Yii::$app->user->isGuest,
+                            ['label' => Yii::t('app', 'Buy Credits'), 'url' => ['/user/buy', 'visible' => !Yii::$app->user->isGuest]],
+                            ['label' => Yii::t('app', 'Bank transfer'), 'url' => ['/paymentbanktrans/index'], 'visible' => !Yii::$app->user->isGuest],
+/*                            ['label' => Yii::t('app', 'Payment'), 'url' => ['/payment/index'], 'visible' => !Yii::$app->user->isGuest,
                                 'items' => [
                                     ['label' => Yii::t('app', 'Pay Pal'), 'url' => ['/user/payment_credit', 'payment_id' => 2, 'id' => Yii::$app->user->id], 'visible' => !Yii::$app->user->isGuest],
                                     ['label' => Yii::t('app', 'Card payment'), 'url' => ['/payment/index'], 'visible' => !Yii::$app->user->isGuest],
-                                    ['label' => Yii::t('app', 'Bank transfer'), 'url' => ['/paymentbanktrans/index'], 'visible' => !Yii::$app->user->isGuest],
                                 ],
-                            ],
+                            ],*/
                         ],
                     ],
                     ['label' => Yii::t('app', 'Register'), 'url' => ['/site/signup'], 'visible' => Yii::$app->user->isGuest],

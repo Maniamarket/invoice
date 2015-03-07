@@ -31,6 +31,7 @@ return array(
     'Languages' => 'Languages',
     'Incomes' => 'Incomes',
     'Account' => 'Account',
+    'Buy Credits' => 'Buy Credits',
     'About' => 'About',
     'Contact' => 'Contact',
     'Login' => 'Login',

@@ -393,3 +393,6 @@ a.desc:after {
     color: #666666;
     padding: 4px 8px;
 }
+.nowrap {
+    white-space: nowrap;
+}

@@ -32,6 +32,7 @@ return [
     'Languages' => 'Языки',
     'Incomes' => 'Комиссии',
     'Account' => 'Аккаунт',
+    'Buy Credits' => 'Купить кредиты',
     'About' => 'О нас',
     'Contact' => 'Контакты',
     'Login' => 'Логин',

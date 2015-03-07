@@ -6,17 +6,17 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Paymentbanktrans */
 
-$this->title = 'Get credits by bank transfer';
+$this->title = Yii::$app->name . ' - ' . Yii::t('app', 'Buy credits');
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
-<div class="paymentbanktrans-create">
+
   <strong><?= Yii::$app->session->getFlash('successCreditPay'); ?></strong>
 
 
-    <h1 class="title"><?= Html::encode($this->title) ?></h1>
+<h1 class="title"><?php  echo Yii::t('app', 'Buy credits');  ?></h1>
 
     <?= $this->render('_form', [
         'model' => $model,
+        'payment_id' => $payment_id,
     ]) ?>
-
-</div>

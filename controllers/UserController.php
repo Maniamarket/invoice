@@ -76,21 +76,22 @@ class UserController extends Controller {
     /**
      * Lists all models.
      */
-    public function actionBuy($id) {
-	if ($id == Yii::$app->user->id) {
-	    if (isset($_POST['payment'])) {
-		$pay = $_POST['payment'];
-		switch ($pay) {
-		    case 1 : return $this->redirect(['payment_credit', 'id' => $id, 'payment_id' => $pay]);
-		    case 2 : return $this->redirect(['payment_credit', 'id' => $id, 'payment_id' => $pay]);
-		    case 3 : return $this->redirect(['/paymentbanktrans/create']);
-		    default : return $this->redirect(['buy']);
-		}
-		
-	    }
-	    return $this->render('buy', []);
-	} else
-	    echo 'Это не для гостей';
+    public function actionBuy() {
+        if (Yii::$app->user->can('user')) {
+            $id = Yii::$app->user->id;
+            $model = new User_payment;
+            if (isset($_POST['payment'])) {
+                $pay = (isset($_POST['payment'])) ? $_POST['payment'] : 0 ;
+                switch ($pay) {
+                    case 1 : return $this->redirect(['payment_credit', 'id' => $id, 'payment_id' => $pay]);
+                    case 2 : return $this->redirect(['payment_credit', 'id' => $id, 'payment_id' => $pay]);
+                    case 3 : return $this->redirect(['/paymentbanktrans/create']);
+                    default : return $this->render('buy', ['model'=>$model]);
+                }
+            }
+            return $this->render('buy', ['model'=>$model]);
+        } else
+            echo 'Это не для гостей';
     }
 
     /**
@@ -100,6 +101,7 @@ class UserController extends Controller {
         if( $id == Yii::$app->user->id)
         {
             $model = new User_payment;
+            $model->credit = (isset($_REQUEST['cost'])) ? $_REQUEST['cost'] : 0;
             if( $model->load(Yii::$app->request->post()) ){
                 //увеличение кредитов (история)
                 $model->user_id = $id;
