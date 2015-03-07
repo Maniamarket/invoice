@@ -273,7 +273,7 @@ class InvoiceController extends Controller
                         $item_t =  Invoice_item::findOne($row['id']);
                         $item_t->attributes = $row;
                         $net = ((int) $item_t->count)*( (int) $item_t->price_service);
-                        $item_t->total_price = $net*(1+( (int)$vat->percent+ (int)$model->income - (int)$item_t->discount)/100);
+                        $item_t->total_price = $net*(1 - (int)$item_t->discount/100)*(1+((int)$vat->percent+ (int)$model->income)/100);
                         $items_error[] = ( $is = $item_t->save()) ? 0 : $item_t->errors;
                         if( !$is ) $is_error = true;
                         $itog['net'] = $itog['net']+$net;
@@ -282,7 +282,7 @@ class InvoiceController extends Controller
                 }
                 $item = new Invoice_item;
                 $item->attributes = $_POST;
-                $item->total_price = $item->count*$item->price_service*(1+($vat->percent + $model->income - $item->discount)/100);
+                $item->total_price = $item->count*$item->price_service*(1- $item->discount/100)*(1+($vat->percent + $model->income)/100 );
                 $item->invoice_id = $model->id;
 
                 $model_item = $item;
@@ -336,7 +336,7 @@ class InvoiceController extends Controller
                         $item_t =  Invoice_item::findOne($row['id']);
                         $item_t->attributes = $row;
                         $net = ((int) $item_t->count)*( (int) $item_t->price_service);
-                        $item_t->total_price = $net*(1+( (int) $vat->percent+ (int)$model->income - (int)$item_t->discount)/100);
+                        $item_t->total_price = $net*(1 - (int)$item_t->discount/100)*(1+((int)$vat->percent+ (int)$model->income)/100);
                         $items_error[] = ( $is = $item_t->save()) ? 0 : $item_t->errors;
                         if( !$is ) $is_error = true;
                         $itog['net'] = $itog['net'] + $net;
@@ -348,7 +348,7 @@ class InvoiceController extends Controller
                     if( (Yii::$app->session['create_invoice']+1) == $_GET['create_invoice'] )
                     {
                         $item = new Invoice_item;
-                        $item->count = 0;
+                        $item->count = 1;
                         $item->price_service =0;
                         $item->discount =0;
                         $item->service_id = 1;

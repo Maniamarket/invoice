@@ -273,7 +273,7 @@ Yii::$app->view->registerJsFile('@web/js/invoice_form.js');
         var price = $('#price_'+a).val();
         var discount = $('#discount_'+a).val();
         var net = parseFloat(price*count);
-        var  total = net*(1+(parseFloat(vat)-parseFloat(discount))/100)*(1+parseFloat(income)/100);
+        var total = net*(1-parseFloat(discount)/100)*(1+(parseFloat(vat)+parseFloat(income))/100);
 //            alert(total+' vat '+vat+' net '+net+ ' income '+income+' discount '+discount+' count= '+count+' prise= '+price);
         total = total.toFixed(2);
         $('#total_'+a).val(total);
@@ -287,7 +287,7 @@ Yii::$app->view->registerJsFile('@web/js/invoice_form.js');
                 price = $('#price_').val();
                 discount = $('#discount_').val();
                 net = parseFloat(price*count);
-                total = net*(1+(parseFloat(vat)-parseFloat(discount))/100)*(1+parseFloat(income)/100);
+                total = total = net*(1-parseFloat(discount)/100)*(1+(parseFloat(vat)+parseFloat(income))/100);
                 net_itog = net;
             }
             for( var i=1; i<= count_items; i++){
@@ -297,7 +297,7 @@ Yii::$app->view->registerJsFile('@web/js/invoice_form.js');
                 discount = $('#discount_'+to).val();
                 net = parseFloat(price*count);
                 net_itog = net_itog + net;
-                total = total + net*(1+(parseFloat(vat)-parseFloat(discount))/100)*(1+parseFloat(income)/100);
+                total = total + net*(1-parseFloat(discount)/100)*(1+(parseFloat(vat)+parseFloat(income))/100);
             }
             total = total.toFixed(2);
             net_itog = net_itog.toFixed(2);
