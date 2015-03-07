@@ -2,6 +2,7 @@
 namespace app\controllers;
 
 use Yii;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\data\ActiveDataProvider;
@@ -277,6 +278,7 @@ class UserController extends Controller {
                 'pagination' => [ 'pageSize' => 6, ],
             ]);
         $hearder = $this->getHeader($type_user);
+        Yii::$app->getSession()->set('url_user',Url::toRoute(['user/index','type_user'=>$type_user]));
         return $this->render('index',['dataProvider'=>$dataProvider, 'hearder' => $hearder, 'type_user' => $type_user ]);
    }
 

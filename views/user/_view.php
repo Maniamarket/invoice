@@ -58,7 +58,7 @@ $view_element_td = 'td_tax_id'.$model->id;
         <td><?php  echo ($model->profit_manager) ?></td>
         <td><?php  echo ($model->sum_profit_manager) ?></td>
      <?php } ?>
-     <?php  if( $type_user > 2 && $type_user < 4){ ;?>
+     <?php  if( $type_user ==3 ){ ;?>
         <td><?php  echo ($model->profit_admin) ?></td>
         <td><?php  echo ($model->sum_profit_admin) ?></td>
      <?php } ?>
@@ -66,5 +66,13 @@ $view_element_td = 'td_tax_id'.$model->id;
         <td><?php  echo ($model->income) ?></td>
         <td><?php  echo ($model->my_profit) ?></td>
      <?php } ?>
+       <td>
+    <?php  if( $type_user == 3 ){ ;?>
+    <?php
+      $url = Url::toRoute(['setting/edit','id'=>$model->id]);
+      echo Html::a('edit',$url, []);
+    ?>
+    <?php } ?>
+      </td>
 
 </tr>

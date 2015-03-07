@@ -31,13 +31,16 @@ $this->params['breadcrumbs'][] = $this->title;
         <th>Profit Manager</th>
         <th>Total Profit Manager</th>
         <?php } ?>
-        <?php if( $type_user > 2 && $type_user < 4){ ?>
+        <?php if( $type_user == 3){ ?>
         <th>Profit Admin</th>
         <th>Total Profit Admin</th>
         <?php } ?>
         <?php if( $type_user > 1 && $type_user < 4){ ?>
         <th>Income</th>
         <th>My_profit</th>
+        <?php } ?>
+        <?php if( $type_user == 3){ ?>
+            <th>Edit</th>
         <?php } ?>
     </tr>
     </thead>
