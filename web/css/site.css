@@ -396,3 +396,13 @@ a.desc:after {
 .nowrap {
     white-space: nowrap;
 }
+.fieldset-full-grey {
+    width: 100%;
+    background: #f7f7f7;
+    float: left;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+.form-horizontal .fieldset-full-grey .control-label {
+    text-align: left;
+}

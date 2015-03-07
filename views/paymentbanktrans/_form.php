@@ -41,8 +41,67 @@ use app\models\Setting;
             </div>
             <?php echo $form->field($model, 'file',['labelOptions'=>['class'=>'control-label col-md-5']])->fileInput()->hint('Attach File ')->label('Add Receipt') ; ?>
             <?php echo $form->field($model, 'message',['labelOptions'=>['class'=>'control-label col-md-5']])->textInput(['maxlength' => 255])->hint('Message')->label('Message') ; ?>
-
         </div>
+    </div>
+    <div class="row">
+        <div class="fieldset-full-grey">
+            <div class="fieldset-column pull-left">
+                <div class="form-group">
+                    <label class="control-label col-md-4">Bank 1</label>
+                    <div class="col-md-8">
+                        <p class="form-control">Eurobank</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4">Bank Account</label>
+                    <div class="col-md-8">
+                        <p class="form-control">0026.2567.5457.5457.2156</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4">IBAN</label>
+                    <div class="col-md-8">
+                        <p class="form-control">GR5902601250000850200907863</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4">SWIFT</label>
+                    <div class="col-md-8">
+                        <p class="form-control">TBNFFR43PAR</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="fieldset-full-grey">
+            <div class="fieldset-column pull-left">
+                <div class="form-group">
+                    <label class="control-label col-md-4">Bank 2</label>
+                    <div class="col-md-8">
+                        <p class="form-control">Alpha Bank</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4">Bank Account</label>
+                    <div class="col-md-8">
+                        <p class="form-control">0026.2567.5457.5457.2156</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4">IBAN</label>
+                    <div class="col-md-8">
+                        <p class="form-control">GR5902601250000850200907863</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4">SWIFT</label>
+                    <div class="col-md-8">
+                        <p class="form-control">TBNFFR43PAR</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
     </div>
     <div class="form-group">
         <?= Html::submitButton('Buy Credits', ['class' => 'btn btn-action', 'name' => 'send']) ?>

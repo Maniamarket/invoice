@@ -132,8 +132,8 @@ use yii\helpers\Url;
     <div class="row">
         <div class="fieldset-column pull-left">
             <?php echo $form->field($model, 'credit',['labelOptions'=>['class'=>'control-label'],
-                'template' => "<div class=\"col-md-7\">{label}\n{input}</div>\n<div class=\"col-md-offset-2 col-md-7\">{error}</div>"])->textInput(['id'=>'cost']) ; ?>
-            <a href="#" onclick="window.location.href = '<?= Url::toRoute(['user/buy'],true) ?>?cost='+$('#cost').val()" class="btn btn-action">
+                'template' => "<div class=\"col-md-7\">{label}\n{input}</div>\n<div class=\"col-md-offset-2 col-md-7\">{error}</div>"])->textInput(['disabled'=>'disabled'])->label(Yii::t('app', 'Balance')) ; ?>
+            <a href="<?= Url::toRoute(['user/buy'],true) ?>" class="btn btn-action">
                 <?php echo Yii::t('app','Buy Credits'); ?></a>
 <!--            <a href="#" data-toggle="modal" data-target="#modal-credits" class="btn btn-action">
                 <?php echo Yii::t('app','Buy Credits'); ?></a>-->
