@@ -132,14 +132,16 @@ use yii\helpers\Url;
     <div class="row">
         <div class="fieldset-column pull-left">
             <?php echo $form->field($model, 'credit',['labelOptions'=>['class'=>'control-label'],
-                'template' => "<div class=\"col-md-7\">{label}\n{input}</div>\n<div class=\"col-md-offset-2 col-md-7\">{error}</div>"])->textInput(['disabled'=>'disabled']) ; ?>
-            <a href="#" data-toggle="modal" data-target="#modal-credits" class="btn btn-action">
+                'template' => "<div class=\"col-md-7\">{label}\n{input}</div>\n<div class=\"col-md-offset-2 col-md-7\">{error}</div>"])->textInput(['id'=>'cost']) ; ?>
+            <a href="#" onclick="window.location.href = '<?= Url::toRoute(['user/buy'],true) ?>?cost='+$('#cost').val()" class="btn btn-action">
                 <?php echo Yii::t('app','Buy Credits'); ?></a>
+<!--            <a href="#" data-toggle="modal" data-target="#modal-credits" class="btn btn-action">
+                <?php echo Yii::t('app','Buy Credits'); ?></a>-->
         </div>
     </div>
 <?php  ActiveForm::end(); ?>
             <?php
-            Modal::begin([
+ /*           Modal::begin([
                 'header' => '&nbsp;',
                 'options'=>['id'=>'modal-credits'],
 //                'toggleButton' => ['tag'=>'a', 'label' => 'Buy Credits',
@@ -160,7 +162,7 @@ use yii\helpers\Url;
             echo '<div class="form-group"><div class="col-md-5" style="text-align: right;"><a href="#" id="buy_credit_submit" class="btn btn-action">Buy Credits</a> </div></div>';
             echo '</div>';
             ActiveForm::end();
-            Modal::end();
+            Modal::end();*/
             ?>
 </div>
 

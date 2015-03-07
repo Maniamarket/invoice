@@ -80,6 +80,7 @@ class UserController extends Controller {
         if (Yii::$app->user->can('user')) {
             $id = Yii::$app->user->id;
             $model = new User_payment;
+            $model->credit = (isset($_REQUEST['cost'])) ? $_REQUEST['cost'] : 0;
             if (isset($_POST['payment'])) {
                 $pay = (isset($_POST['payment'])) ? $_POST['payment'] : 0 ;
                 switch ($pay) {

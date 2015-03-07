@@ -36,6 +36,7 @@ $(document).ready(function () {
         $(this).blur(function() {
             if (!$(this).next().is(':hover')) {
                 $(this).next().hide();
+                $(this).next().next().hide();
             }
         });
     })
