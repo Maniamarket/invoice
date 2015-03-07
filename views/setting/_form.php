@@ -12,14 +12,6 @@ use yii\helpers\Url;
 <?php
     $form=ActiveForm::begin( [
 	'id'=>'service-form',
-	// Please note: When you enable ajax validation, make sure the corresponding
-                     //echo $form->field($user, 'username',['labelOptions'=>['class'=>'control-label col-md-4'], 'template' => "{label}\n<div class=\"col-md-7\">{input}</div>\n<div class=\"col-md-offset-2 col-md-7\">{error}</div>"])->textInput() ;
-    // echo Html::textInput('login',$login,[]) ;
-    // if(isset($user->errors['username'][0])) echo $user->errors['username'][0];
-
-    // controller action is handling ajax validation correctly.
-	// There is a call to performAjaxValidation() commented in generated controller code.
-	// See class documentation of CActiveForm for details on this.
 	'enableAjaxValidation'=>false,
         'options'=>['enctype'=>'multipart/form-data','class' => 'form-horizontal', 'role'=>'form'],
         'fieldConfig' => [
@@ -58,6 +50,64 @@ use yii\helpers\Url;
             <?php echo $form->field($model, 'def_company_id',['labelOptions'=>['class'=>'control-label']])->dropDownList(Setting::List_company(['prompt'=>'-Choose a Company-'])); ?>
         </div>
     </div>
+
+
+    <div class="form-group">
+        <div class="fieldset"><?= Yii::t('app', 'Professional Details') ?></div>
+    </div>
+    <div class="row">
+        <div class="fieldset-column pull-left">
+            <?php echo $form->field($model, 'company_name',['labelOptions'=>['class'=>'control-label col-md-4']])->textInput() ; ?>
+            <?php echo $form->field($model, 'vat_number',['labelOptions'=>['class'=>'control-label col-md-4']])->textInput() ; ?>
+            <?php echo $form->field($model, 'tax_agency',['labelOptions'=>['class'=>'control-label col-md-4']])->textInput() ; ?>
+            <?php
+            echo $form->field($model, 'country_id',['labelOptions'=>['class'=>'control-label col-md-4']])->dropDownList(\yii\helpers\ArrayHelper::map(\app\models\Country::getCountriesArray(2),'cid','name'),['class'=>'dropdown-ajax']);
+
+            ?>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $('.dropdown-ajax').parent().css('position: relative');
+                    $('.dropdown-ajax').each(function(){
+                        $(this).parent().append(
+                            '<input type="text" class="form-control dropdown-ajax-search" value="'+$(this).children('option:selected').text()+'" />'
+                        );
+                        var list_option = '';
+                        $(this).children('option').each(function(){
+                            list_option = list_option +'<li data-val="'+$(this).val()+'">'+$(this).text()+'</li>';
+                        })
+                        $(this).parent().append('<div class="dropdown-ajax-result"><ul>'+list_option+'</ul></div>');
+                    })
+                    $('.dropdown-ajax-search').each(function() {
+                        $(this).focus(function() {
+                            $(this).next().show();
+                        });
+                        $(this).blur(function() {
+                            if (!$(this).next().is(':hover')) {
+                                $(this).next().hide();
+                            }
+                        });
+                    })
+                    $('.dropdown-ajax-result li').each(function() {
+                        $(this).click(function() {
+                            $(this).closest('.dropdown-ajax-result').prev().val($(this).text());
+                            $(this).closest('.dropdown-ajax-result').prev().prev().val($(this).attr('data-val'));
+                            //                         alert($(this).attr('data-val'));
+                            $(this).closest('.dropdown-ajax-result').hide();
+                        });
+                    })
+                })
+            </script>
+            <?php echo $form->field($model, 'city',['labelOptions'=>['class'=>'control-label col-md-4']])->textInput() ; ?>
+            <?php echo $form->field($model, 'street',['labelOptions'=>['class'=>'control-label col-md-4']])->textInput(); ?>
+        </div>
+        <div class="fieldset-column pull-right">
+            <?php echo $form->field($model, 'post_index',['labelOptions'=>['class'=>'control-label col-md-4']])->textInput() ; ?>
+            <?php echo $form->field($model, 'phone',['labelOptions'=>['class'=>'control-label col-md-4']])->textInput() ; ?>
+            <?php echo $form->field($model, 'fax',['labelOptions'=>['class'=>'control-label col-md-4']])->textInput(); ?>
+            <?php echo $form->field($model, 'web_site',['labelOptions'=>['class'=>'control-label col-md-4']])->textInput(); ?>
+        </div>
+    </div>
+
 
     <div class="form-group">
         <?php echo Html::submitButton($model->isNewRecord ? 'Create' : 'Save',['class'=>'btn btn-action']); ?>

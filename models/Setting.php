@@ -35,10 +35,12 @@ class Setting extends ActiveRecord {
 	// will receive user inputs.
 	return array(
 	    [['def_company_id','bank_code', 'account_number','def_lang_id'], 'required'],
-	    [['def_vat_id','post_index'], 'integer'],
+	    [['def_vat_id','post_index','country_id'], 'integer'],
 	    [['credit','surtax'], 'integer','integerOnly'=>FALSE],
-        [['bank_code', 'account_number','country','city','street','phone','web_site','name','def_template'], 'filter', 'filter' => 'trim'],
-	    [['bank_code', 'account_number','country','city','street','phone','web_site','name','def_template'], 'string', 'max' => 100],
+        [['bank_code', 'account_number','city','street','phone','web_site','name','def_template','company_name',
+            'vat_number','tax_agency','fax'], 'filter', 'filter' => 'trim'],
+        [['bank_code', 'account_number','city','street','phone','vat_number','tax_agency','fax'], 'string', 'max' => 100],
+        [['web_site','name','def_template'], 'string', 'max' => 200],
 	    // The following rule is used by search().
 	    // @todo Please remove those attributes that should not be searched.
 	   [['credit', 'def_vat_id', 'def_company_id', 'def_lang_id'], 'safe', 'on' => 'search'],
