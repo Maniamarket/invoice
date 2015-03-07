@@ -64,7 +64,7 @@ $view_element_td = 'td_tax_id'.$model->id;
     <?php  if( $type_user >= 1 ){ ;?>
     <?php
       $url = Url::toRoute(['setting/edit','id'=>$model->id]);
-      echo Html::a('edit',$url, []);
+      echo Html::a('<img src="/images/edit.png" />',$url, ['title'=>'Edit']);
     ?>
     <?php } ?>
       </td>

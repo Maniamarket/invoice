@@ -24,10 +24,10 @@ the client must pay the VAT <br />
         <?php
          if (Yii::$app->user->can('superadmin') || ((Yii::$app->user->id == $model->user_id) && !$model->is_pay)){ ?>
             <span class="pull-right">
-                <?php echo Html::a('<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>',
+                <?php echo Html::a('<img src="/images/edit.png" />',
                     ['update', 'id'=>$model->id],['title'=>'Update']); ?>
                 &nbsp;
-                <?php echo Html::a('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>',
+                <?php echo Html::a('<img src="/images/delete.png" />',
                     ['delete', 'id'=>$model->id],['title'=>'Delete', 'onClick'=>'return confirm("Вы действительно хотите удалить?")']); ?>
             </span>
         <?php }
