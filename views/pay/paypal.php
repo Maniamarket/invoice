@@ -30,8 +30,8 @@ $currency     =  "EUR";// 'RUB';             // валюта
      <?php  echo Html::hiddenInput("item_name","Credit"); ?>
      <?php  echo Html::hiddenInput("item_number" , $model->id); ?>
      <?php $number = $model->credit*(1+0.035);
-     //     echo Html::hiddenInput("amount" ,number_format($number, 2, '.', ''));
-          echo Html::hiddenInput("amount" ,$model->credit);
+          echo Html::hiddenInput("amount" ,number_format($number, 2, '.', ''));
+     //     echo Html::hiddenInput("amount" ,$model->credit);
      ?>
      <?php  echo Html::hiddenInput("no_note" , "1"); ?>
      <?php  echo Html::hiddenInput("no_shipping" , "1"); ?>
