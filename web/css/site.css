@@ -373,3 +373,23 @@ a.desc:after {
     padding-top: 6px;
     padding-right: 14px;
 }
+.pagination {
+    background: #d8d8d8;
+    padding: 4px;
+    font-family: 'Verdana';
+    font-size: 10px;
+    border: 1px solid rgba(0,0,0,0.25);
+    -webkit-box-shadow: inset 2px 10px 3px -6px rgba(0,0,0,0.25);
+    -moz-box-shadow: inset 2px 10px 3px -6px rgba(0,0,0,0.25);
+    box-shadow: inset 2px 10px 3px -6px rgba(0,0,0,0.25);
+}
+.pagination > li > a, .pagination > li > span {
+    border-radius: 5px;
+    background: #d3d3d3;
+    margin: 0 4px;
+    -webkit-box-shadow: 2px 2px 3px 0px rgba(50, 50, 50, 0.52);
+    -moz-box-shadow:    2px 2px 3px 0px rgba(50, 50, 50, 0.52);
+    box-shadow:         2px 2px 3px 0px rgba(50, 50, 50, 0.52);
+    color: #666666;
+    padding: 4px 8px;
+}

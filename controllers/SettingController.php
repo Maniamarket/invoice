@@ -8,6 +8,8 @@ use yii\web\HttpException;
 use app\models\Setting;
 use app\models\User;
 use yii\db\Query;
+use yii\web\UploadedFile;
+
 class SettingController extends Controller {
 
     public function behaviors()
@@ -48,9 +50,19 @@ class SettingController extends Controller {
             $user->setPassword($password_);
             $user->generateAuthKey();
         }
+        $file = UploadedFile::getInstance($model,'file');
+        if ($file)
+            $model->avatar = $file->name;
     	if ($model->load(Yii::$app->request->post()) && $model->save() && $user->load(Yii::$app->request->post()) && $user->save() )
          {
-             return $this->redirect(['site/index']);
+             if ($file){
+                 $uploaded = $file->saveAs(Yii::$app->params['avatarPath'].$file->name);
+                 $image=Yii::$app->image->load(Yii::$app->params['avatarPath'].$file);
+                 $image->resize(100);
+                 $image->save();
+             }
+             Yii::$app->getSession()->setFlash('success', 'The account is successfully updated');
+             return $this->redirect(['update']);
          }
         return $this->render('update', ['model' => $model, 'user'=>$user]);
     }
@@ -70,7 +82,10 @@ class SettingController extends Controller {
             }
             return $this->render('edit', ['model' => $model, 'user'=>$user ]);
         }
-        else  return $this->redirect(['site/index']);
+        else  {
+            Yii::$app->getSession()->setFlash('success', 'The user is successfully updated');
+            return $this->redirect(['site/index']);
+        }
     }
 
 

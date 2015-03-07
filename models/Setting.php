@@ -23,6 +23,8 @@ use yii\helpers\ArrayHelper;
  */
 class Setting extends ActiveRecord {
 
+    public $file;
+
     public static function tableName() {
 	return 'setting';
     }
@@ -33,7 +35,7 @@ class Setting extends ActiveRecord {
     public function rules() {
 	// NOTE: you should only define rules for those attributes that
 	// will receive user inputs.
-	return array(
+	return [
 	    [['def_company_id','bank_code', 'account_number','def_lang_id'], 'required'],
 	    [['def_vat_id','post_index','country_id'], 'integer'],
 	    [['credit','surtax'], 'integer','integerOnly'=>FALSE],
@@ -43,8 +45,10 @@ class Setting extends ActiveRecord {
         [['web_site','name','def_template'], 'string', 'max' => 200],
 	    // The following rule is used by search().
 	    // @todo Please remove those attributes that should not be searched.
-	   [['credit', 'def_vat_id', 'def_company_id', 'def_lang_id'], 'safe', 'on' => 'search'],
-	);
+	    [['credit', 'def_vat_id', 'def_company_id', 'def_lang_id'], 'safe', 'on' => 'search'],
+        [['avatar'], 'safe'],
+        ['file', 'file', 'extensions' => ['jpg','jpeg','png','gif']],
+	];
     }
 
     /**
@@ -63,7 +67,19 @@ class Setting extends ActiveRecord {
     public function attributeLabels() {
 	return array(
 	    'user_id' => Yii::t('app', 'ID Number'),
-	    'credit' => Yii::t('app', 'Credits'),
+        'credit' => Yii::t('app', 'Credits'),
+        'name' => Yii::t('app', Yii::t('app', 'Full Name')),
+        'company_name' => Yii::t('app', Yii::t('app', 'Company Name')),
+        'vat_number' => Yii::t('app', Yii::t('app', 'Vat')),
+        'tax_agency' => Yii::t('app', Yii::t('app', 'Tax Agency')),
+        'post_index' => Yii::t('app', Yii::t('app', 'Zip')),
+        'phone' => Yii::t('app', Yii::t('app', 'Telephone')),
+        'fax' => Yii::t('app', Yii::t('app', 'Fax')),
+        'country_id' => Yii::t('app', Yii::t('app', 'Country')),
+        'city' => Yii::t('app', Yii::t('app', 'City')),
+        'street' => Yii::t('app', 'Address'),
+        'web_site' => Yii::t('app', 'Url'),
+        'file' => Yii::t('app', Yii::t('app', 'Logo')),
         'def_template' => Yii::t('app', 'Default Template'),
         'def_vat_id' =>  Yii::t('app', 'Default VAT, %'),
         'surtax' => 'Default Income Tax, %',
