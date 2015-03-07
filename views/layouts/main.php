@@ -53,7 +53,7 @@ AppAsset::register($this);
                     ['label' => Yii::t('app', 'Home'), 'url' => ['/site/index'], 'visible' => !Yii::$app->user->isGuest],
                     ['label' => Yii::t('app', 'Users'), 'url' => '#', 'visible' => Yii::$app->user->can('manager'),
                         'items' => [
-                            ['label' => Yii::t('app', 'My Users'), 'url' => ['/user/index', 'type_user' => 1], 'visible' => Yii::$app->user->can('manager')],
+                            ['label' => Yii::t('app', 'My Users'), 'url' => ['/user/index', 'type_user' => 1], 'visible' => (Yii::$app->user->can('manager') && !Yii::$app->user->can('superadmin'))],
                             ['label' => Yii::t('app', 'My Managers'), 'url' => ['/user/index', 'type_user' => 2], 'visible' => Yii::$app->user->can('admin')],
                             ['label' => Yii::t('app', 'My Admins'), 'url' => ['/user/index', 'type_user' => 3], 'visible' => Yii::$app->user->can('superadmin')],
                             ['label' => Yii::t('app', 'All Users'), 'url' => ['/user/index', 'type_user' => 4], 'visible' => Yii::$app->user->can('superadmin')],
