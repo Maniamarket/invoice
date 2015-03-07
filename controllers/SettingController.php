@@ -71,6 +71,9 @@ class SettingController extends Controller {
         if( Yii::$app->user->can('manager') ){
             $model = $this->loadModel($id);
             $user = User::findOne(['id'=>$id]);
+            $file = UploadedFile::getInstance($model,'file');
+            if ($file)
+                $model->avatar = $file->name;
             if( isset($_POST['User']['password_'])  ){
                 if( $password_= $_POST['User']['password_'] ){
                      $user->setPassword($password_);
@@ -80,12 +83,22 @@ class SettingController extends Controller {
                    $user->role = $_POST['User']['role'];
                    $user->parent_id = $_POST['User']['parent_id'];
                 }
-                if ( $user->save() ) return (Yii::$app->getSession()->get('url_user') ) ? $this->redirect(Yii::$app->getSession()->get('url_user')) : $this->redirect(['user/index','type_user'=>4]);
+
+                if ($user->save() && $model->load(Yii::$app->request->post()) && $model->save()) {
+                    if ($file){
+                        $uploaded = $file->saveAs(Yii::$app->params['avatarPath'].$file->name);
+                        $image=Yii::$app->image->load(Yii::$app->params['avatarPath'].$file);
+                        $image->resize(100);
+                        $image->save();
+                    }
+                    Yii::$app->getSession()->setFlash('success', 'The user is successfully updated');
+                    return (Yii::$app->getSession()->get('url_user') ) ? $this->redirect(Yii::$app->getSession()->get('url_user')) : $this->redirect(['user/index','type_user'=>4]);
+                }
             }
             return $this->render('edit', ['model' => $model, 'user'=>$user ]);
         }
         else  {
-            Yii::$app->getSession()->setFlash('success', 'The user is successfully updated');
+            Yii::$app->getSession()->setFlash('danger', 'Access is forbidden');
             return $this->redirect(['site/index']);
         }
     }
