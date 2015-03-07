@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Receipt;
 use Yii;
 use app\models\Transactionbanktrans;
 use yii\data\ActiveDataProvider;
@@ -82,15 +83,28 @@ class TransactionbanktransController extends Controller {
      * @return mixed
      */
     public function actionUpdate($id) {
-	$model = $this->findModel($id);
+        $model = $this->findModel($id);
 
-	if ($model->load(Yii::$app->request->post()) && $model->save()) {
-	    return $this->redirect(['view', 'id' => $model->id]);
-	} else {
-	    return $this->render('update', [
-			'model' => $model,
-	    ]);
-	}
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    public function actionReceipt() {
+        $model = Receipt::findOne([''])$this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }
+//        var_dump('aaaa');
     }
 
     /**
