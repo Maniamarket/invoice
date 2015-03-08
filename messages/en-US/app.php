@@ -8,6 +8,9 @@ return array(
     'verifyCode' => 'verifyCode',
     'Submit' => 'Submit',
     'On your account' => 'On your account',
+    'Title' => 'Title',
+    'Logo' => 'Logo',
+    'Description' => 'Description',
     
     ////main menu 
     'Home' => 'Home',

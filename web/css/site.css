@@ -406,3 +406,6 @@ a.desc:after {
 .form-horizontal .fieldset-full-grey .control-label {
     text-align: left;
 }
+.label-left .form-horizontal .control-label {
+    text-align: left;
+}

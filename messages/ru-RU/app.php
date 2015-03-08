@@ -9,6 +9,9 @@ return [
     'verifyCode' => 'Код верификации',
     'Submit' => 'Отправить',
     'On your account' => 'На вашем счете',
+    'Title' => 'Заголовок',
+    'Logo' => 'Логотип',
+    'Description' => 'Описание',
 
     ////main menu 
     'Home' => 'Главная',

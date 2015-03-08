@@ -108,14 +108,10 @@ use yii\helpers\Url;
     </div>
     <div class="row">
         <div class="fieldset-column pull-left">
-            <?php echo $form->field($model, 'surtax',['labelOptions'=>['class'=>'control-label'],
-                'template' => "<div class=\"col-md-7\">{label}\n{input}</div>\n<div class=\"col-md-offset-2 col-md-7\">{error}</div>"])->textInput() ; ?>
             <?php echo $form->field($model, 'def_template',['labelOptions'=>['class'=>'control-label'],
                 'template' => "<div class=\"col-md-7\">{label}\n{input}</div>\n<div class=\"col-md-offset-2 col-md-7\">{error}</div>"])->dropDownList(Setting::List_Templates(['prompt'=>'-Choose a Template-'])); ?>
         </div>
         <div class="fieldset-column pull-right">
-            <?php echo $form->field($model, 'def_vat_id',['labelOptions'=>['class'=>'control-label'],
-                'template' => "<div class=\"col-md-7\">{label}\n{input}</div>\n<div class=\"col-md-offset-2 col-md-7\">{error}</div>"])->dropDownList(Setting::List_vat(['prompt'=>'-Choose a Vat-'])); ?>
             <?php echo $form->field($model, 'def_company_id',['labelOptions'=>['class'=>'control-label'],
                 'template' => "<div class=\"col-md-7\">{label}\n{input}</div>\n<div class=\"col-md-offset-2 col-md-7\">{error}</div>"])->dropDownList(Setting::List_company(['prompt'=>'-Choose a Company-'])); ?>
         </div>

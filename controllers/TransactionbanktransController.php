@@ -9,6 +9,7 @@ use yii\data\ActiveDataProvider;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 
@@ -17,15 +18,32 @@ use yii\web\UploadedFile;
  */
 class TransactionbanktransController extends Controller {
 
-    public function behaviors() {
-	return [
-	    'verbs' => [
-		'class' => VerbFilter::className(),
-		'actions' => [
-		    'delete' => ['post'],
-		],
-	    ],
-	];
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['index', 'view', 'create', 'update', 'delete', 'receipt'],
+                'rules' => [
+                    [
+                        'actions' => ['index', 'view', 'create', 'update', 'delete'],
+                        'allow' => true,
+                        'roles' => ['user'],
+                    ],
+                    [
+                        'actions' => ['receipt'],
+                        'allow' => true,
+                        'roles' => ['user'],
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['post'],
+                ],
+            ],
+        ];
     }
 
     /**
@@ -96,25 +114,33 @@ class TransactionbanktransController extends Controller {
         }
     }
 
-    public function actionReceipt() {
-        $model = Receipt::findOne(['user_id'=>Yii::$app->user->id]);
-        if( ! $model) $model = new Receipt();
-        $model->user_id = Yii::$app->user->id;
+    public function actionReceipt($mode=1) {
+        if ($mode==1) {
+            $model = Receipt::findOne(['user_id'=>Yii::$app->user->id]);
+            if( ! $model) $model = new Receipt();
+            $model->user_id = Yii::$app->user->id;
+            return $this->render('receipt', ['model' => $model, 'mode' => $mode ]);
+        }
+        else {
+            $model = Receipt::findOne(['user_id'=>Yii::$app->user->id]);
+            if( ! $model) $model = new Receipt();
+            $model->user_id = Yii::$app->user->id;
 
-        $file = UploadedFile::getInstance($model,'file');
-        if ($file)
-            $model->logo = $file->name;
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            if ($file){
-                $uploaded = $file->saveAs(Yii::$app->params['avatarPath'].$file->name);
-                $image=Yii::$app->image->load(Yii::$app->params['avatarPath'].$file);
-                $image->resize(100);
-                $image->save();
+            $file = UploadedFile::getInstance($model,'file');
+            if ($file)
+                $model->logo = $file->name;
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                if ($file){
+                    $uploaded = $file->saveAs(Yii::$app->params['avatarPath'].$file->name);
+                    $image=Yii::$app->image->load(Yii::$app->params['avatarPath'].$file);
+                    $image->resize(100);
+                    $image->save();
+                }
+                Yii::$app->getSession()->setFlash('success', 'The receipt is successfully updated');
+                return $this->redirect(Url::toRoute(['receipt','mode'=>1]));
+            } else {
+                return $this->render('receipt', ['model' => $model, 'mode' => $mode ]);
             }
-            Yii::$app->getSession()->setFlash('success', 'The receipt is successfully updated');
-            return $this->redirect(Url::toRoute('site/index'));
-        } else {
-            return $this->render('receipt', ['model' => $model, ]);
         }
     }
 
