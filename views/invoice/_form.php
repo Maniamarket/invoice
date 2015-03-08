@@ -280,8 +280,7 @@ Yii::$app->view->registerJsFile('@web/js/invoice_form.js');
         var discount = $('#discount_'+a).val();
         var net = parseFloat(price*count)*(1-parseFloat(discount)/100);
         var total = 0;
-//        var total = net*(1-parseFloat(discount)/100)*(1+(parseFloat(vat)+parseFloat(income))/100);
-//            alert(total+' vat '+vat+' net '+net+ ' income '+income+' discount '+discount+' count= '+count+' prise= '+price);
+   //         alert(' vat '+vat+' net '+net+ ' income '+income+' discount '+discount+' count= '+count+' prise= '+price);
         $('#total_'+a).val(net);
 
         var count_items =  <?php echo ($count_items) ? $count_items : 0; ?> ;

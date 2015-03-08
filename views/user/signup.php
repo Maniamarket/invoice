@@ -36,7 +36,6 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php echo $form->field($setting, 'def_template',['labelOptions'=>['class'=>'control-label']])->dropDownList(Setting::List_Templates(['prompt'=>'-Choose a Template-'])); ?>
         </div>
         <div class="fieldset-column pull-right">
-            <?php echo $form->field($setting, 'def_vat_id',['labelOptions'=>['class'=>'control-label']])->dropDownList(Setting::List_vat(['prompt'=>'-Choose a Vat-'])); ?>
             <?php echo $form->field($setting, 'def_company_id',['labelOptions'=>['class'=>'control-label']])->dropDownList(Setting::List_company(['prompt'=>'-Choose a Company-'])); ?>
         </div>
     </div>

@@ -63,6 +63,7 @@ class UserController extends Controller {
                 if( $user->save() ) {
                     $setting->load(Yii::$app->request->post());
                     $setting->user_id = $user->id;
+                    $setting->def_vat_id = 1;
                     $setting->def_lang_id = 1;
                     $setting->bank_code = 'no';
                     $setting->account_number = 'no';
@@ -290,11 +291,13 @@ class UserController extends Controller {
      */
     public function actionProfit() {
         $dataProvider = new ActiveDataProvider([
-                'query' => User_income::find()->where(['user_id'=> Yii::$app->user->id])->orderBy(['id'=>SORT_DESC]),
-                'pagination' => [
-                    'pageSize' => 10,
-                ],
+            'query' => User::find()->select('u.id, up.date, up.credit')->from('user u')
+                    ->innerJoin('user_payment up','u.id = up.user_id and up.is_input = 0')
+                    ->where(['u.parent_id'=> Yii::$app->user->id])->orderBy(['up.date'=>SORT_DESC]),
+//                    ->where(['u.parent_id'=> Yii::$app->user->id])->orderBy(['u.parent_id'=>SORT_DESC,'up.date'=>SORT_DESC]),
+            'pagination' => [ 'pageSize' => 10, ],
             ]);
+        var_dump( $dataProvider->query ); exit;
         return $this->render('profit',['dataProvider'=>$dataProvider]);
    }
 
@@ -314,9 +317,7 @@ class UserController extends Controller {
     public function actionSet_tax( $page = 1) {
          $dataProvider = new ActiveDataProvider([
                 'query' => User::find(),
-                'pagination' => [
-                    'pageSize' => 10,
-                ],
+                'pagination' => [ 'pageSize' => 10, ],
             ]);
         return $this->render('settax',['dataProvider'=>$dataProvider]);
    }
