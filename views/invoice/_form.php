@@ -216,19 +216,19 @@ jQuery("#state").replaceWith(data);
 
 
     <div class="invoice-tax">
-        <table class="table table-bordered">
+        <table class="table table-bordered table-align-left">
             <tr>
-                <td> Net Price </td>
-                <td>  <?php echo Html::label( $itog['net'],'', ['id'=>"net_itog"]); ?>  </td>
+                <td style="width: 200px;"> Net Price </td>
+                <td style="width: 80px;">  <?php echo Html::label( $itog['net'],'', ['id'=>"net_itog"]); ?>  </td>
             </tr>
             <tr>
-                <td> Vat%
-                    <?php echo $form->field($model, 'vat_id',[
-                        'template' => "{label}\n<div class=\"col-md-8\">{input}</div>\n<div class=\"col-md-8\">{error}</div>"
+                <td><nobr>
+                    <?php echo $form->field($model, 'vat_id',['labelOptions'=>['class'=>'control-label col-md-6'],
+                        'template' => "{label}\n<div class=\"col-md-6\">{input}</div>\n<div class=\"col-md-8\">{error}</div>"
                     ])->dropDownList( Setting::List_Vat(),['id'=>'vat', 'class'=>'form-control',
 //                            'onchange'=>'set_itog("'.$is_add.'","'.$count_items.'","'.$model->income.'")'])->label(false);
-                    'onchange'=>'set_itog("'.$is_add.'","'.$count_items.'","'.$model->income.'")'])->label(false);
-                    ?>
+                    'onchange'=>'set_itog()'])->label('Tax Vat%',['style'=>'padding-left: 0; text-align: left;']);
+                    ?></nobr>
                 </td>
                 <td>  <?php echo Html::label( $itog['vat'],'', ['id'=>"net_vat"]); ?>  </td>
             </tr>

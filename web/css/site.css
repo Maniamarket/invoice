@@ -409,3 +409,7 @@ a.desc:after {
 .label-left .form-horizontal .control-label {
     text-align: left;
 }
+.invoice-tax .table-align-left td{
+   text-align: left;
+    padding-left: 15px;
+}

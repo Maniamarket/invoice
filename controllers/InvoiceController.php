@@ -251,7 +251,7 @@ class InvoiceController extends Controller
         }
         $model->client_id = 0;  $model->company_id = 0; $model->payment_id = 0;
         $model->date = date("Y/m/d", time());
-        $model->vat_id = $setting->def_vat_id;
+        $model->vat_id = 0;
         $model->income = $setting->surtax;
         $model->type = $setting->def_template;
         $items_error = [];
