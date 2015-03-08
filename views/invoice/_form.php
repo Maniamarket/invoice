@@ -222,15 +222,21 @@ jQuery("#state").replaceWith(data);
                 <td>  <?php echo Html::label( $itog['net'],'', ['id'=>"net_itog"]); ?>  </td>
             </tr>
             <tr>
-                <td> Vat </td>
-                <td> <?php echo $form->field($model, 'vat_id',[
+                <td> Vat%
+                    <?php echo $form->field($model, 'vat_id',[
                         'template' => "{label}\n<div class=\"col-md-8\">{input}</div>\n<div class=\"col-md-8\">{error}</div>"
                     ])->dropDownList( Setting::List_Vat(),['id'=>'vat', 'class'=>'form-control',
-                      'onchange'=>'set_itog("'.$is_add.'","'.$count_items.'","'.$model->income.'")'])->label(false); ?> </td>
+//                            'onchange'=>'set_itog("'.$is_add.'","'.$count_items.'","'.$model->income.'")'])->label(false);
+                    'onchange'=>'set_itog("'.$is_add.'","'.$count_items.'","'.$model->income.'")'])->label(false);
+                    ?>
+                </td>
+                <td>  <?php echo Html::label( $itog['vat'],'', ['id'=>"net_vat"]); ?>  </td>
             </tr>
             <tr>
-                <td> Income Tax </td>
-                <td> <?php echo Html::label( $model->income,'');?> </td>
+                <td> Income Tax% -
+                    <?php echo Html::label( $model->income,'');?>
+                </td>
+                <td><?php echo Html::label( $itog['income'],'', ['id'=>"net_income"]); ?></td>
             </tr>
             <tr>
                 <td> Grand Total </td>
@@ -272,23 +278,21 @@ Yii::$app->view->registerJsFile('@web/js/invoice_form.js');
         var count = $('#qty_'+a).val();
         var price = $('#price_'+a).val();
         var discount = $('#discount_'+a).val();
-        var net = parseFloat(price*count);
-        var total = net*(1-parseFloat(discount)/100)*(1+(parseFloat(vat)+parseFloat(income))/100);
+        var net = parseFloat(price*count)*(1-parseFloat(discount)/100);
+        var total = 0;
+//        var total = net*(1-parseFloat(discount)/100)*(1+(parseFloat(vat)+parseFloat(income))/100);
 //            alert(total+' vat '+vat+' net '+net+ ' income '+income+' discount '+discount+' count= '+count+' prise= '+price);
-        total = total.toFixed(2);
-        $('#total_'+a).val(total);
+        $('#total_'+a).val(net);
 
         var count_items =  <?php echo ($count_items) ? $count_items : 0; ?> ;
         var is_add = <?php echo ($is_add) ? 1 : 0; ?>;
-        var net_itog;
-        total = 0; net_itog = 0;
+        var net_itog = 0;
             if(  is_add  ){
                 count = $('#qty_').val();
                 price = $('#price_').val();
                 discount = $('#discount_').val();
                 net = parseFloat(price*count);
-                total = total = net*(1-parseFloat(discount)/100)*(1+(parseFloat(vat)+parseFloat(income))/100);
-                net_itog = net;
+                net_itog = net*(1-parseFloat(discount)/100);
             }
             for( var i=1; i<= count_items; i++){
                 var to = (i-1).toString();
@@ -296,11 +300,18 @@ Yii::$app->view->registerJsFile('@web/js/invoice_form.js');
                 price = $('#price_'+to).val();
                 discount = $('#discount_'+to).val();
                 net = parseFloat(price*count);
-                net_itog = net_itog + net;
-                total = total + net*(1-parseFloat(discount)/100)*(1+(parseFloat(vat)+parseFloat(income))/100);
+                net_itog = net_itog + net*(1-parseFloat(discount)/100);
             }
-            total = total.toFixed(2);
-            net_itog = net_itog.toFixed(2);
+        net_itog = net_itog.toFixed(2);
+        var vat_cost = net_itog*parseFloat(vat)/100;
+        vat_cost = vat_cost.toFixed(2);
+        var income_cost = net_itog*parseFloat(income)/100;
+        income_cost = income_cost.toFixed(2);
+        total = parseFloat(net_itog) + parseFloat(vat_cost);
+        total = total.toFixed(2);
+    // alert(total);
+        $('#net_income').text(income_cost);
+        $('#net_vat').text(vat_cost);
         $('#net_itog').text(net_itog);
         $('#total_itog').text(total);
         return false;
