@@ -133,7 +133,7 @@ class TransactionbanktransController extends Controller {
                 if ($file){
                     $uploaded = $file->saveAs(Yii::$app->params['avatarPath'].$file->name);
                     $image=Yii::$app->image->load(Yii::$app->params['avatarPath'].$file);
-                    $image->resize(100);
+                    $image->resize(300);
                     $image->save();
                 }
                 Yii::$app->getSession()->setFlash('success', 'The receipt is successfully updated');
