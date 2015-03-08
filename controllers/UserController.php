@@ -291,13 +291,23 @@ class UserController extends Controller {
      */
     public function actionProfit() {
         $dataProvider = new ActiveDataProvider([
-            'query' => User::find()->select('u.id, up.date, up.credit')->from('user u')
+//            'query' => User::find()->select('u.id')->from('user u')
+//                    ->where(['u.parent_id'=> Yii::$app->user->id]),
+/*            'query' => User::find()->select('u.id, up.date, up.credit')->from('user u')
                     ->innerJoin('user_payment up','u.id = up.user_id and up.is_input = 0')
-                    ->where(['u.parent_id'=> Yii::$app->user->id])->orderBy(['up.date'=>SORT_DESC]),
+                    ->where(['u.parent_id'=> Yii::$app->user->id])->orderBy(['up.date'=>SORT_DESC]),*/
+            'query' => User::find()->select('u.id, user_payment.date, user_payment.credit')->from('user u')
+                    ->innerJoinWith([
+                        'user_payment' => function ($query) {
+                                $query->where('user_payment.is_input = 0');
+ //                                   ->onCondition(['user_payment.user_id' => 'u.id']);
+                            }
+                    ])
+                    ->where(['u.parent_id'=> Yii::$app->user->id])->orderBy(['user_payment.date'=>SORT_DESC]),
 //                    ->where(['u.parent_id'=> Yii::$app->user->id])->orderBy(['u.parent_id'=>SORT_DESC,'up.date'=>SORT_DESC]),
             'pagination' => [ 'pageSize' => 10, ],
             ]);
-        var_dump( $dataProvider->query ); exit;
+//        var_dump( count($dataProvider->models) ); exit;
         return $this->render('profit',['dataProvider'=>$dataProvider]);
    }
 

@@ -16,6 +16,7 @@ use app\models\Invoice;
 use app\models\User_payment;
 use app\components\HelpKontrol;
 use app\models\Invoice_item;
+use app\models\Receipt;
 
 /**
  * InvoiceController implements the CRUD actions for Invoice model.
@@ -386,6 +387,13 @@ class InvoiceController extends Controller
         }
     }
 
+    public function actionReceipt() {
+            $this->layout='receipt';
+            $receipt = Receipt::findOne(['user_id'=>Yii::$app->user->id]);
+            if( !$receipt) $receipt = new Receipt();
+            $receipt->user_id = Yii::$app->user->id;
+            return $this->render('receipt', ['receipt' => $receipt]);
+    }
 
 
     /**

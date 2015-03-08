@@ -268,6 +268,14 @@ class User extends ActiveRecord implements IdentityInterface {
         // Во втором параметре в виде массива задаётся имя удалённого PK ключа  (id) и FK из текущей таблицы модели (author_id), которые связываются между собой
     }
 
+    public function getUser_payment() {
+        return $this->hasMany('app\models\User_payment', array('user_id' => 'id'))
+            ->where('is_input = 0')
+            ->orderBy('date');
+        // Первый параметр – это у нас имя класса, с которым мы настраиваем связь.
+        // Во втором параметре в виде массива задаётся имя удалённого PK ключа  (id) и FK из текущей таблицы модели (author_id), которые связываются между собой
+    }
+
     public function afterSave($insert, $changedAttributes) {
         parent::afterSave($insert, $changedAttributes);
         // установка роли пользователя

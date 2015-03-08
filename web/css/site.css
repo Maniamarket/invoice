@@ -11,6 +11,7 @@ body {
     margin: 0 auto -60px;
     padding: 0 0 60px;
     font-family: 'Open Sans';
+/*    font-family: 'OpenSansCondensed';*/
 }
 
 .wrap > .container {
@@ -411,5 +412,39 @@ a.desc:after {
 }
 .invoice-tax .table-align-left td{
    text-align: left;
-    padding-left: 15px;
+   padding-left: 15px;
+}
+.receipt-desc {
+    text-align: right;
+    font-size: 20px;
+    float: right;
+    line-height: 16px;
+}
+#receipt-head {
+    padding-bottom: 40px;
+    margin-left: 5px;
+    margin-right: 0;
+    border-bottom: 1px solid #e2e2e2;
+}
+#receipt-body, #receipt-body .form-control {
+    font-size: 20px;
+}
+#receipt-body .form-control {
+    height: 40px;
+}
+.container-receipt {
+    font-family: 'OpenSansCondensed';
+    width: 1300px;
+    height: 780px;
+    border: 1px solid #c1c1c1;
+    border-radius: 10px;
+    margin: 0 auto;
+    padding: 10px 175px;
+    -webkit-box-shadow: 2px 2px 3px 0px rgba(50, 50, 50, 0.52);
+    -moz-box-shadow:    2px 2px 3px 0px rgba(50, 50, 50, 0.52);
+    box-shadow:         2px 2px 3px 0px rgba(50, 50, 50, 0.52);
+}
+.container-receipt h1 {
+    font-size: 30px;
+    line-height: 80px;
 }
