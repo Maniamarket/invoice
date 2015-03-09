@@ -78,6 +78,7 @@ class PaymentController extends Controller
         $model=$this->loadModel($id);
         if ($model->load(Yii::$app->request->post())) {
             if (isset($_POST['data_array'])) {
+                if( !isset($_POST['data_array']['sandabox_flag']) ) $_POST['data_array']['sandabox_flag'] = 0;
                 $model->data = serialize($_POST['data_array']);
             }
             if ( $model->save()) {

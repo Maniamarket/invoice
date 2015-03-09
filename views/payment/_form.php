@@ -31,16 +31,23 @@ use yii\helpers\BaseHtml;
     <?php switch($model->id) {
         case 2: //paypal
             ?>
-    <div class="row">
-            <div class="form-group">
-                <label class="control-label col-md-2"><?php echo Yii::t('app', 'e-mail') ?></label>
-                <div class="col-md-3">
-                    <input name="data_array[email]" type="text" class="form-control" value="<?= (isset($data['email'])) ? $data['email'] : '' ?>">
+            <div class="row">
+                <div class="form-group">
+                    <label class="control-label col-md-2"><?php echo Yii::t('app', 'e-mail') ?></label>
+                    <div class="col-md-3">
+                        <input name="data_array[email]" type="text" class="form-control" value="<?= (isset($data['email'])) ? $data['email'] : '' ?>">
+                    </div>
                 </div>
             </div>
-    </div>
-        <?php break;
-     ?>
+            <div class="row">
+                <div class="form-group">
+                    <label class="control-label col-md-2"><?php echo Yii::t('app', 'is test') ?></label>
+                    <div class="col-md-3">
+                        <?php echo Html::checkbox('data_array[sandabox_flag]', (isset($data['sandabox_flag'])) ? $data['sandabox_flag'] :true) ?>
+                    </div>
+                </div>
+            </div>
+        <?php break; ?>
 
     <?php case 3: //bank
  //             var_dump($data); exit;

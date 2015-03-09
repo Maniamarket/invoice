@@ -4,14 +4,10 @@ namespace app\controllers;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
-use yii\filters\VerbFilter;
-use yii\data\ActiveDataProvider;
-use yii\web\Request;
-use yii\web\Cookie;
 use yii\web\BadRequestHttpException;
-use yii\web\ForbiddenHttpException;
 use app\models\User_payment;
 use app\models\Setting;
+use app\models\Payment;
 
 use PayPal\Api\Details;
 use PayPal\Api\Address;
@@ -19,7 +15,6 @@ use PayPal\Api\Amount;
 use PayPal\Api\CreditCard;
 use PayPal\Api\FundingInstrument;
 use PayPal\Api\Payer;
-use PayPal\Api\Payment;
 use PayPal\Api\RedirectUrls;
 use PayPal\Api\Transaction;
 use PayPal\Rest\ApiContext;
@@ -63,10 +58,10 @@ class PayController extends Controller
 	 */
 	public function actionPaypal( $id )
 	{
-            $model = User_payment::findOne($id);
-   //         Yii::$app->getResponse()->getCookies()->add( new Cookie([ 'name' => 'credit', 'value' => $model->credit,]));
-    
-            return $this->render('paypal', ['model' => $model, ]);
+        $model = User_payment::findOne($id);
+
+        $config = Payment::getPayPalData();
+        return $this->render('paypal', ['model' => $model, 'config'=>$config ]);
 	}
 
 
@@ -77,15 +72,18 @@ class PayController extends Controller
 
     public function actionCancel_paypal()
     {
-        var_dump($_REQUEST);
+     //   var_dump($_REQUEST);
         return $this->render('paypal_cancel');
     }
 
     public function actionIpn()
     {
-        $url_pay = ( \Yii::$app->params['SandboxFlag'] ) ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
+        $data = Payment::getPayPalData();
+        $SandboxFlag = $data['sandabox_flag'];
+
+        $url_pay = ( $SandboxFlag ) ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
         // e-mail продавца
-        $paypalemail  = ( \Yii::$app->params['SandboxFlag'] ) ? "RabotaSurv-de@gmail.com" : "info@maniamarket.eu";
+        $paypalemail  = ( $SandboxFlag ) ? "RabotaSurv-de@gmail.com" : $data['email'];
         $currency     =  "EUR";// 'RUB';             // валюта
         $paypalmode = 'sandbox'; //Sandbox for testing or empty '';
         if ($_POST) {
