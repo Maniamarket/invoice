@@ -116,15 +116,11 @@ class TransactionbanktransController extends Controller {
 
     public function actionReceipt($mode=1) {
         if ($mode==1) {
-            $model = Receipt::findOne(['user_id'=>Yii::$app->user->id]);
-            if( ! $model) $model = new Receipt();
-            $model->user_id = Yii::$app->user->id;
+            $model = Receipt::findOne(['key'=>'receipt']);
             return $this->render('receipt', ['model' => $model, 'mode' => $mode ]);
         }
         else {
-            $model = Receipt::findOne(['user_id'=>Yii::$app->user->id]);
-            if( ! $model) $model = new Receipt();
-            $model->user_id = Yii::$app->user->id;
+            $model = Receipt::findOne(['key'=>'receipt']);
 
             $file = UploadedFile::getInstance($model,'file');
             if ($file)

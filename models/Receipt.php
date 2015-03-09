@@ -25,16 +25,16 @@ class Receipt extends ActiveRecord {
 
     public $file;
 
-    public static function tableName() {	return 'receipt';    }
+    public static function tableName() {	return 'site_setting';    }
 
     /**
      * @return array validation rules for model attributes.
      */
     public function rules() {
         return [
-            [['user_id','title', 'description'], 'required'],
-            [['title'], 'string', 'max' => 200],
-            [['logo', 'description'], 'safe'],
+            [['title', 'description'], 'required'],
+            [['title', 'description'], 'string', 'max' => 200],
+            [['logo'], 'safe'],
             ['file', 'file', 'extensions' => ['jpg','jpeg','png','gif']],
 
         ];
