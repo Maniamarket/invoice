@@ -389,9 +389,7 @@ class InvoiceController extends Controller
 
     public function actionReceipt() {
             $this->layout='receipt';
-            $receipt = Receipt::findOne(['user_id'=>Yii::$app->user->id]);
-            if( !$receipt) $receipt = new Receipt();
-            $receipt->user_id = Yii::$app->user->id;
+            $receipt = Receipt::findOne(['key'=>'receipt']);
             return $this->render('receipt', ['receipt' => $receipt]);
     }
 

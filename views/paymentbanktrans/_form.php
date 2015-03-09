@@ -4,7 +4,9 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use app\models\Setting;
+use app\models\Payment;
 
+$banks = Payment::getBankData();
 /* @var $this yii\web\View */
 /* @var $model app\models\Paymentbanktrans */
 /* @var $form yii\widgets\ActiveForm */
@@ -44,64 +46,37 @@ use app\models\Setting;
         </div>
     </div>
     <div class="row">
+        <?php foreach ($banks as $key=>$bank) { ?>
         <div class="fieldset-full-grey">
             <div class="fieldset-column pull-left">
                 <div class="form-group">
-                    <label class="control-label col-md-4">Bank 1</label>
+                    <label class="control-label col-md-4">Bank <?= $key+1 ?></label>
                     <div class="col-md-8">
-                        <p class="form-control">Eurobank</p>
+                        <p class="form-control"><?= $bank['bank_name'] ?></p>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-md-4">Bank Account</label>
                     <div class="col-md-8">
-                        <p class="form-control">0026.2567.5457.5457.2156</p>
+                        <p class="form-control"><?= $bank['bank_account'] ?></p>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-md-4">IBAN</label>
                     <div class="col-md-8">
-                        <p class="form-control">GR5902601250000850200907863</p>
+                        <p class="form-control"><?= $bank['iban'] ?></p>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-md-4">SWIFT</label>
                     <div class="col-md-8">
-                        <p class="form-control">TBNFFR43PAR</p>
+                        <p class="form-control"><?= $bank['swift'] ?></p>
                     </div>
                 </div>
             </div>
         </div>
         <div class="clearfix"></div>
-        <div class="fieldset-full-grey">
-            <div class="fieldset-column pull-left">
-                <div class="form-group">
-                    <label class="control-label col-md-4">Bank 2</label>
-                    <div class="col-md-8">
-                        <p class="form-control">Alpha Bank</p>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-md-4">Bank Account</label>
-                    <div class="col-md-8">
-                        <p class="form-control">0026.2567.5457.5457.2156</p>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-md-4">IBAN</label>
-                    <div class="col-md-8">
-                        <p class="form-control">GR5902601250000850200907863</p>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-md-4">SWIFT</label>
-                    <div class="col-md-8">
-                        <p class="form-control">TBNFFR43PAR</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="clearfix"></div>
+        <?php } ?>
     </div>
     <div class="form-group">
         <?= Html::submitButton('Buy Credits', ['class' => 'btn btn-action', 'name' => 'send']) ?>

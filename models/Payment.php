@@ -31,7 +31,8 @@ class Payment extends ActiveRecord
 		// will receive user inputs.
 		return array(
 			['name', 'required'],
-			['name', 'string', 'max'=>100],
+            ['name', 'string', 'max'=>100],
+            ['data', 'safe'],
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			
@@ -85,6 +86,10 @@ class Payment extends ActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+
+    public static function getBankData() {
+        return unserialize(self::find()->where(['id' => 3])->one()['data']);
+    }
 
 	/**
 	 * Returns the static model of the specified AR class.

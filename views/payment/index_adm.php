@@ -11,13 +11,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <h1 class="title"><?php echo Yii::t('app', 'Payments'); ?></h1>
 
-<?php echo Html::a('Создать', Url::toRoute('create'),['class'=>'btn-lg btn btn-success']) ?>
 <table class="table">
     <thead>
     <tr>
         <th>ID</th>
         <th>Name</th>
-        <th>Действия</th>
     </tr>
     </thead>
     <tbody>

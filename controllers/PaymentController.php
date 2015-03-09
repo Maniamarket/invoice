@@ -9,6 +9,7 @@ use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 use app\models\Payment;
 use yii\helpers\Url;
+use yii\helpers\ArrayHelper;
 use yii\web\Request;
 /*use PayPal\Api\Details;
 use PayPal\Api\Address;
@@ -74,16 +75,40 @@ class PaymentController extends Controller
 	
 	public function actionUpdate($id)
 	{
-                if( Yii::$app->request->isAjax)
+        $model=$this->loadModel($id);
+        if ($model->load(Yii::$app->request->post())) {
+            if (isset($_POST['data_array'])) {
+                $model->data = serialize($_POST['data_array']);
+            }
+            if ( $model->save()) {
+                return $this->redirect(['index']);
+            }
+        } else
+            return $this->render('update', ['model' => $model, ]);
+/*                if( Yii::$app->request->isAjax)
                 {      
                     $model=$this->loadModel($id);
                     $post = Yii::$app->request->post();
                     $model->name= $post['name'];
                     $model->save();
                     echo $model->name;
-                }
+                }*/
 	}
-	
+
+    public function actionAddbank($id=3)
+    {
+        $model=$this->loadModel($id);
+        if (isset($_POST['data_array'])) {
+            $data = (!empty($model->data)) ? unserialize($model->data) : [];
+            $data = ArrayHelper::merge($data, $_POST['data_array']);
+//            $data =array_merge($data, $_POST['data_array']);
+            $model->data = serialize($data);
+        }
+        if ( $model->save()) {
+            return $this->redirect(['update','id'=>$id]);
+        }
+    }
+
 	public function actionDelete($id)
 	{
 		$this->loadModel($id)->delete();

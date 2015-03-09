@@ -3,15 +3,15 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 $view_element = 'payment_id'.$model->id;
-$view_element_td = 'td_payment_id'.$model->id;
+//$view_element_td = 'td_payment_id'.$model->id;
 ?>
 
 <tr id="<?php echo Html::encode($view_element); ?>">
     <td><?php echo Html::encode($model->id); ?></td>
-    <td><?php echo Html::textInput('name', $model->name, ['id'=>$view_element_td]); ?></td>
-    <td>
+    <td><?php echo Html::a($model->name, Url::toRoute(['payment/update','id'=>$model->id])); ?></td>
+<!--    <td>
        <?php 
-            $url = Url::toRoute(['payment/update','id'=>$model->id]);
+/*            $url = Url::toRoute(['payment/update','id'=>$model->id]);
             echo Html::a('save',Url::toRoute(['payment/update','id'=>$model->id]),
             [
              'title' => Yii::t('yii', 'Save'),
@@ -23,11 +23,11 @@ $view_element_td = 'td_payment_id'.$model->id;
                data: {'name': name},
                success  : function(response) { $('#".$view_element_td."').empty().html(response).focus();   }
              })}; return false; ",
-           ]);
+           ]);*/
        ?>
       &nbsp;
       <?php  
-           echo Html::a('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>',['delete', 'id'=>$model->id],
+/*           echo Html::a('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>',['delete', 'id'=>$model->id],
            [
              'title' => Yii::t('yii', 'Delete'),
              'onclick'=>"if(confirm('Вы действительно хотите удалить?'))"
@@ -38,7 +38,7 @@ $view_element_td = 'td_payment_id'.$model->id;
                url  : 'payment/delete',
                success  : function(response) { $('#".$view_element."').html(response);   }
            })}; return false; ",
-          ]);
+          ]);*/
       ?> 
-   </td>
+   </td>-->
 </tr>
