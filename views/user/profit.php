@@ -9,13 +9,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 
-<h1 class="title"><?php echo Yii::t('app', 'Profit'); ?></h1>
+<h1 class="title"><?php echo Yii::t('app', 'Profit-'.$my_profit->my_profit); ?></h1>
 
 <table class="table table-striped">
     <thead>
     <tr>
         <th>ID</th>
-        <th>Date</th>
+        <th>Login</th>
         <th>Profit (current month)</th>
         <th>Detail</th>
     </tr>

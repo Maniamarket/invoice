@@ -237,7 +237,7 @@ class UserController extends Controller {
                   $parent_manager->user_id = $user->parent_id;
                   $parent_manager->credit = 0;
                   $parent_manager->date = $user->date;
-                  $paren = User::find()->where(['id'=>$user->parent_id])->one();
+                  $paren = User::findOne(['id'=>$user->parent_id]);
                   $parent_manager->parent_id = ( $paren )? $paren->parent_id : 0;
                   if( ! $paren) { echo ' добавь в базу user='.$user->parent_id; exit();}
                   elseif( $paren->role == 'manager')     $parent_manager->profit_manager = $res['sum'];
@@ -290,14 +290,14 @@ class UserController extends Controller {
         switch ( $type_user ){
             case  1 : $res = User::find()->select('u.id, u.name, ui.credit, ui.profit_manager,'
                 . ' (select SUM( us_in.credit) from user_income as us_in where us_in.user_id = u.id ) as sum_profit ')
-                ->from('user u')->leftJoin('user_income ui','u.id = ui.user_id  and MONTH(ui.date) = MONTH(NOW()) ');
+                ->from('user u')->leftJoin('user_income ui','u.id = ui.user_id  and MONTH(ui.date) = MONTH(NOW()) and YEAR(`date`)=YEAR(NOW()) ');
                 if( Yii::$app->user->identity->role !== 'superadmin') $res->where(['u.parent_id' => Yii::$app->user->id,
                     'u.role' => "user"]);
                 return $res;
             case  2 : $res = User::find()->select('u.id, u.name, ui.credit, ui.profit_manager, ui.income, ui.my_profit,'
                 . ' (select SUM( us_in.credit) from user_income as us_in where us_in.user_id = u.id ) as sum_profit, '
                 . ' (select SUM( us_in.profit_manager) from user_income as us_in where us_in.user_id = u.id ) as sum_profit_manager')
-                ->from('user u')->leftJoin('user_income ui','u.id = ui.user_id  and MONTH(ui.date) = MONTH(NOW()) ');
+                ->from('user u')->leftJoin('user_income ui','u.id = ui.user_id  and MONTH(ui.date) = MONTH(NOW()) and YEAR(`date`)=YEAR(NOW()) ');
                 if( Yii::$app->user->identity->role !== 'superadmin') $res->where(['u.parent_id' => Yii::$app->user->id,
                     'u.role' => "manager"]);
                 return $res;
@@ -305,29 +305,15 @@ class UserController extends Controller {
                 . ' (select SUM( us_in.credit) from user_income as us_in where us_in.user_id = u.id ) as sum_profit, '
                 . ' (select SUM( us_in.profit_admin) from user_income as us_in where us_in.user_id = u.id ) as sum_profit_admin, '
                 . ' (select SUM( us_in.profit_manager) from user_income as us_in where us_in.user_id = u.id ) as sum_profit_manager')
-                ->from('user u')->leftJoin('user_income ui','u.id = ui.user_id  and MONTH(ui.date) = MONTH(NOW()) ')
+                ->from('user u')->leftJoin('user_income ui','u.id = ui.user_id  and MONTH(ui.date) = MONTH(NOW())  and YEAR(`date`)=YEAR(NOW()) ')
                 ->where(['u.role' => 'admin']);
                 return $res;
             case  4 : $res = User::find()->select('u.id, u.name, ui.credit, ui.profit_manager, s.surtax,'
                 . ' (select SUM( us_in.credit) from user_income as us_in where us_in.user_id = u.id ) as sum_profit')
-                ->from('user u')->leftJoin('user_income ui','u.id = ui.user_id  and MONTH(ui.date) = MONTH(NOW()) ')
+                ->from('user u')->leftJoin('user_income ui','u.id = ui.user_id  and MONTH(ui.date) = MONTH(NOW())  and YEAR(`date`)=YEAR(NOW()) ')
                 ->leftJoin('setting s', 'u.id = s.user_id' ) ;
                 return $res;
         }
-    }
-
-    /**
-     * Lists all models.
-     */
-    public function actionProfit() {
-        User_income::setIncome();
-        $dataProvider = new ActiveDataProvider([
-            'query' => User::find()->select('u.id,u.username, (select SUM( us_in.credit)
-                    from user_income as us_in where us_in.user_id = u.id ) as sum_profit ')->from('user u')
-                    ->where(['u.parent_id'=> Yii::$app->user->id])->orderBy(['u.parent_id'=>SORT_ASC]),
-            'pagination' => [ 'pageSize' => 10, ],
-        ]);
-        return $this->render('profit',['dataProvider'=>$dataProvider]);
     }
 
     /**

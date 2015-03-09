@@ -17,8 +17,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <tr>
         <th>ID</th>
         <th>Name</th>
-        <th>Profit</th>
+        <th>Profit (current month)</th>
         <th>Total Profit</th>
+        <th>Detail Profit</th>
         <?php if( $type_user == 4 ){ ?>
             <th>Income Tax</th>
             <th>Edit Income tax</th>

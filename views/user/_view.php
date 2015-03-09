@@ -10,6 +10,7 @@ $view_element_td = 'td_tax_id'.$model->id;
     <td><?php echo Html::encode($model->name); ?></td>
     <td><?php echo Html::encode($model->credit); ?></td>
     <td><?php echo Html::encode($model->sum_profit); ?></td>
+    <td><?php echo Html::a('go',Url::toRoute(['user/profit_history','user_id'=>$model->id])); ?></td>
     <?php if( $type_user == 4 ){ ?>
         <td><?php echo Html::textInput('percent', $model->surtax, ['id'=>$view_element_td]); ?></td>
         <td>

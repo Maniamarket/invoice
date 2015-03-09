@@ -62,13 +62,13 @@ class User_income extends ActiveRecord {
     public static function setIncome()
     {
         $u_income = User_income::findBySql('select u.id,u.profit_manager, u.profit_admin from {{user_income}} as u '
-                    . '  where u.profit_manager > 0 or u.profit_admin>0')->all();
+                    . '  where (u.profit_manager > 0 or u.profit_admin>0) and YEAR(`date`)=YEAR(NOW())')->all();
         if(count($u_income) > 0){
             foreach ( $u_income as $val){
                 if( $val['profit_manager'] >0 ){
                     $income = self::getIncome($val['profit_manager']);
                     Yii::$app->db->createCommand("UPDATE user_income SET my_profit=:prof, income = :in  WHERE id=:id")
-                      ->bindValues([':prof'=>$income['manager']*$val['profit_manager']/100,':in'=>$income['admin'],':id'=>$val['id']])->execute();
+                      ->bindValues([':prof'=>$income['manager']*$val['profit_manager']/100,':in'=>$income['manager'],':id'=>$val['id']])->execute();
                 }
                 else {
                     $income = self::getIncome($val['profit_admin']);
