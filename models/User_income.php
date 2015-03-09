@@ -54,37 +54,10 @@ class User_income extends ActiveRecord {
      * @return array customized attribute labels (name=>label)
      */
     public function attributeLabels() {
-	return array(
-	);
+    	return array(
+	    );
     }
 
-    /**
-     * Retrieves a list of models based on the current search/filter conditions.
-     *
-     * Typical usecase:
-     * - Initialize the model fields with values from filter form.
-     * - Execute this method to get CActiveDataProvider instance which will filter
-     * models according to data in model fields.
-     * - Pass data provider to CGridView, CListView or any similar widget.
-     *
-     * @return CActiveDataProvider the data provider that can return the models
-     * based on the search/filter conditions.
-     */
-    public function search() {
-	// @todo Please modify the following code to remove attributes that should not be searched.
-
-	$criteria = new CDbCriteria;
-
-	$criteria->compare('user_id', $this->user_id);
-	$criteria->compare('credit', $this->credit);
-	$criteria->compare('vat', $this->vat);
-	$criteria->compare('def_company', $this->def_company);
-	$criteria->compare('def_lang', $this->def_lang);
-
-	return new CActiveDataProvider($this, array(
-	    'criteria' => $criteria,
-	));
-    }
 
     public static function setIncome()
     {
@@ -99,7 +72,6 @@ class User_income extends ActiveRecord {
                 }
                 else {
                     $income = self::getIncome($val['profit_admin']);
-                  //  var_dump($income);                    exit();
                     Yii::$app->db->createCommand("UPDATE user_income SET my_profit=:prof, income = :in  WHERE id=:id")
                       ->bindValues([':prof'=>$income['admin']*$val['profit_admin']/100, ':in'=>$income['admin'],'id'=>$val['id']])->execute();
                 }

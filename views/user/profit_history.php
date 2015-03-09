@@ -9,21 +9,19 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 
-<h1 class="title"><?php echo Yii::t('app', 'Profit'); ?></h1>
+<h1 class="title"><?php echo Yii::t('app', 'Profit user_id='.$user_model->id.' username -'.$user_model->username); ?></h1>
 
 <table class="table table-striped">
     <thead>
     <tr>
-        <th>ID</th>
         <th>Date</th>
-        <th>Profit (current month)</th>
-        <th>Detail</th>
+        <th>Credit</th>
     </tr>
     </thead>
     <tbody>
 <?php echo ListView::widget([
 	'dataProvider'=>$dataProvider,
-	'itemView'=>'_profit',
+	'itemView'=>'_profit_history',
 ]); ?>
     </tbody>
 </table>

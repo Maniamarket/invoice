@@ -88,15 +88,6 @@ class User extends ActiveRecord implements IdentityInterface {
         throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
     }
 
-    /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return static|null
-     */
-    public static function findByUsername($username) {
-        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
-    }
 
     /**
      * Finds user by password reset token
@@ -191,8 +182,6 @@ class User extends ActiveRecord implements IdentityInterface {
     public function removePasswordResetToken() {
         $this->password_reset_token = null;
     }
-
-    /* Todo удалить, если не используется */
 
     public function getStatusLabel($status = '') {
         $status = (empty($status)) ? $this->role : $status;
