@@ -352,18 +352,25 @@ a.desc:after {
 .form-search {
     margin: 20px 0 4px ;
 }
-#modal-invoice .modal-content, #modal-credits .modal-content{
+#modal-invoice .modal-content, #modal-credits .modal-content, .modal-grey .modal-content{
     padding: 10px;
 }
-#modal-invoice .modal-header, #modal-credits .modal-header {
+#modal-invoice .modal-header, #modal-credits .modal-header, .modal-grey .modal-header {
     background-color: #ece9e9;
+    padding: 8px;
 }
-#modal-invoice .modal-body, #modal-credits .modal-body {
+#modal-invoice .modal-body, #modal-credits .modal-body, .modal-grey .modal-body {
     background-color: #ece9e9;
 }
 #modal-credits .modal-dialog{
 /*    bottom: 10px;*/
     top: 400px;
+}
+.modal-grey .modal-dialog{
+    top: 200px;
+}
+.modal-grey .modal-dialog h2 {
+    font-size: 17px;
 }
 .text-green {
     color: #24aa98;

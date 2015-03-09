@@ -387,10 +387,15 @@ class InvoiceController extends Controller
         }
     }
 
-    public function actionReceipt() {
+    public function actionReceipt($id, $isTranslit = 0) {
             $this->layout='receipt';
             $receipt = Receipt::findOne(['key'=>'receipt']);
-            return $this->render('receipt', ['receipt' => $receipt]);
+            $model = $this->findModel($id);
+            return $this->render('receipt', [
+                'receipt' => $receipt,
+                'model' => $model,
+                'isTranslit'=>$isTranslit,
+            ]);
     }
 
 
