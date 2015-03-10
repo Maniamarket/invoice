@@ -153,6 +153,7 @@ $options_page_size = [20,50,100,200,500];
             </th>
             <th>Net Total</th>
             <th>Grand Total</th>
+            <th>Comments</th>
             <th>Valid
                 <?php
                 if ($sort=='is_pay' && $dir==SORT_ASC) {

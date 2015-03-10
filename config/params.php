@@ -12,7 +12,6 @@ $params = array(
     'creditPath' => 'images/payment_credit/',
     'is_cache' => false,
     'paymentMode' => 'live',
-    'SandboxFlag' => true,
     'paypal_percent' => 0.035,
 );
 if (YII_ENV_DEV) {

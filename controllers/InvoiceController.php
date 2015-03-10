@@ -387,6 +387,16 @@ class InvoiceController extends Controller
         }
     }
 
+    public function actionAjax_comment($id)
+    {
+        if( Yii::$app->request->isAjax ){
+            $invoice = $this->findModel($id);
+            $invoice->notes = $_POST['notes'];
+            if( $invoice->save() ) echo $invoice->notes;
+            else echo 'error not save invoise comment';
+        }
+    }
+
     public function actionReceipt($id, $isTranslit = 0) {
             $this->layout='receipt';
             $receipt = Receipt::findOne(['key'=>'receipt']);

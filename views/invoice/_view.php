@@ -13,6 +13,39 @@ use yii\bootstrap\Modal;
     <td><?php echo Html::encode($model->company->name); ?></td>
     <td><?php echo Html::encode($model->net_price); ?>&euro;</td>
     <td><?php echo Html::encode($model->total_price); ?>&euro; </td>
+    <td><?php
+        Modal::begin([
+            'header' => '<h2>Comments</h2>',
+            'options'=>['class'=>'modal-grey', 'id'=>'comment_form'.$model->id],
+            'toggleButton' => ['tag'=>'a', 'label' => '<img src="/images/comments.png" />',
+                'style'=>'cursor:pointer;', 'title'=>'Comments'],
+//            'size' => 'modal-sm',
+        ]);
+        echo '<div class="row"><div class="col-sm-12">';
+        echo Html::textarea('notes',$model->notes,['class' => 'form-control']);
+//        echo '</div>';
+        echo '</div>';
+        echo '<div class="col-sm-5" style="padding-top: 10px;">';
+        echo Html::a('Submit', '#',['title'=>'', 'class' => 'btn btn-yellow',
+                        'onclick'=>'
+                        url = "'.Url::toRoute(['ajax_comment','id'=>$model->id]).'";
+    $.ajax({
+        url:url,
+        method:"POST",
+        data:{
+            notes: $(this).parent().prev().children().eq(0).val()
+        },
+        success: function(response) { $("#comment_form'.$model->id.'").modal("hide"); },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert(xhr.responseText);
+            $("#comment_form'.$model->id.'").modal("hide");
+       }
+    });
+      return false;'
+        ]);
+        echo '</div>';
+        Modal::end();
+        ?></td>
     <td><?php if ($model->is_pay) echo '<span class="invoce_valid hint-container"> <div class="hint-content">he Invoice is Valid</div><img src="/images/invoice_valid.png" /></span>';
         else echo '<a href="'.Url::toRoute(['user/pay', 'id'=>$model->id]).'"
         class="hint-container"><div class="hint-content">he Invoice is not Valid:<br />
