@@ -84,8 +84,9 @@ class PayController extends Controller
         $url_pay = ( $SandboxFlag ) ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
         // e-mail продавца
         $paypalemail  = ( $SandboxFlag ) ? "RabotaSurv-de@gmail.com" : $data['email'];
+        $paypalmode  = ( $SandboxFlag ) ? ".sandbox" : '';
         $currency     =  "EUR";// 'RUB';             // валюта
-        $paypalmode = 'sandbox'; //Sandbox for testing or empty '';
+//        $paypalmode = 'sandbox'; //Sandbox for testing or empty '';
         if ($_POST) {
             $req = 'cmd=' . urlencode('_notify-validate');
             foreach ($_POST as $key => $value) {
@@ -93,12 +94,13 @@ class PayController extends Controller
                 $req .= "&$key=$value";
             }
             Yii::info($req, 'userMessage');
-            if($paypalmode=='sandbox')
+/*            if($paypalmode=='sandbox')
             {
                 $paypalmode     =   '.sandbox';
-            }
+            }*/
             $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, 'https://www'.$paypalmode.'.paypal.com/cgi-bin/webscr');
+//            curl_setopt($ch, CURLOPT_URL, 'https://www'.$paypalmode.'.paypal.com/cgi-bin/webscr');
+            curl_setopt($ch, CURLOPT_URL, $url_pay);
             curl_setopt($ch, CURLOPT_HEADER, 0);
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
