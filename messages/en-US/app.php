@@ -11,6 +11,7 @@ return array(
     'Title' => 'Title',
     'Logo' => 'Logo',
     'Description' => 'Description',
+    'Done' => 'Done',
     
     ////main menu 
     'Home' => 'Home',
@@ -111,5 +112,7 @@ return array(
     'Default Template' => 'Default Template',
     'Default VAT, %' => 'Default VAT, %',
     'Default Company' => 'Default Company',
+    'Enabled Packages' => 'Enabled Packages',
+    'Packages Credits' => 'Packages Credits',
 
 );

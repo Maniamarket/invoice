@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use app\models\Setting;
 use app\models\Payment;
+use app\models\Credit_paket;
 
 $banks = Payment::getBankData();
 /* @var $this yii\web\View */
@@ -25,7 +26,14 @@ $banks = Payment::getBankData();
 
     <div class="row">
         <div class="fieldset-column pull-left">
-            <?php echo $form->field($model, 'sum',['labelOptions'=>['class'=>'control-label col-md-5']])->textInput(['id'=>'cost_id', 'maxlength' => 10])->hint('You credit ')->label('Cost (€):') ; ?>
+            <?php
+            $enabled_package = 1;
+            if ($enabled_package) {
+                echo $form->field($model, 'sum',['labelOptions'=>['class'=>'control-label col-md-5']])->dropDownList(Credit_paket::listPaket(), ['class'=>'form-control','id'=>'cost_id'])->hint('You credit ')->label('Cost (€):') ;
+            } else {
+                echo $form->field($model, 'sum',['labelOptions'=>['class'=>'control-label col-md-5']])->textInput(['id'=>'cost_id', 'maxlength' => 10])->hint('You credit ')->label('Cost (€):') ;
+            }
+            ?>
             <div class="form-group field-user_payment-credit required">
                 <label class="control-label col-md-5" for="user_payment-credit">Number of Credits:</label>
                 <div class="col-md-6">

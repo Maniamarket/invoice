@@ -12,6 +12,7 @@ return [
     'Title' => 'Заголовок',
     'Logo' => 'Логотип',
     'Description' => 'Описание',
+    'Done' => 'Применить',
 
     ////main menu 
     'Home' => 'Главная',
@@ -115,4 +116,6 @@ return [
     'Default Template' => 'Шаблон по умолчанию',
     'Default VAT, %' => 'НДС по умолчанию, %',
     'Default Company' => 'Компания по умолчанию',
+    'Enabled Packages' => 'Включить пакеты',
+    'Packages Credits' => 'Пакеты кредитов',
 ];
