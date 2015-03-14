@@ -81,7 +81,7 @@ AppAsset::register($this);
                             ],
                             ['label' => Yii::t('app', 'Languages'), 'url' => ['/lang/index'], 'visible' => !Yii::$app->user->isGuest],
                             ['label' => Yii::t('app', 'Incomes'), 'url' => ['/income/index'], 'visible' => !Yii::$app->user->isGuest],
-                            ['label' => Yii::t('app', 'Paket credits'), 'url' => ['/paket/index'], 'visible' => Yii::$app->user->can('superadmin')],
+                            ['label' => Yii::t('app', 'Packages Credits'), 'url' => ['/paket/index'], 'visible' => Yii::$app->user->can('superadmin')],
                             ['label' => Yii::t('app', 'Transactions BT'), 'url' => ['/transactionbanktrans/index'], 'visible' => Yii::$app->user->can('superadmin')],
                             ['label' => Yii::t('app', 'Transactions Receipt'), 'url' => ['/transactionbanktrans/receipt'], 'visible' => Yii::$app->user->can('superadmin')],
                         ],

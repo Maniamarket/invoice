@@ -43,4 +43,10 @@ class Credit_paket extends \yii\db\ActiveRecord
         $paket = Credit_paket::find()->select('value,price')->all();
         return ArrayHelper::map($paket,'value', 'price');
     }
+
+    public static function isEnabled()
+    {
+        $paket = Receipt::findOne(['key'=>'paket']);;
+        return (int) $paket->title;
+    }
 }

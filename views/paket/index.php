@@ -32,11 +32,11 @@ $form=ActiveForm::begin( [
 <?php
 echo '<div class="row"><div class="fieldset-column pull-left"><label class="control-label col-md-5">'.
     Yii::t('app', 'Enabled Packages').'</label><div class="col-md-2">';
-echo Html::checkbox('active',false,['class' => 'form-control']);
+echo Html::checkbox('active',(int)$paket->title,['class' => 'form-control']);
 //        echo '</div>';
 echo '</div>';
 echo '<div class="row">';
-echo Html::a(Yii::t('app', 'Done'), '#',['title'=>'', 'class' => 'btn btn-action']);
+echo Html::submitButton(Yii::t('app', 'Done'), ['name' =>'submitPack', 'class' => 'btn btn-action']);
 echo '</div></div>';
 ActiveForm::end();
 ?>

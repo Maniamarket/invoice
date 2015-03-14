@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="row">
     <div class="fieldset-column pull-left">
         <?php
-        $enabled_package = 1;
+        $enabled_package = Credit_paket::isEnabled();
         if ($enabled_package) {
             echo $form->field($model, 'credit',['labelOptions'=>['class'=>'control-label col-md-5']])->dropDownList(Credit_paket::listPaket(), ['class'=>'form-control','id'=>'cost_id'])->hint('You credit ')->label('Cost (€):') ;
         } else {

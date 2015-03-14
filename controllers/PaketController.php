@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Receipt;
 use Yii;
 use app\models\Credit_paket;
 use yii\data\ActiveDataProvider;
@@ -36,8 +37,14 @@ class PaketController extends Controller
             'query' => Credit_paket::find()->orderBy(['value'=>SORT_ASC]),
             'pagination' => [ 'pageSize' => 10, ],
         ]);
+        $paket = Receipt::findOne(['key'=>'paket']);
+        if(isset($_POST['submitPack'])){
+            $paket->title = (isset($_POST['active'])) ? '1' : '0';
+            $paket->update();
+            Yii::$app->getSession()->setFlash('success', 'The settings package is successfully updated');
+        }
 
-        return $this->render('index',[ 'dataProvider'=>$dataProvider]);
+        return $this->render('index',[ 'dataProvider'=>$dataProvider,'paket'=>$paket]);
     }
 
     /**
