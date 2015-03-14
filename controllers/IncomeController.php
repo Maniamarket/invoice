@@ -74,9 +74,7 @@ class IncomeController extends Controller
 	{
             $dataProvider = new ActiveDataProvider([
                 'query' => Income::find()->orderBy(['from'=>SORT_ASC]),
-                'pagination' => [
-                    'pageSize' => 10,
-                ],
+                'pagination' => [ 'pageSize' => 10, ],
             ]);
             if( yii::$app->user->identity->role==='superadmin' ) return $this->render('index_adm',array( 'dataProvider'=>$dataProvider, ));
             else  return $this->render('index',array( 'dataProvider'=>$dataProvider, ));
