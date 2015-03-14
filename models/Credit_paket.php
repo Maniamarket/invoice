@@ -37,4 +37,10 @@ class Credit_paket extends \yii\db\ActiveRecord
             'price' => Yii::t('app', 'Cost'),
         ];
     }
+
+    public static function listPaket()
+    {
+        $paket = Credit_paket::find()->select('value,price')->all();
+        return ArrayHelper::map($paket,'value', 'price');
+    }
 }
