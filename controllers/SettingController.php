@@ -83,6 +83,7 @@ class SettingController extends Controller {
                    $user->role = $_POST['User']['role'];
                    $user->parent_id = $_POST['User']['parent_id'];
                 }
+                $user->username = $_POST['User']['username'];
 
                 if ($user->save() && $model->load(Yii::$app->request->post()) && $model->save()) {
                     if ($file){

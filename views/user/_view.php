@@ -7,7 +7,7 @@ $view_element_td = 'td_tax_id'.$model->id;
 
 <tr>
     <td><?php echo Html::encode($model->id); ?></td>
-    <td><?php echo Html::encode($model->name); ?></td>
+    <td><?php echo Html::encode($model->username); ?></td>
     <td><?php echo Html::encode($model->credit); ?></td>
     <td><?php echo Html::encode($model->sum_profit); ?></td>
     <td><?php echo Html::a('go',Url::toRoute(['user/profit_history','user_id'=>$model->id])); ?></td>
