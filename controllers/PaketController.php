@@ -32,7 +32,7 @@ class PaketController extends Controller
      * @return mixed
      */
     public function actionIndex()
-    { 
+    {
         $dataProvider = new ActiveDataProvider([
             'query' => Credit_paket::find()->orderBy(['value'=>SORT_ASC]),
             'pagination' => [ 'pageSize' => 10, ],
@@ -43,7 +43,6 @@ class PaketController extends Controller
             $paket->update();
             Yii::$app->getSession()->setFlash('success', 'The settings package is successfully updated');
         }
-
         return $this->render('index',[ 'dataProvider'=>$dataProvider,'paket'=>$paket]);
     }
 

@@ -43,7 +43,7 @@ class SignupAdminForm extends Model
             $user->generateAuthKey();
             if( $user->save()){
                 $user->username = $user->id;
-                $user->name = $user->id;
+//                $user->name = $user->id;
                 $password = 'user_'.$user->id;
                 $user->setPassword($password);
                 $user->validate();

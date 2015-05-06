@@ -49,6 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <div class="row">
         <div class="fieldset-column pull-left">
+            <?php echo $form->field($model, 'name',['labelOptions'=>['class'=>'control-label col-md-4']])->textInput() ; ?>
             <?php echo $form->field($model, 'company_name',['labelOptions'=>['class'=>'control-label col-md-4']])->textInput() ; ?>
             <?php echo $form->field($model, 'vat_number',['labelOptions'=>['class'=>'control-label col-md-4']])->textInput() ; ?>
             <?php
