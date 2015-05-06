@@ -276,6 +276,15 @@ class UserController extends Controller {
         if( $type_user >1 ){
             User_income::setIncome();
         }
+        if (!Yii::$app->user->can('superadmin') && ($type_user == 4)) {
+            echo 'Доступ запрещен'; exit;
+        }
+        if (!Yii::$app->user->can('admin') && ($type_user == 3)) {
+            echo 'Доступ запрещен'; exit;
+        }
+        if (!Yii::$app->user->can('manager') && ($type_user == 2)) {
+            echo 'Доступ запрещен'; exit;
+        }
         $query = $this->getQueri($type_user);
         $dataProvider = new ActiveDataProvider([
                 'query' => $query,
