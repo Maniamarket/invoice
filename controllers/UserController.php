@@ -288,27 +288,30 @@ class UserController extends Controller {
 
     public function getQueri($type_user) {
         switch ( $type_user ){
-            case  1 : $res = User::find()->select('u.id, u.username, ui.credit, ui.profit_manager,'
+            case  1 : $res = User::find()->select('u.id, s.name as username, ui.credit, ui.profit_manager,'
                 . ' (select SUM( us_in.credit) from user_income as us_in where us_in.user_id = u.id ) as sum_profit ')
-                ->from('user u')->leftJoin('user_income ui','u.id = ui.user_id  and MONTH(ui.date) = MONTH(NOW()) and YEAR(`date`)=YEAR(NOW()) ');
+                ->from('user u')->leftJoin('user_income ui','u.id = ui.user_id  and MONTH(ui.date) = MONTH(NOW()) and YEAR(`date`)=YEAR(NOW()) ')
+                ->leftJoin('setting s','u.id = s.user_id');
                 if( Yii::$app->user->identity->role !== 'superadmin') $res->where(['u.parent_id' => Yii::$app->user->id,
                     'u.role' => "user"]);
                 return $res;
-            case  2 : $res = User::find()->select('u.id, u.username, ui.credit, ui.profit_manager, ui.income, ui.my_profit,'
+            case  2 : $res = User::find()->select('u.id, s.name as username, ui.credit, ui.profit_manager, ui.income, ui.my_profit,'
                 . ' (select SUM( us_in.credit) from user_income as us_in where us_in.user_id = u.id ) as sum_profit, '
                 . ' (select SUM( us_in.profit_manager) from user_income as us_in where us_in.user_id = u.id ) as sum_profit_manager')
-                ->from('user u')->leftJoin('user_income ui','u.id = ui.user_id  and MONTH(ui.date) = MONTH(NOW()) and YEAR(`date`)=YEAR(NOW()) ');
+                ->from('user u')->leftJoin('user_income ui','u.id = ui.user_id  and MONTH(ui.date) = MONTH(NOW()) and YEAR(`date`)=YEAR(NOW()) ')
+                ->leftJoin('setting s','u.id = s.user_id');
                 if( Yii::$app->user->identity->role !== 'superadmin') $res->where(['u.parent_id' => Yii::$app->user->id,
                     'u.role' => "manager"]);
                 return $res;
-            case  3 : $res = User::find()->select('u.id, u.username, ui.credit, ui.profit_manager, ui.profit_admin,ui.income, ui.my_profit,'
+            case  3 : $res = User::find()->select('u.id, s.name as username, ui.credit, ui.profit_manager, ui.profit_admin,ui.income, ui.my_profit,'
                 . ' (select SUM( us_in.credit) from user_income as us_in where us_in.user_id = u.id ) as sum_profit, '
                 . ' (select SUM( us_in.profit_admin) from user_income as us_in where us_in.user_id = u.id ) as sum_profit_admin, '
                 . ' (select SUM( us_in.profit_manager) from user_income as us_in where us_in.user_id = u.id ) as sum_profit_manager')
                 ->from('user u')->leftJoin('user_income ui','u.id = ui.user_id  and MONTH(ui.date) = MONTH(NOW())  and YEAR(`date`)=YEAR(NOW()) ')
+                ->leftJoin('setting s','u.id = s.user_id')
                 ->where(['u.role' => 'admin']);
                 return $res;
-            case  4 : $res = User::find()->select('u.id, u.username, ui.credit, ui.profit_manager, s.surtax,'
+            case  4 : $res = User::find()->select('u.id, s.name as username, ui.credit, ui.profit_manager, s.surtax,'
                 . ' (select SUM( us_in.credit) from user_income as us_in where us_in.user_id = u.id ) as sum_profit')
                 ->from('user u')->leftJoin('user_income ui','u.id = ui.user_id  and MONTH(ui.date) = MONTH(NOW())  and YEAR(`date`)=YEAR(NOW()) ')
                 ->leftJoin('setting s', 'u.id = s.user_id' ) ;
