@@ -53,6 +53,23 @@ class UserController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate($type_user) {
+        switch ($type_user) {
+            case 1 : if ( !Yii::$app->user->can('manager')){
+                            echo 'Access is forbidden';
+                            exit;
+                      }
+                break;
+            case 2 : if ( !Yii::$app->user->can('admin')){
+                            echo 'Access is forbidden';
+                            exit;
+                        }
+                break;
+            default:if ( !Yii::$app->user->can('superadmin')){
+                            echo 'Access is forbidden';
+                            exit;
+                       }
+        }
+
 	    $model = new \app\models\SignupAdminForm();
         $setting = new Setting();
         if ($model->load(Yii::$app->request->post())) {
@@ -346,13 +363,16 @@ class UserController extends Controller {
     }
 
     public function actionUpdate($user_id) {
-        if( Yii::$app->request->isAjax)
-        {
-            $model = Setting::findOne(['user_id' => $user_id]);
-            $model->surtax = $_POST['surtax'];
-            $model->save();
-            echo $model->surtax;
+        if ($user_id == Yii::$app->user->id){
+            if( Yii::$app->request->isAjax)
+            {
+                $model = Setting::findOne(['user_id' => $user_id]);
+                $model->surtax = $_POST['surtax'];
+                $model->save();
+                echo $model->surtax;
+            }
         }
+        else echo 'Access is forbidden';
     }
 
     /**

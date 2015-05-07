@@ -71,6 +71,10 @@ class SettingController extends Controller {
         if( Yii::$app->user->can('manager') ){
             $model = $this->loadModel($id);
             $user = User::findOne(['id'=>$id]);
+            if ( ($user->parent_id != Yii::$app->user->id) && !Yii::$app->user->can('superadmin') ){
+                echo 'Access is forbidden';
+                exit;
+            }
             $file = UploadedFile::getInstance($model,'file');
             if ($file)
                 $model->avatar = $file->name;
