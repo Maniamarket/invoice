@@ -179,7 +179,7 @@ class ClientController extends Controller
 
         $query = Client::find()->select('client.id, client.name, client.vat_number, count(i.id) as invoice, SUM(i.total_price) as total');
         $query->leftJoin('`invoice` i','client.id = i.client_id');
-        $query->where(['client.user_id'=>Yii::$app->user->id])->groupBy('i.client_id')->orderBy( $orderBy );
+        $query->where(['client.user_id'=>Yii::$app->user->id])->groupBy('client.id')->orderBy( $orderBy );
         if( $name_seach )  $query->andWhere(['like','client.name', $name_seach.'%',false]);
 
         $dataProvider = new ActiveDataProvider([
