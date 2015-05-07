@@ -319,6 +319,10 @@ class InvoiceController extends Controller
             Yii::$app->session['create_invoice'] = 1;
         }
         $model = $this->findModel($id);
+        if ( !Yii::$app->user->can('superadmin') && (Yii::$app->user->id != $model->user_id)){
+            echo 'Access is forbidden';
+            exit;
+        }
         $model->date = date("Y/m/d", time());
 
         $items_error = [];
@@ -417,7 +421,12 @@ class InvoiceController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        if ( !Yii::$app->user->can('superadmin') && (Yii::$app->user->id != $model->user_id)){
+            echo 'Access is forbidden';
+            exit;
+        }
+        $model->delete();
 
         return $this->redirect(['index']);
     }
